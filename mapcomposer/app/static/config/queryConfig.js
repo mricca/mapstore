@@ -262,7 +262,7 @@
 			  },
 			  "bufferOptions": {
 				"minValue": 1,
-				"maxValue": 100000,
+				"maxValue": 1000,
 				"decimalPrecision": 2,
 				"distanceUnits": "m"
 			  }
