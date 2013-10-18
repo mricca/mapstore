@@ -514,7 +514,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
             tbar: this.toolbar
         });
 		
-        var portalPanels = [this.mapPanelContainer, westPanel];
+        var portalPanels = [this.mapPanelContainer];
 		
 		//collect additional panels to add them after init portal
 		var additionalPanels = [];
@@ -533,10 +533,34 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
             var portalPanels = portalPanels.concat(toPortal);
         }
 		
+        this.portaltree = [{
+            region: "center",
+            layout: "border",
+            title: 'View',            
+            items: [
+                portalPanels
+            ]
+        }];
+
+        this.mapTab = new Ext.TabPanel({
+            id: "id_mapTab",
+            region: "center",
+            activeTab : 0,
+            enableTabScroll : true,
+            resizeTabs      : false,
+            layoutOnTabChange:true,
+            deferredRender:false,
+            autoTabs : true,
+            items : [this.portaltree]
+        });
+		
         this.portalItems = [{
             region: "center",
             layout: "border",            
-            items: portalPanels
+            items: [
+				this.mapTab,
+				westPanel
+			]
         }];
         
         GeoExplorer.superclass.initPortal.apply(this, arguments);  
