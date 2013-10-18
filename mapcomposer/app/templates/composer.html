@@ -23,9 +23,9 @@
 	
 	<script type="text/javascript" src="script/GeoExtExt.js"></script>
 	
-	<!-- PrintPreview resources  	
+	<!-- PrintPreview resources -->
     <link rel="stylesheet" type="text/css" href="externals/PrintPreview/resources/css/printpreview.css">
-    <script type="text/javascript" src="script/PrintPreview.js"></script>-->
+    <script type="text/javascript" src="script/PrintPreview.js"></script>
 	
     <!-- canvg-1.2 resources -->
 	<script type="text/javascript" src="script/canvg-1.2.js"></script> 
@@ -35,16 +35,16 @@
 
     <script type="text/javascript" src="script/gxp.js"></script> 
 
-    <!--script type="text/javascript" src="script/proj4js.js"></script-->
-	<!--script type="text/javascript" src="script/projCodes.js"></script-->
+    <script type="text/javascript" src="script/proj4js.js"></script>
+	<script type="text/javascript" src="script/projCodes.js"></script>
 
     <!-- GeoExplorer resources -->
     <link rel="stylesheet" type="text/css" href="theme/app/geoexplorer.css" />
     <link rel="stylesheet" type="text/css" href="theme/app/mapstore.css" />
 	
 	<!-- Advanced Scalebar CSS -->
-	<!--link rel="stylesheet" type="text/css" href="theme/app/scalebar-fat.css" /-->
-    <link rel="stylesheet" type="text/css" href="theme/app/scalebar-thin.css" />
+	<link rel="stylesheet" type="text/css" href="theme/app/scalebar-fat.css">
+    <!--link rel="stylesheet" type="text/css" href="theme/app/scalebar-thin.css" /-->
 	
     <!--[if IE]><link rel="stylesheet" type="text/css" href="theme/app/ie.css"/><![endif]-->        
 
@@ -56,6 +56,10 @@
     <script type="text/javascript" src="auth/base64.js"></script>
     <script type="text/javascript" src="script/metadataexplorer.js"></script>
     
+    <!-- highcharts resources -->
+    <script type="text/javascript" src="script/jquery.min.js"></script>
+    <script type="text/javascript" src="script/highcharts.js"></script>
+	
     <!-- geocoding data  -->
     <script type="text/javascript" src="data/georeferences.js"></script>
     
@@ -269,6 +273,12 @@
                 }
             });    
 			
+			var headerContent = [
+				  '<div align="center" style="background-color:#02004B;background-position:right center;background-image:url(../theme/app/img/banner/Header_geoportale_solo_img.jpg);background-repeat: no-repeat;width:100%;height:100%">',
+				  '<a href="http://www.lamma.rete.toscana.it" target="_blank"><img src="../theme/app/img/banner/logolamma_trasp.png" style="float:left;"/></a>',
+				  '</div>'
+			];
+			
             var appViewport = new Ext.Viewport({
                 id: 'appVieport',
                 layout:'fit',
@@ -278,7 +288,22 @@
                     layout : 'border',
                     border : false,
                     header : false,                    
-                    items : [appTabs],                            
+                    items : [{
+						border: false,
+						header: false,
+						html: headerContent,
+						region: 'north',
+						collapsible: true,
+						collapsed: false,
+						collapseMode: 'mini',
+						hideCollapseTool: true,
+						split: true,
+						animCollapse: false,
+						minHeight: 88,
+						maxHeight: 88,
+						height: 88,
+						id: 'header'
+					}, appTabs],                            
                     bbar : [
                       poweredByGeoSol, ' ', aboutButton, '->',languageSelector
                     ]
