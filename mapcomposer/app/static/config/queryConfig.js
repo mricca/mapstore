@@ -2,20 +2,37 @@
    "geoStoreBase": "",
    "proxy":"/http_proxy/proxy/?url=",
    "defaultLanguage": "it",
+   "advancedScaleOverlay": true,
+   "tab": false,   
    "gsSources":{ 
-   		"geosolutions": {
+   		"geobasi": {
 			"ptype": "gxp_wmssource",
 			"url": "http://localhost:8080/geoserver/ows",
-			"title": "GeoSolutions GeoServer",
-			"SRS": "EPSG:900913",
+			"title": "Geobasi",
+			"SRS": "EPSG:3003",
 			"version":"1.1.1",
-		    "layersCachedExtent": [
-				-20037508.34,-20037508.34,
-				20037508.34,20037508.34
-			],
+			"layersCachedExtent": [
+				708923.00, 4290035.00,
+				2631134.00, 5369149.00
+			],				
 			"layerBaseParams":{
 				"FORMAT":"image/png8",
 				"TILED":true
+			}
+		},
+   		"geoscopio": {
+			"ptype": "gxp_wmssource",
+			"url": "http://www502.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmssfondo&map_resolution=91&language=ita",
+			"title": "Geoscopio RT",
+			"SRS": "EPSG:3003",
+			"version":"1.3.0",
+			"layersCachedExtent": [
+				708923.00, 4290035.00,
+				2631134.00, 5369149.00
+			],			
+			"layerBaseParams":{
+				"FORMAT":"image/png",
+				"TILED":false
 			}
 		},
 		"mapquest": {
@@ -35,62 +52,37 @@
 		}		
 	},
 	"map": {
-		"projection": "EPSG:900913",
+		"projection": "EPSG:3003",
+		"displayProjection": "EPSG:3003",
 		"units": "m",
-		"zoom": 5,
-		"extent": [
-			-20037508.34,-20037508.34,
-			20037508.34,20037508.34
-		],
-		"layers": [						
+		"center": [1674894.623, 4804651.939],
+		"maxResolution": "auto",
+		"zoom": 2,
+		"maxExtent": [
+				708923.00, 4290035.00,
+				2631134.00, 5369149.00
+		],		
+		"restrictedExtent": [
+				708923.00, 4290035.00,
+				2631134.00, 5369149.00
+		],			
+		"layers": [
 			{
-				"source": "bing",
-				"title": "Bing Aerial",
-				"name": "Aerial",
+				"source": "geoscopio",
+				"title": "Geoscopio",
+				"name": "rt_sfondo",
 				"group": "background"
 			},{
-				"source": "ol",
-				"title": "Vuoto",
-				"group": "background",
-				"fixed": true,
-				"type": "OpenLayers.Layer",
-				"visibility": false,
-				"args": [
-					"None", {"visibility": false}
-				]
-		    },{
-				"source": "osm",
-				"title": "Open Street Map",
-				"name": "mapnik",
-				"group": "background"
-			},{
-				"source": "mapquest",
-				"title": "MapQuest OpenStreetMap",
-				"name": "osm",
-				"group": "background"
-			},{
-				"source": "google",
-				"title": "Google Roadmap",
-				"name": "ROADMAP",
-				"group": "background"
-			},{
-				"source": "google",
-				"title": "Google Terrain",
-				"name": "TERRAIN",
-				"group": "background"
-			},{
-				"source": "google",
-				"title": "Google Hybrid",
-				"name": "HYBRID",
-				"group": "background"
-			},{
-				"source": "geosolutions",
-				"title": "World Countries",
-				"name": "geosolutions:WorldCountries"
-			}
+				"source": "geobasi",
+				"group": "Geobasi",
+				"title": "Campioni geobasi",
+				"name": "geosolutions:geometria",
+				"displayInLayerSwitcher": true,
+				"visibility": true
+			}	
 		]
 	},
-			"customPanels":[
+	"customPanels":[
       {
           "xtype": "panel",
           "title": "FeatureGrid",      
@@ -99,23 +91,49 @@
           "region": "south",
           "layout": "fit",
           "height": 330,
-          "collapsed": false,
+          "collapsed": true,
           "collapsible": true,
           "header": true
       },{
-          "xtype": "panel",
-          "title": "Query Panel",         
-          "border": false,
-          "id": "east",
-          "width": 400,
-          "height": 500,
-          "region": "east",
-          "layout": "fit",
-          "collapsed": false,
-          "collapsible": true,
-          "header": true
+			"xtype": "tabpanel",   
+			"border": false,
+			"id": "eastTab",
+			"width": 400,
+			"height": 500,
+			"region": "east",
+			"activeTab" : 0,
+			"enableTabScroll" : true,
+			"resizeTabs"      : false,
+			"layoutOnTabChange":true,
+			"deferredRender":false,
+			"autoTabs" : true,
+			"collapsed": false,
+			"collapsible": true,
+			"items":[
+				{
+					"xtype": "panel",
+					"title": "Query Panel",
+					"border": false,
+					"id": "east",
+					"width": 400,
+					"height": 500,
+					"layout": "fit",
+					"collapsed": false,
+					"collapsible": true,
+					"header": false		  
+				}
+			]
       }
-    ],	
+    ],
+	"scaleOverlayUnits":{
+        "bottomOutUnits":"nmi",    
+        "bottomInUnits":"nmi",    
+        "topInUnits":"m",    
+        "topOutUnits":"km"
+    },	
+	"proj4jsDefs": {
+		"EPSG:3003": "+proj=tmerc +lat_0=0 +lon_0=9 +k=0.9996 +x_0=1500000 +y_0=0 +ellps=intl +units=m +no_defs +towgs84 = -104.1,-49.1,-9.9,0.971,-2.917,0.714,-11.68"
+	},	
 	"tools": [
 		{
 			"ptype": "gxp_layertree",
@@ -247,18 +265,12 @@
 		  "actions": null,
 		  "id": "bboxquery",
 		  "outputConfig":{
-			  "outputSRS": "EPSG:900913",
+			  "outputSRS": "EPSG:3003",
 			  "selectStyle":{
 				  "strokeColor": "#ee9900",
 				  "fillColor": "#ee9900",
 				  "fillOpacity": 0.4,
 				  "strokeWidth": 1
-			  },
-			  "spatialFilterOptions": {	
-				  "lonMax": 20037508.34,   
-				  "lonMin": -20037508.34,
-				  "latMax": 20037508.34,   
-				  "latMin": -20037508.34  
 			  },
 			  "bufferOptions": {
 				"minValue": 1,
