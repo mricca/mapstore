@@ -242,6 +242,10 @@
 			},
 			"printService": "http://localhost:8080/geoserver/pdf/",
 			"legendPanelId": "legendPanel",
+			"appendLegendOptions": true,
+			"addGraticuleControl": false,
+			"legendOnSeparatePage": true,
+			"addLandscapeControl": true,
 			"actionTarget":{
 			    "target": "paneltbar",
 				"index":4
