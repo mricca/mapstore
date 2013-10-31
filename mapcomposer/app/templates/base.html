@@ -2,16 +2,36 @@
 <html>
     <head>
         <!--meta http-equiv="X-UA-Compatible" content="IE=8" /-->
-        <title>MapStore</title>
+        <title>Geobasi WEB</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="shortcut icon" href="theme/app/img/favicon.ico">
 		
-        <!-- Ext resources -->
+        <!-- Ext3 resources -->
         <link rel="stylesheet" type="text/css" href="externals/ext/resources/css/ext-all.css">
         <link rel="stylesheet" type="text/css" href="externals/ext/resources/css/xtheme-gray.css">
         <script type="text/javascript" src="externals/ext/adapter/ext/ext-base.js"></script>
         <script type="text/javascript" src="externals/ext/ext-all.js"></script>
 		
+        <!-- Ext4 resources sandbox-->
+		<link rel="stylesheet" type="text/css" href="externals/ext4/resources/css/ext-sandbox.css">
+        <script type="text/javascript" src="externals/ext4/builds/ext-all-sandbox-debug-w-comments.js"></script>
+		<!--script type="text/javascript" src="externals/ext4/builds/ext-all-sandbox-dev.js"></script-->
+
+		<style>
+			@font-face {
+			   font-family: "digital";
+			   src: url("http://joekuan.org/digital.ttf") format("truetype");
+		   }
+		</style>
+		
+		<!--jquery and highcharts lib-->
+		<link href='http://fonts.googleapis.com/css?family=Squada+One' rel='stylesheet' type='text/css'> 
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+		<script type="text/javascript" src="http://code.highcharts.com/highcharts.js"></script>
+		<script type="text/javascript" src="http://code.highcharts.com/highcharts-more.js"></script>
+		<script type="text/javascript" src="http://code.highcharts.com/modules/funnel.js"></script> 
+		<script type="text/javascript" src="http://code.highcharts.com/modules/exporting.js"></script> 
+	
         <% render extrahead %>
     </head>
     <body>

@@ -2,9 +2,9 @@
    "geoStoreBase": "",
    "proxy":"/http_proxy/proxy/?url=",
    "defaultLanguage": "it",
-   "advancedScaleOverlay": true,
+   "advancedScaleOverlay": false,
    "tab": false,   
-   "gsSources":{ 
+   "gsSources":{
    		"geobasi": {
 			"ptype": "gxp_wmssource",
 			"url": "http://localhost:8080/geoserver/ows",
@@ -23,6 +23,21 @@
    		"geoscopio": {
 			"ptype": "gxp_wmssource",
 			"url": "http://www502.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmssfondo&map_resolution=91&language=ita",
+			"title": "Geoscopio RT",
+			"SRS": "EPSG:3003",
+			"version":"1.3.0",
+			"layersCachedExtent": [
+				708923.00, 4290035.00,
+				2631134.00, 5369149.00
+			],			
+			"layerBaseParams":{
+				"FORMAT":"image/png",
+				"TILED":false
+			}
+		},
+   		"geoscopio_ortofoto": {
+			"ptype": "gxp_wmssource",
+			"url": "http://web.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmsofc",
 			"title": "Geoscopio RT",
 			"SRS": "EPSG:3003",
 			"version":"1.3.0",
@@ -58,6 +73,7 @@
 		"center": [1674894.623, 4804651.939],
 		"maxResolution": "auto",
 		"zoom": 2,
+		"numZoomLevels": 12,
 		"maxExtent": [
 				708923.00, 4290035.00,
 				2631134.00, 5369149.00
@@ -68,10 +84,20 @@
 		],			
 		"layers": [
 			{
-				"source": "geoscopio",
-				"title": "Geoscopio",
-				"name": "rt_sfondo",
-				"group": "background"
+				"source": "geoscopio_ortofoto",
+				"group": "background",
+				"title": "ORTOFOTO RT 2010",
+				"name": "rt_ofc.10k10",
+				"displayInLayerSwitcher": true,
+				"visibility": true,
+				"tiled": false
+			},{
+				"source": "geobasi",
+				"group": "CIS",
+				"title": "CIS Follonica",
+				"name": "geosolutions:CIS_FollonicaD",
+				"displayInLayerSwitcher": true,
+				"visibility": true
 			},{
 				"source": "geobasi",
 				"group": "Geobasi",
@@ -79,7 +105,7 @@
 				"name": "geosolutions:geometria",
 				"displayInLayerSwitcher": true,
 				"visibility": true
-			}	
+			}
 		]
 	},
 	"customPanels":[
@@ -95,34 +121,19 @@
           "collapsible": true,
           "header": true
       },{
-			"xtype": "tabpanel",   
+			"xtype": "panel",
 			"border": false,
-			"id": "eastTab",
-			"width": 400,
-			"height": 500,
-			"region": "east",
-			"activeTab" : 0,
+			"split": true,
+			"id": "east",
+			"border":false,
+			"region":"east",
+			"layout":"fit",
+            "collapsible": true,
+            "collapseMode": "mini",
 			"enableTabScroll" : true,
-			"resizeTabs"      : false,
-			"layoutOnTabChange":true,
-			"deferredRender":false,
-			"autoTabs" : true,
-			"collapsed": false,
-			"collapsible": true,
-			"items":[
-				{
-					"xtype": "panel",
-					"title": "Query Panel",
-					"border": false,
-					"id": "east",
-					"width": 400,
-					"height": 500,
-					"layout": "fit",
-					"collapsed": false,
-					"collapsible": true,
-					"header": false		  
-				}
-			]
+            "header": true,
+			"width": 380,
+			"minWidth": 380
       }
     ],
 	"scaleOverlayUnits":{
@@ -257,15 +268,38 @@
 		  "outputTarget": "south",
 		  "showExportCSV": true
 	    }, {
+		  "ptype":"gxp_maingeobasi",
+		  "outputConfig":{
+			 "id":"eastTab",
+			 "region":"east",
+			 "startTab":"geobasidata"
+		  },
+		  "outputTarget":"east"
+	   },{
+		  "ptype":"gxp_geobasidata",
+          "dataUrl":"http://localhost:8080/geoserver/ows",
+		  "rangesUrl": "http://84.33.2.75/geoserver/nrl/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=nrl:cropdata_ranges&outputFormat=json",
+		  "highChartExportUrl" :"http://84.33.2.75/highcharts-export/",
+		  "layers":{
+			"district":"nrl:district_crop",
+			"province":"nrl:province_crop"
+			},
+		  "outputConfig":{
+			 "itemId":"geobasidata"
+		  },
+		  "outputTarget":"eastTab"
+	   }, {
 		  "ptype": "gxp_bboxqueryform",
 		  "featureManager": "featuremanager",
 		  "featureGridContainer": "south",
-		  "outputTarget": "east",
+		  "outputTarget": "eastTab",
 		  "showSelectionSummary": true,
 		  "actions": null,
 		  "id": "bboxquery",
 		  "outputConfig":{
 			  "outputSRS": "EPSG:3003",
+			  "title": "Query form",
+			  "itemId":"bboxqueryform",
 			  "selectStyle":{
 				  "strokeColor": "#ee9900",
 				  "fillColor": "#ee9900",
@@ -274,7 +308,7 @@
 			  },
 			  "bufferOptions": {
 				"minValue": 1,
-				"maxValue": 1000,
+				"maxValue": 10000,
 				"decimalPrecision": 2,
 				"distanceUnits": "m"
 			  }

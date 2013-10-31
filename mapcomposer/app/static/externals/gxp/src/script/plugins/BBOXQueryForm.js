@@ -404,7 +404,9 @@ gxp.plugins.BBOXQueryForm = Ext.extend(gxp.plugins.QueryForm, {
 		var me = this;
 		
         config = Ext.apply({
+			xtype:'form',
             border: false,
+			frame:true,
             bodyStyle: "padding: 10px",
             layout: "form",
             autoScroll: true,
