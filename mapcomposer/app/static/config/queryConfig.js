@@ -73,7 +73,7 @@
 		"center": [1674894.623, 4804651.939],
 		"maxResolution": "auto",
 		"zoom": 2,
-		"numZoomLevels": 12,
+		"numZoomLevels": 13,
 		"maxExtent": [
 				708923.00, 4290035.00,
 				2631134.00, 5369149.00
@@ -284,12 +284,15 @@
           "dataUrl":"http://localhost:8080/geoserver/ows",
 		  "rangesUrl": "http://84.33.2.75/geoserver/nrl/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=nrl:cropdata_ranges&outputFormat=json",
 		  "highChartExportUrl" :"http://84.33.2.75/highcharts-export/",
-		  "layers":{
-			"district":"nrl:district_crop",
-			"province":"nrl:province_crop"
-			},
 		  "outputConfig":{
-			 "itemId":"geobasidata"
+			 "itemId":"geobasidata",
+			 "outputSRS": "EPSG:3003",
+			 "geodesic": false,
+			 "bufferOptions":{
+				"minValue": 0,
+				"maxValue":100000,
+				"decimalPrecision":2
+			 }
 		  },
 		  "outputTarget":"eastTab"
 	   }, {

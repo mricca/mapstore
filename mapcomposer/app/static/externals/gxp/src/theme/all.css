@@ -365,3 +365,12 @@ div.map-overlay div.overlay-element {
 	width:16px;
 	height:16px;
 }
+
+/* geobasi_charts */
+.x-btn .gxp-icon-geobasi-boxplot, .x-menu-item .gxp-icon-geobasi-boxplot {
+    background-image: url(img/silk/boxplot.png) !important;
+}
+
+.x-btn .gxp-icon-geobasi-barchart, .x-menu-item .gxp-icon-barchart {
+    background-image: url(img/silk/chart_bar.png) !important;
+}

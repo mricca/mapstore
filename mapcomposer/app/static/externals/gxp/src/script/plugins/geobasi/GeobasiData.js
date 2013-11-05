@@ -134,7 +134,9 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
         var conf = {
             //TODO year ranges (from available data)            
         }
-		
+		this.areaDamage = new gxp.form.SelDamageArea(Ext.apply({
+						map: app.mapPanel.map
+					},this.outputConfig));
         //Override the comboconfig url;
         /*this.comboConfigs.base.url = this.dataUrl;
         var rangeData;*/
@@ -341,16 +343,27 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
                                 ]
                             })
                     }]
-                }            
+                },
+				this.areaDamage 
             ],	
             buttons:[{
                 url: this.dataUrl,
-                xtype: 'gxp_geobasiDataChartButton',
-				text: "Visualizza Grafico",
+                xtype: 'gxp_geobasiDataBoxPlotButton',
+				text: "Crea BoxPlot",
                 ref: '../submitButton',
                 target:this,
                 form: this,
-                disabled:false
+                disabled:false,
+				filter: this.areaDamage
+            },{
+                url: this.dataUrl,
+                xtype: 'gxp_geobasiDataBarChartButton',
+				text: "Crea BarChart",
+                ref: '../submitButton',
+                target:this,
+                form: this,
+                disabled:false,
+				filter: this.areaDamage
             }]
 		};
         

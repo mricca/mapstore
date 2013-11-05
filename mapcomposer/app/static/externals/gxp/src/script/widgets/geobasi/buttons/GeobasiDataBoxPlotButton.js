@@ -20,132 +20,24 @@
 Ext.namespace('gxp.widgets.button');
 
 /** api: constructor
- *  .. class:: GeobasiDataChartButton(config)
+ *  .. class:: GeobasiDataBoxPlotButton(config)
  *
  *    Base class to create chart
  *
  */
-gxp.widgets.button.GeobasiDataChartButton = Ext.extend(Ext.Button, {
+gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
 
     /** api: xtype = gxp_geobasiDataChartButton */
-    xtype: 'gxp_geobasiDataChartButton',
-    iconCls: "gxp-icon-geobasi-chart",
-    text: 'Genera Grafico',
+    xtype: 'gxp_geobasiDataBoxPlotButton',
+    iconCls: "gxp-icon-geobasi-boxplot",
     form: null,
     url: null,
-    chartOpt: {
-        series: {
-            prod: {
-                name: 'Production (000 tons)',
-                color: '#89A54E',
-                lcolor: 'rgb(207,235,148)',
-                type: 'line',
-                yAxis: 1,
-                dataIndex: 'prod',
-                unit: '(000 tons)'
-            },
-            yield: {
-                name: 'Yield (kg/ha)',
-                dashStyle: 'shortdot',
-                type: 'line',
-                color: '#4572A7',
-                lcolor: 'rgb(139,184,237)',
-                yAxis: 2,
-                dataIndex: 'yield',
-                unit: '(kg/ha)'
-            },
-            area: {
-                name: 'Area (000 hectares)',
-                color: '#AA4643',
-                lcolor: 'rgb(240,140,137)',
-                type: 'line',
-                dataIndex: 'area',
-                unit: '(000 ha)'
-            }
-        },
-        height: 500
-    },
+	mainLoadingMask: "Attendere prego, creazione grafico in corso...",
     handler: function () {
-        /*
-        var today = new Date();
-        var dd = today.getDate();
-        var mm = today.getMonth()+1; //January is 0!
 
-        var yyyy = today.getFullYear();
-        if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm} var today = mm+'/'+dd+'/'+yyyy; 
-        
-        var numRegion = [];
-        var regStore = this.form.output.aoiFieldSet.AreaSelector.store
-        var records = regStore.getRange();
-		
-        for (var i=0;i<records.length;i++){
-			var attrs = records[i].get("attributes");
-            var region = attrs.district ? attrs.district + "," + attrs.province : attrs.province;
-            numRegion.push(region.toLowerCase());
-        }
-    */
         var data = this.form.output.getForm().getValues();
         var data2 = this.form.output.getForm().getFieldValues();
-        /*
-        
-        var regionList = data.region_list.toLowerCase();
-        var commodity = data.crop.toLowerCase();
-        var season = data.season.toLowerCase();
-        var granType = data.areatype;
-        var fromYear = data.startYear;
-        var toYear = data.endYear;
-        
-        var prodUnits = data2.production_unit;
-        //var areaUnits = data2.area_unit == 1 ? 'Ha' : 'Sqr Km';
-        
-        switch(prodUnits)
-        {
-        case "000 tons":
-          this.chartOpt.series.prod.unit = '(000 tons)';
-          this.chartOpt.series.prod.name = 'Production (000 tons)';
-          var prodCoeffUnits = '1000';
-          break;
-        case "000 kgs":
-          this.chartOpt.series.prod.unit = '(000 kgs)';
-          this.chartOpt.series.prod.name = 'Production (000 kgs)';
-          var prodCoeffUnits = '1000';
-          break;
-        default:
-          this.chartOpt.series.prod.unit = '(000 bales)';
-          this.chartOpt.series.prod.name = 'Production (000 bales)';          
-          var prodCoeffUnits = '170';
-        }
 
-        var chartTitle = "";
-        var splitRegion;
-        
-        for (var i = 0;i<numRegion.length;i++){
-            if (granType == "province"){
-                if(i==numRegion.length-1){
-                    chartTitle += numRegion[i].slice(0,1).toUpperCase() + numRegion[i].slice(1);
-                }else{
-                    chartTitle += numRegion[i].slice(0,1).toUpperCase() + numRegion[i].slice(1) + ", ";
-                }                
-            }else{
-                splitRegion = numRegion[i].split(',');
-                if(i==numRegion.length-1){
-                    chartTitle += splitRegion[0].slice(0,1).toUpperCase() + splitRegion[0].slice(1) + " (" + splitRegion[1].toUpperCase() + ")";
-                }else{
-                    chartTitle += splitRegion[0].slice(0,1).toUpperCase() + splitRegion[0].slice(1) + " (" + splitRegion[1].toUpperCase() + "), ";
-                }                       
-            }            
-        }
-        
-        var listVar = {
-            today: today,
-            chartTitle: chartTitle,
-            numRegion: numRegion,
-            season: season,
-            fromYear: fromYear,
-            toYear: toYear,
-            commodity: commodity
-        };       
-        */
         var tabPanel = Ext.getCmp('id_mapTab');
 
         var viewparams1 = "flag:" + data.matrixmethodtype + ";" +
@@ -160,13 +52,15 @@ gxp.widgets.button.GeobasiDataChartButton = Ext.extend(Ext.Button, {
                 service: "WFS",
                 version: "1.0.0",
                 request: "GetFeature",
-                typeName: "geosolutions:geobasi_boxplot_tipometa",
+                typeName: "geosolutions:geobasi_boxplot",
                 outputFormat: "json",
-                propertyName: "sigla,min,max,avg,med,mad,num_elem,tygeomat,tipometa",
+                propertyName: "sigla,min,max,avg,med,mad,num_elem,tygeomat,tipometa,origine",
                 viewparams: viewparams1
             },
             success: function (result, request) {
                 try {
+					this.appMask = new Ext.LoadMask(Ext.getBody(), {msg: this.mainLoadingMask});
+					this.appMask.show();				
                     this.jsonData1 = Ext.util.JSON.decode(result.responseText);
 
                     var data = this.form.output.getForm().getValues();
@@ -194,10 +88,12 @@ gxp.widgets.button.GeobasiDataChartButton = Ext.extend(Ext.Button, {
                             try {
                                 var jsonData2 = Ext.util.JSON.decode(result.responseText);
                             } catch (e) {
+								this.appMask.hide();
                                 Ext.Msg.alert("Error", "Error parsing data from the server");
                                 return;
                             }
                             if (jsonData2.features.length <= 0) {
+								this.appMask.hide();
                                 Ext.Msg.alert("No data", "Data not available for these search criteria");
                                 return;
                             }
@@ -212,7 +108,7 @@ gxp.widgets.button.GeobasiDataChartButton = Ext.extend(Ext.Button, {
 
                             //var charts  = this.makeChart(data, this.chartOpt, listVar, aggregatedDataOnly);
 
-                            var mainChart = Ext4.getCmp('geobasi_barchart');
+                            var mainChart = Ext4.getCmp('geobasi_boxplot');
 
                             var gridStore = Ext4.data.StoreManager.lookup("BoxPlotChartStore");
 
@@ -247,9 +143,10 @@ gxp.widgets.button.GeobasiDataChartButton = Ext.extend(Ext.Button, {
 											pointclick: function(serie,point,record,event) {
 												point.select(true);
 												var index;
+												var newIndex = 0;
 												for(var i = 0;i<event.currentTarget.points.length; i++){
 													if(event.currentTarget.points[i].x == point.x){
-														var newIndex = 0
+														
 														if(event.currentTarget.points[i].selected == true){
 															index = newIndex;
 														}
@@ -263,11 +160,6 @@ gxp.widgets.button.GeobasiDataChartButton = Ext.extend(Ext.Button, {
 												var bottom = this.chart.store.data.items[point.x].data.bbox[index][1][1];
 												var right = this.chart.store.data.items[point.x].data.bbox[index][1][2];
 												var top = this.chart.store.data.items[point.x].data.bbox[index][1][3];
-												
-												/*var msg = "Series name: " + serie.name + 
-													", selected temperature value: " + point.y + "<BR>" +
-													"data record index: " + this.chart.store.data.items[point.x].data.bbox[index][1][0] + " - "+ this.chart.store.data.items[point.x].data.bbox[index][1][1] + " - "+ this.chart.store.data.items[point.x].data.bbox[index][1][2] + " - "+ this.chart.store.data.items[point.x].data.bbox[index][1][3];
-												Ext.Msg.alert("Point Click Info", msg);*/
 												
 												map.zoomToExtent(
 													new OpenLayers.Bounds(
@@ -339,7 +231,7 @@ gxp.widgets.button.GeobasiDataChartButton = Ext.extend(Ext.Button, {
                                     }
                                 };
 
-                                hcConfig.id = 'geobasi_barchart';
+                                hcConfig.id = 'geobasi_boxplot';
                                 mainChart = Ext4.widget('highchart', hcConfig);
 
                                 if (!myTabPanel) {
@@ -382,10 +274,6 @@ gxp.widgets.button.GeobasiDataChartButton = Ext.extend(Ext.Button, {
 							gridStore.loadData(dataCharts);
                             //Ext.getCmp('id_mapTab').setActiveTab('boxplot_tab');
 							
-							var chartMask = new Ext4.LoadMask({target:mainChart,store:gridStore});
-							
-							chartMask.show();
-							
 							gridStore.each(function (records) {
 
 								mainChart.chartConfig.initAnimAfterLoad = false;
@@ -400,7 +288,7 @@ gxp.widgets.button.GeobasiDataChartButton = Ext.extend(Ext.Button, {
 							});								
 							mainChart.draw();
 							
-							chartMask.hide();
+							this.appMask.hide();
 
                         },					
                         failure: function (result, request) {
@@ -408,37 +296,29 @@ gxp.widgets.button.GeobasiDataChartButton = Ext.extend(Ext.Button, {
                         }
                     });
                 } catch (e) {
+					this.appMask.hide();
                     Ext.Msg.alert("Error", "Error parsing data from the server");
                     return;
                 }
                 if (this.jsonData1.features.length <= 0) {
+					this.appMask.hide();
                     Ext.Msg.alert("No data", "Data not available for these search criteria");
                     return;
                 }
             },
             failure: function (result, request) {
+				this.appMask.hide();
                 Ext.Msg.alert("Error", "Server response error");
             }
         });
 
     },
     getData: function (json, metodoElaborazione, json1) {
-
+		
         //features number returned by json (query)
         var arrLength = json.features.length;
 
         //array with values for boxPlot charts
-        /*var dataPoints = {
-			result:{
-				total: '250',
-				data: []
-			}
-		};*/
-		
-        /*var dataPoints = {
-			data: []
-		};*/		
-		
 		var dataPoints = [];
         //mediana totale
         var medianaBoxPlot;
@@ -620,345 +500,12 @@ gxp.widgets.button.GeobasiDataChartButton = Ext.extend(Ext.Button, {
         }
 
         return dataPoints;
-        /*var chartData = [];
-		
-		for (var i=0 ; i<json.features.length; i++) {
-			var feature = json.features[i];
-			var obj = null;
-			
-			//search already existing entries
-			for (var j=0; j<chartData.length; j++){
-				if(chartData[j].region == feature.properties.region){
-					obj = chartData[j];
-				}
-			}
-			
-			//create entry if doesn't exists yet
-			if(!obj){
-				obj = {
-					region:feature.properties.region,
-					title:feature.properties.region,
-					subtitle:feature.properties.crop,
-					rows: []
-				};
-				chartData.push(obj);
-			}
-			
-			//create a row entry
-			var yr = feature.properties.year;
-			var a = feature.properties.area;
-			var p = feature.properties.production;
-			var yi = feature.properties.yield;
-			
-			obj.rows.push({
-				time: yr,
-				area: parseFloat(a.toFixed(2)),
-				prod: parseFloat(p.toFixed(2)),
-				yield: parseFloat(yi.toFixed(2))//,
-				//crop: feature.properties.crop
-			});
-			
-			//obj.avgs.area+=a;
-			//obj.avgs.prod+=p;
-			//obj.avgs.yield+=yi;
-			//obj.avgs.years+=1;
-		}
-	
-		//create mean chart if needed
-		var mean;
-		if (chartData.length > 1){			
-			mean = {
-				region: "all",
-				title: "Aggregated data",
-				subtitle: json.features[0].properties.crop,
-				rows: []
-			};
 
-			var meanareas = []
-			var meanproductions = [];
-			var meanyields = [];
-			var nyears = {};
-			
-			//sum all values
-			for (var i=0; i<chartData.length; i++){
-				var rows = chartData[i].rows;
-				for (var j=0; j<rows.length; j++){
-					var yr = rows[j].time;
-					var area = rows[j].area;
-					var prod = rows[j].prod;
-					var yield = rows[j].yield;
-					meanareas[yr] = (meanareas[yr] ? meanareas[yr] :0) + area;
-					meanproductions[yr] = (meanproductions[yr] ? meanproductions[yr]:0) +prod;
-					meanyields[yr] = (meanyields[yr] ? meanyields[yr]:0) +yield;
-					nyears[yr] = (nyears[yr]?nyears[yr]:0) + 1;
-				}
-			}
-			
-			//divide by nyears
-			for(var i=0 in nyears){				
-				mean.rows.push({
-					time: i,
-					area: parseFloat(meanareas[i].toFixed(2)), //(meanareas[i]/nyears[i]).toFixed(2),
-					prod: parseFloat(meanproductions[i].toFixed(2)), //(meanproductions[i]/nyears[i]).toFixed(2),
-					yield: parseFloat((meanyields[i]/nyears[i]).toFixed(2))					
-				});
-			}
-			
-			chartData.push(mean);
-		}	
-		
-		if(aggregatedDataOnly && mean){
-			chartData = [mean];
-		}else{		
-			// Sorts array elements in ascending order numerically.
-			function CompareForSort(first, second){
-				if (first.time == second.time)
-					return 0;
-				if (first.time < second.time)
-					return -1;
-				else
-					return 1; 
-			}
-			
-			//sort all year ascending
-			for (var i=0; i<chartData.length; i++){
-				//chartData[i].rows.sort(function(a,b){return a.time > b.time});
-				chartData[i].rows.sort(CompareForSort);        
-			}
-		}
-        
-		return chartData;*/
-    }
-    /*,
+    },
 	
 	makeChart: function(data, opt, listVar, aggregatedDataOnly){
-		
-		var grafici = [];
-		var getAvg = function(arr,type) {
-			var sum = 0,len = arr.length;
-			for (var i=0;i<len;i++){
-				sum += arr[i][type];
-			}
-			return sum/len;
-		};
-		
-		for (var r=0; r<data.length; r++){
-        
-			// Store for random data
-			var store = new Ext.data.JsonStore({
-				data: data[r],
-				fields: [{
-					name: 'time',
-					type: 'string'
-				}, {
-					name: 'area',
-					type: 'float'
-				}, {
-					name: 'prod',
-					type: 'float'
-				}, {
-					name: 'yield',
-					type: 'float'
-				}],
-				root: 'rows'
-			});
 
-			var chart;
-			var prodavg = getAvg(data[r].rows,'prod');
-			var yieldavg = getAvg(data[r].rows,'yield');
-			var areaavg = getAvg(data[r].rows,'area');
-			
-			//
-			// Making Chart Title
-			//
-			var text = "";
-			var dataTitle = data[r].title.toUpperCase();
-			var commodity = listVar.commodity.toUpperCase();
-			var chartTitle = listVar.chartTitle.split(',')[r];
-				
-			if(dataTitle){				
-				if(dataTitle == "AGGREGATED DATA"){
-					if(aggregatedDataOnly){
-						text += dataTitle + " (Pakistan) - " + commodity;
-					}else{
-						text += dataTitle + " - " + commodity;
-					}					
-				}else{
-					text += commodity + " - " + chartTitle;
-				}
-			}
-			
-			//
-			// AOI Subtitle customization
-			//
-			var aoiSubtitle = "";
-			if(dataTitle == "AGGREGATED DATA"){
-				if(aggregatedDataOnly){
-					aoiSubtitle += "Pakistan";
-				}else{
-					aoiSubtitle += listVar.chartTitle;
-				}	
-			}else{
-				aoiSubtitle += chartTitle;
-			}
-			
-			chart = new Ext.ux.HighChart({
-				series: [
-					opt.series.prod,
-					opt.series.yield,
-					opt.series.area					
-				],
-				height: opt.height,
-				//width: 900,
-				store: store,
-				animShift: true,
-				xField: 'time',
-				chartConfig: {
-					chart: {
-						zoomType: 'x',
-                        spacingBottom: 145                       
-					},
-                    exporting: {
-                        enabled: true,
-                        width: 1200,
-                        url: this.target.highChartExportUrl
-                    },
-					title: {
-						//text: (data[r].title.toUpperCase()=="AGGREGATED DATA" ? data[r].title.toUpperCase() + " - " + listVar.commodity.toUpperCase() : listVar.commodity.toUpperCase() +" - "+listVar.chartTitle.split(',')[r]) // + " - " + (listVar.numRegion.length == 1 ? listVar.chartTitle : listVar.chartTitle.split(',')[r])
-						text: text
-					},
-					subtitle: {
-                        text: '<span style="font-size:10px;">Source: Pakistan Crop Portal</span><br />'+
-                              '<span style="font-size:10px;">Date: '+ listVar.today +'</span><br />'+
-                              '<span style="font-size:10px;">AOI: '+ aoiSubtitle (data[r].title.toUpperCase()=="AGGREGATED DATA" ? listVar.chartTitle : listVar.chartTitle.split(',')[r]) + '</span><br />' +
-                              '<span style="font-size:10px;">Commodity: '+listVar.commodity.toUpperCase()+'</span><br />'+
-                              '<span style="font-size:10px;">Season: '+listVar.season.toUpperCase()+'</span><br />'+
-                              '<span style="font-size:10px;">Years: '+ listVar.fromYear + "-"+ listVar.toYear+'</span><br />'+ 
-                              '<span style="font-size:10px; color: '+opt.series.area.color+'">Area mean: '+areaavg.toFixed(2)+' '+opt.series.area.unit+'</span><br />'+
-                              '<span style="font-size:10px; color: '+opt.series.prod.color+'">Prod mean: '+ prodavg.toFixed(2)+' '+opt.series.prod.unit+'</span><br />'+
-                              '<span style="font-size:10px; color: '+opt.series.yield.color+'">Yield mean: '+ yieldavg.toFixed(2)+' '+opt.series.yield.unit+'</span>',
-                        align: 'left',
-                        verticalAlign: 'bottom',
-                        useHTML: true,
-                        x: 30,
-                        y: -10
-					},
-					xAxis: [{
-						type: 'datetime',
-						categories: 'time',
-						tickWidth: 0,
-						gridLineWidth: 1
-					}],
-					yAxis: [{ // AREA
-						title: {
-							text: opt.series.area.name,
-                            rotation: 270,
-							style: {
-								color: opt.series.area.color,
-                                backgroundColor: Ext.isIE ? '#ffffff' : "transparent"
-							}
-						},                    
-						labels: {
-							formatter: function () {
-								return this.value;
-							},
-							style: {
-								color: opt.series.area.color
-							}
-						},
-                        plotLines: [{ //mid values
-							value: areaavg,
-							color: opt.series.area.lcolor,
-							dashStyle: 'LongDash',
-							width: 1                       
-						}]
-
-					}, { // PRODUCTION yAxis
-						gridLineWidth: 0,
-						title: {
-							text: opt.series.prod.name,
-                            rotation: 270,
-							style: {
-								color: opt.series.prod.color,
-                                backgroundColor: Ext.isIE ? '#ffffff' : "transparent"
-							}
-						},
-						labels: {
-							formatter: function () {
-								return this.value;
-							},
-							style: {
-								color: opt.series.prod.color
-							}
-						},
-						opposite: true,
-                        plotLines: [{ //NOTE all the mid values are overlapping in the middle of the chart
-						 //mid values
-							value: prodavg,
-							color: opt.series.prod.lcolor,
-							dashStyle: 'LongDash',
-							width: 1
-						}]
-
-					}, { // Tertiary yAxis
-						gridLineWidth: 0,
-						dashStyle: 'shortdot',
-						title: {
-							text: opt.series.yield.name,
-                            rotation: 270,
-							style: {
-								color: opt.series.yield.color,
-                                backgroundColor: Ext.isIE ? '#ffffff' : "transparent"
-							},
-                            x: 6
-						},
-						labels: {
-							formatter: function () {
-								return this.value;
-							},
-							style: {
-								color: opt.series.yield.color
-							}
-						},
-						opposite: true,
-                        plotLines: [{ //mid values
-							value: yieldavg,
-							color: opt.series.yield.lcolor,
-							dashStyle: 'LongDash',
-							width: 1
-						}]
-					}],
-					tooltip: {
-                        formatter: function() {
-                            var s = '<b>'+ this.x +'</b>';
-                            
-                            Ext.each(this.points, function(i, point) {
-                                s += '<br/><span style="color:'+i.series.color+'">'+ i.series.name +': </span>'+
-                                    '<span style="font-size:12px;">'+ i.y+'</span>';
-                            });
-                            
-                            return s;
-                        },
-                        shared: true,
-						crosshairs: true
-					},
-                    legend: {
-                        labelFormatter: function() {
-                            if (this.name == 'Area (000 hectares)'){
-                                return 'Area (000 ha)';
-                            }else{
-                                return this.name;
-                            }
-                            
-                        }
-                    }            
-				}
-			});
-			grafici.push(chart);
-		}
-		
-		return grafici; 
-	}*/
+	}
 });
 
-Ext.reg(gxp.widgets.button.GeobasiDataChartButton.prototype.xtype, gxp.widgets.button.GeobasiDataChartButton);
+Ext.reg(gxp.widgets.button.GeobasiDataBoxPlotButton.prototype.xtype, gxp.widgets.button.GeobasiDataBoxPlotButton);
