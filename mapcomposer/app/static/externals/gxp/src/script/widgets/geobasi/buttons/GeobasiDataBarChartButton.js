@@ -35,6 +35,7 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
 	filter:null,
 	mainLoadingMask: "Attendere prego, creazione grafico in corso...",
     handler: function () {
+	
 		var myFilter;
 		
 		if(this.filter.bufferFieldset.hidden === false){
@@ -78,6 +79,8 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
 			myFilter = this.filter.filterPolygon;
 		}else if(this.filter.filterCircle && this.filter.filterCircle.value){
 			myFilter = this.filter.filterCircle;
+		}else if(this.filter.searchWFSCombo.filter && this.filter.searchWFSCombo.filter.value){
+			myFilter = this.filter.searchWFSCombo.filter;
 		}else{
 			myFilter = false;
 		}
@@ -109,7 +112,7 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
             method: 'POST',
             params: {
                 service: "WFS",
-                version: "1.0.0",
+                version: "1.1.0",
                 request: "GetFeature",
                 typeName: "geosolutions:geobasi_barchart",
                 outputFormat: "json",
@@ -169,13 +172,13 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
                         },
                         success: function (result, request) {
                             try {
-                                var jsonData2 = Ext.util.JSON.decode(result.responseText);
+                                this.jsonData2 = Ext.util.JSON.decode(result.responseText);
                             } catch (e) {
 								this.appMask.hide();
                                 Ext.Msg.alert("Error", "Error parsing data from the server");
                                 return;
                             }
-                            if (jsonData2.features.length <= 0) {
+                            if (this.jsonData2.features.length <= 0) {
 								this.appMask.hide();
                                 Ext.Msg.alert("No data", "Data not available for these search criteria");
                                 return;
@@ -205,8 +208,8 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
 						
                             var data1 = this.jsonData1;
                             var metodoElaborazione = data.elabmethodtype;
-
-                            var dataCharts = this.getData(jsonData2, metodoElaborazione, data1);
+							
+                            var dataCharts = this.getData(this.jsonData2, metodoElaborazione, data1);
 
                             //var charts  = this.makeChart(data, this.chartOpt, listVar, aggregatedDataOnly);
 
@@ -240,9 +243,23 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
 										listeners: {
 											pointclick: function(serie,point,record,event) {
 												
+												var geoJSON = new OpenLayers.Format.GeoJSON();
+
+												var vector_layer = new OpenLayers.Layer.Vector('PIPPO', {
+													//styleMap: styleCluster,
+													displayInLayerSwitcher: true
+													//rendererOptions: {yOrdering: true},
+													//renderers: renderer
+												},{
+													restrictedExtent: new OpenLayers.Bounds([record.raw.bbox[0],record.raw.bbox[1],record.raw.bbox[2],record.raw.bbox[3]])
+												});
+
+												for (var i = 0;i<record.raw.jsonData.features.length;i++){
+													var geoJSONgeometry = geoJSON.read(record.raw.jsonData.features[i].geometry);
+													vector_layer.addFeatures(geoJSONgeometry);
+												}												
 												
-												
-												var wms = new OpenLayers.Layer.WMS("BarChart Layer",//todo: choice the style for the needed variable
+												/*var wms = new OpenLayers.Layer.WMS("BarChart Layer",
 												"http://localhost:8080/geoserver/wms?",
 													record.raw.spatialFilter ? {
 														layers: ["geosolutions:geobasi_chart2"],
@@ -258,14 +275,14 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
 														viewParams:record.raw.viewparams,
 														transparent: "true"
 													},{
-														restrictedExtent: new OpenLayers.Bounds([record.raw.bbox[0],record.raw.bbox[1],record.raw.bbox[2],record.raw.bbox[3]]), 
+														restrictedExtent: new OpenLayers.Bounds([record.raw.bbox[0],record.raw.bbox[1],record.raw.bbox[2],record.raw.bbox[3]])
 													}
-												);
+												);*/											
 												
 												var app = window.app;
 												var map = app.mapPanel.map;
 												
-												map.addLayers([wms]);
+												map.addLayers([vector_layer]);
 												
 												map.zoomToExtent(
 													new OpenLayers.Bounds(
@@ -452,6 +469,57 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
     },
     getData: function (json, metodoElaborazione, json1) {
 		
+		// Closure
+		(function(){
+
+			/**
+			 * Decimal adjustment of a number.
+			 *
+			 * @param	{String}	type	The type of adjustment.
+			 * @param	{Number}	value	The number.
+			 * @param	{Integer}	exp		The exponent (the 10 logarithm of the adjustment base).
+			 * @returns	{Number}			The adjusted value.
+			 */
+			function decimalAdjust(type, value, exp) {
+				// If the exp is undefined or zero...
+				if (typeof exp === 'undefined' || +exp === 0) {
+					return Math[type](value);
+				}
+				value = +value;
+				exp = +exp;
+				// If the value is not a number or the exp is not an integer...
+				if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0)) {
+					return NaN;
+				}
+				// Shift
+				value = value.toString().split('e');
+				value = Math[type](+(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp)));
+				// Shift back
+				value = value.toString().split('e');
+				return +(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp));
+			}
+
+			// Decimal round
+			if (!Math.round10) {
+				Math.round10 = function(value, exp) {
+					return decimalAdjust('round', value, exp);
+				};
+			}
+			// Decimal floor
+			if (!Math.floor10) {
+				Math.floor10 = function(value, exp) {
+					return decimalAdjust('floor', value, exp);
+				};
+			}
+			// Decimal ceil
+			if (!Math.ceil10) {
+				Math.ceil10 = function(value, exp) {
+					return decimalAdjust('ceil', value, exp);
+				};
+			}
+
+		})();
+		
         var num_ele = json.features.length;
 
 		var custLog = function(x,base) {
@@ -468,8 +536,13 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
         var resultsLog = [];        
         for (var x = 0; x < num_ele; x++) {
             resultsLog[x] = {
-                valore: metodoElaborazione == "1" ? Math.log(json.features[x].properties.valore) : json.features[x].properties.valore
+                //valore: metodoElaborazione == "1" ? Math.round10(Math.log(json.features[x].properties.valore),-4) : Math.round10(json.features[x].properties.valore,-4)
+				valore: metodoElaborazione == "1" ? Math.log(json.features[x].properties.valore) : Math.round10(json.features[x].properties.valore,-4)
             };
+			this.jsonData2.features[x].attributes = {
+				valore: resultsLog[x].valore,
+				classe:0
+			};			
         }        
         
 		var conteggio = resultsLog.length;
@@ -484,7 +557,7 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
         
         // Calcolo l'ampiezza delle classi
         var ampClassiInit = (barMassimo - barMinimo) / Math.round(numClassi);
-        var ampClassi = ampClassiInit;
+        var ampClassi = Math.round10(ampClassiInit,-4);
         
         //echo $ampClassi;
         //exit(0);
@@ -497,8 +570,8 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
                 conteggio: 0,
                 ampiezza: ampClassi,
                 num_ele: num_ele,
-                ampiezzaMin: barMinimo+(ampClassi * (i)),
-                ampiezzaMax: barMinimo+(ampClassi * (i+1))
+                ampiezzaMin: Math.round10(barMinimo+(ampClassi * (i)),-4),
+                ampiezzaMax: Math.round10(barMinimo+(ampClassi * (i+1)),-4)
             };
         }
         
@@ -507,12 +580,14 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
         {             
             if(resultsLog[x].valore < barMinimo+ampClassi){
                 numerositaClassi[0].conteggio++;
-                resultsLog[x].valore = null;
+				this.jsonData2.features[x].attributes.classe = numerositaClassi[0].classe+1;
+                resultsLog[x].valore = "undefined";
 
             }else if(resultsLog[x].valore >= (barMinimo+(ampClassi*(Math.round(numClassi))))){
                 //echo "CI SONO";
                 numerositaClassi[Math.round(numClassi)-1].conteggio++;
-                resultsLog[x].valore = null;
+				this.jsonData2.features[x].attributes.classe = numerositaClassi[Math.round(numClassi)-1].classe+1;
+                resultsLog[x].valore = "undefined";
             }          
         }      
 
@@ -522,10 +597,14 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
             //echo  "Y: " . $y;
             for(var x=0;x<num_ele;x++)
             {               
+				var aaa = resultsLog[x].valore; 
+				var bbb = barMinimo+(ampClassi*(y));
+				var ccc = barMinimo+(ampClassi*(y+1));
                 if (resultsLog[x].valore >= (barMinimo+(ampClassi*(y))) && resultsLog[x].valore < (barMinimo+(ampClassi*(y+1)))){
                     //echo "ANCHE IO";
                     numerositaClassi[y].conteggio++;
-                    resultsLog[x].valore = null;
+					this.jsonData2.features[x].attributes.classe = numerositaClassi[y].classe+1;
+                    resultsLog[x].valore = "undefined";
                 }
                 
             }      
@@ -576,7 +655,8 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
                 log: metodoElaborazione,
 				viewparams: this.viewparams3,
 				bbox: json.bbox,
-				spatialFilter: this.xml ? this.xml : null
+				spatialFilter: this.xml ? this.xml : null,
+				jsonData: this.jsonData2
             };
         }
 		

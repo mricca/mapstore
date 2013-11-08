@@ -137,6 +137,23 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 		this.areaDamage = new gxp.form.SelDamageArea(Ext.apply({
 						map: app.mapPanel.map
 					},this.outputConfig));
+				
+				
+		this.searchWFSCombo = new gxp.form.WFSSearchComboBox({
+					url: "http://localhost:8080/geoserver/ows",
+					typeName: "geosolutions:acquiferi_SimplifyPolygon2",
+					recordModel:[
+						{name: 'id', mapping: 'id'},
+						{name: 'geometry', mapping: 'geometry'},
+						{name: 'codice', mapping: 'properties.codice'},
+						{name: 'allivioni', mapping: 'properties.allivioni'}
+					],
+					queriableAttributes:['allivioni'],
+					sortBy: 'allivioni',
+					displayField: 'allivioni',
+					tpl:"<tpl for=\".\"><div class=\"search-item\"><h3>{allivioni}</span></h3>(Acquifero)</div></tpl>"
+		});
+		
         //Override the comboconfig url;
         /*this.comboConfigs.base.url = this.dataUrl;
         var rangeData;*/
@@ -344,7 +361,8 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
                             })
                     }]
                 },
-				this.areaDamage 
+				this.areaDamage/*,
+				this.searchWFSCombo*/				
             ],	
             buttons:[{
                 url: this.dataUrl,
@@ -355,6 +373,7 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
                 form: this,
                 disabled:false,
 				filter: this.areaDamage
+				//filter: this.searchWFSCombo
             },{
                 url: this.dataUrl,
                 xtype: 'gxp_geobasiDataBarChartButton',
@@ -364,6 +383,7 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
                 form: this,
                 disabled:false,
 				filter: this.areaDamage
+				//filter: this.searchWFSCombo
             }]
 		};
         

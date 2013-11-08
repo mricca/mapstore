@@ -1,9 +1,9 @@
 {
-   "geoStoreBase": "",
+   "geoStoreBase": "http://localhost:8080/geostore/rest/",
    "proxy":"/http_proxy/proxy/?url=",
    "defaultLanguage": "it",
    "advancedScaleOverlay": false,
-   "tab": false,   
+   "tab": false,
    "gsSources":{
    		"geobasi": {
 			"ptype": "gxp_wmssource",
@@ -23,7 +23,7 @@
    		"geoscopio": {
 			"ptype": "gxp_wmssource",
 			"url": "http://www502.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmssfondo&map_resolution=91&language=ita",
-			"title": "Geoscopio RT",
+			"title": "Geoscopio basi",
 			"SRS": "EPSG:3003",
 			"version":"1.3.0",
 			"layersCachedExtent": [
@@ -38,7 +38,22 @@
    		"geoscopio_ortofoto": {
 			"ptype": "gxp_wmssource",
 			"url": "http://web.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmsofc",
-			"title": "Geoscopio RT",
+			"title": "Geoscopio ortofoto",
+			"SRS": "EPSG:3003",
+			"version":"1.3.0",
+			"layersCachedExtent": [
+				708923.00, 4290035.00,
+				2631134.00, 5369149.00
+			],			
+			"layerBaseParams":{
+				"FORMAT":"image/png",
+				"TILED":false
+			}
+		},
+   		"geoscopio_idrografia": {
+			"ptype": "gxp_wmssource",
+			"url": "http://www502.regione.toscana.it/cartografia/wmsraster/com.rt.wms.RTmap/wms?map=wmsidrogr&map_resolution=91&language=ita&",
+			"title": "Geoscopio idrografia",
 			"SRS": "EPSG:3003",
 			"version":"1.3.0",
 			"layersCachedExtent": [
@@ -94,10 +109,18 @@
 			},{
 				"source": "geobasi",
 				"group": "CIS",
-				"title": "CIS Follonica",
-				"name": "geosolutions:CIS_FollonicaD",
+				"title": "Acquiferi",
+				"name": "geosolutions:acquiferi_SimplifyPolygon2",
 				"displayInLayerSwitcher": true,
 				"visibility": true
+			},{
+				"source": "geoscopio_idrografia",
+				"group": "Idrografia",
+				"title": "IDROGRAFIA",
+				"name": "rt_idrogr.corsi.rt.line",
+				"displayInLayerSwitcher": true,
+				"visibility": true,
+				"tiled": false
 			},{
 				"source": "geobasi",
 				"group": "Geobasi",

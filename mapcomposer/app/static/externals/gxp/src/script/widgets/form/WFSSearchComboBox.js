@@ -58,16 +58,16 @@ gxp.form.WFSSearchComboBox = Ext.extend(Ext.form.ComboBox, {
 	 * If a template is not defined, this is the field to show.
 	 * for the exemple below it can be "codice_ato"
      */
-    displayField: "",
+    displayField: null,
 	
 	/** api: config[url]
      *  url to perform requests
      */
-	url:  '',
+	url:  null,
 	/** api: config[typeName]
      *  the tipe name to search
      */
-	typeName: '',
+	typeName: null,
 	/**
 	 * private config[root]
 	 * the root node containing feature data.
@@ -104,7 +104,7 @@ gxp.form.WFSSearchComboBox = Ext.extend(Ext.form.ComboBox, {
      *  ``String | Array`` sorting attribute
      *  needed for pagination.
      */
-	sortBy : 'codice_ato',
+	sortBy : null,
 
 	/** api: config[pageSize]
      *  ``Integer`` page size of result list.
@@ -144,6 +144,9 @@ gxp.form.WFSSearchComboBox = Ext.extend(Ext.form.ComboBox, {
 	vendorParams: '',
 	
     clearOnFocus:true,
+	
+	filter: null,
+	
     /** private: method[initComponent]
      *  Override
      */
@@ -174,7 +177,7 @@ gxp.form.WFSSearchComboBox = Ext.extend(Ext.form.ComboBox, {
 			},
 			listeners:{
 				beforeload: function(store){
-					store.setBaseParam( 'srsName', this.combo.target.mapPanel.map.getProjection() );
+					store.setBaseParam( 'srsName', app.mapPanel.map.getProjection() );
 					for (var name in this.vendorParams ) {
 					    if(this.vendorParams.hasOwnProperty(name)){
     						if(name!='cql_filter' && name != "startindex" && name != "maxfeatures" && name != 'outputFormat' ){
@@ -217,14 +220,14 @@ gxp.form.WFSSearchComboBox = Ext.extend(Ext.form.ComboBox, {
 				if(!options || options.add !== true){
 					if(this.pruneModifiedRecords){
 						this.modified = [];
-					}
+					}					
 					for(var i = 0, len = r.length; i < len; i++){
 						r[i].join(this);
-					}
+					}					
 					if(this.snapshot){
 						this.data = this.snapshot;
 						delete this.snapshot;
-					}
+					}					
 					this.clearData();
 					this.data.addAll(r);
 					this.totalLength = t;
@@ -252,7 +255,7 @@ gxp.form.WFSSearchComboBox = Ext.extend(Ext.form.ComboBox, {
 			var queryString = queryEvent.query;
 			queryEvent.query = "";
 			for( var i = 0 ; i < this.queriableAttributes.length ; i++){
-				queryEvent.query +=  "(" + this.queriableAttributes[i] + " "+this.predicate+" '%" + queryString + "%')";
+				queryEvent.query +=  "(" + this.queriableAttributes[i] + " "+this.predicate+" '%" + queryString.toUpperCase() + "%')";
 				if ( i < this.queriableAttributes.length -1) {
 					queryEvent.query += " OR ";
 				}
@@ -260,10 +263,20 @@ gxp.form.WFSSearchComboBox = Ext.extend(Ext.form.ComboBox, {
 			//add cql filter in and with the other condictions
 			if(this.vendorParams && this.vendorParams.cql_filter) {
 				queryEvent.query = "(" + queryEvent.query + ")AND(" +this.vendorParams.cql_filter +")";
-			}
-		
+			}		
+		},
+		select: function( combo, record, index ){
+			var geoJSON = new OpenLayers.Format.GeoJSON();
+			var geoJSONgeometry = geoJSON.read(record.json.geometry);		
+			/*var bounds = geoJSONgeometry.getBounds();							
+			geoJSONgeometry.bounds = bounds;*/
+			//var geometry = geoJSON.read(geoJSONText, 'Geometry');
+			this.filter = new OpenLayers.Filter.Spatial({
+					type: OpenLayers.Filter.Spatial.INTERSECTS,
+					property: "geom",
+					value: geoJSONgeometry[0].geometry
+				});
 		}
-
 	},
 	
 	

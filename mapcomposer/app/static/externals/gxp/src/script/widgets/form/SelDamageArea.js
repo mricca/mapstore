@@ -99,6 +99,22 @@ gxp.form.SelDamageArea = Ext.extend(Ext.form.FieldSet, {
             }
         });
 
+		this.searchWFSCombo = new gxp.form.WFSSearchComboBox({
+					url: "http://localhost:8080/geoserver/ows",
+					typeName: "geosolutions:acquiferi_SimplifyPolygon2",
+					hidden: true,
+					recordModel:[
+						{name: 'id', mapping: 'id'},
+						{name: 'geometry', mapping: 'geometry'},
+						{name: 'codice', mapping: 'properties.codice'},
+						{name: 'allivioni', mapping: 'properties.allivioni'}
+					],
+					queriableAttributes:['allivioni'],
+					sortBy: 'allivioni',
+					displayField: 'allivioni',
+					tpl:"<tpl for=\".\"><div class=\"search-item\"><h3>{allivioni}</span></h3>(Acquifero)</div></tpl>"
+		});
+		
         this.filterCircle;
         this.filterPolygon;
         this.drawings;
@@ -153,6 +169,10 @@ gxp.form.SelDamageArea = Ext.extend(Ext.form.FieldSet, {
                         name: 'Buffer',
                         label: this.comboBufferSelection,
                         value: 'buffer'
+                    }, {
+                        name: 'Acquifero',
+                        label: 'Acquifero',
+                        value: 'acqhifero'
                     }]
                 }),
                 listeners: {
@@ -213,7 +233,9 @@ gxp.form.SelDamageArea = Ext.extend(Ext.form.FieldSet, {
                         };
 
                         if (outputValue == 'circle') {
-
+							this.searchWFSCombo.disable();
+							this.searchWFSCombo.hide();
+							this.searchWFSCombo.clearValue();
                             this.bufferFieldset.disable();
 
                             me.drawings = new OpenLayers.Layer.Vector({}, {
@@ -249,7 +271,9 @@ gxp.form.SelDamageArea = Ext.extend(Ext.form.FieldSet, {
                             });
 
                         } else if (outputValue == 'polygon') {
-
+							this.searchWFSCombo.disable();
+							this.searchWFSCombo.hide();
+							this.searchWFSCombo.clearValue();							
                             this.bufferFieldset.disable();
 
                             me.drawings = new OpenLayers.Layer.Vector({}, {
@@ -278,16 +302,24 @@ gxp.form.SelDamageArea = Ext.extend(Ext.form.FieldSet, {
                                 }
                             });
 
-                        } else {
-
+                        } else if (outputValue == 'buffer') {
+							this.searchWFSCombo.disable();
+							this.searchWFSCombo.hide();
+							this.searchWFSCombo.clearValue();							
                             this.bufferFieldSet.enable();
-                            this.bufferFieldset.doLayout(true,false);
+                            this.bufferFieldset.doLayout(true,false);						
+						} else {
+							this.bufferFieldset.disable();
+                            this.searchWFSCombo.enable();
+							this.searchWFSCombo.show();
+                            //this.searchWFSCombo.doLayout(true,false);	
                         }
                     },
                     scope: this
                 }
             },
-            this.bufferFieldSet
+            this.bufferFieldSet,
+			this.searchWFSCombo
         ];
         
         this.listeners = {

@@ -32,8 +32,68 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
     iconCls: "gxp-icon-geobasi-boxplot",
     form: null,
     url: null,
+	filter: null,
 	mainLoadingMask: "Attendere prego, creazione grafico in corso...",
     handler: function () {
+		var myFilter;
+		
+		if(this.filter.bufferFieldset.hidden === false){
+			var radius = this.filter.bufferFieldset.bufferField.getValue(); 
+			
+			//
+			// create point from your lat and lon of your selected feature
+			//
+			var coordinates = this.filter.bufferFieldset.coordinatePicker.getCoordinate();
+			var radiusPoint = new OpenLayers.Geometry.Point(coordinates[0], coordinates[1]);
+			
+			var polygon;
+			if(this.filter.geodesic){
+				polygon = OpenLayers.Geometry.Polygon.createGeodesicPolygon(
+					radiusPoint,
+					radius,
+					100, 
+					0,
+					this.target.mapPanel.map.getProjectionObject()
+				);
+			}else{
+				polygon = OpenLayers.Geometry.Polygon.createRegularPolygon(
+					radiusPoint,
+					radius,
+					100, 
+					0
+				);
+			}
+			
+			var bounds = polygon.getBounds();							
+			polygon.bounds = bounds;
+			
+			var radiusFilter = new OpenLayers.Filter.Spatial({
+				type: OpenLayers.Filter.Spatial.INTERSECTS,
+				property: "geom",
+				value: polygon
+			});
+							
+			myFilter = radiusFilter;			
+		}else if(this.filter.filterPolygon && this.filter.filterPolygon.value){
+			myFilter = this.filter.filterPolygon;
+		}else if(this.filter.filterCircle && this.filter.filterCircle.value){
+			myFilter = this.filter.filterCircle;
+		}else if(this.filter.searchWFSCombo.filter && this.filter.searchWFSCombo.filter.value){
+			myFilter = this.filter.searchWFSCombo.filter;
+		}else{
+			myFilter = false;
+		}
+		
+		if(myFilter){
+			var node = new OpenLayers.Format.Filter({
+				version: "1.1.0",
+				srsName: "EPSG:3003"
+			}).write(myFilter);
+			
+			this.xml = new OpenLayers.Format.XML().write(node);
+		}else{
+			this.xml = false;
+		}	
 
         var data = this.form.output.getForm().getValues();
         var data2 = this.form.output.getForm().getFieldValues();
@@ -50,7 +110,7 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
             method: 'POST',
             params: {
                 service: "WFS",
-                version: "1.0.0",
+                version: "1.1.0",
                 request: "GetFeature",
                 typeName: "geosolutions:geobasi_boxplot",
                 outputFormat: "json",
@@ -74,13 +134,25 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
                         scope: this,
                         url: this.url,
                         method: 'POST',
-                        params: {
+                        params: this.xml ? {
                             service: "WFS",
-                            version: "1.0.0",
+                            version: "1.1.0",
+							geometryName: "geom",
+                            request: "GetFeature",
+							filter: this.xml,
+                            typeName: "geosolutions:geobasi_chart",
+                            outputFormat: "json",
+                            propertyName: "fonte,codsito,data_aaaa,data_mm,data_gg,monitoraggio,dmgeomattipo_descr,toponimo,foglioigm50k,codcomune,sigla_el,valore,tipometa,geom",
+                            sortBy: "valore",
+                            viewparams: viewparams2
+                        } : {
+                            service: "WFS",
+                            version: "1.1.0",
+							geometryName: "geom",
                             request: "GetFeature",
                             typeName: "geosolutions:geobasi_chart",
                             outputFormat: "json",
-                            propertyName: "fonte,codsito,data_aaaa,data_mm,data_gg,monitoraggio,dmgeomattipo_descr,toponimo,foglioigm50k,codcomune,sigla_el,valore,tipometa",
+                            propertyName: "fonte,codsito,data_aaaa,data_mm,data_gg,monitoraggio,dmgeomattipo_descr,toponimo,foglioigm50k,codcomune,sigla_el,valore,tipometa,geom",
                             sortBy: "valore",
                             viewparams: viewparams2
                         },
