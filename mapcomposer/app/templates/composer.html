@@ -128,10 +128,12 @@
 		
 		Ext4.application({
 			models: [
+				'MatrixModel',
 				'BoxPlotChartModel',
 				'BarChartModel'
 			],
 			stores: [
+				'MatrixStore',
 				'BoxPlotChartStore',
 				'BarChartStore'
 			],
@@ -354,7 +356,7 @@
 					}, appTabs],                            
                     bbar : [
                       //poweredByGeoSol, ' ', aboutButton, '->',languageSelector
-					  '->',languageSelector
+					  aboutButton,'->',languageSelector
                     ]
                 }]
             });

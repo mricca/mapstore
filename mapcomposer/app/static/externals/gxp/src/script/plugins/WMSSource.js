@@ -295,7 +295,8 @@ gxp.plugins.WMSSource = Ext.extend(gxp.plugins.LayerSource, {
                     buffer: ("buffer" in config) ? config.buffer : 1,
                     projection: layerProjection,
                     vendorParams: config.vendorParams,
-					displayOutsideMaxExtent: true
+					displayOutsideMaxExtent: true,
+					transitionEffect: true
                 }
 			);
 

@@ -14,6 +14,12 @@ Ext4.define('GeoBasi.model.BarChartModel', {
 		'ampiezza_classi',
 		'sigla',
 		'matrice',
-		'log'
+		'log',
+		'color',
+		'viewparams',
+		'bbox',
+		'spatialFilter',
+		'jsonData',
+		'classe'
 	]
 });

@@ -40,92 +40,12 @@ Ext.namespace("gxp.plugins.geobasi");
 gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 	/** api: ptype = gxp_geobasidata */
     ptype: "gxp_geobasidata",
-
+	selTipo: 'Seleziona',
+	selMonitoraggio: 'Monitoraggio',
     selMatrixMethod: 'Metodo selezione Matrice',
 	selElabMethod: 'Seleziona tipologia valori',
 	dataUrl: null,
-   /*areaFilter: "province NOT IN ('GILGIT BALTISTAN','AJK','DISPUTED TERRITORY','DISPUTED AREA')",
-    seasonText:'Season',
-	
-    hilightLayerName:"CropData_Selection_Layer", //TODO doesn't seems to run
-    radioQtipTooltip: "You have to be logged in to use this method",
-	layerStyle:{
-        strokeColor: "red",
-        strokeWidth: 1,
-        fillOpacity:0.6,
-        cursor: "pointer"
-    },
-	rangesUrl: "http://84.33.2.24/geoserver/nrl/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=nrl:cropdata_ranges&outputFormat=json",
-    dataUrl: null, //"http://84.33.2.24/geoserver/ows?",
-	comboConfigs:{
-        base:{
-            anchor:'100%',
-            fieldLabel: 'District',
-            //url: "http://84.33.2.24/geoserver/ows?",
-            predicate:"ILIKE",
-            width:250,
-            sortBy:"province",
-			ref:'singleSelector',
-            displayField:"name",
-            pageSize:10            
-        },
-        district:{
-            typeName:"nrl:district_crop",
-            queriableAttributes:[
-                "district",
-                "province"                
-             ],
-             recordModel:[
-                {
-                  name:"id",
-                   mapping:"id"
-                },
-                {
-                   name:"geometry",
-                   mapping:"geometry"
-                },
-                {
-                   name:"name",
-                   mapping:"properties.district"
-                },{
-                   name:"province",
-                   mapping:"properties.province"
-                },{
-                   name:"properties",
-                   mapping:"properties"
-                } 
-            ],
-            tpl:"<tpl for=\".\"><div class=\"search-item\"><h3>{name}</span></h3>({province})</div></tpl>"       
-        },
-        province:{             
-            typeName:"nrl:province_crop",
-            recordModel:[
-                {
-                   name:"id",
-                   mapping:"id"
-                },
-                {
-                   name:"geometry",
-                   mapping:"geometry"
-                },
-                {
-                   name:"name",
-                   mapping:"properties.province"
-                },{
-                   name:"properties",
-                   mapping:"properties"
-                }
-            ],
-            sortBy:"province",
-            queriableAttributes:[
-                "province"
-            ],
-            displayField:"name",
-            tpl:"<tpl for=\".\"><div class=\"search-item\"><h3>{name}</span></h3>(Province)</div></tpl>"                            
-        }    
-    },
-	
-    startCommodity:'Wheat',*/
+
 
     /** private: method[addOutput]
      *  :arg config: ``Object``
@@ -137,22 +57,6 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 		this.areaDamage = new gxp.form.SelDamageArea(Ext.apply({
 						map: app.mapPanel.map
 					},this.outputConfig));
-				
-				
-		this.searchWFSCombo = new gxp.form.WFSSearchComboBox({
-					url: "http://localhost:8080/geoserver/ows",
-					typeName: "geosolutions:acquiferi_SimplifyPolygon2",
-					recordModel:[
-						{name: 'id', mapping: 'id'},
-						{name: 'geometry', mapping: 'geometry'},
-						{name: 'codice', mapping: 'properties.codice'},
-						{name: 'allivioni', mapping: 'properties.allivioni'}
-					],
-					queriableAttributes:['allivioni'],
-					sortBy: 'allivioni',
-					displayField: 'allivioni',
-					tpl:"<tpl for=\".\"><div class=\"search-item\"><h3>{allivioni}</span></h3>(Acquifero)</div></tpl>"
-		});
 		
         //Override the comboconfig url;
         /*this.comboConfigs.base.url = this.dataUrl;
@@ -175,8 +79,9 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
                     collapsible:false,
                     forceLayout:true, //needed to force to read values from this fieldset
                     collapsed:false,
+					labelWidth: 1,
 					items:[{
-						fieldLabel: this.selMatrixMethod,
+						//fieldLabel: this.selTipo,
 						xtype: 'radiogroup',
 						anchor:'100%',
 						autoHeight:true,
@@ -184,12 +89,24 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 						name:'matrixMethodType',
 						ref:'matrixMethodType',
 						autoHeight: true,
+						vertical: true,
+						//labelWidth: 50,
 						defaultType: 'radio', // each item will be a radio button
 						items:[
-							{boxLabel: 'Tipo 1 - (BarChart e BoxPlot)' , name: 'matrixmethodtype', inputValue: 1, checked: true},
-							{boxLabel: 'Tipo 2 - (BarChart e BoxPlot)', name: 'matrixmethodtype', inputValue: 2},
-							{boxLabel: 'Tipo 3 - (BarChart)'  , name: 'matrixmethodtype', inputValue: 3}                        
-						]
+							{boxLabel: 'SOTMAT/MA' , name: 'matrixmethodtype', inputValue: 1, checked: true},
+							{boxLabel: 'MAT/MA', name: 'matrixmethodtype', inputValue: 2},
+							{boxLabel: 'MAT'  , name: 'matrixmethodtype', inputValue: 3}                        
+						],
+                        listeners: {
+                            afterrender: {
+                                fn: this.onRadioGroupAfterRender,
+                                scope: this
+                            },
+                            change: {
+                                fn: this.onRadioGroupChange,
+                                scope: this
+                            }
+                        }
 					}]
                 },{
                     xtype: 'fieldset',
@@ -200,7 +117,7 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
                     forceLayout:true, //needed to force to read values from this fieldset
                     collapsed:false,
 					items:[{
-						fieldLabel: this.selMatrixMethod,
+						fieldLabel: this.selMonitoraggio,
 						xtype: 'radiogroup',
 						anchor:'100%',
 						autoHeight:true,
@@ -210,8 +127,8 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 						autoHeight: true,
 						defaultType: 'radio', // each item will be a radio button
 						items:[
-							{boxLabel: 'Monitoraggio SI' , name: 'monitoraggiotype', inputValue: true},
-							{boxLabel: 'Monitoraggio NO', name: 'monitoraggiotype', inputValue: false, checked: true}                
+							{boxLabel: 'SI' , name: 'monitoraggiotype', inputValue: true},
+							{boxLabel: 'NO', name: 'monitoraggiotype', inputValue: false, checked: true}                
 						]
 					}]
                 },{ 
@@ -272,9 +189,15 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
                                         {name:'cid', dataindex: 'cid'}
                                 ],
                                 data:[
-                                    {label: 'Acque', coeff:"01",	shortName:'(Acque)'},//TODO set proper values for coef
-									{label: 'Fiume', coeff:"0101",	shortName:'(Acque)'},//TODO set proper values for coef
-                                    {label: 'Sedimenti',    coeff:"02",	shortName:'(Sedimenti)'} //TODO set proper values for coef
+                                    {label: 'Acqua - 01', coeff:"01",	shortName:'(Acque)'},
+									{label: 'Fiume - 0101', coeff:"0101",	shortName:'(Fiume)'},
+                                    {label: 'Lago - 0102',    coeff:"0102",	shortName:'(Lago)'},
+									{label: 'Sorgente - 0103',    coeff:"0103",	shortName:'(Sorgente)'},
+									{label: 'Pozzo - 0104',    coeff:"0104",	shortName:'(Pozzo)'},
+									{label: 'Pozzo termale - 010401',    coeff:"010401",	shortName:'(Pozzo termale)'},
+									{label: 'Sedimenti - 02',    coeff:"02",	shortName:'(Sedimenti)'},
+									{label: 'Stream - 0201',    coeff:"0201",	shortName:'(Stream)'},
+									{label: 'Gas - 03',    coeff:"03",	shortName:'(Gas)'}
                                 ]
                             }),
                             listeners: {
@@ -317,13 +240,124 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
                                         {name:'shortName', dataindex: 'shortName'}
                                 ],
                                 data:[
-                                    {label: 'Ag',		coeff:1,	shortName:'Ag'        },//TODO set proper values for coef
-                                    {label: 'Al',	coeff:2,	shortName:'Al'}, //TODO set proper values for coef
-									{label: 'As',	coeff:3,	shortName:'As'},
-									{label: 'B',	coeff:4,	shortName:'B'},
-									{label: 'Ba',	coeff:5,	shortName:'Ba'},
-									{label: 'Be',	coeff:6,	shortName:'Be'},
-									{label: 'Ca',	coeff:7,	shortName:'Ca'}
+										{label: "Hf", coeff:1,	shortName:'Ag' },
+										{label: "Al", coeff:1,	shortName:'Al' },
+										{label: "Am", coeff:1,	shortName:'Am' },
+										{label: "Sb", coeff:1,	shortName:'Sb' },
+										{label: "Ag", coeff:1,	shortName:'Ag' },
+										{label: "Ar", coeff:1,	shortName:'Ar' },
+										{label: "As", coeff:1,	shortName:'As' },
+										{label: "Ac", coeff:1,	shortName:'Ac' },
+										{label: "At", coeff:1,	shortName:'At' },
+										{label: "N", coeff:1,	shortName:'"N' },
+										{label: "Ba", coeff:1,	shortName:'Ba' },
+										{label: "Bk", coeff:1,	shortName:'Bk' },
+										{label: "Be", coeff:1,	shortName:'Be' },
+										{label: "Bi", coeff:1,	shortName:'Bi' },
+										{label: "Bh", coeff:1,	shortName:'Bh' },
+										{label: "B", coeff:1,	shortName:'"B' },
+										{label: "Br", coeff:1,	shortName:'Br' },
+										{label: "Cd", coeff:1,	shortName:'Cd' },
+										{label: "Ca", coeff:1,	shortName:'Ca' },
+										{label: "Cf", coeff:1,	shortName:'Cf' },
+										{label: "C", coeff:1,	shortName:'"C' },
+										{label: "Ce", coeff:1,	shortName:'Ce' },
+										{label: "Cs", coeff:1,	shortName:'Cs' },
+										{label: "Cl", coeff:1,	shortName:'Cl' },
+										{label: "Cr", coeff:1,	shortName:'Cr' },
+										{label: "Co", coeff:1,	shortName:'Co' },
+										{label: "Kr", coeff:1,	shortName:'Kr' },
+										{label: "Cm", coeff:1,	shortName:'Cm' },
+										{label: "Ds", coeff:1,	shortName:'Ds' },
+										{label: "Dy", coeff:1,	shortName:'Dy' },
+										{label: "Db", coeff:1,	shortName:'Db' },
+										{label: "Es", coeff:1,	shortName:'Es' },
+										{label: "He", coeff:1,	shortName:'He' },
+										{label: "Er", coeff:1,	shortName:'Er' },
+										{label: "Eu", coeff:1,	shortName:'Eu' },
+										{label: "Fm", coeff:1,	shortName:'Fm' },
+										{label: "Fe", coeff:1,	shortName:'Fe' },
+										{label: "F", coeff:1,	shortName:'"F' },
+										{label: "Fr", coeff:1,	shortName:'Fr' },
+										{label: "Gd", coeff:1,	shortName:'Gd' },
+										{label: "Ga", coeff:1,	shortName:'Ga' },
+										{label: "Ge", coeff:1,	shortName:'Ge' },
+										{label: "Hs", coeff:1,	shortName:'Hs' },
+										{label: "H", coeff:1,	shortName:'"H' },
+										{label: "In", coeff:1,	shortName:'In' },
+										{label: "I", coeff:1,	shortName:'"I' },
+										{label: "Ir", coeff:1,	shortName:'Ir' },
+										{label: "La", coeff:1,	shortName:'La' },
+										{label: "Lr", coeff:1,	shortName:'Lr' },
+										{label: "Pb", coeff:1,	shortName:'Pb' },
+										{label: "Li", coeff:1,	shortName:'Li' },
+										{label: "Lu", coeff:1,	shortName:'Lu' },
+										{label: "Mg", coeff:1,	shortName:'Mg' },
+										{label: "Mn", coeff:1,	shortName:'Mn' },
+										{label: "Mt", coeff:1,	shortName:'Mt' },
+										{label: "Md", coeff:1,	shortName:'Md' },
+										{label: "Hg", coeff:1,	shortName:'Hg' },
+										{label: "Mo", coeff:1,	shortName:'Mo' },
+										{label: "Nd", coeff:1,	shortName:'Nd' },
+										{label: "Ne", coeff:1,	shortName:'Ne' },
+										{label: "Np", coeff:1,	shortName:'Np' },
+										{label: "Ni", coeff:1,	shortName:'Ni' },
+										{label: "Nb", coeff:1,	shortName:'Nb' },
+										{label: "No", coeff:1,	shortName:'No' },
+										{label: "Ho", coeff:1,	shortName:'Ho' },
+										{label: "Au", coeff:1,	shortName:'Au' },
+										{label: "Os", coeff:1,	shortName:'Os' },
+										{label: "O", coeff:1,	shortName:'O' },
+										{label: "Pd", coeff:1,	shortName:'Pd' },
+										{label: "P", coeff:1,	shortName:'P' },
+										{label: "Pt", coeff:1,	shortName:'Pt' },
+										{label: "Pu", coeff:1,	shortName:'Pu' },
+										{label: "Po", coeff:1,	shortName:'Po' },
+										{label: "K", coeff:1,	shortName:'K' },
+										{label: "Pr", coeff:1,	shortName:'Pr' },
+										{label: "Pm", coeff:1,	shortName:'Pm' },
+										{label: "Pa", coeff:1,	shortName:'Pa' },
+										{label: "Ra", coeff:1,	shortName:'Ra' },
+										{label: "Rn", coeff:1,	shortName:'Rn' },
+										{label: "Cu", coeff:1,	shortName:'Cu' },
+										{label: "Re", coeff:1,	shortName:'Re' },
+										{label: "Rh", coeff:1,	shortName:'Rh' },
+										{label: "Rb", coeff:1,	shortName:'Rb' },
+										{label: "Ru", coeff:1,	shortName:'Ru' },
+										{label: "Rf", coeff:1,	shortName:'Rf' },
+										{label: "Sm", coeff:1,	shortName:'Sm' },
+										{label: "Sc", coeff:1,	shortName:'Sc' },
+										{label: "Sg", coeff:1,	shortName:'Sg' },
+										{label: "Se", coeff:1,	shortName:'Se' },
+										{label: "Si", coeff:1,	shortName:'Si' },
+										{label: "Na", coeff:1,	shortName:'Na' },
+										{label: "Sn", coeff:1,	shortName:'Sn' },
+										{label: "Sr", coeff:1,	shortName:'Sr' },
+										{label: "Ta", coeff:1,	shortName:'Ta' },
+										{label: "Tc", coeff:1,	shortName:'Tc' },
+										{label: "Te", coeff:1,	shortName:'Te' },
+										{label: "Tb", coeff:1,	shortName:'Tb' },
+										{label: "Tl", coeff:1,	shortName:'Tl' },
+										{label: "Th", coeff:1,	shortName:'Th' },
+										{label: "Tm", coeff:1,	shortName:'Tm' },
+										{label: "Ti", coeff:1,	shortName:'Ti' },
+										{label: "W", coeff:1,	shortName:'W' },
+										{label: "Uub", coeff:1,	shortName:'Uub' },
+										{label: "Uuh", coeff:1,	shortName:'Uuh' },
+										{label: "Uuo", coeff:1,	shortName:'Uuo' },
+										{label: "Uup", coeff:1,	shortName:'Uup' },
+										{label: "Uuq", coeff:1,	shortName:'Uuq' },
+										{label: "Uus", coeff:1,	shortName:'Uus' },
+										{label: "Uut", coeff:1,	shortName:'Uut' },
+										{label: "Uuu", coeff:1,	shortName:'Uuu' },
+										{label: "U", coeff:1,	shortName:'U' },
+										{label: "V", coeff:1,	shortName:'V' },
+										{label: "Xe", coeff:1,	shortName:'Xe' },
+										{label: "Yb", coeff:1,	shortName:'Yb' },
+										{label: "Y", coeff:1,	shortName:'Y' },
+										{label: "Zn", coeff:1,	shortName:'Zn' },
+										{label: "Zr", coeff:1,	shortName:'Zr' },
+										{label: "S", coeff:1,	shortName:'S' }
                                 ]
                             })
                         },{
@@ -351,18 +385,20 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
                                         {name:'shortName', dataindex: 'shortName'}
                                 ],
                                 data:[
-                                    {label: 'ICP-AES', coeff:1, shortName:'ICP-AES'},//TODO set proper values for coef
+									{label: 'AAS', coeff:1, shortName:'AAS'},
 									{label: 'colorimetria', coeff:1, shortName:'colorimetria'},
+									{label: 'colorimetria_all_indofenolo', coeff:1, shortName:'colorimetria_all_indofenolo'},
+									{label: 'colorimetria_al_reattivo_Gress', coeff:1, shortName:'colorimetria_al_reattivo_Gress'},
 									{label: 'cromatografia_ionica', coeff:1, shortName:'cromatografia_ionica'},
+									{label: 'Gascromatografia', coeff:1, shortName:'Gascromatografia'},
+                                    {label: 'ICP-AES', coeff:1, shortName:'ICP-AES'},
 									{label: 'volumetria', coeff:1, shortName:'volumetria'},
 									{label: '-999', coeff:1, shortName:'-999'}
-
                                 ]
                             })
                     }]
                 },
-				this.areaDamage/*,
-				this.searchWFSCombo*/				
+				this.areaDamage				
             ],	
             buttons:[{
                 url: this.dataUrl,
@@ -373,7 +409,6 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
                 form: this,
                 disabled:false,
 				filter: this.areaDamage
-				//filter: this.searchWFSCombo
             },{
                 url: this.dataUrl,
                 xtype: 'gxp_geobasiDataBarChartButton',
@@ -383,7 +418,6 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
                 form: this,
                 disabled:false,
 				filter: this.areaDamage
-				//filter: this.searchWFSCombo
             }]
 		};
         
@@ -427,7 +461,17 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
         },this);
         
         return this.output;*/
-    }/*,
+    },
+	
+	onRadioGroupAfterRender: function(){
+	
+	},
+    
+	onRadioGroupChange: function(){
+	
+	}
+	
+	/*,
 	
     setRadioQtip: function (t){ 
         var o = { 

@@ -50,21 +50,6 @@
 				"TILED":false
 			}
 		},
-   		"geoscopio_ctr": {
-			"ptype": "gxp_wmssource",
-			"url": "http://web.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmsctr",
-			"title": "Geoscopio CTR",
-			"SRS": "EPSG:3003",
-			"version":"1.3.0",
-			"layersCachedExtent": [
-				708923.00, 4290035.00,
-				2631134.00, 5369149.00
-			],			
-			"layerBaseParams":{
-				"FORMAT":"image/png",
-				"TILED":false
-			}
-		},
    		"geoscopio_idrografia": {
 			"ptype": "gxp_wmssource",
 			"url": "http://www502.regione.toscana.it/cartografia/wmsraster/com.rt.wms.RTmap/wms?map=wmsidrogr&map_resolution=91&language=ita&",
@@ -103,7 +88,7 @@
 		"center": [1648067.222,4755353.958],
 		"maxResolution": "auto",
 		"zoom": 6,
-		"numZoomLevels": 15,
+		"numZoomLevels": 13,
 		"maxExtent": [
 				708923.00, 4290035.00,
 				2631134.00, 5369149.00
@@ -127,7 +112,6 @@
 				"title": "Acquiferi in roccia",
 				"name": "geosolutions:cis_roccia",
 				"displayInLayerSwitcher": true,
-				"opacity": 0.6,
 				"visibility": true
 			},{
 				"source": "geobasi",
@@ -135,7 +119,6 @@
 				"title": "Acquiferi in alluvione",
 				"name": "geosolutions:cis_alluvioni",
 				"displayInLayerSwitcher": true,
-				"opacity": 0.6,				
 				"visibility": true
 			},{
 				"source": "geoscopio_idrografia",
@@ -148,22 +131,8 @@
 			},{
 				"source": "geobasi",
 				"group": "Geobasi",
-				"title": "Geobasi Campioni",
+				"title": "Campioni geobasi",
 				"name": "geosolutions:geometria",
-				"displayInLayerSwitcher": true,
-				"visibility": false
-			},{
-				"source": "geobasi",
-				"group": "Geobasi",
-				"title": "Geobasi Analisi",
-				"name": "geosolutions:geobasi_analisi",
-				"displayInLayerSwitcher": true,
-				"visibility": false
-			},{
-				"source": "geobasi",
-				"group": "Geobasi",
-				"title": "Geobasi Analisi ARPAT",
-				"name": "geosolutions:geobasi_arpat",
 				"displayInLayerSwitcher": true,
 				"visibility": true
 			}
@@ -356,6 +325,31 @@
 			 }
 		  },
 		  "outputTarget":"eastTab"
-	   }
+	   }, {
+		  "ptype": "gxp_bboxqueryform",
+		  "featureManager": "featuremanager",
+		  "featureGridContainer": "south",
+		  "outputTarget": "eastTab",
+		  "showSelectionSummary": true,
+		  "actions": null,
+		  "id": "bboxquery",
+		  "outputConfig":{
+			  "outputSRS": "EPSG:3003",
+			  "title": "Query form",
+			  "itemId":"bboxqueryform",
+			  "selectStyle":{
+				  "strokeColor": "#ee9900",
+				  "fillColor": "#ee9900",
+				  "fillOpacity": 0.4,
+				  "strokeWidth": 1
+			  },
+			  "bufferOptions": {
+				"minValue": 1,
+				"maxValue": 10000,
+				"decimalPrecision": 2,
+				"distanceUnits": "m"
+			  }
+		  }
+	    }
 	]
 }

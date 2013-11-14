@@ -78,8 +78,10 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
 			myFilter = this.filter.filterPolygon;
 		}else if(this.filter.filterCircle && this.filter.filterCircle.value){
 			myFilter = this.filter.filterCircle;
-		}else if(this.filter.searchWFSCombo.filter && this.filter.searchWFSCombo.filter.value){
-			myFilter = this.filter.searchWFSCombo.filter;
+		}else if(this.filter.searchWFSComboAlluvioni.filter && this.filter.searchWFSComboAlluvioni.filter.value){
+			myFilter = this.filter.searchWFSComboAlluvioni.filter;
+		}else if(this.filter.searchWFSComboRoccia.filter && this.filter.searchWFSComboRoccia.filter.value){
+			myFilter = this.filter.searchWFSComboRoccia.filter;
 		}else{
 			myFilter = false;
 		}
@@ -94,13 +96,13 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
 		}else{
 			this.xml = false;
 		}	
-
+		
         var data = this.form.output.getForm().getValues();
         var data2 = this.form.output.getForm().getFieldValues();
 
         var tabPanel = Ext.getCmp('id_mapTab');
 
-        var viewparams1 = "flag:" + data.matrixmethodtype + ";" +
+        /*var viewparams1 = "flag:" + data.matrixmethodtype + ";" +
             "tygeomat:" + data2.tipo_matrice + ";" +
             "sigla:" + data.elemento;
 
@@ -118,10 +120,10 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
                 viewparams: viewparams1
             },
             success: function (result, request) {
-                try {
+                try {*/
 					this.appMask = new Ext.LoadMask(Ext.getBody(), {msg: this.mainLoadingMask});
 					this.appMask.show();				
-                    this.jsonData1 = Ext.util.JSON.decode(result.responseText);
+                    //this.jsonData1 = Ext.util.JSON.decode(result.responseText);
 
                     var data = this.form.output.getForm().getValues();
                     var data2 = this.form.output.getForm().getFieldValues();
@@ -142,7 +144,7 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
 							filter: this.xml,
                             typeName: "geosolutions:geobasi_chart",
                             outputFormat: "json",
-                            propertyName: "fonte,codsito,data_aaaa,data_mm,data_gg,monitoraggio,dmgeomattipo_descr,toponimo,foglioigm50k,codcomune,sigla_el,valore,tipometa,geom",
+                            propertyName: "fonte,codsito,data_aaaa,data_mm,data_gg,monitoraggio,dmgeomattipo_descr,tygeomat,toponimo,foglioigm50k,codcomune,sigla_el,valore,tipometa,geom",
                             sortBy: "valore",
                             viewparams: viewparams2
                         } : {
@@ -152,7 +154,7 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
                             request: "GetFeature",
                             typeName: "geosolutions:geobasi_chart",
                             outputFormat: "json",
-                            propertyName: "fonte,codsito,data_aaaa,data_mm,data_gg,monitoraggio,dmgeomattipo_descr,toponimo,foglioigm50k,codcomune,sigla_el,valore,tipometa,geom",
+                            propertyName: "fonte,codsito,data_aaaa,data_mm,data_gg,monitoraggio,dmgeomattipo_descr,tygeomat,toponimo,foglioigm50k,codcomune,sigla_el,valore,tipometa,geom",
                             sortBy: "valore",
                             viewparams: viewparams2
                         },
@@ -166,17 +168,18 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
                             }
                             if (jsonData2.features.length <= 0) {
 								this.appMask.hide();
-                                Ext.Msg.alert("No data", "Data not available for these search criteria");
+                                Ext.Msg.alert("Nessun dato", "Dati non disponibili per questo criterio di ricerca");
                                 return;
                             }
 
                             //var aggregatedDataOnly = (granType == "pakistan");
                             //var data = this.getData(jsonData, aggregatedDataOnly);
                             var data = this.form.output.getForm().getValues();
-                            var data1 = this.jsonData1;
+                            //var data1 = this.jsonData1;
                             var metodoElaborazione = data.elabmethodtype;
 
-                            var dataCharts = this.getData(jsonData2, metodoElaborazione, data1);
+                            //var dataCharts = this.getData(jsonData2, metodoElaborazione, data1);
+							var dataCharts = this.getData(jsonData2, metodoElaborazione);
 
                             //var charts  = this.makeChart(data, this.chartOpt, listVar, aggregatedDataOnly);
 
@@ -318,6 +321,8 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
                                         layout: 'fit',
 										maximizable : true,
 										maximized: false,
+										collapsible: true,
+										collapsed: false,										
                                         //tabTip: 'Box Plot',
                                         closable: true,
 										constrain: true
@@ -364,17 +369,18 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
 
                         },					
                         failure: function (result, request) {
+							this.appMask.hide();
                             Ext.Msg.alert("Error", "Server response error");
                         }
                     });
-                } catch (e) {
+                /*} catch (e) {
 					this.appMask.hide();
                     Ext.Msg.alert("Error", "Error parsing data from the server");
                     return;
                 }
                 if (this.jsonData1.features.length <= 0) {
 					this.appMask.hide();
-                    Ext.Msg.alert("No data", "Data not available for these search criteria");
+                    Ext.Msg.alert("Nessun dato", "Dati non disponibili per questo criterio di ricerca");
                     return;
                 }
             },
@@ -382,10 +388,61 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
 				this.appMask.hide();
                 Ext.Msg.alert("Error", "Server response error");
             }
-        });
+        });*/
 
     },
     getData: function (json, metodoElaborazione, json1) {
+
+		// Closure
+		(function(){
+
+			/**
+			 * Decimal adjustment of a number.
+			 *
+			 * @param	{String}	type	The type of adjustment.
+			 * @param	{Number}	value	The number.
+			 * @param	{Integer}	exp		The exponent (the 10 logarithm of the adjustment base).
+			 * @returns	{Number}			The adjusted value.
+			 */
+			function decimalAdjust(type, value, exp) {
+				// If the exp is undefined or zero...
+				if (typeof exp === 'undefined' || +exp === 0) {
+					return Math[type](value);
+				}
+				value = +value;
+				exp = +exp;
+				// If the value is not a number or the exp is not an integer...
+				if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0)) {
+					return NaN;
+				}
+				// Shift
+				value = value.toString().split('e');
+				value = Math[type](+(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp)));
+				// Shift back
+				value = value.toString().split('e');
+				return +(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp));
+			}
+
+			// Decimal round
+			if (!Math.round10) {
+				Math.round10 = function(value, exp) {
+					return decimalAdjust('round', value, exp);
+				};
+			}
+			// Decimal floor
+			if (!Math.floor10) {
+				Math.floor10 = function(value, exp) {
+					return decimalAdjust('floor', value, exp);
+				};
+			}
+			// Decimal ceil
+			if (!Math.ceil10) {
+				Math.ceil10 = function(value, exp) {
+					return decimalAdjust('ceil', value, exp);
+				};
+			}
+
+		})();
 		
         //features number returned by json (query)
         var arrLength = json.features.length;
@@ -405,11 +462,27 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
             break;
         }
 
-        for (var i = 0; i < json1.features.length; i++) {
+		function uniqueBy(arr, fn) {
+		  var unique = {};
+		  var distinct = [];
+		  arr.forEach(function (x) {
+			var key = fn(x);
+			if (!unique[key]) {
+			  distinct.push(key);
+			  unique[key] = true;
+			}
+		  });
+		  return distinct;
+		}
+
+		// usage
+		var uniqueTipometa = uniqueBy(json.features, function(x){return x.properties.tipometa;});
+		
+        for (var i = 0; i < uniqueTipometa.length; i++) {
             var minimo;
             var massimo;
             var myValues = [];
-            var metodoAnalitico = json1.features[i].properties.tipometa;
+            var metodoAnalitico = uniqueTipometa[i] === null ? '-999' : uniqueTipometa[i];
             var b = 0;
             var firstPercentile;
             var thirdPercentile;
@@ -537,7 +610,7 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
                     if (myValues[c].valore < newMin || myValues[c].valore > newMax) {
                         outlier[h] = [
                             i,
-                            myValues[c].valore
+                            Math.round10(myValues[c].valore,-5)
                         ];
                         outlierBbox[h] = [
                             i,
@@ -555,16 +628,16 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
             //dataPoints.data[i] = {
 			dataPoints[i] = {
                 experiment: metodoAnalitico,
-                min: newMin,
-                q1: firstPercentile,
-                med: secondPercentile,
-                q2: thirdPercentile,
-                max: newMax,
+                min: Math.round10(newMin,-5),
+                q1: Math.round10(firstPercentile,-5),
+                med: Math.round10(secondPercentile,-5),
+                q2: Math.round10(thirdPercentile,-5),
+                max: Math.round10(newMax,-5),
                 outlier: outlier,
-                median: medianaBoxPlot,
-                sigla: json1.features[0].properties.sigla,
+                median: Math.round10(medianaBoxPlot,-5),
+                sigla: json.features[0].properties.sigla_el,
                 totaleRiprova: arrLength,
-                matrice: json1.features[0].properties.tygeomat,
+                matrice: json.features[0].properties.tygeomat,
                 log: metodoElaborazione,
 				bbox: outlierBbox
             };
