@@ -367,10 +367,19 @@ div.map-overlay div.overlay-element {
 }
 
 /* geobasi_charts */
+
+.x-btn .gxp-icon-geobasi-chartmenu, .x-menu-item .gxp-icon-geobasi-chartmenu {
+    background-image: url(img/silk/chart_organisation.png) !important;
+}
+
 .x-btn .gxp-icon-geobasi-boxplot, .x-menu-item .gxp-icon-geobasi-boxplot {
     background-image: url(img/silk/boxplot.png) !important;
 }
 
-.x-btn .gxp-icon-geobasi-barchart, .x-menu-item .gxp-icon-barchart {
+.x-btn .gxp-icon-geobasi-barchart, .x-menu-item .gxp-icon-geobasi-barchart {
     background-image: url(img/silk/chart_bar.png) !important;
+}
+
+.x-btn .gxp-icon-geobasi-curvacum, .x-menu-item .gxp-icon-geobasi-curvacum {
+    background-image: url(img/silk/chart_line.png) !important;
 }

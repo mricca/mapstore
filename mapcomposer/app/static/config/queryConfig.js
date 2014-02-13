@@ -7,7 +7,7 @@
    "gsSources":{
    		"geobasi": {
 			"ptype": "gxp_wmssource",
-			"url": "http://192.168.0.62:8080/geoserver/ows",
+			"url": "http://172.16.1.139:8080/geoserver/ows",
 			"title": "Geobasi",
 			"SRS": "EPSG:3003",
 			"version":"1.1.1",
@@ -120,7 +120,8 @@
 				"name": "rt_ofc.10k10",
 				"displayInLayerSwitcher": true,
 				"visibility": true,
-				"tiled": false
+				"tiled": false,
+				"attribution": false
 			},{
 				"source": "geobasi",
 				"group": "CIS",
@@ -342,7 +343,7 @@
 		  "outputTarget":"east"
 	   },{
 		  "ptype":"gxp_geobasidata",
-          "dataUrl":"http://192.168.0.62:8080/geoserver/ows",
+          "dataUrl":"http://172.16.1.139:8080/geoserver/ows",
 		  "rangesUrl": "http://84.33.2.75/geoserver/nrl/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=nrl:cropdata_ranges&outputFormat=json",
 		  "highChartExportUrl" :"http://84.33.2.75/highcharts-export/",
 		  "outputConfig":{

@@ -154,7 +154,9 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 							{boxLabel: 'Valori reali', name: 'elabmethodtype', inputValue: 2}
 						]
 					}]
-                },{
+                },
+					this.areaDamage,
+				{
                     xtype: 'fieldset',
                     title:'Seleziona',
                     anchor:'100%',
@@ -374,34 +376,34 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
                             allowBlank:false,
                             name:'Metodo_analitico',
                             displayField: 'label',
-                            valueField:'label',
+                            valueField:'value',
                             value: 'ICP-AES',
                             readOnly:false,
                             store: new Ext.data.JsonStore({
                                 fields:[
                                         {name:'name',dataIndex:'name'},
                                         {name:'label',dataIndex:'label'},
-                                        {name:'coeff',dataIndex:'coeff'},
+                                        {name:'value',dataIndex:'value'},
                                         {name:'shortName', dataindex: 'shortName'}
                                 ],
                                 data:[
-									{label: 'AAS', coeff:1, shortName:'AAS'},
-									{label: 'colorimetria', coeff:1, shortName:'colorimetria'},
-									{label: 'colorimetria_all_indofenolo', coeff:1, shortName:'colorimetria_all_indofenolo'},
-									{label: 'colorimetria_al_reattivo_Gress', coeff:1, shortName:'colorimetria_al_reattivo_Gress'},
-									{label: 'cromatografia_ionica', coeff:1, shortName:'cromatografia_ionica'},
-									{label: 'Gascromatografia', coeff:1, shortName:'Gascromatografia'},
-                                    {label: 'ICP-AES', coeff:1, shortName:'ICP-AES'},
-									{label: 'volumetria', coeff:1, shortName:'volumetria'},
-									{label: '-999', coeff:1, shortName:'-999'}
+									{label: 'AAS', value:'AAS', shortName:'AAS'},
+									{label: 'colorimetria', value:'colorimetria', shortName:'colorimetria'},
+									{label: 'colorimetria_all_indofenolo', value:'colorimetria_all_indofenolo', shortName:'colorimetria_all_indofenolo'},
+									{label: 'colorimetria_al_reattivo_Gress', value:'colorimetria_al_reattivo_Gress', shortName:'colorimetria_al_reattivo_Gress'},
+									{label: 'cromatografia_ionica', value:'cromatografia_ionica', shortName:'cromatografia_ionica'},
+									{label: 'Gascromatografia', value:'Gascromatografia', shortName:'Gascromatografia'},
+                                    {label: 'ICP-AES', value:'ICP-AES', shortName:'ICP-AES'},
+									{label: 'volumetria', value:'volumetria', shortName:'volumetria'},
+									{label: 'MA non specificato', value:'-999', shortName:'-999'}
                                 ]
                             })
                     }]
-                },
-				this.areaDamage				
-            ],	
-            buttons:[{
+                }			
+            ],
+			buttons:[{
                 url: this.dataUrl,
+				iconCls: "gxp-icon-geobasi-boxplot",
                 xtype: 'gxp_geobasiDataBoxPlotButton',
 				text: "Crea BoxPlot",
                 ref: '../submitButton',
@@ -411,6 +413,7 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 				filter: this.areaDamage
             },{
                 url: this.dataUrl,
+				iconCls: "gxp-icon-geobasi-barchart",
                 xtype: 'gxp_geobasiDataBarChartButton',
 				text: "Crea BarChart",
                 ref: '../submitButton',
@@ -418,9 +421,18 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
                 form: this,
                 disabled:false,
 				filter: this.areaDamage
+            },{
+                url: this.dataUrl,
+				iconCls: "gxp-icon-geobasi-curvacum",
+                xtype: 'gxp_geobasiDataCurvaCumButton',
+				text: "Crea Curva Cum.",
+                ref: '../submitButton',
+                target:this,
+                form: this,
+                disabled:false,
+				filter: this.areaDamage
             }]
 		};
-        
         
         config = Ext.apply(geobasiData,config || {});
         

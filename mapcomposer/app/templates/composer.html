@@ -96,7 +96,7 @@
 				'Chart' : 'externals/Chart'
 			}
 		});        
-
+		
 		Ext4.require('Chart.ux.Highcharts');
 		Ext4.require('Chart.ux.Highcharts.Serie');
 		Ext4.require('Chart.ux.Highcharts.AreaRangeSerie');
@@ -117,6 +117,8 @@
 		Ext4.require('Chart.ux.Highcharts.ScatterSerie');
 		Ext4.require('Chart.ux.Highcharts.SplineSerie');
 		Ext4.require('Chart.ux.Highcharts.WaterfallSerie');
+
+		//Ext4.require('Chart.ux.HighStock');
 		
 		Ext4.override(Ext4.data.proxy.Ajax,{ 
 			getMethod: function(request) { 
@@ -344,7 +346,7 @@
 						html: headerContent,
 						region: 'north',
 						collapsible: true,
-						collapsed: false,
+						collapsed: true,
 						collapseMode: 'mini',
 						hideCollapseTool: true,
 						split: true,
@@ -356,7 +358,7 @@
 					}, appTabs],                            
                     bbar : [
                       //poweredByGeoSol, ' ', aboutButton, '->',languageSelector
-					  aboutButton,'->',languageSelector
+					  '->',languageSelector
                     ]
                 }]
             });

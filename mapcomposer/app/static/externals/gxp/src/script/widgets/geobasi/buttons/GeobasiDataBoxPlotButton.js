@@ -29,7 +29,6 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
 
     /** api: xtype = gxp_geobasiDataChartButton */
     xtype: 'gxp_geobasiDataBoxPlotButton',
-    iconCls: "gxp-icon-geobasi-boxplot",
     form: null,
     url: null,
 	filter: null,
@@ -455,10 +454,10 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
         // Calcolo mediana per l'intero set di valori (per tutti i metodi analitici)
         switch (metodoElaborazione) {
         case "1":
-            medianaBoxPlot = (arrLength % 2 == 0) ? (Math.log(json.features[(arrLength) / 2].properties.valore) + Math.log(json.features[(arrLength + 2) / 2].properties.valore)) / 2 : Math.log(json.features[(arrLength + 1) / 2].properties.valore);
+            medianaBoxPlot = (arrLength % 2 == 0) ? (Math.log(json.features[((arrLength) / 2)-1].properties.valore) + Math.log(json.features[((arrLength + 2) / 2)-1].properties.valore)) / 2 : Math.log(json.features[((arrLength + 1) / 2)-1].properties.valore);
             break;
         case "2":
-            medianaBoxPlot = (arrLength % 2 == 0) ? (json.features[(arrLength) / 2].properties.valore + json.features[(arrLength + 2) / 2].properties.valore) / 2 : json.features[(arrLength + 1) / 2].properties.valore;
+            medianaBoxPlot = (arrLength % 2 == 0) ? (json.features[((arrLength) / 2)-1].properties.valore + json.features[((arrLength + 2) / 2)-1].properties.valore) / 2 : json.features[((arrLength + 1) / 2)-1].properties.valore;
             break;
         }
 
@@ -506,7 +505,7 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
             var conteggio = myValues.length;
 
             var firstPercentileVal = (conteggio + 1) / 4;
-            var secondPercentile = (conteggio % 2 == 0) ? (myValues[(conteggio) / 2].valore + myValues[((conteggio + 2) / 2)].valore) / 2 : myValues[(conteggio + 1) / 2]['valore'];
+            var secondPercentile = (conteggio % 2 == 0) ? (myValues[((conteggio) / 2)-1].valore + myValues[((conteggio + 2) / 2)-1].valore) / 2 : myValues[((conteggio + 1) / 2)-1]['valore'];
             var thirdPercentileVal = (conteggio + 1) * 3 / 4;
 
             // check if a number is integer or float
@@ -627,7 +626,7 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
 			
             //dataPoints.data[i] = {
 			dataPoints[i] = {
-                experiment: metodoAnalitico,
+                experiment: metodoAnalitico === '-999' ? 'MA non specificato' : metodoAnalitico,
                 min: Math.round10(newMin,-5),
                 q1: Math.round10(firstPercentile,-5),
                 med: Math.round10(secondPercentile,-5),
