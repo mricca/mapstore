@@ -34,10 +34,7 @@ GeoExt.Lang.add("en", {
     },
     
     "GeoExplorer.Composer.prototype": {
-        exportMapText: "Publish Map",
 		uploadText: "Upload",
-        toolsTitle: "Choose tools to include in the toolbar:",
-        previewText: "Preview",
         backText: "Back",
         nextText: "Next",
         loginText: "Login",
@@ -47,8 +44,6 @@ GeoExt.Lang.add("en", {
         fullScreenText: "Full Screen",
         cswMsg: 'Loading...',
 		cswFailureAddLayer: ' The layer cannot be added to the map',
-        alertEmbedTitle: 'Attention',
-        alertEmbedText: "Save the map before using the 'Publish Map' tool",
 	    cswZoomToExtentMsg: "BBOX not available",
 		cswZoomToExtent: "CSW Zoom To Extent"
     },
@@ -303,6 +298,15 @@ GeoExt.Lang.add("en", {
 		fontStyleText: "Font style",
 		fontEditorText: "Label config",
 		sizeText: "Size"
+    },
+    
+    "GeoExt.ux.GraticuleStylePanel.prototype":{
+        graticuleFieldLabelText: 'Active graticule',
+        sizeText: "Font size",
+        colorText: "Color",
+        fontFamilyText: "Font Family",
+        fontStyleText: "Font style",
+        fontEditorText: "Label config"
     },
 	
     "gxp.plugins.GeonetworkSearch.prototype":{
@@ -586,5 +590,56 @@ GeoExt.Lang.add("en", {
 		serverErrorMsg: "Error occurred while generating the Map Snapshot: Server Error",
 		menuText: "Snapshot",
 		tooltip: "Snapshot"
-	}
+	},
+	
+	"gxp.plugins.EmbedMapDialog.prototype" :{
+		exportMapText: "Link Map",		
+		toolsTitle: "Choose tools to include in the toolbar:",		
+		alertEmbedTitle: "Attention",		
+		alertEmbedText: "Save the map before using the 'Publish Map' tool",			
+		previewText: "Preview",				
+		embedCodeTitle: "Embed Code",
+		embedURL: "Direct URL",		
+		urlLabel: "URL",
+		showMapTooltip: "Show in a new Window"
+	},
+    
+    "gxp.widgets.form.SpatialSelectorField.prototype" :{
+        title : "Region Of Interest",
+        selectionMethodLabel : "Selection Method",
+        comboEmptyText : "Select a method..",
+        comboSelectionMethodLabel : "Selection",
+        northLabel : "North",
+        westLabel : "West",
+        eastLabel : "East",
+        southLabel : "South",
+        setAoiTitle : "Bounding Box",
+        setAoiText : "Draw Box",
+        setAoiTooltip : "Enable the SetBox control to draw a ROI (Bounding Box) on the map",
+        areaLabel : "Area",
+        perimeterLabel : "Perimeter",
+        radiusLabel : "Radius",
+        centroidLabel : "Centroid",
+        latitudeEmptyText : 'Y',
+        longitudeEmptyText : 'X',
+        geocodingFieldSetTitle : "GeoCoder",
+        geocodingPanelTitle : "Selected Locations",
+        geocodingPanelBtnRefreshTxt : "Show Geometries",
+        geocodingPanelBtnDestroyTxt : "Hide Geometries",
+        geocodingPanelBtnDeleteTxt : "Delete Location",
+        geocodingPanelLocationHeader: "Location",
+        geocodingPanelCustomHeader: "Parent",
+        geocodingPanelGeometryHeader: "Geometry WKT",
+        geocodingPanelBtnSelectAllTxt : "Check All", 
+        geocodingPanelBtnDeSelectAllTxt : "Uncheck All", 
+        geocodingPanelMsgRemRunningTitle : "Remove a Locations",
+        geocodingPanelMsgRemRunningMsg : "Would you like to remove the selected locations from the list?",
+        geocodingFieldLabel : "Search a Location",
+        geocodingFieldEmptyText : "Type Location here...",
+        geocodingFieldBtnAddTooltip : "Add Location to the List",
+        geocodingFieldBtnDelTooltip : "Clear Field",
+        selectionSummary : "Selection Summary",
+        geocoderSelectorsLabels: ['Geometry Union', 'Administrative Area List', 'Administrative Area Subs'],
+        selectionReturnTypeLabel: "Return Type"
+    }
 });

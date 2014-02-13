@@ -305,7 +305,7 @@
 			"printService": "http://192.168.0.62:8080/geoserver/pdf/",
 			"legendPanelId": "legendPanel",
 			"appendLegendOptions": true,
-			"addGraticuleControl": false,
+			"addGraticuleControl": true,
 			"legendOnSeparatePage": true,
 			"addLandscapeControl": true,
 			"actionTarget":{

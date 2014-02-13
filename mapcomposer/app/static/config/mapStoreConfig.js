@@ -1,24 +1,6 @@
 {
-   "geoStoreBase": "",
-   "proxy":"/http_proxy/proxy/?url=",
-   "defaultLanguage": "en",
    "advancedScaleOverlay": true,
    "gsSources":{ 
-   		"geosolutions": {
-			"ptype": "gxp_wmssource",
-			"url": "http://localhost:8080/geoserver/wms",
-			"title": "GeoSolutions GeoServer",
-			"SRS": "EPSG:900913",
-			"version":"1.1.1",
-		    "layersCachedExtent": [
-				-20037508.34,-20037508.34,
-				20037508.34,20037508.34
-			],
-			"layerBaseParams":{
-				"FORMAT":"image/png8",
-				"TILED":true
-			}
-		},
 		"mapquest": {
 			"ptype": "gxp_mapquestsource"
 		}, 
@@ -103,7 +85,14 @@
     },
 	"customTools":[
 		{
-			"ptype": "gxp_mouseposition"
+			"ptype": "gxp_embedmapdialog",
+			"actionTarget": {"target": "paneltbar", "index": 2},
+			"embeddedTemplateName": "viewer",
+			"showDirectURL": true
+		}, {
+		   "ptype": "gxp_mouseposition",
+		   "displayProjectionCode":"EPSG:4326",
+		   "customCss": "font-weight: bold; text-shadow: 1px 0px 0px #FAFAFA, 1px 1px 0px #FAFAFA, 0px 1px 0px #FAFAFA,-1px 1px 0px #FAFAFA, -1px 0px 0px #FAFAFA, -1px -1px 0px #FAFAFA, 0px -1px 0px #FAFAFA, 1px -1px 0px #FAFAFA, 1px 4px 5px #aeaeae;color:#050505 "
 		}, {
 			"ptype": "gxp_metadataexplorer",
 			"id": "metadataexplorer",
@@ -138,9 +127,19 @@
 			"actionTarget": "paneltbar"
 		}, {
 			"ptype": "gxp_geolocationmenu",
-			"outputTarget": "paneltbar",
-			"toggleGroup": "toolGroup",
-			"index": 23
-		}
+			"actionTarget": {"target": "paneltbar", "index": 23},
+			"toggleGroup": "toolGroup"
+		}, {
+			"actions": ["->"], 
+			"actionTarget": "paneltbar"
+		}, {
+			"ptype": "gxp_help",
+			"actionTarget": "paneltbar",
+			"text": "Help",
+			"tooltip":"MapStore Guide",
+			"index": 24,
+			"showOnStartup": false,
+			"fileDocURL": "MapStore-Help.pdf"
+        }
 	]
 }

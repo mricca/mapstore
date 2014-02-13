@@ -165,6 +165,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                 showMinorMeasures: true,
                 singleLine: false,
                 abbreviateLabel: false,
+				showMousePosition: config.scaleOverlayUnits ? (config.scaleOverlayUnits.showMousePosition === true ? true : false) : false,
                 enableSetScaleUnits: config.scaleOverlayUnits ? true : false
             });
 		}else{
@@ -243,15 +244,6 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 					iconCls: "gxp-icon-zoom-previous",
 					numberOfButtons: 2,
 					ptype: "gxp_navigationhistory"
-				}, {
-					actions: ["-"], checked: true
-				}, {
-					leaf: true, 
-					text: gxp.plugins.WMSGetFeatureInfo.prototype.infoActionTip, 
-					checked: true, 
-					iconCls: "gxp-icon-getfeatureinfo",
-					ptype: "gxp_wmsgetfeatureinfo", 
-					toggleGroup: this.toggleGroup
 				}, {
 					actions: ["-"], checked: true
 				}, {
@@ -337,10 +329,21 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                       addConfig = Ext.util.JSON.decode(response.responseText);
                     } catch (err) {
                     }
+                    /*the proxy is related to the local config.
+                     * so if it is present in the configuration
+                     * must be removed 
+                     */
+                     if(addConfig && addConfig.proxy){
+                        delete addConfig.proxy;
+                     }
                     
                     if(addConfig){
-                        if(addConfig.data){    
-                            addConfig = Ext.util.JSON.decode(addConfig.data);                            
+                        if(addConfig.data){
+                            
+                            addConfig = Ext.util.JSON.decode(addConfig.data);   
+                        if(addConfig.proxy){
+                            delete addConfig.proxy;
+                        }                            
                         }
 						this.applyConfig(Ext.applyIf(addConfig, config));
                     } else {
@@ -589,7 +592,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
     viewMetadata: function(url, uuid, title){
 		var portalContainer = Ext.getCmp(this.renderToTab);
 		
-		var metaURL = url.indexOf("uuid") != -1 ? url : url + '?uuid=' + uuid;
+		var metaURL = url.indexOf("uuid") != -1 ? url : url + 'metadata.show?uuid=' + uuid;
 		
 		var metaPanelOptions = {
 			title: title,
@@ -1294,6 +1297,18 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 		delete state.viewerTools;
 		delete state.georeferences;
 		delete state.customPanels;
+		delete state.portalConfig;
+		delete state.disableLayerChooser;
+		
+		delete state.modified;
+		delete state.proxy;
+		delete state.geoStoreBaseURL;
+		delete state.renderToTab;
+		delete state.advancedScaleOverlay;
+		delete state.about;
+		delete state.defaultLanguage;
+		delete state.scaleOverlayUnits;
+		delete state.actionToolScale;
 		
         return state;
     }
