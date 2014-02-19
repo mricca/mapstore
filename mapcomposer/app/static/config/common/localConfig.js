@@ -1,7 +1,7 @@
 /** This file contains the common configuration options 
  *  that can be overridden by the serverConfig objects in templates */
 var localConfig = {
-   geoStoreBase: "",
-   proxy:"/http_proxy/proxy/?url=",
-   defaultLanguage: "en"
+   geoStoreBase: "http://192.168.0.62:8080/geostore/rest/",
+   proxy: "/proxy/?url=",
+   defaultLanguage: "it"
 };

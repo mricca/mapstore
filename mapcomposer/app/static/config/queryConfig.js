@@ -1,7 +1,4 @@
 {
-   "geoStoreBase": "http://192.168.0.62:8080/geostore/rest/",
-   "proxy":"/proxy/?url=",
-   "defaultLanguage": "it",
    "advancedScaleOverlay": false,
    "tab": false,
    "gsSources":{
@@ -318,9 +315,8 @@
 			"id": "addlayer"
 		}, {
 			"ptype": "gxp_geolocationmenu",
-			"outputTarget": "paneltbar",
-			"toggleGroup": "toolGroup",
-			"index": 23
+			"actionTarget": {"target": "paneltbar", "index": 23},
+			"toggleGroup": "toolGroup"
 		}, {
 		  "ptype": "gxp_featuremanager",
 		  "id": "featuremanager"
