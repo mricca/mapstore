@@ -59,7 +59,13 @@
         <script type="text/javascript" src="translations/en.js"></script>
 		<script type="text/javascript" src="translations/de.js"></script>
 		<script type="text/javascript" src="translations/fr.js"></script>
+        <!-- Other scripts -->
         
+        <!-- GeoSolutions SLIDE -->
+        <script src="theme/js/jquery.js" type="text/javascript"></script>
+        <script src="theme/js/lightbox.js" type="text/javascript"></script>
+        <!-- CSS lightbox -->
+        <link href="theme/css/lightbox.css" rel="stylesheet" />
         <style type="text/css">
             body {overflow: auto;
             overflow-x: auto;
@@ -166,7 +172,7 @@
 				<br /><br /><br /><br />
 				<div id="libslink">
 					<b>
-						<a href="https://github.com/geosolutions-it/mapstore/tree/v1.3">Current stable release is v1.3</a>
+						<a href="https://github.com/geosolutions-it/MapStore/tree/v1.4">Current stable release is v1.4</a>
 					</b>
 				</div>
 				<div id="vedisotto">
@@ -265,15 +271,19 @@
 							</div>
 							<img src="theme/images/marker-editor.jpg" style=" float:right; margin:50px 50px 0 0; width:220px; " />    
 						</div>
-			  
-						<!-- tabs -->
+                        <!-- *********************************** -->
+						<!-- ************** tabs *************** -->
+                        <!-- *********************************** -->
+                        <!-- Crop Information Portal Pakistan -->
 						<div class="tool" style="/*background-image:url(http://www.geo-solutions.it/static/img/background-box.png)*/">
 							<div class="slidecontent">
 								<br/>
-								<b>Chart Visualization</b>. MapStore can be used with many other libraries. You can add your libreries and develop your widgets
-								and plugins. Integration with complex charts drowing applications like HighCharts is only an exemple.
-								
-								<br /><br />
+								<b>Crop Information Portal</b>. 
+                                    The Crop Information Portal is a component of the Pakistan Agriculture Information System that supports 
+                                    Crop Reporting Services in data and information dissemination on Pakistan's major crops 
+                                    (wheat, maize, rice, cotton and sugarcane) and agro-meteorological conditions affecting crop growth.
+                                    It uses MapStore as a webview to create filters show the aggregated results in many different formats(tables, charts, maps).
+                                    It allows also to export aggregated and filtered data in pdf reports and csv).
 								<div class="moreinfo">
 									<a href="http://cip-pakistan.geo-solutions.it/MapStore/" target="_blank">Preview Demo</a>
 								</div>
@@ -281,30 +291,144 @@
 							</div>
 							<img src="theme/images/charts1.png" style=" float:right; margin:50px 50px 0 0; width:220px; " />
 						</div>
-			  
+                        <!-- Florence GeoPortal -->
 						<div class="tool" style="/*background-image:url(http://www.geo-solutions.it/static/img/background-box.png)*/">
 							<div class="slidecontent"><br/>
-								<b>GeoPortal</b>. MapStore can be integrated with GeoNetwork and other services easily, so you can have a complete GeoPortal integrated with
+								<b>Florence GeoPortal</b>. MapStore can be integrated with GeoNetwork and other services easily, so you can have a complete GeoPortal integrated with
 								the map viewer. MapStore can communicate with CSW (Catalog Services on Web) and browse the content, see the metadata and add the layers on the
 								map.
 								<br /><br />
 								<div class="moreinfo">
-									<a href="http://datigis.comune.fi.it/MapStore/" target="_blank">See a Sample</a>
+									<a href="http://datigis.comune.fi.it/MapStore/" target="_blank">Visit The Portal</a>
 								</div>
 								<br/><br/>		
 							</div>
 							<img src="theme/images/geoportal.png" style=" float:right; margin:50px 50px 0 0; width:220px; " />
 						</div>
-		  
-						<!-- tabs -->      
+                        <!-- MapStore Mobile for Android -->
+                        <div class="tool" style="/*background-image:url(http://www.geo-solutions.it/static/img/background-box.png)*/">
+							<div class="slidecontent"><a href="theme/images/MS_mobileQR.jpg" rel="lightbox" style=" float:left; margin:30px 20px 0 0;" ><img style=" width:150px; height:150px" src="theme/images/MS_mobileQR.jpg"/></a><br/>
+								<b>Mobile Client for Android.</b> MapStore is also available for a preview for android mobile devices. Use the QR-Code to download the sample application directly from
+                                your Android device. You can also connect to this site using the web browser of your phone and click on "Download APK".
+								
+								<br /><br />
+								<div class="moreinfo">
+									<a href="http://demo.geo-solutions.it/share/mapstoremobile/MapStoreMobile.apk">Download APK</a>
+								</div>
+								<br/><br/>
+							</div>
+							<a href="theme/images/composite_mob.png" rel="lightbox" ><img src="theme/images/composite_mob.png"  style=" float:right; margin:30px 30px 0 0; width:220px; " /></a>
+						</div>
+                        <!-- Integration with CKAN --> 
+                        <div class="tool" style="/*background-image:url(http://www.geo-solutions.it/static/img/background-box.png)*/">
+							<div class="slidecontent"><br/>
+								<b>Integration with CKAN</b>. MapStore can be also integrated with CKAN. Using a plugin you can use MapStore to see preview of spatial datasets. 
+                                You can add different resources to a cart and then see them all together on the map, very useful for comparing data from different sources.
+                                
+								<br /><br />
+								<div class="moreinfo">
+									<a href="http://ckan.geo-solutions.it/" target="_blank">See Demo</a>
+								</div>
+								<br/><br/>		
+							</div>
+							<a href ="theme/images/ckan.png" rel="lightbox"><img src="theme/images/ckan.png" style=" float:right; margin:30px 50px 0 0; width:220px; " /></a>
+						</div>
+                        <!-- LaMMA GeoPortal --> 
+                        <div class="tool" style="/*background-image:url(http://www.geo-solutions.it/static/img/background-box.png)*/">
+							<div class="slidecontent"><br/>
+								<b>LaMMA GeoPortal</b>. This application allows to share data used in meteorological and environmental applications. Uses the MapStore native integration with GeoNetwork 
+                                and shows temoral series of meteorological and environmental data on the map.
+								<br /><br />
+								<div class="moreinfo">
+									<a href="http://geoportale.lamma.rete.toscana.it/MapStore/public/?locale=en" target="_blank">See the portal</a>
+								</div>
+								<br/><br/>		
+							</div>
+							<img src="theme/images/lamma.png" style=" float:right; margin:30px 50px 0 0; width:220px; " />
+						</div>
+                        <!-- (FDH)Fouta Djallon Highlands GEOportal --> 
+                        <div class="tool" style="/*background-image:url(http://www.geo-solutions.it/static/img/background-box.png)*/">
+							<div class="slidecontent"><br/>
+								<b>Fouta Djallon Highlands GeoPortal</b>. This application uses the MapStore native integration with GeoNetwork for
+                                 data sharing and dissemination.
+								<br /><br />
+								<div class="moreinfo">
+									<a href="http://www2.fouta-djallon-programme.org/FDHWebGis/?locale=en" target="_blank">See the portal</a>
+								</div>
+								<br/><br/>		
+							</div>
+							<img src="theme/images/fdh.png" style=" float:right; margin:30px 50px 0 0; width:220px; " />
+						</div>
+                         <!-- Cultura Italia -->
+                        <div class="tool" style="/*background-image:url(http://www.geo-solutions.it/static/img/background-box.png)*/">
+							<div class="slidecontent"><br/>
+								<b>Cultura Italia</b>This portal integrates MapStore inside its web pages, using the markers to show the results of a search or to show details of a single result. 
+								<br /><br />
+								<div class="moreinfo">
+									<a href="http://www.culturaitalia.it/opencms/museid/ricerca.jsp?searchType=&imageField.x=14&imageField.y=18&language=en&q=*&cat=indice" target="_blank">See the portal</a>
+								</div>
+								<br/><br/>		
+							</div>
+							<a href="theme/images/culturaitalia.png" rel="lightbox" ><img src="theme/images/culturaitalia.png" style=" float:right; margin:30px 50px 0 0; width:220px; " /></a>
+						</div>
+                        <!-- Acque WIZ -->
+                        <div class="tool" style="/*background-image:url(http://www.geo-solutions.it/static/img/background-box.png)*/">
+							<div class="slidecontent"><br/>
+								<b>WIZ - Metadata Portal</b>Part of the WIZ(WaterIZe spatial planning) project,this portal integrates MapStore and GeoNetwork to display useful spatial information and metadata
+                                for the industry professionals and experts in order to work on the availability of drinking water in the future.
+								<br /><br />
+								<div class="moreinfo">
+									<a href="http://wiz.acque.net/portal/geonetwork?locale=en" target="_blank">See the portal</a>
+								</div>
+								<br/><br/>		
+							</div>
+							<img src="theme/images/wiz.png" style=" float:right; margin:30px 50px 0 0; width:220px; " />
+						</div>
+                       
+                        <!-- Acque WEBGis --> 
+                        <div class="tool" style="/*background-image:url(http://www.geo-solutions.it/static/img/background-box.png)*/">
+							<div class="slidecontent"><br/>
+								<b>Acque S.P.A. WebGis</b>.Here MapStore provides a web support for the visualization the components of the aqueduct and sewerage and the status of work on them in real time, using information from sensors,call center, laboratories, inspectors and operators.
+							</div>
+							<a href="theme/images/acque.png" rel="lightbox" ><img src="theme/images/acque.png" style=" float:right; margin:30px 50px 0 0; width:220px; " /></a>
+						</div>
+                        
+                        <!-- Destination -->
+                        <div class="tool" style="/*background-image:url(http://www.geo-solutions.it/static/img/background-box.png)*/">
+							<div class="slidecontent"><br/>
+								<b>Destination.</b> In this project MapStore was used as the web interface to provide tools for the prevention and active and passive safety in the transport of dangerous goods by road, risk analysis, simulation and evaluation of the damage, real-time tracking and statistical analysis.
+								<br /><br />
+								
+								<br/><br/>		
+							</div>
+							<a href="theme/images/destination.png" rel="lightbox" ><img src="theme/images/destination.png" style=" float:right; margin:30px 50px 0 0; width:220px; " /></a>
+						</div>
+                        
+                        
+						<!-- *********************************** -->
+						<!-- ********** end  tabs  ************* -->
+                        <!-- *********************************** -->
 					</div>
 		
 					<!-- required for IE6/IE7 -->
 					<br class="clearall">
 		
 					<!-- thumbnails -->
-					<div id="thumbs" class="t">
-						<!-- intro page navi button -->
+					<div id="thumbs-gallery" class="t gallery-navi">
+						<ul class="navi">
+								  <li><a id="g1" class="gallery-nav-item" title="Marker Editor"></a></li>
+								  <li><a id="g2" class="gallery-nav-item" title="Crop Information Portal"></a></li>
+								  <li><a id="g3" class="gallery-nav-item" title="Florence GeoPortal"></a></li>
+                                  <li><a id="g4" class="gallery-nav-item" title="MapStore for Android"></a></li>
+                                  <li><a id="g4" class="gallery-nav-item" title="CKAN"></a></li>
+                                  <li><a id="g5" class="gallery-nav-item" title="LaMMA"></a></li>
+                                  <li><a id="g6" class="gallery-nav-item" title="(FDH)Fouta Djallon Highlands GEOportal"></a></li>
+                                  <li><a id="g8" class="gallery-nav-item" title="Cultura Italia"></a></li>
+                                  <li><a id="g9" class="gallery-nav-item" title="Acque WIZ"></a></li>
+                                  <li><a id="g10" class="gallery-nav-item" title="Acque WebGIS"></a></li>
+                                  <li><a id="g11" class="gallery-nav-item" title="Destination"></a></li>
+                                  
+							  </ul>
 					</div>
 				</div>
 	   
@@ -429,8 +553,6 @@
 		</script>
 	</body>
 
-	<!-- GeoSolutions SLIDE -->
-	<script src="theme/js/jquery.js" type="text/javascript"></script>
 	<script type="text/javascript" charset="utf-8">
         $('.langlink').click(function() {
 			var lang = $(this).html();
