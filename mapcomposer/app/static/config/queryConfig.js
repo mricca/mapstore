@@ -1,5 +1,5 @@
 {
-   "advancedScaleOverlay": false,
+   "advancedScaleOverlay": true,
    "tab": false,
    "gsSources":{
    		"geobasi": {
@@ -204,96 +204,25 @@
 	"proj4jsDefs": {
 		"EPSG:3003": "+proj=tmerc +lat_0=0 +lon_0=9 +k=0.9996 +x_0=1500000 +y_0=0 +ellps=intl +units=m +no_defs +towgs84 = -104.1,-49.1,-9.9,0.971,-2.917,0.714,-11.68"
 	},	
-	"tools": [
-		{
-			"ptype": "gxp_layertree",
-			"outputConfig": {
-				"id": "layertree"
-			},
-			"outputTarget": "tree",
-			"localIndexs":{
-					"it": 0,
-					"de": 1,
-					"en": 2,
-					"fr": 3
-			}
-		}, {
-			"ptype": "gxp_legend",
-			"outputTarget": "legend",
-			"outputConfig": {
-				"autoScroll": true
-			},
-			"legendConfig" : {
-				"legendPanelId" : "legendPanel",
-				"defaults": {
-					"style": "padding:5px",                  
-					"baseParams": {
-						"FORMAT": "image/jpeg",
-						"LEGEND_OPTIONS": "forceLabels:on;fontSize:10",
-						"WIDTH": 20, "HEIGHT": 20
-					}
-				}
-			}
-		}, {
-			"ptype": "gxp_addlayers",
-			"actionTarget": "tree.tbar",
-			"id": "addlayers"
-		}, {
-			"ptype": "gxp_removelayer",
-			"actionTarget": ["tree.tbar", "layertree.contextMenu"]
-		}, {
-			"ptype": "gxp_removeoverlays",
-			"actionTarget": "tree.tbar"
-		}, {
-			"ptype": "gxp_addgroup",
-			"actionTarget": "tree.tbar"
-		}, {
-			"ptype": "gxp_removegroup",
-			"actionTarget": ["tree.tbar", "layertree.contextMenu"]
-		}, {
-			"ptype": "gxp_groupproperties",
-			"actionTarget": ["tree.tbar", "layertree.contextMenu"]
-		}, {
-			"ptype": "gxp_layerproperties",
-			"actionTarget": ["tree.tbar", "layertree.contextMenu"]
-		}, {
-			"ptype": "gxp_zoomtolayerextent",
-			"actionTarget": {"target": "layertree.contextMenu", "index": 0}
-		}, {
-			"ptype":"gxp_geonetworksearch",
-			"actionTarget": ["layertree.contextMenu"]
-		}, {
-			"ptype": "gxp_zoomtoextent",
-			"actionTarget": {"target": "paneltbar", "index": 15}
-		}, {
-			"ptype": "gxp_navigation", "toggleGroup": "toolGroup",
-			"actionTarget": {"target": "paneltbar", "index": 16}
-		}, {
-			"actions": ["-"], "actionTarget": "paneltbar"
-		}, {
-			"ptype": "gxp_zoombox", "toggleGroup": "toolGroup",
-			"actionTarget": {"target": "paneltbar", "index": 17}
-		}, {
-			"ptype": "gxp_zoom",
-			"actionTarget": {"target": "paneltbar", "index": 18}
-		}, {
-			"actions": ["-"], "actionTarget": "paneltbar"
-		}, {
-			"ptype": "gxp_navigationhistory",
-			"actionTarget": {"target": "paneltbar", "index": 19}
-		}, {
-			"actions": ["-"], "actionTarget": "paneltbar"
-		}, {
+	"customTools": [
+        {
 			"ptype": "gxp_wmsgetfeatureinfo_menu", 
 			"regex": "[\\s\\S]*[\\w]+[\\s\\S]*",
 			"useTabPanel": true,
+            "infoPanelId": "",
+            "disableAfterClick": false,
+            "format": "html",
 			"toggleGroup": "toolGroup",
 			"actionTarget": {"target": "paneltbar", "index": 20}
 		}, {
-			"actions": ["-"], "actionTarget": "paneltbar"
+			"ptype": "gxp_embedmapdialog",
+			"actionTarget": {"target": "paneltbar", "index": 2},
+			"embeddedTemplateName": "viewer",
+			"showDirectURL": true
 		}, {
-			"ptype": "gxp_measure", "toggleGroup": "toolGroup",
-			"actionTarget": {"target": "paneltbar", "index": 21}
+		   "ptype": "gxp_mouseposition",
+		   "displayProjectionCode":"EPSG:4326",
+		   "customCss": "font-weight: bold; text-shadow: 1px 0px 0px #FAFAFA, 1px 1px 0px #FAFAFA, 0px 1px 0px #FAFAFA,-1px 1px 0px #FAFAFA, -1px 0px 0px #FAFAFA, -1px -1px 0px #FAFAFA, 0px -1px 0px #FAFAFA, 1px -1px 0px #FAFAFA, 1px 4px 5px #aeaeae;color:#050505 "
 		}, {
 			"ptype": "gxp_print",
 			"customParams":{
@@ -310,6 +239,8 @@
 				"index":4
 			}
         }, {
+			"actions": ["-"], "actionTarget": "paneltbar"
+		}, {
 			"ptype": "gxp_addlayer",
 			"showCapabilitiesGrid": false,
 			"id": "addlayer"
