@@ -17,7 +17,7 @@
 			"projection":"EPSG:3003",
 			"url": "http://213.215.135.196/reflector/open/service?",
 			"layerBaseParams": {
-			   "format":"image/jpeg",
+			   "format":"image/png",
 			   "TILED": true
 			}
 		}        
@@ -39,14 +39,6 @@
 				"name": "lerici:SFONDO_GS",
 				"displayInLayerSwitcher":true,
 				"visibility": true
-			},
-            {
-				"source": "realvista",
-                "group": "Carta Tecnica",
-				"title": "RealVista",
-				"name": "rv1",
-				"displayInLayerSwitcher":true,
-				"visibility": false
 			},
             {
 				"source": "lerici",
