@@ -55,7 +55,12 @@ GeoExt.Lang.add("fr", {
 		embedCodeTitle: "Intégrer le code",
 		embedURL: "URL directe",	
 		urlLabel: "URL",
-		exportMapText: "Lien Carte"		
+		exportMapText: "Lien Carte",
+        mobileText: "Mobile", 
+        installApplicationText: "Installer l'application Android", 
+        loadThisSourceText: "Ajouter cette source à MapStore Mobile", 
+        scanThisApplicationText: "Scannez ce code QR pour installer MapStore pour Android", 
+        scanThisSourceText: "Scannez ce code QR pour ajouter cette source de votre application mobile MapStore Vous devez installer MapStore pour Android avant."
     },
     "MSMPagingToolbar.prototype": {
         desc: "Nouvelle carte",
@@ -130,6 +135,10 @@ GeoExt.Lang.add("fr", {
         miniSizeLabel: "Mini",
         smallSizeLabel: "Petit",
         premiumSizeLabel: "Premium",
-        largeSizeLabel: "Grand"
+        largeSizeLabel: "Grand",
+        loadMapText: "Chargez ce Plan (installer application avant)", 
+        downloadAppText: "installer l'application", 
+        loadInMapStoreMobileText: "Mobile",
+        openImageInANewTab: "Ouvrir une image dans un nouvel onglet"
     }
 });

@@ -55,7 +55,12 @@ GeoExt.Lang.add("it", {
 		embedCodeTitle: "Codice da Incorporare",
 		embedURL: "URL diretto",		
 		urlLabel: "URL",
-		exportMapText: "Collega Mappa"		
+		exportMapText: "Collega Mappa",
+        mobileText: "Mobile", 
+        installApplicationText: "Installazione applicazione Android", 
+        loadThisSourceText: "Aggiungi questa sorgente di MapStore Mobile", 
+        scanThisApplicationText: "Scansiona questo codice QR installare MapStore per Android", 
+        scanThisSourceText: "Scansiona questo codice QR per aggiungere questa sorgente a MapStore Mobile. È necessario prima installare MapStore per Android."
     },
     "MSMPagingToolbar.prototype": {
         desc: "Nuova Mappa",
@@ -130,6 +135,10 @@ GeoExt.Lang.add("it", {
         miniSizeLabel: "Mini",
         smallSizeLabel: "Piccola",
         premiumSizeLabel: "Premium",
-        largeSizeLabel: "Grande"
+        largeSizeLabel: "Grande",
+        loadMapText: "Carica Mappa",
+        downloadAppText: "Installa Applicazione Android",
+        loadInMapStoreMobileText:'Mobile',
+        openImageInANewTab: "Apri immagine in una nuova tab"
     }
 });

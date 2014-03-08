@@ -342,7 +342,12 @@ GeoExt.Lang.add("en", {
         exportCSVMultipleText: "Whole Page",
         failedExportCSV: "Failed to find response for output format CSV",
         invalidParameterValueErrorText: "Invalid Parameter Value",
-		zoomToFeature: "Zoom To Feature"
+		zoomToFeature: "Zoom To Feature",
+        comboFormatMethodLabel: "Format",
+        comboFormatEmptyText: "Please, select format",
+        noFormatTitleText: "Incorrect format",
+        noFormatBodyText: "Please, select a valid format",
+        exportTitleText: "Export"
     },
     "gxp.plugins.QueryForm.prototype": {
         queryActionText: "Query",
@@ -487,7 +492,7 @@ GeoExt.Lang.add("en", {
 	
 	"gxp.plugins.AddLayer.prototype":{
 		waitMsg: "Please Wait ...",
-		capabilitiesFailureMsg: " The layer cannot be added to the map"
+		capabilitiesFailureMsg: " The WMS Capabilities cannot be added due to problems service side"
     },
     
     "gxp.plugins.Geolocate.prototype":{
@@ -601,7 +606,11 @@ GeoExt.Lang.add("en", {
 		embedCodeTitle: "Embed Code",
 		embedURL: "Direct URL",		
 		urlLabel: "URL",
-		showMapTooltip: "Show in a new Window"
+		showMapTooltip: "Show in a new Window",
+        loadMapText: "Load this Map (install application first)",
+        downloadAppText: "Install Application",
+        loadInMapStoreMobileText: "Mobile",
+        openImageInANewTab: "Open Image in a New Tab"
 	},
     
     "gxp.widgets.form.SpatialSelectorField.prototype" :{
@@ -655,5 +664,71 @@ GeoExt.Lang.add("en", {
         emptyMsg: "No elements found",
         noRecordFoundLabel: "No elements found",
         loadMsg: "Loading ..."
+    },
+    
+    "gxp.plugins.spatialselector.SpatialSelector.prototype" :{
+        titleText : "Region Of Interest",
+        selectionMethodLabel : "Selection Method",
+        comboEmptyText : "Select a method..",
+        comboSelectionMethodLabel : "Selection"
+    },
+    
+    "gxp.plugins.spatialselector.SpatialSelectorMethod.prototype" :{
+        areaLabel : "Area",
+        perimeterLabel : "Perimeter",
+        radiusLabel : "Radius",
+        centroidLabel : "Centroid",
+        selectionSummary: "Selection Summary"
+    },
+    
+    "gxp.plugins.spatialselector.BBOXSpatialSelectorMethod.prototype" :{
+        name  : 'BBOX',
+        label : 'Bounding Box',
+        northLabel : "North",
+        westLabel : "West",
+        eastLabel : "East",
+        southLabel : "South",
+        setAoiTitle : "Bounding Box",
+        setAoiText : "Draw Box",
+        setAoiTooltip : "Enable the SetBox control to draw a ROI (Bounding Box) on the map"
+    },
+    
+    "gxp.plugins.spatialselector.BufferSpatialSelectorMethod.prototype" :{
+        name  : 'Buffer',
+        label : 'Buffer',
+        latitudeEmptyText : 'Y',
+        longitudeEmptyText : 'X'
+    },
+    
+    "gxp.plugins.spatialselector.CircleSpatialSelectorMethod.prototype" :{
+        name  : 'Circle',
+        label : 'Circle'
+    },
+    
+    "gxp.plugins.spatialselector.GeocoderSpatialSelectorMethod.prototype" :{
+        name  : 'Geocoding',
+        label : 'Geocoding',
+        geocodingFieldSetTitle : "GeoCoder",
+        geocodingPanelTitle : "Selected Locations",
+        geocodingPanelBtnRefreshTxt : "Show Geometries",
+        geocodingPanelBtnDestroyTxt : "Hide Geometries",
+        geocodingPanelBtnDeleteTxt : "Delete Location",
+        geocodingPanelLocationHeader: "Location",
+        geocodingPanelCustomHeader: "Parent",
+        geocodingPanelGeometryHeader: "Geometry WKT",
+        geocodingPanelBtnSelectAllTxt : "Check All", 
+        geocodingPanelBtnDeSelectAllTxt : "Uncheck All", 
+        geocodingPanelMsgRemRunningTitle : "Remove a Locations",
+        geocodingPanelMsgRemRunningMsg : "Would you like to remove the selected locations from the list?",
+        geocodingFieldLabel : "Search a Location",
+        geocodingFieldEmptyText : "Type Location here...",
+        geocodingFieldBtnAddTooltip : "Add Location to the List",
+        geocodingFieldBtnDelTooltip : "Clear Field",
+        selectionSummary : "Selection Summary"
+    },
+    
+    "gxp.plugins.spatialselector.PolygonSpatialSelectorMethod.prototype" :{
+        name  : 'Polygon',
+        label : 'Polygon'
     }
 });

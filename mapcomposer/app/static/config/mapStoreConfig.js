@@ -108,6 +108,9 @@
 		}, {
 			"ptype": "gxp_addlayer",
 			"showCapabilitiesGrid": true,
+			"useEvents": false,
+			"showReport": false,
+			"directAddLayer": false,
 			"id": "addlayer"
 		}, {
 			"actions": ["-"], 
