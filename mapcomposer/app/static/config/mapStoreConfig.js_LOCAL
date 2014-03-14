@@ -26,10 +26,51 @@
 				"source": "lerici",
                 "group": "background",
 				"title": "SFONDO",
-				"name": "lerici:ortofoto",
+				"name": "lerici:SFONDO_GS",
 				"displayInLayerSwitcher":true,
 				"visibility": true
-			}         
+			},
+            {
+				"source": "lerici",
+                "group": "Carta Tecnica",
+				"title": "QU CTR 5K",
+				"name": "lerici:IG-QU5K_PO",
+				"displayInLayerSwitcher":true,
+				"visibility": true
+			},
+            {
+				"source": "lerici",
+                "group": "Carta Tecnica",
+				"title": "CTR_5K",
+				"name": "lerici:CTR_5K_nbits",
+				"displayInLayerSwitcher":true,
+				"visibility": true,
+                "tiled": false
+			},
+            {
+				"source": "lerici",
+                "group": "Confini",
+				"title": "Confini Provinciali",
+				"name": "lerici:IG-LP_PO",
+				"displayInLayerSwitcher":true,
+				"visibility": false
+			},
+            {
+				"source": "lerici",
+                "group": "Confini",
+				"title": "Confine Comuni Provincia La Spezia",
+				"name": "lerici:IG-LCP_PO",
+				"displayInLayerSwitcher":true,
+				"visibility": false
+			},
+            {
+				"source": "lerici",
+                "group": "Confini",
+				"title": "Confine Comunale Lerici",
+				"name": "lerici:IG-LC_L",
+				"displayInLayerSwitcher":true,
+				"visibility": true
+			}            
 		]
 	},
 	"proj4jsDefs": {
