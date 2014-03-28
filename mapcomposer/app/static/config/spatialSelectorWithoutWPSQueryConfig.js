@@ -113,14 +113,6 @@
         "topOutUnits":"km"
     },
 	"customTools":[{
-           "ptype": "gxp_wpsmanager",
-           "id": "wpsManager",
-           "url": "http://localhost:8080/geoserver/wps",
-           "geostoreUrl": "http://localhost:8080/geostore/rest",
-           "geostoreUser": "admin",
-           "geostorePassword": "admin",
-           "geostoreProxy": "/http_proxy/proxy?url="
-        },{
 			"ptype": "gxp_embedmapdialog",
 			"actionTarget": {"target": "paneltbar", "index": 2},
 			"embeddedTemplateName": "viewer",

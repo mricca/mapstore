@@ -26,9 +26,9 @@
 	
 	<script type="text/javascript" src="script/GeoExtExt.js"></script>
 	
-	<!-- PrintPreview resources  	
+	<!-- PrintPreview resources --> 	
     <link rel="stylesheet" type="text/css" href="externals/PrintPreview/resources/css/printpreview.css">
-    <script type="text/javascript" src="script/PrintPreview.js"></script>-->
+    <script type="text/javascript" src="script/PrintPreview.js"></script>
 	
     <!-- canvg-1.2 resources -->
 	<script type="text/javascript" src="script/canvg-1.2.js"></script> 
@@ -317,7 +317,8 @@
               //'</td>',
               //'<div align="center" style="background-color:#0000FF;background-repeat: repeat;width:100%;height:100%">',
               '<div align="center" style="background-image:url(theme/app/img/banner/intestazione_ok.jpg);background-repeat: repeat;width:100%;height:100%">',
-              '<a href="http://www.comune.lerici.sp.it/" target="_blank"><img src="theme/app/img/banner/logo_home.gif" style="float:left;"/></a>',
+              '<a href="http://www.comune.lerici.sp.it/" target="_blank"><img src="theme/app/img/banner/logo_home.gif" style="float:left;position:absolute;left:70px;"/></a>',
+              '<img src="theme/app/img/banner/intestazione.png" style="float:right;position:absolute;top:6px;right:130px;"/>',
               //'<img src="theme/app/img/banner/BannerDestination.png" style="float:left"/>',
 			  //'<img src="theme/app/img/banner/BannerDestination1.png" style="float:right;position:absolute;top:0px;right:0px;"/>',
               '</div>'
@@ -353,7 +354,7 @@
                       id : 'header'
                     },appTabs],                           
                     bbar : [
-                      poweredByGeoSol, ' ', aboutButton, '->',languageSelector
+                      '->',languageSelector
                     ]
                 }]
             });

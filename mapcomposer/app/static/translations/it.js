@@ -752,5 +752,12 @@ GeoExt.Lang.add("it", {
     "gxp.widgets.form.spatialselector.PolygonSpatialSelectorMethod.prototype" :{
         name  : 'Polygon',
         label : 'Polygon'
-    }
+    },
+    
+    "gxp.plugins.FeatureEditor.prototype":{
+        createFeatureActionTip: "Aggiungi segnalazione",
+        createFeatureActionText: "Aggiungi segnalazione",
+        editFeatureActionTip: "Modifica segnalazione",
+        editFeatureActionText: "Modifica segnalazione"
+    }    
 });

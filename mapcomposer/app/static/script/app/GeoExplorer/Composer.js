@@ -99,6 +99,10 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 		            ptype:"gxp_geonetworksearch",
                     id: "geonetworksearch_plugin",
 		            actionTarget: ["layertree.contextMenu"]
+		        },{
+		            ptype:"gxp_shapedownload",
+                    id: "shapedownload_plugin",
+		            actionTarget: ["layertree.contextMenu"]
 		        }, {
 		            ptype: "gxp_zoomtoextent",
                     id: "zoomextent_plugin",
@@ -134,7 +138,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 		            actions: ["-"], 
                     actionTarget: "paneltbar"
 		        }, {
-		            ptype: "gxp_wmsgetfeatureinfo_menu", 
+		            ptype: "gxp_wmsgetfeatureinfo", 
                     id: "wmsgetfeatureinfo_plugin",
 					toggleGroup: this.toggleGroup,
 					useTabPanel: true,

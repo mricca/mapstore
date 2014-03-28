@@ -371,15 +371,8 @@ OpenLayers.Control.WMSGetFeatureInfo = OpenLayers.Class(OpenLayers.Control, {
             }, params);
         }
         OpenLayers.Util.applyDefaults(params, this.vendorParams);
-        var headers;
-        if(this.authentication) {
-            headers = {
-                "Authorization":  "Basic " + Base64.encode(this.authentication.user + ":" + this.authentication.password)
-            };
-        }
         return {
             url: url,
-            headers: headers,
             params: OpenLayers.Util.upperCaseObject(params),
             callback: function(request) {
                 this.handleResponse(clickPosition, request, url);
@@ -410,8 +403,8 @@ OpenLayers.Control.WMSGetFeatureInfo = OpenLayers.Class(OpenLayers.Control, {
         } else {
             if (OpenLayers.Util.isArray(layer.params.LAYERS)) {
                 styleNames = new Array(layer.params.LAYERS.length);
-            } else { // Assume it's a String
-                styleNames = layer.params.LAYERS.replace(/[^,]/g, "");
+            } else {
+                styleNames = layer.params.LAYERS.toString().replace(/[^,]/g, "");
             }
         }
         return styleNames;
@@ -467,10 +460,9 @@ OpenLayers.Control.WMSGetFeatureInfo = OpenLayers.Class(OpenLayers.Control, {
             var layers;
             for (var url in services) {
                 layers = services[url];
-                var wmsOptions = this.buildWMSOptions(url, layers, 
-                    clickPosition, layers[0].params.FORMAT);                
-                OpenLayers.Request.GET(wmsOptions); 
-
+                var wmsOptions = this.buildWMSOptions(url, layers,
+                    clickPosition, layers[0].params.FORMAT);
+                OpenLayers.Request.GET(wmsOptions);
             }
         }
     },

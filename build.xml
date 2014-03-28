@@ -2,7 +2,7 @@
 <project name="mapstore" default="dist" basedir="." xmlns:artifact="antlib:org.apache.maven.artifact.ant">
 
     <description>
-        MapStore Build File
+        Dalla Somma Urgenza alla Prevenzione nella Pianificazione Urbanistica (il Modello “Lerici”) - Riccardo Mari - Marco Zanieri
     </description>
 
     <property name="composerbuild" location="mapcomposer/build"/>

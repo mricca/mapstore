@@ -39,6 +39,10 @@
 			-20037508.34,-20037508.34,
 			20037508.34,20037508.34
 		],
+        "animatedZooming":[
+            "zoomMethod": "null",
+            "transitionEffect": true
+        ],
 		"layers": [						
 			{
 				"source": "bing",

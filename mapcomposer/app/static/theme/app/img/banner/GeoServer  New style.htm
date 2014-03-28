@@ -1,0 +1,513 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>GeoServer: New style</title>
+    <link href="http://159.213.57.108/geoserver/web/resources/org.geoserver.web.GeoServerBasePage/favicon.ico" rel="shortcut icon">
+	
+      <link rel="stylesheet" href="GeoServer%20%20New%20style_files/screen.css" type="text/css" media="screen, projection">
+      <link rel="stylesheet" href="GeoServer%20%20New%20style_files/print.css" type="text/css" media="print"> 
+	  <link rel="stylesheet" href="GeoServer%20%20New%20style_files/geoserver.css" type="text/css" media="screen, projection">
+      <!--[if IE]>
+        <link rel="stylesheet" href="resources/org.geoserver.web.GeoServerBasePage/css/blueprint/ie.css" type="text/css" media="screen, projection"/>
+      <![endif]-->
+      <script type="text/javascript" src="GeoServer%20%20New%20style_files/jquery-1.js"></script>
+      <script type="text/javascript" src="GeoServer%20%20New%20style_files/jquery.js"></script>
+	
+<script type="text/javascript" src="GeoServer%20%20New%20style_files/mappreview_keyshortcut.js"></script>
+
+     <!-- Make the line numbers look good -->
+     <style type="text/css" id="org-geoserver-web-wicket-CodeMirrorEditor-0">
+      .CodeMirror-line-numbers {
+        width: 2.2em;
+        color: #aaa;
+        background-color: #eee;
+        text-align: right;
+        padding-right: .3em;
+        font-size: 12px;
+        font-family: monospace;
+        padding-top: .4em;
+        line-height: normal;
+      }
+      
+      .fullscreen {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        margin: 0;
+        padding: 0;
+        background: inherit;
+      }
+      
+      .button-toolbar span {
+           height: 16px;
+           width: 16px;
+           margin: 2px;
+       }
+       
+      .button-toolbar a {
+           float: left;
+           margin: 0;
+           padding: 0;
+           background: none;
+           border: none;
+       }
+       a.separator {
+           /*border-right: 1px outset;
+           padding-right: 5px;*/
+           margin-right: 5px;
+       }
+       div.disabled .button-toolbar {
+         display: none !important;
+       }
+    </style>
+    
+    
+  <script type="text/javascript" src="GeoServer%20%20New%20style_files/codemirror.js"></script>
+<script type="text/javascript" src="GeoServer%20%20New%20style_files/wicket-event.js"></script>
+<script type="text/javascript"><!--/*--><![CDATA[/*><!--*/
+Wicket.Event.add(window, "domready", function(event) { var textarea = document.getElementById('editor');
+var editor = CodeMirror.fromTextArea("editor", { 
+    height: "450px",
+    content: textarea.value,
+    tabMode: "shift",
+    parserfile: "parsexml.js",
+    lineNumbers: true, 
+    textWrapping: false,
+    disableSpellcheck: true,
+    stylesheet: "./resources/org.geoserver.web.wicket.CodeMirrorEditor/js/codemirror/css/xmlcolors.css",
+    path: "./resources/org.geoserver.web.wicket.CodeMirrorEditor/js/codemirror/js/",
+    initCallback: function(ed) {
+       ed.win.document.body.style.fontSize = 12;
+    }
+});
+if(!document.gsEditors) {
+	document.gsEditors = {};
+}
+document.gsEditors.editor = editor;
+document.getElementById('cm_undo').onclick = function() {
+	editor.undo();
+};
+document.getElementById('cm_redo').onclick = function() {
+	editor.redo();
+};
+document.getElementById('cm_goto').onclick = function() {
+    var line = Number(prompt("Jump to line:", ""));
+    var lastLine = editor.lineNumber(editor.lastLine());
+    if (line && !isNaN(line)) {
+      if(line > lastLine) {
+    	  editor.jumpToLine(lastLine)
+      } else if(line < 1) {
+    	  editor.jumpToLine(1)
+      } else {
+    	  editor.jumpToLine(line);
+      }
+    }
+};
+document.getElementById('cm_font_size').onchange = function() {
+	var fontSize = document.getElementById('cm_font_size').value;
+	editor.lineNumbers.childNodes[0].style.fontSize = fontSize + "px";
+	editor.win.document.body.style.fontSize = fontSize;
+}
+document.getElementById('cm_reformat').onclick = function() {
+	if(editor.selection()) {
+		editor.reindentSelection();
+	} else {
+		editor.reindent();
+	}	
+}
+// This comes from http://thereisamoduleforthat.com/content/making-div-fullscreen-and-restoring-it-its-original-position
+// Does not work so commented out
+/*
+document.getElementById('cm_fullscreen').onclick = function() {
+	div = $('#id6cc');
+    if (!div.hasClass('fullscreen')) { // Going fullscreen:
+    	alert("Sigh, can't make this work at all...");
+      // Save current values.
+      editor.beforeFullscreen = {
+        parentElement: div.parent(),
+        index: div.parent().children().index(div),
+        x: $(window).scrollLeft(), y: $(window).scrollTop(),
+      };
+
+      // Set values needed to go fullscreen.
+      $('body').append(div).css('overflow', 'hidden');
+      div.addClass('fullscreen');
+      window.scroll(0,0);
+    } else { // Going back to normal:
+      // Restore saved values.
+      div.removeClass('fullscreen');
+      if (editor.beforeFullscreen.index >= editor.beforeFullscreen.parentElement.children().length) {
+    	  editor.beforeFullscreen.parentElement.append(div);
+      } else {
+    	  div.insertBefore(editor.beforeFullScreen.parentElement.children().get(editor.beforeFullscreen.index));
+      }
+      $('body').css('overflow', 'auto');
+      window.scroll(editor.beforeFullscreen.x, editor.beforeFullscreen.y);
+      editor.beforeFullScreen = null;
+    }
+  };
+*/;});
+/*-->]]>*/</script>
+
+<script type="text/javascript" src="GeoServer%20%20New%20style_files/wicket-ajax.js"></script>
+</head>
+<body>
+  <div id="header">
+    <div class="wrap">
+      <h2><a class="pngfix" href="http://159.213.57.108/geoserver/web/"><span>GeoServer 2.3</span></a></h2>
+      <div class="button-group selfclear">
+      
+      <div>
+        <a class="button-logout icon" href="http://159.213.57.108/geoserver/j_spring_security_logout"><span>Logout</span></a>
+        <span class="username">Logged in as <span>admin</span></span>.
+      </div>
+      </div>
+    </div><!-- /.wrap -->
+  </div><!-- /#header -->
+  <div id="main">
+    <div class="wrap selfclear">
+    <div id="sidebar">
+      <ul id="navigation">
+        <li class="navigation-tab">
+          <div class="navigation-tab-header">
+            <span>About &amp; Status</span>
+          </div>
+          <ul class="navigation-tab-content plain">
+            <li class="nav-administer-service">
+              <a href="http://159.213.57.108/geoserver/web/?wicket:bookmarkablePage=:org.geoserver.web.admin.StatusPage" title="Summary of server configuration and status">
+                <img src="GeoServer%20%20New%20style_files/server_error.png" alt="Server Status"><span>Server Status</span>
+              </a>
+            </li><li class="nav-administer-service">
+              <a href="http://159.213.57.108/geoserver/web/?wicket:bookmarkablePage=:org.geoserver.web.admin.LogPage" title="Show the GeoServer log file contents">
+                <img src="GeoServer%20%20New%20style_files/page_white_text.png" alt="GeoServer Logs"><span>GeoServer Logs</span>
+              </a>
+            </li><li class="nav-administer-service">
+              <a href="http://159.213.57.108/geoserver/web/?wicket:bookmarkablePage=:org.geoserver.web.admin.ContactPage" title="Set the contact information for this server.">
+                <img src="GeoServer%20%20New%20style_files/vcard.png" alt="Contact Information"><span>Contact Information</span>
+              </a>
+            </li><li class="nav-administer-service">
+              <a href="http://159.213.57.108/geoserver/web/?wicket:bookmarkablePage=:org.geoserver.web.AboutGeoServerPage" title="General information about GeoServer">
+                <img src="GeoServer%20%20New%20style_files/help.png" alt="About GeoServer"><span>About GeoServer</span>
+              </a>
+            </li>
+          </ul>
+        </li><li class="navigation-tab">
+          <div class="navigation-tab-header">
+            <span>Data</span>
+          </div>
+          <ul class="navigation-tab-content plain">
+            <li class="nav-administer-service">
+              <a href="http://159.213.57.108/geoserver/web/?wicket:bookmarkablePage=:org.geoserver.web.demo.MapPreviewPage" title="List of all layers configured in GeoServer and provides previews in various formats for each.">
+                <img src="GeoServer%20%20New%20style_files/map.png" alt="Layer Preview"><span>Layer Preview</span>
+              </a>
+            </li><li class="nav-administer-service">
+              <a href="http://159.213.57.108/geoserver/web/?wicket:bookmarkablePage=:org.geoserver.web.data.workspace.WorkspacePage" title="Manage GeoServer workspaces">
+                <img src="GeoServer%20%20New%20style_files/folder.png" alt="Workspaces"><span>Workspaces</span>
+              </a>
+            </li><li class="nav-administer-service">
+              <a href="http://159.213.57.108/geoserver/web/?wicket:bookmarkablePage=:org.geoserver.web.data.store.StorePage" title="Manage the stores providing data to GeoServer">
+                <img src="GeoServer%20%20New%20style_files/database.png" alt="Stores"><span>Stores</span>
+              </a>
+            </li><li class="nav-administer-service">
+              <a href="http://159.213.57.108/geoserver/web/?wicket:bookmarkablePage=:org.geoserver.web.data.layer.LayerPage" title="Manage the layers being published by GeoServer">
+                <img src="GeoServer%20%20New%20style_files/picture_empty.png" alt="Layers"><span>Layers</span>
+              </a>
+            </li><li class="nav-administer-service">
+              <a href="http://159.213.57.108/geoserver/web/?wicket:bookmarkablePage=:org.geoserver.web.data.layergroup.LayerGroupPage" title="Define and manage layer groupings">
+                <img src="GeoServer%20%20New%20style_files/layers.png" alt="Layer Groups"><span>Layer Groups</span>
+              </a>
+            </li><li class="nav-administer-service">
+              <a href="http://159.213.57.108/geoserver/web/?wicket:bookmarkablePage=:org.geoserver.wms.web.data.StylePage" title="Manage the Styles published by GeoServer">
+                <img src="GeoServer%20%20New%20style_files/palette.png" alt="Styles"><span>Styles</span>
+              </a>
+            </li>
+          </ul>
+        </li><li class="navigation-tab">
+          <div class="navigation-tab-header">
+            <span>Services</span>
+          </div>
+          <ul class="navigation-tab-content plain">
+            <li class="nav-administer-service">
+              <a href="http://159.213.57.108/geoserver/web/?wicket:bookmarkablePage=:org.geoserver.wcs.web.WCSAdminPage" title="Web Coverage Service">
+                <img src="GeoServer%20%20New%20style_files/server_raster.png" alt="WCS"><span>WCS</span>
+              </a>
+            </li><li class="nav-administer-service">
+              <a href="http://159.213.57.108/geoserver/web/?wicket:bookmarkablePage=:org.geoserver.wfs.web.WFSAdminPage" title="Web Feature Service">
+                <img src="GeoServer%20%20New%20style_files/server_vector.png" alt="WFS"><span>WFS</span>
+              </a>
+            </li><li class="nav-administer-service">
+              <a href="http://159.213.57.108/geoserver/web/?wicket:bookmarkablePage=:org.geoserver.wms.web.WMSAdminPage" title="Web Map Service">
+                <img src="GeoServer%20%20New%20style_files/server_map.png" alt="WMS"><span>WMS</span>
+              </a>
+            </li>
+          </ul>
+        </li><li class="navigation-tab">
+          <div class="navigation-tab-header">
+            <span>Settings</span>
+          </div>
+          <ul class="navigation-tab-content plain">
+            <li class="nav-administer-service">
+              <a href="http://159.213.57.108/geoserver/web/?wicket:bookmarkablePage=:org.geoserver.web.admin.GlobalSettingsPage" title="Settings that apply to the entire server.">
+                <img src="GeoServer%20%20New%20style_files/server.png" alt="Global"><span>Global</span>
+              </a>
+            </li><li class="nav-administer-service">
+              <a href="http://159.213.57.108/geoserver/web/?wicket:bookmarkablePage=:org.geoserver.web.admin.JAIPage" title="Administer settings related to Java Advanced Imaging.">
+                <img src="GeoServer%20%20New%20style_files/cog_photo.png" alt="JAI"><span>JAI</span>
+              </a>
+            </li><li class="nav-administer-service">
+              <a href="http://159.213.57.108/geoserver/web/?wicket:bookmarkablePage=:org.geoserver.web.admin.CoverageAccessPage" title="Administer settings related to Coverage Access.">
+                <img src="GeoServer%20%20New%20style_files/cog_photo_002.png" alt="Coverage Access"><span>Coverage Access</span>
+              </a>
+            </li>
+          </ul>
+        </li><li class="navigation-tab">
+          <div class="navigation-tab-header">
+            <span>Tile Caching</span>
+          </div>
+          <ul class="navigation-tab-content plain">
+            <li class="nav-administer-service">
+              <a href="http://159.213.57.108/geoserver/web/?wicket:bookmarkablePage=:org.geoserver.gwc.web.layer.CachedLayersPage" title="Manage the cached layers published by the integrated GeoWebCache">
+                <img src="GeoServer%20%20New%20style_files/tilelayer.png" alt="Tile Layers"><span>Tile Layers</span>
+              </a>
+            </li><li class="nav-administer-service">
+              <a href="http://159.213.57.108/geoserver/web/?wicket:bookmarkablePage=:org.geoserver.gwc.web.GWCSettingsPage" title="Configure the global settings for the embedded GeoWebCache">
+                <img src="GeoServer%20%20New%20style_files/geowebcache-16.png" alt="Caching Defaults"><span>Caching Defaults</span>
+              </a>
+            </li><li class="nav-administer-service">
+              <a href="http://159.213.57.108/geoserver/web/?wicket:bookmarkablePage=:org.geoserver.gwc.web.gridset.GridSetsPage" title="Manage the available gridsets or create a new one">
+                <img src="GeoServer%20%20New%20style_files/gridset.png" alt="Gridsets"><span>Gridsets</span>
+              </a>
+            </li><li class="nav-administer-service">
+              <a href="http://159.213.57.108/geoserver/web/?wicket:bookmarkablePage=:org.geoserver.gwc.web.diskquota.DiskQuotaSettingsPage" title="Configure the disk quota limits and expiration policy for the tile cache">
+                <img src="GeoServer%20%20New%20style_files/diskquota.png" alt="Disk Quota"><span>Disk Quota</span>
+              </a>
+            </li>
+          </ul>
+        </li><li class="navigation-tab">
+          <div class="navigation-tab-header">
+            <span>Security</span>
+          </div>
+          <ul class="navigation-tab-content plain">
+            <li class="nav-administer-service">
+              <a href="http://159.213.57.108/geoserver/web/?wicket:bookmarkablePage=:org.geoserver.security.web.SecuritySettingsPage" title="Configure global security settings">
+                <img src="GeoServer%20%20New%20style_files/wrench.png" alt="Settings"><span>Settings</span>
+              </a>
+            </li><li class="nav-administer-service">
+              <a href="http://159.213.57.108/geoserver/web/?wicket:bookmarkablePage=:org.geoserver.security.web.auth.AuthenticationPage" title="Authentication providers and settings">
+                <img src="GeoServer%20%20New%20style_files/shield.png" alt="Authentication"><span>Authentication</span>
+              </a>
+            </li><li class="nav-administer-service">
+              <a href="http://159.213.57.108/geoserver/web/?wicket:bookmarkablePage=:org.geoserver.security.web.passwd.PasswordPage" title="Password settings">
+                <img src="GeoServer%20%20New%20style_files/lock.png" alt="Passwords"><span>Passwords</span>
+              </a>
+            </li><li class="nav-administer-service">
+              <a href="http://159.213.57.108/geoserver/web/?wicket:bookmarkablePage=:org.geoserver.security.web.UserGroupRoleServicesPage" title="Manage users, groups, and roles">
+                <img src="GeoServer%20%20New%20style_files/group.png" alt="Users, Groups, Roles"><span>Users, Groups, Roles</span>
+              </a>
+            </li><li class="nav-administer-service">
+              <a href="http://159.213.57.108/geoserver/web/?wicket:bookmarkablePage=:org.geoserver.security.web.data.DataSecurityPage" title="Edit data access rules">
+                <img src="GeoServer%20%20New%20style_files/database_key.png" alt="Data"><span>Data</span>
+              </a>
+            </li><li class="nav-administer-service">
+              <a href="http://159.213.57.108/geoserver/web/?wicket:bookmarkablePage=:org.geoserver.security.web.service.ServiceAccessRulePage" title="Edit service access rules">
+                <img src="GeoServer%20%20New%20style_files/shape_square_key.png" alt="Services"><span>Services</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="navigation-tab">
+          <div class="navigation-tab-single">
+             <a href="http://159.213.57.108/geoserver/web/?wicket:bookmarkablePage=:org.geoserver.web.DemoPage" title="GeoServer Demonstrations"><span>Demos</span></a>
+          </div>
+        </li><li class="navigation-tab">
+          <div class="navigation-tab-single">
+             <a href="http://159.213.57.108/geoserver/web/?wicket:bookmarkablePage=:org.geoserver.web.ToolPage" title="GeoServer Tools"><span>Tools</span></a>
+          </div>
+        </li>
+      </ul>
+      
+    </div><!-- /#sidebar -->
+    <div id="page" class="selfclear">
+      <div class="page-header">
+        <div id="id6cd">
+  
+</div>
+        <h1>New style</h1>
+        <p>Type a new SLD definition, or use an existing one as a 
+template, or upload a ready made style from your file system. The editor
+ can provide syntax highlight and be brought to full screen. Click on 
+the "validate" button to verify the style is a valid SLD document.</p>
+        <div class="header-panel"></div>
+      </div>
+      <div class="page-pane selfclear">
+        
+    <form id="mainForm" method="post" action="?wicket:interface=:42:form::IFormSubmitListener::"><div style="width:0px;height:0px;position:absolute;left:-100px;top:-100px;overflow:hidden"><input name="mainForm_hf_0" id="mainForm_hf_0" type="hidden"></div>
+    <ul>
+        <li>
+            <label for="name">Name</label>
+            <input class="text" value="ret_sec_style" name="name">
+        </li>
+        <li>
+            <label for="workspace">Workspace</label>
+            <select name="workspace">
+<option selected="selected" value=""></option>
+<option value="WorkspaceInfoImpl-ea277bc:144b1f32750:-7fff">lerici</option>
+</select>
+        </li>
+        <li>
+            <label for="name">Copy from existing style</label>
+            <select name="existingStyles" id="id6ce" onchange="if (function(){return Wicket.$('id6ce') != null;}()) { Wicket.showIncrementally('ajaxFeedback');}var wcall=wicketAjaxPost('?wicket:interface=:42:form:existingStyles::IBehaviorListener:0:-1', wicketSerialize(Wicket.$('id6ce')),function() { ;Wicket.hideIncrementally('ajaxFeedback');}.bind(this),function() { ;Wicket.hideIncrementally('ajaxFeedback');}.bind(this), function() {return Wicket.$('id6ce') != null;}.bind(this));">
+<option value="StyleInfoImpl--570ae188:124761b8d78:-7ff2">burg</option>
+<option value="StyleInfoImpl--570ae188:124761b8d78:-7ff0">capitals</option>
+<option value="StyleInfoImpl--7ddafe06:144c6933aa5:-7ffa">cave_retino</option>
+<option value="StyleInfoImpl--570ae188:124761b8d78:-7fdd">cite_lakes</option>
+<option value="StyleInfoImpl--7ddafe06:144c6933aa5:-7ff2">conoide_retino</option>
+<option value="StyleInfoImpl--7ddafe06:144c6933aa5:-7fd6">coperture_detr_style</option>
+<option value="StyleInfoImpl--570ae188:124761b8d78:-7fe6">dem</option>
+<option value="StyleInfoImpl--7ddafe06:144c6933aa5:-7ff5">doline_retino</option>
+<option value="StyleInfoImpl--7ddafe06:144c6933aa5:-7fc9">edificato_style</option>
+<option value="StyleInfoImpl--7ddafe06:144c6933aa5:-7fef">frane_retino</option>
+<option value="StyleInfoImpl--388e43b8:144c64708a4:-7fc4">GEO-FA_L_STYLES</option>
+<option value="StyleInfoImpl--7ddafe06:144c6933aa5:-7ffd">GEO-FAC_PO_STYLE</option>
+<option value="StyleInfoImpl--388e43b8:144c64708a4:-7fc7">GEO-MS_P_STYLES</option>
+<option value="StyleInfoImpl--7ddafe06:144c6933aa5:-7fde">geologia_style</option>
+<option value="StyleInfoImpl--570ae188:124761b8d78:-7ff1">giant_polygon</option>
+<option value="StyleInfoImpl--570ae188:124761b8d78:-7fe1">grass</option>
+<option value="StyleInfoImpl--570ae188:124761b8d78:-7fea">green</option>
+<option value="StyleInfoImpl-ea277bc:144b1f32750:-5675">IG-LC_L_STYLE_BLACK</option>
+<option value="StyleInfoImpl-ea277bc:144b1f32750:-5679">IG-LC_L_STYLE_GRAY</option>
+<option value="StyleInfoImpl-ea277bc:144b1f32750:-5676">IG-LC_L_STYLE_WHITE</option>
+<option value="StyleInfoImpl-ea277bc:144b1f32750:-5657">IG-QU5K_PO_STYLE</option>
+<option value="StyleInfoImpl--7ddafe06:144c6933aa5:-7fb8">interf_ret_style</option>
+<option selected="selected" value="StyleInfoImpl--570ae188:124761b8d78:-7fe3">line</option>
+<option value="StyleInfoImpl--7ddafe06:144c6933aa5:-7fdb">pendenza_style</option>
+<option value="StyleInfoImpl--570ae188:124761b8d78:-7fde">poi</option>
+<option value="StyleInfoImpl--570ae188:124761b8d78:-7fdf">point</option>
+<option value="StyleInfoImpl--570ae188:124761b8d78:-7feb">poly_landmarks</option>
+<option value="StyleInfoImpl--570ae188:124761b8d78:-7fe0">polygon</option>
+<option value="StyleInfoImpl--570ae188:124761b8d78:-7fee">pophatch</option>
+<option value="StyleInfoImpl--570ae188:124761b8d78:-7fe5">population</option>
+<option value="StyleInfoImpl--570ae188:124761b8d78:-7fe9">rain</option>
+<option value="StyleInfoImpl--570ae188:124761b8d78:-7fe2">raster</option>
+<option value="StyleInfoImpl--570ae188:124761b8d78:-7fed">restricted</option>
+<option value="StyleInfoImpl--7ddafe06:144c6933aa5:-7fb5">ret_princ_style</option>
+<option value="StyleInfoImpl--27ec735d:144c6865f5a:-8000">scarpata_morfologica</option>
+<option value="StyleInfoImpl--570ae188:124761b8d78:-7fe8">simple_roads</option>
+<option value="StyleInfoImpl--570ae188:124761b8d78:-7fef">simple_streams</option>
+<option value="StyleInfoImpl-ea277bc:144b1f32750:-568e">SUD_PO_STYLE</option>
+<option value="StyleInfoImpl-ea277bc:144b1f32750:-56b7">SUU_PO_STYLE</option>
+<option value="StyleInfoImpl--570ae188:124761b8d78:-7fec">tiger_roads</option>
+<option value="StyleInfoImpl--7ddafe06:144c6933aa5:-7fbe">viabilita_princ_style</option>
+<option value="StyleInfoImpl--7ddafe06:144c6933aa5:-7fbb">viabilita_sec_style</option>
+</select>
+            <a href="#" id="id6cf" onclick="if(event.view.document.gsEditors.editor.getCode() != '' &amp;&amp;!confirm('Really want to overwrite the current editor contents?')) return false;if (function(){return Wicket.$$(this)&amp;&amp;Wicket.$$('mainForm')}()) { Wicket.showIncrementally('ajaxFeedback');}var wcall=wicketSubmitFormById('mainForm', '?wicket:interface=:42:form:copy::IActivePageBehaviorListener:0:-1&amp;wicket:ignoreIfNotActive=true', 'copy' ,function() { ;Wicket.hideIncrementally('ajaxFeedback');}.bind(this),function() { ;Wicket.hideIncrementally('ajaxFeedback');}.bind(this), function() {return Wicket.$$(this)&amp;&amp;Wicket.$$('mainForm')}.bind(this));;; return false;">Copy ...</a>
+        </li>
+    </ul>
+    <div class="field textarea" id="id6d0">
+  <div style="background-color: white" id="id6cc">
+    <div style="border-top: 1px solid black; padding-top: 3px">
+      
+        <div class="button-group button-toolbar selfclear">
+              <!--  Sigh, does not work... oh well, commenting out for the time being and hoping
+                    a good soul might help 
+              <a class="button-fullscreen icon separator" href="#" title="View fullscreen" id="cm_fullscreen">
+                <span></span>
+              </a>
+               -->
+              <a class="button-undo icon" href="#" title="Undo" id="cm_undo">
+                <span></span>
+              </a>
+              <a class="button-redo icon separator" href="#" title="Redo" id="cm_redo">
+                <span></span>
+    
+              </a>
+              <a class="button-goto icon" href="#" title="Go to line ..." id="cm_goto">
+                <span></span>
+              </a>
+              <a class="button-reformat icon separator" href="#" title="Reformat" id="cm_reformat">
+                <span></span>
+              </a>
+              <select style="margin:0; position: " id="cm_font_size">
+              <option value="8">8pt</option>
+              <option value="10">10pt</option>
+              <option value="12" selected="selected">12pt</option>
+              <option value="14">14pt</option>
+              <option value="16">16pt</option>
+              <option value="18">18pt</option>
+              <option value="20">20pt</option>
+            </select>
+            </div>
+      
+    </div>
+     <div style="border: 1px solid black;">
+      <textarea style="display: none;" name="SLD:editorContainer:editor" id="editor">&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;
+&lt;StyledLayerDescriptor version="1.0.0" 
+ xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" 
+ xmlns="http://www.opengis.net/sld" 
+ xmlns:ogc="http://www.opengis.net/ogc" 
+ xmlns:xlink="http://www.w3.org/1999/xlink" 
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;!-- a Named Layer is the basic building block of an SLD document --&gt;
+  &lt;NamedLayer&gt;
+    &lt;Name&gt;default_line&lt;/Name&gt;
+    &lt;UserStyle&gt;
+    &lt;!-- Styles can have names, titles and abstracts --&gt;
+      &lt;Title&gt;Default Line&lt;/Title&gt;
+      &lt;Abstract&gt;A sample style that draws a line&lt;/Abstract&gt;
+      &lt;!-- FeatureTypeStyles describe how to render different features --&gt;
+      &lt;!-- A FeatureTypeStyle for rendering lines --&gt;
+      &lt;FeatureTypeStyle&gt;
+        &lt;Rule&gt;
+          &lt;Name&gt;rule1&lt;/Name&gt;
+          &lt;Title&gt;Blue Line&lt;/Title&gt;
+          &lt;Abstract&gt;A solid blue line with a 1 pixel width&lt;/Abstract&gt;
+          &lt;LineSymbolizer&gt;
+            &lt;Stroke&gt;
+              &lt;CssParameter name="stroke"&gt;#0000FF&lt;/CssParameter&gt;
+            &lt;/Stroke&gt;
+          &lt;/LineSymbolizer&gt;
+        &lt;/Rule&gt;
+      &lt;/FeatureTypeStyle&gt;
+    &lt;/UserStyle&gt;
+  &lt;/NamedLayer&gt;
+&lt;/StyledLayerDescriptor&gt;
+
+</textarea><div class="CodeMirror-wrapping" style="position: relative; height: 450px; padding-left: 30px;"><textarea style="position: absolute; left: -10000px; width: 10px;">Reticolo Secondario</textarea><iframe src="javascript:;" style="border: 0px none; width: 100%; height: 100%; display: block;" frameborder="0"></iframe><div style="position: absolute; height: 100%; top: 0px; left: 0px; overflow: hidden;"><div class="CodeMirror-line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div><div>17</div><div>18</div><div>19</div><div>20</div><div>21</div><div>22</div><div>23</div><div>24</div><div>25</div><div>26</div><div>27</div><div>28</div><div>29</div><div>30</div><div>31</div><div>32</div><div>33</div><div>34</div><div>35</div><div>36</div><div>37</div></div></div></div>
+    </div>
+  </div>
+</div>
+    
+    </form>
+
+    <form id="uploadForm" method="post" action="?wicket:interface=:42:uploadForm::IFormSubmitListener::" enctype="multipart/form-data"><div style="width:0px;height:0px;position:absolute;left:-100px;top:-100px;overflow:hidden"><input name="uploadForm_hf_0" id="uploadForm_hf_0" type="hidden"></div><label for="filename">SLD file</label>
+    <input name="filename" type="file"> <a id="uploadFormSubmit" href="#" onclick="document.forms['uploadForm'].submit()">Upload ...</a>
+    </form>
+    
+    <br>
+
+    <div class="button-group selfclear">
+       <a href="#" id="id6d1" onclick="document.getElementById('editor').value = document.gsEditors.editor.getCode();if (function(){return Wicket.$$(this)&amp;&amp;Wicket.$$('mainForm')}()) { Wicket.showIncrementally('ajaxFeedback');}var wcall=wicketSubmitFormById('mainForm', '?wicket:interface=:42:validate::IActivePageBehaviorListener:0:&amp;wicket:ignoreIfNotActive=true', 'validate' ,function() { ;Wicket.hideIncrementally('ajaxFeedback');}.bind(this),function() { ;Wicket.hideIncrementally('ajaxFeedback');}.bind(this), function() {return Wicket.$$(this)&amp;&amp;Wicket.$$('mainForm')}.bind(this));;; return false;">Validate</a>
+       <!--a href="#" wicket:id="submit"><wicket:message key="submit">Submit</wicket:message></a-->
+       <a href="#" id="mainFormSubmit" onclick="document.forms['mainForm'].submit();">
+         Submit
+       </a>
+       <a href="http://159.213.57.108/geoserver/web/?wicket:interface=:42:cancel::ILinkListener::">Cancel</a>
+    </div>
+
+
+
+
+      </div>
+    </div><!-- /#page -->
+    </div><!-- /.wrap> -->
+  </div><!-- /#main -->
+  <div showincrementallycount="0" id="ajaxFeedback" style="display: none;">
+    <img alt="Loading..." src="GeoServer%20%20New%20style_files/ajax-loader.gif">
+  </div>
+
+
+</body></html>

@@ -256,6 +256,10 @@ gxp.Viewer = Ext.extend(Ext.util.Observable, {
             if(this.tools[tool].ptype == "gxp_zoomtolayerextent"){            
                 this.tools[tool].actions[0].show();
             }
+            
+            if(this.tools[tool].ptype == "gxp_shapedownload"){            
+                this.tools[tool].actions[0].show();
+            }            
         }
         
         record = record || null;
@@ -295,6 +299,10 @@ gxp.Viewer = Ext.extend(Ext.util.Observable, {
                 if(this.tools[tool].ptype == "gxp_zoomtolayerextent"){            
                 this.tools[tool].actions[0].hide();
             }
+            
+            if(this.tools[tool].ptype == "gxp_shapedownload"){            
+                this.tools[tool].actions[0].hide();
+            }            
             }
             
             this.fireEvent("groupselectionChange", groupNode); 
@@ -458,10 +466,12 @@ gxp.Viewer = Ext.extend(Ext.util.Observable, {
                 maxExtent: mapConfig.maxExtent ? OpenLayers.Bounds.fromArray(mapConfig.maxExtent) : undefined,
                 restrictedExtent: mapConfig.restrictedExtent ? OpenLayers.Bounds.fromArray(mapConfig.restrictedExtent) : undefined,
                 numZoomLevels: mapConfig.numZoomLevels || 20,
-				zoomMethod: zoomMethod
+				zoomMethod: zoomMethod,
+                zoomDuration: 20
             }, mapConfig),
             center: config.center && new OpenLayers.LonLat(config.center[0], config.center[1]),
             resolutions: config.resolutions,
+            forceInitialExtent: true,
             layers: [new OpenLayers.Layer(null, baseLayerConfig)],
             items: this.mapItems,
             tbar: config.tbar || {hidden: true}

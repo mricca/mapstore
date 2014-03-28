@@ -175,7 +175,7 @@ gxp.form.WFSSearchComboBox = Ext.extend(Ext.form.ComboBox, {
 			},
 			baseParams:{
 				service:'WFS',
-				version:'1.1.0',
+				version:'1.0.0', //version:'1.1.0', modificato perchè con la versione 2.4.5 di geoserver non dava errore
 				request:'GetFeature',
 				typeName:this.typeName ,
 				outputFormat: this.outputFormat,

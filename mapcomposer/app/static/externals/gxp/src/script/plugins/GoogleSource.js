@@ -175,7 +175,8 @@ gxp.plugins.GoogleSource = Ext.extend(gxp.plugins.LayerSource, {
                     maxExtent: new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34),
                     restrictedExtent: new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34),
                     enableTilt:this.enableTilt,
-                    projection: this.projection
+                    projection: this.projection,
+                    animationEnabled: true
                 }
             ));
         }
