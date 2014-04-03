@@ -47,6 +47,12 @@ gxp.plugins.LayerProperties = Ext.extend(gxp.plugins.Tool, {
      *  The WPS Manager tool ID in order to enable statistics Tab.
      */
 	wpsmanager: null,
+	
+	/** api: config[geobasiChart]
+     *  ``boolean``
+     *  If true, enable make charts in WMSLayerPanel
+     */
+	geobasiChart: null,
     
     /** api: config[layerPanelConfig]
      *  ``Object`` Additional configuration options for the layer type specific
@@ -63,7 +69,7 @@ gxp.plugins.LayerProperties = Ext.extend(gxp.plugins.Tool, {
         gxp.plugins.LayerProperties.superclass.constructor.apply(this, arguments);
         if (!this.outputConfig) {
             this.outputConfig = {
-                width: this.wpsmanager ? 365 : 265,
+                width: this.wpsmanager || this.geobasiChart ? 375 : 265,
                 autoHeight: true
             };
         }
@@ -119,6 +125,7 @@ gxp.plugins.LayerProperties = Ext.extend(gxp.plugins.Tool, {
             layerRecord: record,
             source: this.target.getSource(record),
             wps: this.wpsManager,
+			geobasiChart: this.geobasiChart,
             map: this.target.mapPanel.map,
             defaults: {
                 style: "padding: 10px",

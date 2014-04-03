@@ -22,6 +22,10 @@
  * @requires plugins/Tool.js
  */
 
+/**
+ * @author Riccardo Mari
+ */
+
 /** api: (define)
  *  module = gxp.plugins
  *  class = GeobasiData
@@ -38,6 +42,7 @@ Ext.namespace("gxp.plugins.geobasi");
  *    Plugin for adding MainGeobasi GeobasiData Module to a :class:`gxp.Viewer`.
  */   
 gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
+
 	/** api: ptype = gxp_geobasidata */
     ptype: "gxp_geobasidata",
 	selTipo: 'Seleziona',
@@ -55,16 +60,92 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
             //TODO year ranges (from available data)            
         }
 		this.areaDamage = new gxp.form.SelDamageArea(Ext.apply({
-						map: app.mapPanel.map
-					},this.outputConfig));
+								map: app.mapPanel.map,
+								mapPanel: app.mapPanel
+							},this.outputConfig));
 		
         //Override the comboconfig url;
         /*this.comboConfigs.base.url = this.dataUrl;
         var rangeData;*/
         //download from WFS available year ranges for each crops.
-        
+
+		/*this.uploadPanelForm = new gxp.LayerUploadPanel({
+			url: "/geoserver_geobasi/rest",
+			//width: 350,
+			frame: true,
+			title: "Upload Layer Data",
+			autoHeight: true,
+			bodyStyle: "padding: 10px 10px 0 10px;",
+			labelWidth: 65,
+			defaults: {
+				anchor: "95%",
+				allowBlank: false,
+				msgTarget: "side"
+			},
+			listeners: {
+				uploadcomplete: function(panel, detail) {
+					var layers = detail.layers;
+					var names = [];
+					for (var i=0, len=layers.length; i<len; ++i) {
+						names.push(layers[i].name);
+					}
+					Ext.Msg.show({
+						title: "Success",
+						msg: "Added new layer" + (len !== 1 ? "s" : "") + ": " + names.join(", "),
+						minWidth: 200,
+						icon: Ext.Msg.INFO,
+						buttons: Ext.Msg.OK
+					});
+				}
+			}
+		});*/
+
+		
+		Ext.Ajax.request({
+			scope: this,
+			url: this.dataUrl,
+			method: 'POST',
+			params: {
+				service: "WFS",
+				version: "1.1.0",
+				geometryName: "geom",
+				request: "GetFeature",
+				typeName: "geobasi:geobasi_data_analisi",
+				outputFormat: "json",
+				propertyName: "max,min"
+			},
+			success: function (result, request) {
+				try {
+					var jsonData2 = Ext.util.JSON.decode(result.responseText);
+				} catch (e) {
+					Ext.Msg.alert("Error", "Error parsing data from the server");
+					return;
+				}
+				if (jsonData2.features.length <= 0) {
+					Ext.Msg.alert("Nessun dato", "Dati non disponibili per questo criterio di ricerca");
+					return;
+				}
+				
+				var min = jsonData2.features[0].properties.min;
+				var max = jsonData2.features[0].properties.max;
+				
+				this.output.rangeyear.yearRangeSelector.slider.setMinValue(min);
+				this.output.rangeyear.yearRangeSelector.slider.setMaxValue(max);
+				this.output.rangeyear.yearRangeSelector.slider.setValue( 0, min, true );
+				this.output.rangeyear.yearRangeSelector.slider.setValue( 1, max, true );
+				
+				this.output.rangeyear.yearRangeSelector.startValue.setValue(min);
+				this.output.rangeyear.yearRangeSelector.endValue.setValue(max);
+				
+			},					
+			failure: function (result, request) {
+				Ext.Msg.alert("Error", "Server response error");
+			}
+		});
+					
         var geobasiData  = {
             xtype:'form',
+			id: "geobasiDataForm",
             title: 'Geobasi Data',
             layout: "form",
             minWidth:180,
@@ -139,6 +220,7 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
                     collapsible:false,
                     forceLayout:true, //needed to force to read values from this fieldset
                     collapsed:false,
+					iconCls: "gxp-icon-select-log-geobasi",
 					items:[{
 						fieldLabel: this.selElabMethod,
 						xtype: 'radiogroup',
@@ -154,16 +236,15 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 							{boxLabel: 'Valori reali', name: 'elabmethodtype', inputValue: 2}
 						]
 					}]
-                },
-					this.areaDamage,
-				{
+                },{
                     xtype: 'fieldset',
-                    title:'Seleziona',
+                    title:'Seleziona Matrice, Elemento e Metodo Analitico',
                     anchor:'100%',
                     ref: 'comboView3',
                     collapsible:false,
                     forceLayout:true, //needed to force to read values from this fieldset
                     collapsed:false,
+					iconCls: "gxp-icon-select-elem-geobasi",
                     items:[{
                             xtype: 'combo',
                             ref: 'matrixType',
@@ -300,8 +381,9 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 										{label: "Md", coeff:1,	shortName:'Md' },
 										{label: "Hg", coeff:1,	shortName:'Hg' },
 										{label: "Mo", coeff:1,	shortName:'Mo' },
+										{label: "Na", coeff:1,	shortName:'Na' },
 										{label: "Nd", coeff:1,	shortName:'Nd' },
-										{label: "Ne", coeff:1,	shortName:'Ne' },
+										{label: "Na", coeff:1,	shortName:'Na' },
 										{label: "Np", coeff:1,	shortName:'Np' },
 										{label: "Ni", coeff:1,	shortName:'Ni' },
 										{label: "Nb", coeff:1,	shortName:'Nb' },
@@ -395,14 +477,49 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 									{label: 'Gascromatografia', value:'Gascromatografia', shortName:'Gascromatografia'},
                                     {label: 'ICP-AES', value:'ICP-AES', shortName:'ICP-AES'},
 									{label: 'volumetria', value:'volumetria', shortName:'volumetria'},
+									{label: 'spettrofotometria', value:'spettrofotometria', shortName:'spettrofotometria'},
 									{label: 'MA non specificato', value:'-999', shortName:'-999'}
                                 ]
                             })
                     }]
-                }			
+                },
+					this.areaDamage
+				,{
+                    xtype: 'fieldset',
+                    title:'Seleziona Range',
+                    anchor:'100%',
+                    ref: 'rangeyear',
+                    collapsible:false,
+                    forceLayout:true, //needed to force to read values from this fieldset
+                    collapsed:false,
+					iconCls: "gxp-icon-time-range",
+                    items:[{
+						xtype: 'checkbox',
+						anchor:'100%',
+						fieldLabel:'Includi valori nulli',
+						ref: 'allownull',
+						name: 'allownull',
+						checked : false
+					},{
+						ref: 'yearRangeSelector',
+						xtype: 'yearrangeselector',
+						anchor:'100%',
+						listeners:{
+							scope:this,
+							change:function(start,end){
+								//this.output.rangeyear.referenceYear.setText(end);
+							},
+							afterrender: function(component) {
+								if(this.output.rangeyear.yearRangeSelector!=component)return;           
+							}
+						}         
+					}]
+				}//,this.uploadPanelForm
             ],
 			buttons:[{
                 url: this.dataUrl,
+				chartID: "notAdded_boxPlot",
+				pagePosition: [10000,0],
 				iconCls: "gxp-icon-geobasi-boxplot",
                 xtype: 'gxp_geobasiDataBoxPlotButton',
 				text: "Crea BoxPlot",
@@ -410,9 +527,12 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
                 target:this,
                 form: this,
                 disabled:false,
-				filter: this.areaDamage
+				filter: this.areaDamage,
+				addedLayer: false
             },{
                 url: this.dataUrl,
+				chartID: "notAdded_barChart",				
+				pagePosition: [10000,400],
 				iconCls: "gxp-icon-geobasi-barchart",
                 xtype: 'gxp_geobasiDataBarChartButton',
 				text: "Crea BarChart",
@@ -420,9 +540,12 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
                 target:this,
                 form: this,
                 disabled:false,
-				filter: this.areaDamage
+				filter: this.areaDamage,
+				addedLayer: false
             },{
                 url: this.dataUrl,
+				chartID: "notAdded_curvaCum",
+				pagePosition: [10000,800],
 				iconCls: "gxp-icon-geobasi-curvacum",
                 xtype: 'gxp_geobasiDataCurvaCumButton',
 				text: "Crea Curva Cum.",
@@ -430,7 +553,8 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
                 target:this,
                 form: this,
                 disabled:false,
-				filter: this.areaDamage
+				filter: this.areaDamage,
+				addedLayer: false
             }]
 		};
         

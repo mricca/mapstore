@@ -1,10 +1,10 @@
 {
-   "advancedScaleOverlay": true,
+   "advancedScaleOverlay": false,
    "tab": false,
    "gsSources":{
    		"geobasi": {
 			"ptype": "gxp_wmssource",
-			"url": "http://172.16.1.139:8080/geoserver/ows",
+			"url": "http://159.213.57.108/geoserver_geobasi/ows",
 			"title": "Geobasi",
 			"SRS": "EPSG:3003",
 			"version":"1.1.1",
@@ -12,6 +12,17 @@
 				708923.00, 4290035.00,
 				2631134.00, 5369149.00
 			],				
+			"layerBaseParams":{
+				"FORMAT":"image/png8",
+				"TILED":true
+			}
+		},
+		"geobasi_gwc": {
+			"ptype": "gxp_wmssource",
+			"url": "http://159.213.57.108/geoserver_geobasi/gwc/service/wms",
+			"title": "Geobasi_gwc",
+			"SRS": "EPSG:3003",
+			"version":"1.1.1",
 			"layerBaseParams":{
 				"FORMAT":"image/png8",
 				"TILED":true
@@ -77,6 +88,21 @@
 				"TILED":false
 			}
 		},
+   		"geoscopio_amb_ammin": {
+			"ptype": "gxp_wmssource",
+			"url": "http://www502.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmsambamm&",
+			"title": "Geoscopio ambiti amministrativi",
+			"SRS": "EPSG:3003",
+			"version":"1.3.0",
+			"layersCachedExtent": [
+				708923.00, 4290035.00,
+				2631134.00, 5369149.00
+			],			
+			"layerBaseParams":{
+				"FORMAT":"image/png",
+				"TILED":false
+			}
+		},
 		"mapquest": {
 			"ptype": "gxp_mapquestsource"
 		}, 
@@ -98,16 +124,16 @@
 		"displayProjection": "EPSG:3003",
 		"units": "m",
 		"center": [1648067.222,4755353.958],
-		"maxResolution": "auto",
+		"maxResolution": 1000,
 		"zoom": 6,
-		"numZoomLevels": 15,
+		"numZoomLevels": 14,
 		"maxExtent": [
 				708923.00, 4290035.00,
 				2631134.00, 5369149.00
 		],		
 		"restrictedExtent": [
 				708923.00, 4290035.00,
-				2631134.00, 5369149.00
+				2631134.00, 5369149.00	
 		],			
 		"layers": [
 			{
@@ -120,21 +146,29 @@
 				"tiled": false,
 				"attribution": false
 			},{
-				"source": "geobasi",
+				"source": "geobasi_gwc",
 				"group": "CIS",
 				"title": "Acquiferi in roccia",
-				"name": "geosolutions:cis_roccia",
+				"name": "geobasi:cis_roccia",
 				"displayInLayerSwitcher": true,
 				"opacity": 0.6,
 				"visibility": true
 			},{
-				"source": "geobasi",
+				"source": "geobasi_gwc",
 				"group": "CIS",
 				"title": "Acquiferi in alluvione",
-				"name": "geosolutions:cis_alluvioni",
+				"name": "geobasi:cis_alluvioni",
 				"displayInLayerSwitcher": true,
 				"opacity": 0.6,				
 				"visibility": true
+			},{
+				"source": "geobasi_gwc",
+				"group": "Idrografia",
+				"title": "Bacini",
+				"name": "geobasi:bacini_idro",
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": true
 			},{
 				"source": "geoscopio_idrografia",
 				"group": "Idrografia",
@@ -144,42 +178,42 @@
 				"visibility": true,
 				"tiled": false
 			},{
-				"source": "geobasi",
+				"source": "geoscopio_amb_ammin",
+				"group": "Ambiti-Amministrativi",
+				"title": "Comuni",
+				"name": "rt_ambamm.idcomuni.rt.poly",
+				"displayInLayerSwitcher": true,
+				"visibility": true,
+				"tiled": false
+			},{
+				"source": "geobasi_gwc",
 				"group": "Geobasi",
 				"title": "Geobasi Campioni",
-				"name": "geosolutions:geometria",
+				"name": "geobasi:geobasi_campioni",
 				"displayInLayerSwitcher": true,
-				"visibility": false
+				"visibility": false,
+				"tiled": true
 			},{
-				"source": "geobasi",
+				"source": "geobasi_gwc",
 				"group": "Geobasi",
 				"title": "Geobasi Analisi",
-				"name": "geosolutions:geobasi_analisi",
+				"name": "geobasi:geobasi_analisi",
 				"displayInLayerSwitcher": true,
-				"visibility": false
+				"visibility": false,
+				"tiled": true
 			},{
-				"source": "geobasi",
+				"source": "geobasi_gwc",
 				"group": "Geobasi",
 				"title": "Geobasi Analisi ARPAT",
-				"name": "geosolutions:geobasi_arpat",
+				"name": "geobasi:geobasi_arpat",
 				"displayInLayerSwitcher": true,
-				"visibility": true
+				"visibility": true,
+				"tiled": true
 			}
 		]
 	},
 	"customPanels":[
       {
-          "xtype": "panel",
-          "title": "FeatureGrid",      
-          "border": false,
-          "id": "south",
-          "region": "south",
-          "layout": "fit",
-          "height": 330,
-          "collapsed": true,
-          "collapsible": true,
-          "header": true
-      },{
 			"xtype": "panel",
 			"border": false,
 			"split": true,
@@ -193,7 +227,19 @@
             "header": true,
 			"width": 380,
 			"minWidth": 380
-      }
+      },{
+            "xtype": "panel",
+            "title": "WFSGrid Panel",
+            "border": false,
+            "id": "gridcontainer",
+            "region": "south",
+            "layout": "fit",
+            "split":true,
+            "height": 330,
+            "collapsed": true,
+            "collapsible": true,
+            "header": true
+        }
     ],
 	"scaleOverlayUnits":{
         "bottomOutUnits":"nmi",    
@@ -212,6 +258,7 @@
             "infoPanelId": "",
             "disableAfterClick": false,
             "format": "html",
+			"maxFeatures": 100,
 			"toggleGroup": "toolGroup",
 			"actionTarget": {"target": "paneltbar", "index": 20}
 		}, {
@@ -222,13 +269,13 @@
 		}, {
 		   "ptype": "gxp_mouseposition",
 		   "displayProjectionCode":"EPSG:4326",
-		   "customCss": "font-weight: bold; text-shadow: 1px 0px 0px #FAFAFA, 1px 1px 0px #FAFAFA, 0px 1px 0px #FAFAFA,-1px 1px 0px #FAFAFA, -1px 0px 0px #FAFAFA, -1px -1px 0px #FAFAFA, 0px -1px 0px #FAFAFA, 1px -1px 0px #FAFAFA, 1px 4px 5px #aeaeae;color:#050505 "
+		   "customCss": "font-weight: bold; text-shadow: 1px 0px 0px #FAFAFA, 1px 1px 0px #FAFAFA, 0px 1px 0px #FAFAFA,-1px 1px 0px #FAFAFA, -1px 0px 0px #FAFAFA, -1px -1px 0px #FAFAFA, 0px -1px 0px #FAFAFA, 1px -1px 0px #FAFAFA, 1px 4px 5px #aeaeae;color:#050505"
 		}, {
 			"ptype": "gxp_print",
 			"customParams":{
 				"outputFilename":"mapstore-print"
 			},
-			"printService": "http://192.168.0.62:8080/geoserver/pdf/",
+			"printService": "http://159.213.57.108/geoserver_geobasi/pdf/",
 			"legendPanelId": "legendPanel",
 			"appendLegendOptions": true,
 			"addGraticuleControl": true,
@@ -249,18 +296,6 @@
 			"actionTarget": {"target": "paneltbar", "index": 23},
 			"toggleGroup": "toolGroup"
 		}, {
-		  "ptype": "gxp_featuremanager",
-		  "id": "featuremanager"
-	    }, {
-		  "ptype": "gxp_featuregrid",
-		  "featureManager": "featuremanager",
-		  "outputConfig": {
-			  "id": "featuregrid",
-			  "title": "Features"
-		  },
-		  "outputTarget": "south",
-		  "showExportCSV": true
-	    }, {
 		  "ptype":"gxp_maingeobasi",
 		  "outputConfig":{
 			 "id":"eastTab",
@@ -270,8 +305,8 @@
 		  "outputTarget":"east"
 	   },{
 		  "ptype":"gxp_geobasidata",
-          "dataUrl":"http://172.16.1.139:8080/geoserver/ows",
-		  "rangesUrl": "http://84.33.2.75/geoserver/nrl/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=nrl:cropdata_ranges&outputFormat=json",
+          "dataUrl":"http://159.213.57.108/geoserver_geobasi/ows",
+		  "rangesUrl": "http://159.213.57.108/geoserver_geobasi/geobasi/ows?service=WFS&version=1.1.0&request=GetFeature&typeName=geobasi:geobasi_data_analisi&proprtyName='min,max'outputFormat=json",
 		  "highChartExportUrl" :"http://84.33.2.75/highcharts-export/",
 		  "outputConfig":{
 			 "itemId":"geobasidata",
@@ -284,6 +319,43 @@
 			 }
 		  },
 		  "outputTarget":"eastTab"
-	   }
+	   },{
+			"ptype": "gxp_wfsgrid",
+			"wfsURL": "http://159.213.57.108/geoserver_geobasi/wfs",
+			"featureType": "bacini_idro",
+			"outputTarget": "gridcontainer",
+			"srsName": "EPSG:3003",
+			"paging": true,
+			"pageSize": 10,
+			"fields": [
+				{
+					"name": "NOME",
+					"mapping": "NOME"
+				},
+				{
+					"name": "NOME",      
+					"mapping": "NOME"
+				}
+			],
+			"columns": [
+				{
+					"header": "CODICE",
+					"dataIndex": "NOME"
+				},
+				{
+					"header": "NOME",
+					"dataIndex": "NOME"
+				}
+			],
+			"actionColumns": [{
+				"type": "checkDisplay",
+				"layerName": "Highlight Layer",
+				"sourceSRS": "EPSG:3003"
+			},
+			{
+				"type": "zoom",
+				"sourceSRS": "EPSG:3003"
+			}]            
+        }
 	]
 }

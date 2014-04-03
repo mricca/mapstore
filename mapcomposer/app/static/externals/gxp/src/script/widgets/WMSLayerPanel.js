@@ -44,6 +44,11 @@ gxp.WMSLayerPanel = Ext.extend(Ext.TabPanel, {
      * The WPSManager instance.
      */
     wps: null,
+	
+    /** api: config[geobaciChart]
+     * Allow geobasi chart.
+     */
+    geobasiChart: null,	
 
     map: null,
     
@@ -102,6 +107,8 @@ gxp.WMSLayerPanel = Ext.extend(Ext.TabPanel, {
     summaryText: "Statistics",
     summaryInfoText: "Current Viewport Raster Statistics",
     refreshText: "Refresh",
+	geobasiChartText: "Grafici GeoBasi",
+	geobasiPanelLabel: "Crea il grafico per il livello selezionato",
     
     initComponent: function() {
         this.addEvents(
@@ -152,6 +159,10 @@ gxp.WMSLayerPanel = Ext.extend(Ext.TabPanel, {
 			if (!this.layerRecord.get("queryable") || containsRasterKwrds) {
 				this.items.push(this.createRasterSummaryPanel());
 			}
+		}
+		
+        if(this.geobasiChart){
+            this.items.push(this.createGeobasiChartPanel());
 		}
 		
         gxp.WMSLayerPanel.superclass.initComponent.call(this);
@@ -581,7 +592,74 @@ gxp.WMSLayerPanel = Ext.extend(Ext.TabPanel, {
             	render: onRefreshButtonClicked
             }
         }
-    }
+    },
+	
+    /** private: createGeobasiChartPanel
+     *  Creates the geobasi chart panel for added layers.
+     */
+	createGeobasiChartPanel: function()	{
+	
+		var layer = this.layerRecord.get("name");
+		
+		var geobasiDataForm = app.tools["geobasidataToolId"];
+
+		return {
+			title: this.geobasiChartText,
+			style: {"padding": "10px"},
+			layout: "form",
+			labelWidth: 70,
+            items:[{
+                xtype:'label',
+				style: 'color:#FF0000;font-weight:bold;text-align:center',
+                id:'feature_edit_unauthorized',
+                text:this.geobasiPanelLabel
+            }],
+			buttons:[{
+                url: geobasiDataForm.dataUrl,
+				chartID: "added_boxPlot",
+				pagePosition: [0,0],				
+				iconCls: "gxp-icon-geobasi-boxplot",
+                xtype: 'gxp_geobasiDataBoxPlotButton',
+				text: "Crea BoxPlot",
+                ref: '../submitButton',
+                target:this,
+                form: geobasiDataForm,
+                disabled:false,
+				filter: geobasiDataForm.areaDamage,
+				layer: layer === "geobasi_analisi" ? "geobasi:geobasi_boxplot_view" : layer,
+				addedLayer: layer === "geobasi_analisi" ? false : true
+            },{
+                url: geobasiDataForm.dataUrl,
+				chartID: "added_barChart",				
+				pagePosition: [0,400],				
+				iconCls: "gxp-icon-geobasi-barchart",
+                xtype: 'gxp_geobasiDataBarChartButton',
+				text: "Crea BarChart",
+                ref: '../submitButton',
+                target:this,
+                form: geobasiDataForm,
+                disabled:false,
+				filter: geobasiDataForm.areaDamage,
+				layer: layer === "geobasi_analisi" ? "geobasi:geobasi_barchart_view" : layer,
+				addedLayer: layer === "geobasi_analisi" ? false : true
+            },{
+                url: geobasiDataForm.dataUrl,
+				chartID: "added_curvaCum",	
+				pagePosition: [0,800],
+				iconCls: "gxp-icon-geobasi-curvacum",
+                xtype: 'gxp_geobasiDataCurvaCumButton',
+				text: "Crea Curva Cum.",
+                ref: '../submitButton',
+                target:this,
+                form: geobasiDataForm,
+                disabled:false,
+				filter: geobasiDataForm.areaDamage,
+				layer: layer === "geobasi_analisi" ? "geobasi:geobasi_boxplot_view" : layer,
+				addedLayer: layer === "geobasi_analisi" ? false : true
+            }]
+		}
+	
+	}
 });
 
 Ext.reg('gxp_wmslayerpanel', gxp.WMSLayerPanel); 

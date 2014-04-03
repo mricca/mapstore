@@ -1,6 +1,6 @@
 .olControlScaleBar {
-    bottom: 50px;
-    right: 0px;
+    bottom: 8px;
+    left: 0px;
     font-family: sans-serif;
 	font-weight: bold;
 	text-shadow: 1px 0px 0px #FAFAFA, 1px 1px 0px #FAFAFA, 0px 1px 0px #FAFAFA,-1px 1px 0px #FAFAFA, -1px 0px 0px #FAFAFA, -1px -1px 0px #FAFAFA, 0px -1px 0px #FAFAFA, 1px -1px 0px #FAFAFA, 1px 4px 5px #aeaeae;

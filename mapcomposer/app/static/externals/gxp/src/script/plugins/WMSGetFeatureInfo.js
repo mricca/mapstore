@@ -306,10 +306,11 @@ gxp.plugins.WMSGetFeatureInfo = Ext.extend(gxp.plugins.Tool, {
                 map: this.target.mapPanel,
                 width: 490,
                 height: 320,
+                //fill: false,
                 /*anchored: true,
                 unpinnable : true,*/
                 items: items,
-                draggable: true,
+                draggable: false,
                 listeners: {
                     close: (function(key) {
                         return function(panel){

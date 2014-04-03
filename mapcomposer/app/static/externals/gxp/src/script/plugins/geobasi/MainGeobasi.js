@@ -22,6 +22,10 @@
  * @requires plugins/Tool.js
  */
 
+/**
+ * @author Riccardo Mari
+ */
+ 
 /** api: (define)
  *  module = gxp.plugins.geobasi
  *  class = MainGeobasi

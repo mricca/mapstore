@@ -134,7 +134,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 		            actions: ["-"], 
                     actionTarget: "paneltbar"
 		        }, {
-		            ptype: "gxp_wmsgetfeatureinfo_menu", 
+		            ptype: "gxp_wmsgetfeatureinfo", 
                     id: "wmsgetfeatureinfo_plugin",
 					toggleGroup: this.toggleGroup,
 					useTabPanel: true,

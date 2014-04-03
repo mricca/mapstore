@@ -1,5 +1,16 @@
 <% extends ./base.html %>
 <% subskin extrahead %>
+	
+	<!--jquery and highcharts lib-->
+	<link href='http://fonts.googleapis.com/css?family=Squada+One' rel='stylesheet' type='text/css'> 
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="http://code.highcharts.com/highcharts.js"></script>
+	<script type="text/javascript" src="http://code.highcharts.com/highcharts-more.js"></script>
+	<script type="text/javascript" src="http://code.highcharts.com/modules/funnel.js"></script> 
+	<script type="text/javascript" src="http://code.highcharts.com/modules/exporting.js"></script>
+
+	<script type="text/javascript" src="script/app.js"></script>
+	
     <!-- OpenLayers resources -->
     <link rel="stylesheet" type="text/css" href="externals/openlayers/theme/default/style.css">
 
@@ -96,58 +107,6 @@
 	-->
 	
     <script>
-		Ext4.Loader.setConfig({
-			enabled : true,
-			disableCaching : false, // For debug only
-			paths : {
-				'Chart' : 'externals/Chart'
-			}
-		});        
-		
-		Ext4.require('Chart.ux.Highcharts');
-		Ext4.require('Chart.ux.Highcharts.Serie');
-		Ext4.require('Chart.ux.Highcharts.AreaRangeSerie');
-		Ext4.require('Chart.ux.Highcharts.AreaSerie');
-		Ext4.require('Chart.ux.Highcharts.AreaSplineRangeSerie');
-		Ext4.require('Chart.ux.Highcharts.AreaSplineSerie');
-		Ext4.require('Chart.ux.Highcharts.BarSerie');
-		Ext4.require('Chart.ux.Highcharts.BoxPlotSerie');
-		Ext4.require('Chart.ux.Highcharts.BubbleSerie');
-		Ext4.require('Chart.ux.Highcharts.ColumnRangeSerie');
-		Ext4.require('Chart.ux.Highcharts.ColumnSerie');
-		Ext4.require('Chart.ux.Highcharts.ErrorBarSerie');
-		Ext4.require('Chart.ux.Highcharts.FunnelSerie');
-		Ext4.require('Chart.ux.Highcharts.GaugeSerie');
-		Ext4.require('Chart.ux.Highcharts.LineSerie');
-		Ext4.require('Chart.ux.Highcharts.PieSerie');
-		Ext4.require('Chart.ux.Highcharts.RangeSerie');
-		Ext4.require('Chart.ux.Highcharts.ScatterSerie');
-		Ext4.require('Chart.ux.Highcharts.SplineSerie');
-		Ext4.require('Chart.ux.Highcharts.WaterfallSerie');
-
-		//Ext4.require('Chart.ux.HighStock');
-		
-		Ext4.override(Ext4.data.proxy.Ajax,{ 
-			getMethod: function(request) { 
-				return 'POST'; 
-			} 
-		})
-		
-		Ext4.require('Ext4.container.Viewport');
-		
-		Ext4.application({
-			models: [
-				'MatrixModel',
-				'BoxPlotChartModel',
-				'BarChartModel'
-			],
-			stores: [
-				'MatrixStore',
-				'BoxPlotChartStore',
-				'BarChartStore'
-			],
-			name: 'GeoBasi'
-		});		
 
         var app;        
         var modified = false; var mapIdentifier = -1; var authorization = false; var fullScreen = false; var bbox; var useCookies;
@@ -368,7 +327,7 @@
 			];
 			
             var appViewport = new Ext.Viewport({
-                id: 'appVieport',
+                id: 'appViewport',
                 layout:'fit',
                 border:false,
                 items: [{
@@ -382,7 +341,7 @@
 						html: headerContent,
 						region: 'north',
 						collapsible: true,
-						collapsed: true,
+						collapsed: false,
 						collapseMode: 'mini',
 						hideCollapseTool: true,
 						split: true,

@@ -72,6 +72,8 @@ gxp.form.SelDamageArea = Ext.extend(Ext.form.FieldSet, {
      * Text for Label comboBufferSelection (i18n).
      */  
 	comboBufferSelection: "Buffer",    
+	
+	iconCls: "gxp-icon-select-area-geobasi",
 
     initComponent: function () {
 
@@ -99,10 +101,23 @@ gxp.form.SelDamageArea = Ext.extend(Ext.form.FieldSet, {
             }
         });
 
+
 		this.searchWFSComboAlluvioni = new gxp.form.WFSSearchComboBox({
-					url: "http://localhost:8080/geoserver/ows",
-					typeName: "geosolutions:cis_alluvioni",
-					hidden: true,
+					url: "http://159.213.57.108/geoserver_geobasi/ows?",
+					versionWFS: '1.1.0',
+					typeName: "geobasi:cis_alluvioni",
+					mapPanel: this.mapPanel,
+					hidden: false,
+					zoomTo: true,
+					queryParam: 'cql_filter',
+					pageSize: 10,
+					highlightLayer: "Highlight Alluvioni",
+					highlightLayerStyle: {
+						strokeColor: "#FF00FF",
+						strokeWidth: 2,
+						fillColor: "#FF00FF",
+						fillOpacity: 0.8
+					},					
 					recordModel:[
 						{name: 'id', mapping: 'id'},
 						{name: 'geometry', mapping: 'geometry'},
@@ -116,9 +131,21 @@ gxp.form.SelDamageArea = Ext.extend(Ext.form.FieldSet, {
 		});
 		
 		this.searchWFSComboRoccia = new gxp.form.WFSSearchComboBox({
-					url: "http://localhost:8080/geoserver/ows",
-					typeName: "geosolutions:cis_roccia",
+					url: "http://159.213.57.108/geoserver_geobasi/ows?",
+					versionWFS: '1.1.0',
+					typeName: "geobasi:cis_roccia",
+					mapPanel: this.mapPanel,
 					hidden: true,
+					zoomTo: true,
+					queryParam: 'cql_filter',
+					pageSize: 10,
+					highlightLayer: "Highlight Roccia",
+					highlightLayerStyle: {
+						strokeColor: "#FF00FF",
+						strokeWidth: 2,
+						fillColor: "#FF0000",
+						fillOpacity: 0.8
+					},	
 					recordModel:[
 						{name: 'id', mapping: 'id'},
 						{name: 'geometry', mapping: 'geometry'},
@@ -129,7 +156,34 @@ gxp.form.SelDamageArea = Ext.extend(Ext.form.FieldSet, {
 					sortBy: 'acquifero',
 					displayField: 'acquifero',
 					tpl:"<tpl for=\".\"><div class=\"search-item\"><h3>{acquifero}</span></h3>(Acquifero Roccia)</div></tpl>"
-		});		
+		});
+
+		this.searchWFSComboComuniRT = new gxp.form.WFSSearchComboBox({
+					url: "http://www502.regione.toscana.it:80/wfsvector/com.rt.wfs.RTmap/wfs",
+					versionWFS: '1.1.0',
+					typeName: "sita:listacomunirtpoly",
+					mapPanel: this.mapPanel,
+					hidden: true,
+					zoomTo: true,
+					queryParam: 'Filter',
+					highlightLayer: "Highlight Comuni",
+					highlightLayerStyle: {
+						strokeColor: "#FF00FF",
+						strokeWidth: 2,
+						fillColor: "#0000FF",
+						fillOpacity: 0.8
+					},	
+					recordModel:[
+						{name: 'id', mapping: 'gid'},
+						{name: 'geometry', mapping: 'geometry'},
+						{name: 'codcom', mapping: 'properties.codcom'},
+						{name: 'ncom', mapping: 'properties.ncom'}
+					],
+					queriableAttributes:['ncom'],
+					sortBy: 'ncom',
+					displayField: 'ncom',
+					tpl:"<tpl for=\".\"><div class=\"search-item\"><h3>{ncom}</span></h3>(Comune)</div></tpl>"
+		});			
 		
         this.filterCircle;
         this.filterPolygon;
@@ -193,6 +247,10 @@ gxp.form.SelDamageArea = Ext.extend(Ext.form.FieldSet, {
                         name: 'AcquiferoRocc',
                         label: 'Acquifero Roccia',
                         value: 'acquiferorocc'
+                    }, {
+                        name: 'ComuniRT',
+                        label: 'Comuni RT',
+                        value: 'comunirt'
                     }]
                 }),
                 listeners: {
@@ -256,10 +314,35 @@ gxp.form.SelDamageArea = Ext.extend(Ext.form.FieldSet, {
 							this.searchWFSComboAlluvioni.disable();
 							this.searchWFSComboAlluvioni.hide();
 							this.searchWFSComboAlluvioni.clearValue();
+							this.searchWFSComboAlluvioni.geometry = null;
+							this.searchWFSComboAlluvioni.newLayer = null;
+
+							var searchWFSComboAlluvioniLayer = this.mapPanel.map.getLayersByName(this.searchWFSComboAlluvioni.highlightLayer)[0];
+							
+							if (searchWFSComboAlluvioniLayer)
+								this.mapPanel.map.removeLayer(searchWFSComboAlluvioniLayer);
 							
 							this.searchWFSComboRoccia.disable();
 							this.searchWFSComboRoccia.hide();
-							this.searchWFSComboRoccia.clearValue();							
+							this.searchWFSComboRoccia.clearValue();
+							this.searchWFSComboRoccia.geometry = null;
+							this.searchWFSComboRoccia.newLayer = null;
+
+							var searchWFSComboRocciaLayer = this.mapPanel.map.getLayersByName(this.searchWFSComboRoccia.highlightLayer)[0];
+							
+							if (searchWFSComboRocciaLayer)
+								this.mapPanel.map.removeLayer(searchWFSComboRocciaLayer);
+							
+							this.searchWFSComboComuniRT.disable();
+							this.searchWFSComboComuniRT.hide();
+							this.searchWFSComboComuniRT.clearValue();									
+							this.searchWFSComboComuniRT.geometry = null;	
+							this.searchWFSComboComuniRT.newLayer = null;
+							
+							var searchWFSComboComuniRTLayer = this.mapPanel.map.getLayersByName(this.searchWFSComboComuniRT.highlightLayer)[0];
+							
+							if (searchWFSComboComuniRTLayer)							
+								this.mapPanel.map.removeLayer(searchWFSComboComuniRTLayer);
 							
                             this.bufferFieldset.disable();
 
@@ -298,11 +381,36 @@ gxp.form.SelDamageArea = Ext.extend(Ext.form.FieldSet, {
                         } else if (outputValue == 'polygon') {
 							this.searchWFSComboAlluvioni.disable();
 							this.searchWFSComboAlluvioni.hide();
-							this.searchWFSComboAlluvioni.clearValue();		
+							this.searchWFSComboAlluvioni.clearValue();
+							this.searchWFSComboAlluvioni.geometry = null;
+							this.searchWFSComboAlluvioni.newLayer = null;
 
+							var searchWFSComboAlluvioniLayer = this.mapPanel.map.getLayersByName(this.searchWFSComboAlluvioni.highlightLayer)[0];
+							
+							if (searchWFSComboAlluvioniLayer)
+								this.mapPanel.map.removeLayer(searchWFSComboAlluvioniLayer);
+							
 							this.searchWFSComboRoccia.disable();
 							this.searchWFSComboRoccia.hide();
-							this.searchWFSComboRoccia.clearValue();	
+							this.searchWFSComboRoccia.clearValue();		
+							this.searchWFSComboRoccia.geometry = null;							
+							this.searchWFSComboRoccia.newLayer = null;
+							
+							var searchWFSComboRocciaLayer = this.mapPanel.map.getLayersByName(this.searchWFSComboRoccia.highlightLayer)[0];
+							
+							if (searchWFSComboRocciaLayer)
+								this.mapPanel.map.removeLayer(searchWFSComboRocciaLayer);
+							
+							this.searchWFSComboComuniRT.disable();
+							this.searchWFSComboComuniRT.hide();
+							this.searchWFSComboComuniRT.clearValue();		
+							this.searchWFSComboComuniRT.geometry = null;								
+							this.searchWFSComboComuniRT.newLayer = null;
+							
+							var searchWFSComboComuniRTLayer = this.mapPanel.map.getLayersByName(this.searchWFSComboComuniRT.highlightLayer)[0];
+							
+							if (searchWFSComboComuniRTLayer)							
+								this.mapPanel.map.removeLayer(searchWFSComboComuniRTLayer);
 							
                             this.bufferFieldset.disable();
 
@@ -323,7 +431,7 @@ gxp.form.SelDamageArea = Ext.extend(Ext.form.FieldSet, {
                                 "featureadded": function (event) {
                                     me.filterPolygon = new OpenLayers.Filter.Spatial({
 											type: OpenLayers.Filter.Spatial.INTERSECTS,
-											property: "geom", //featureManager.featureStore.geometryName,
+											property: "geom",
 											value: event.feature.geometry
 										});
                                 },
@@ -335,32 +443,122 @@ gxp.form.SelDamageArea = Ext.extend(Ext.form.FieldSet, {
                         } else if (outputValue == 'buffer') {
 							this.searchWFSComboAlluvioni.disable();
 							this.searchWFSComboAlluvioni.hide();
-							this.searchWFSComboAlluvioni.clearValue();	
-
+							this.searchWFSComboAlluvioni.clearValue();
+							this.searchWFSComboAlluvioni.geometry = null;								
+							this.searchWFSComboAlluvioni.newLayer = null;
+							
+							var searchWFSComboAlluvioniLayer = this.mapPanel.map.getLayersByName(this.searchWFSComboAlluvioni.highlightLayer)[0];
+							
+							if (searchWFSComboAlluvioniLayer)
+								this.mapPanel.map.removeLayer(searchWFSComboAlluvioniLayer);
+							
 							this.searchWFSComboRoccia.disable();
 							this.searchWFSComboRoccia.hide();
-							this.searchWFSComboRoccia.clearValue();
+							this.searchWFSComboRoccia.clearValue();		
+							this.searchWFSComboRoccia.geometry = null;								
+							this.searchWFSComboRoccia.newLayer = null;
+							
+							var searchWFSComboRocciaLayer = this.mapPanel.map.getLayersByName(this.searchWFSComboRoccia.highlightLayer)[0];
+							
+							if (searchWFSComboRocciaLayer)
+								this.mapPanel.map.removeLayer(searchWFSComboRocciaLayer);
+							
+							this.searchWFSComboComuniRT.disable();
+							this.searchWFSComboComuniRT.hide();
+							this.searchWFSComboComuniRT.clearValue();	
+							this.searchWFSComboComuniRT.geometry = null;		
+							this.searchWFSComboComuniRT.newLayer = null;
+
+							var searchWFSComboComuniRTLayer = this.mapPanel.map.getLayersByName(this.searchWFSComboComuniRT.highlightLayer)[0];
+							
+							if (searchWFSComboComuniRTLayer)							
+								this.mapPanel.map.removeLayer(searchWFSComboComuniRTLayer);
 							
                             this.bufferFieldSet.enable();
                             this.bufferFieldset.doLayout(true,false);						
 						} else if (outputValue == 'acquiferoall'){
+							
 							this.searchWFSComboRoccia.disable();
 							this.searchWFSComboRoccia.hide();
-							this.searchWFSComboRoccia.clearValue();
+							this.searchWFSComboRoccia.clearValue();		
+							this.searchWFSComboRoccia.geometry = null;
+							this.searchWFSComboRoccia.newLayer = null;							
+
+							var searchWFSComboRocciaLayer = this.mapPanel.map.getLayersByName(this.searchWFSComboRoccia.highlightLayer)[0];
+							
+							if (searchWFSComboRocciaLayer)
+								this.mapPanel.map.removeLayer(searchWFSComboRocciaLayer);
+							
+							this.searchWFSComboComuniRT.disable();
+							this.searchWFSComboComuniRT.hide();
+							this.searchWFSComboComuniRT.clearValue();
+							this.searchWFSComboComuniRT.geometry = null;
+							this.searchWFSComboComuniRT.newLayer = null;							
+
+							var searchWFSComboComuniRTLayer = this.mapPanel.map.getLayersByName(this.searchWFSComboComuniRT.highlightLayer)[0];
+							
+							if (searchWFSComboComuniRTLayer)							
+								this.mapPanel.map.removeLayer(searchWFSComboComuniRTLayer);						
 							
 							this.bufferFieldset.disable();
                             this.searchWFSComboAlluvioni.enable();
 							this.searchWFSComboAlluvioni.show();
                             //this.searchWFSComboAlluvioni.doLayout(true,false);
 							
-                        }else{
+                        }else if (outputValue == 'acquiferorocc'){
 							this.searchWFSComboAlluvioni.disable();
 							this.searchWFSComboAlluvioni.hide();
-							this.searchWFSComboAlluvioni.clearValue();	
-						
+							this.searchWFSComboAlluvioni.clearValue();
+							this.searchWFSComboAlluvioni.geometry = null;
+							this.searchWFSComboAlluvioni.newLayer = null;							
+
+							var searchWFSComboAlluvioniLayer = this.mapPanel.map.getLayersByName(this.searchWFSComboAlluvioni.highlightLayer)[0];
+							
+							if (searchWFSComboAlluvioniLayer)
+								this.mapPanel.map.removeLayer(searchWFSComboAlluvioniLayer);
+							
+							this.searchWFSComboComuniRT.disable();
+							this.searchWFSComboComuniRT.hide();
+							this.searchWFSComboComuniRT.clearValue();
+							this.searchWFSComboComuniRT.geometry = null;								
+							this.searchWFSComboComuniRT.newLayer = null;	
+							
+							var searchWFSComboComuniRTLayer = this.mapPanel.map.getLayersByName(this.searchWFSComboComuniRT.highlightLayer)[0];
+							
+							if (searchWFSComboComuniRTLayer)							
+								this.mapPanel.map.removeLayer(searchWFSComboComuniRTLayer);						
+							
 							this.bufferFieldset.disable();
                             this.searchWFSComboRoccia.enable();
 							this.searchWFSComboRoccia.show();
+                            //this.searchWFSComboAlluvioni.doLayout(true,false);
+							
+                        }else{
+							this.searchWFSComboAlluvioni.disable();
+							this.searchWFSComboAlluvioni.hide();
+							this.searchWFSComboAlluvioni.clearValue();
+							this.searchWFSComboAlluvioni.geometry = null;	
+							this.searchWFSComboAlluvioni.newLayer = null;
+
+							var searchWFSComboAlluvioniLayer = this.mapPanel.map.getLayersByName(this.searchWFSComboAlluvioni.highlightLayer)[0];
+							
+							if (searchWFSComboAlluvioniLayer)
+								this.mapPanel.map.removeLayer(searchWFSComboAlluvioniLayer);
+							
+							this.searchWFSComboRoccia.disable();
+							this.searchWFSComboRoccia.hide();
+							this.searchWFSComboRoccia.clearValue();	
+							this.searchWFSComboRoccia.geometry = null;		
+							this.searchWFSComboRoccia.newLayer = null;
+
+							var searchWFSComboRocciaLayer = this.mapPanel.map.getLayersByName(this.searchWFSComboRoccia.highlightLayer)[0];
+							
+							if (searchWFSComboRocciaLayer)
+								this.mapPanel.map.removeLayer(searchWFSComboRocciaLayer);
+						
+							this.bufferFieldset.disable();
+                            this.searchWFSComboComuniRT.enable();
+							this.searchWFSComboComuniRT.show();
                             //this.searchWFSComboAlluvioni.doLayout(true,false);							
 						
 						}
@@ -371,9 +569,19 @@ gxp.form.SelDamageArea = Ext.extend(Ext.form.FieldSet, {
             this.bufferFieldSet,
 			this.searchWFSComboAlluvioni,
 			this.searchWFSComboRoccia,
+			this.searchWFSComboComuniRT,
+			{
+				xtype: 'checkbox',
+				anchor:'100%',
+				fieldLabel:'Interseca con Bacini',
+				ref: 'baciniintersect',
+				name: 'baciniintersect',
+				checked : false
+			},
 			new Ext.Button({
 				id:'clearButton_id',
 				text: 'Rimuovi filtro',
+				iconCls: "cancel",
 				handler: function(){
 					this.clearDrawFeature();
 				},
@@ -424,15 +632,34 @@ gxp.form.SelDamageArea = Ext.extend(Ext.form.FieldSet, {
         }
         //if(me.searchWFSComboAlluvioni.hidden === false){
             me.searchWFSComboAlluvioni.hide();
-			me.searchWFSComboAlluvioni.filter = null;
+			me.searchWFSComboAlluvioni.geometry = null;
 			me.searchWFSComboAlluvioni.clearValue();
+			me.searchWFSComboAlluvioni.newLayer = null;
         //}	
 		//if(me.searchWFSComboRoccia.hidden === false){
             me.searchWFSComboRoccia.hide();
-			me.searchWFSComboRoccia.filter = null;
+			me.searchWFSComboRoccia.geometry = null;
 			me.searchWFSComboRoccia.clearValue();
+			me.searchWFSComboRoccia.newLayer = null;
+			
+            me.searchWFSComboComuniRT.hide();
+			me.searchWFSComboComuniRT.geometry = null;
+			me.searchWFSComboComuniRT.clearValue();	
+			me.searchWFSComboComuniRT.newLayer = null;			
+
+			var searchWFSComboAlluvioniLayer = me.mapPanel.map.getLayersByName(me.searchWFSComboAlluvioni.highlightLayer)[0];
+			if(searchWFSComboAlluvioniLayer)
+				me.mapPanel.map.removeLayer(searchWFSComboAlluvioniLayer);
+
+			var searchWFSComboRocciaLayer = me.mapPanel.map.getLayersByName(me.searchWFSComboRoccia.highlightLayer)[0];
+			if(searchWFSComboRocciaLayer)			
+				me.mapPanel.map.removeLayer(searchWFSComboRocciaLayer);
+
+			var searchWFSComboComuniRTLayer = me.mapPanel.map.getLayersByName(me.searchWFSComboComuniRT.highlightLayer)[0];
+			if(searchWFSComboComuniRTLayer)			
+				me.mapPanel.map.removeLayer(searchWFSComboComuniRTLayer);			
         //}	
-        me.items.items[0].setValue('Scegli tipologia selezione area');
+			me.items.items[0].setValue('Scegli tipologia selezione area');
     }
 
 

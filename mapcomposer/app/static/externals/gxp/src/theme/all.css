@@ -263,7 +263,7 @@
 .x-btn .gxp-icon-zoom-out, .x-tree-node .gxp-icon-zoom-out {
     background-image: url(img/silk/magnifier_zoom_out.png);
 }
-.x-btn .gxp-icon-zoombox-in, .x-tree-node .gxp-icon-zoombox-out {
+.x-btn .gxp-icon-zoombox-in, .x-tree-node .gxp-icon-zoombox-out, .gxp-icon-zoombox-out {
     background-image: url(img/silk/shape_square_green.png);
 }
 .x-btn .gxp-icon-zoombox-out, .x-tree-node .gxp-icon-zoombox-out {
@@ -390,4 +390,20 @@ div.map-overlay div.overlay-element {
 
 .x-btn .gxp-icon-geobasi-curvacum, .x-menu-item .gxp-icon-geobasi-curvacum {
     background-image: url(img/silk/chart_line.png) !important;
+}
+
+.x-btn .gxp-icon-time-range, .x-menu-item .gxp-icon-time-range, .gxp-icon-time-range {
+    background-image: url(img/silk/time.png) !important;
+}
+
+.x-btn .gxp-icon-select-area-geobasi, .x-tree-node .gxp-icon-select-area-geobasi, .gxp-icon-select-area-geobasi {
+    background-image: url(img/silk/shape_group.png);
+}
+
+.x-btn .gxp-icon-select-elem-geobasi, .x-tree-node .gxp-icon-select-elem-geobasi, .gxp-icon-select-elem-geobasi {
+    background-image: url(img/silk/application_form.png);
+}
+
+.x-btn .gxp-icon-select-log-geobasi, .x-tree-node .gxp-icon-select-log-geobasi, .gxp-icon-select-log-geobasi {
+    background-image: url(img/silk/calculator.png);
 }
