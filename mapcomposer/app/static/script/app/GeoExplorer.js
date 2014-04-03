@@ -596,7 +596,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
             tbar: this.toolbar
         });
 		
-        var portalPanels = [this.mapPanelContainer];
+        var portalPanels = [this.mapPanelContainer, westPanel];
 		
 		//collect additional panels to add them after init portal
 		var additionalPanels = [];
