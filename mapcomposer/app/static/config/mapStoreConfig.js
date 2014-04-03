@@ -1,4 +1,32 @@
 {
+   "header": {
+	   "html": '<div align="center" style="background-color:#02004B;background-position:right center;background-image:url(../theme/app/img/banner/Header_geoportale_solo_img.jpg);background-repeat: no-repeat;width:100%;height:100%"><a href="http://www.lamma.rete.toscana.it" target="_blank"><img src="../theme/app/img/banner/logolamma_trasp.png" style="float:left;"/></a></div>'
+	   "container": {
+			"border": false,
+			"header": false,
+			"collapsible": true,
+			"collapseMode":  "mini",
+			"hideCollapseTool": true,
+			"split": true,
+			"animCollapse": false,
+			"minHeight": 140,
+			"maxHeight": 140,
+			"height": 140
+	   }
+   },
+   
+   "footer": {
+		"html": "",
+		"css": "",
+		"container": {
+			"border": false,
+			"header": false,
+			"split": true,
+			"minHeight": 50,
+			"maxHeight": 50,
+			"height": 50
+		}
+   },
    "advancedScaleOverlay": false,
    "tab": false,
    "gsSources":{
@@ -102,22 +130,7 @@
 				"FORMAT":"image/png",
 				"TILED":false
 			}
-		},
-		"mapquest": {
-			"ptype": "gxp_mapquestsource"
-		}, 
-		"osm": { 
-			"ptype": "gxp_osmsource"
-		},
-		"google": {
-			"ptype": "gxp_googlesource" 
-		},
-		"bing": {
-			"ptype": "gxp_bingsource" 
-		}, 
-		"ol": { 
-			"ptype": "gxp_olsource" 
-		}		
+		}
 	},
 	"map": {
 		"projection": "EPSG:3003",
@@ -310,12 +323,11 @@
 			"actions": ["-"], "actionTarget": "paneltbar"
 		}, {
 			"ptype": "gxp_addlayer",
-			"showCapabilitiesGrid": false,
+			"showCapabilitiesGrid": true,
+			"useEvents": false,
+			"showReport": false,
+			"directAddLayer": false,
 			"id": "addlayer"
-		}, {
-			"ptype": "gxp_geolocationmenu",
-			"actionTarget": {"target": "paneltbar", "index": 23},
-			"toggleGroup": "toolGroup"
 		}, {
 		  "ptype":"gxp_maingeobasi",
 		  "outputConfig":{
@@ -341,6 +353,24 @@
 			 }
 		  },
 		  "outputTarget":"eastTab"
-	   }
+	   }, {
+			"actions": ["->"], 
+			"actionTarget": "paneltbar"
+		}, {
+			"ptype": "gxp_help",
+			"actionTarget": "paneltbar",
+			"text": "Help",
+			"tooltip":"MapStore Guide",
+			"index": 24,
+			"showOnStartup": false,
+			"fileDocURL": "MapStore-Help.pdf"
+        }, {
+			"ptype": "gxp_about",
+			"poweredbyURL": "http://www.geo-solutions.it/about/contacts/",
+			"actionTarget": {"target": "panelbbar", "index": 1}
+		}, {
+			"ptype": "gxp_languageselector",
+			"actionTarget": {"target": "panelbbar", "index": 3}
+		}
 	]
 }

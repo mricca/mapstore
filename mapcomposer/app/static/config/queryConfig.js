@@ -212,7 +212,7 @@
 			}
 		]
 	},
-	"customPanels":[
+    "customPanels":[
       {
 			"xtype": "panel",
 			"border": false,

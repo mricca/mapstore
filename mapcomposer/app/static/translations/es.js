@@ -338,11 +338,16 @@ GeoExt.Lang.add("es", {
         title: "Entidades",
         totalMsg: "Total: {0} entidades",
         displayExportCSVText: "Exportar a CSV",
-        exportCSVSingleText: "Página singular",
+        exportCSVSingleText: "Página actual",
         exportCSVMultipleText: "Toda la página",
         failedExportCSV: "Error al encontrar una respuesta para la exportación a CSV",
         invalidParameterValueErrorText: "Valor de los parámetros inválido",
-		zoomToFeature: "Zoom a Entidad"
+		zoomToFeature: "Zoom a Entidad",
+        comboFormatMethodLabel: "Formato",
+        comboFormatEmptyText: "Por favor, seleccione un formato",
+        noFormatTitleText: "Formato inválido",
+        noFormatBodyText: "Por favor, seleccione un formato válido",
+        exportTitleText: "Exportar"
     },
     "gxp.plugins.QueryForm.prototype": {
         queryActionText: "Consultar",
@@ -380,7 +385,7 @@ GeoExt.Lang.add("es", {
 		perimeterLabel: "Perímetro",	
 		radiusLabel: "Radio",	
 		centroidLabel: "Centroide",	
-		selectionSummary: "Selección de Sumario"
+		selectionSummary: "Sumario de la Selección"
 	},
 	
     "gxp.widgets.form.BufferFieldset.prototype": {
@@ -601,7 +606,11 @@ GeoExt.Lang.add("es", {
 		embedCodeTitle: "Código embebido",
 		embedURL: "URL directa",		
 		urlLabel: "URL",
-		showMapTooltip: "Mostar en una nueva ventana"
+		showMapTooltip: "Mostar en una nueva ventana",
+        loadMapText: "Cargar el mapa", 
+        downloadAppText: "Cargar este mapa (instalar la aplicación primero)", 
+        loadInMapStoreMobileText: "Mobile",
+        openImageInANewTab: "Abrir imagen en una nueva pestaña"
 	},
     
     "gxp.plugins.WFSGrid.prototype":{
@@ -616,5 +625,91 @@ GeoExt.Lang.add("es", {
         emptyMsg: "No se han encontrado elementos",
         noRecordFoundLabel: "No se han encontrado elementos",
         loadMsg: "Loading ..."
+    },
+    
+    "gxp.plugins.spatialselector.SpatialSelector.prototype" :{
+        titleText : "Región de interés",
+        selectionMethodLabel : "Método de selección",
+        comboEmptyText : "Seleccione un Método..",
+        comboSelectionMethodLabel : "Seleccione"
+    },
+    
+    "gxp.widgets.form.spatialselector.SpatialSelectorMethod.prototype" :{
+        areaLabel: "Área",  
+        perimeterLabel: "Perímetro", 
+        lengthLabel: "Longitud",   
+        radiusLabel: "Radio",   
+        centroidLabel: "Centroide", 
+        selectionSummary: "Sumario de la Selección",
+        geometryOperationText: "Operación espacial",
+        geometryOperationEmptyText: "Seleccion una operación",
+        distanceTitleText: "Distancia",
+        distanceUnitsTitleText: "Unidad de distancia",
+        noOperationTitleText: "Operación inválida",
+        noOperationMsgText: "Por favor, seleccione una operación para realizar la consulta",
+        noCompleteMsgText: "Por favor, complete el formulario para realizar la consulta"
+    },
+    
+    "gxp.widgets.form.spatialselector.BBOXSpatialSelectorMethod.prototype" :{
+        name  : 'BBOX',
+        label : 'Extensión',
+        northLabel : "Norte",
+        westLabel : "Oeste",
+        eastLabel : "Este",
+        southLabel : "Sur",
+        setAoiTitle : "Bounding Box",
+        setAoiText : "Dibujar",
+        setAoiTooltip : "Habilita el control que permite dibujar una ROI (Extensión) en el mapa"
+    },
+    
+    "gxp.widgets.form.spatialselector.BufferSpatialSelectorMethod.prototype" :{
+        name  : 'Buffer',
+        label : 'Buffer',
+        latitudeEmptyText : 'Y',
+        longitudeEmptyText : 'X'
+    },
+    
+    "gxp.widgets.form.spatialselector.CircleSpatialSelectorMethod.prototype" :{
+        name  : 'Círculo',
+        label : 'Círculo'
+    },
+    
+    "gxp.widgets.form.spatialselector.GeocoderSpatialSelectorMethod.prototype" :{
+        name  : 'Geocoding',
+        label : 'Geocoding',
+        geocodingFieldSetTitle : "GeoCoder",
+        geocodingPanelTitle : "Seleccionar Geometrías",
+        geocodingPanelBtnRefreshTxt : "Mostrar Geometrías",
+        geocodingPanelBtnDestroyTxt : "Ocultar Geometrías",
+        geocodingPanelBtnDeleteTxt : "Borrar Localización",
+        geocodingPanelLocationHeader: "Localización",
+        geocodingPanelCustomHeader: "Padre",
+        geocodingPanelGeometryHeader: "Geometría WKT",
+        geocodingPanelBtnSelectAllTxt : "Seleccionar todo", 
+        geocodingPanelBtnDeSelectAllTxt : "Deseleccionar todo", 
+        geocodingPanelMsgRemRunningTitle : "Borrar Localizaciones",
+        geocodingPanelMsgRemRunningMsg : "¿Está seguro de borrar las localizaciones de la lista?",
+        geocodingFieldLabel : "Buscar una Locaclización",
+        geocodingFieldEmptyText : "Escriba una Localización aquí...",
+        geocodingFieldBtnAddTooltip : "Añadir Localización a la lista",
+        geocodingFieldBtnDelTooltip : "Limpiar campo",
+        selectionSummary : "Sumario de la selección"
+    },
+    
+    "gxp.widgets.form.spatialselector.PolygonSpatialSelectorMethod.prototype" :{
+        name  : 'Polígono',
+        label : 'Polígono'
+    },
+    
+    "gxp.plugins.spatialselector.Geocoder.prototype" :{
+        titleText: "Callejero",
+        searchText: "Buscar",
+        searchTpText: "Localiza la dirección en el mapa",
+        resetText: "Reiniciar",
+        resetTpText: "Reinicia la búsqueda por localización",
+        translatedKeys: {
+            "name": "Calle",
+            "number": "Número"
+        }
     }
 });

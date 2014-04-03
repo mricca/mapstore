@@ -36,6 +36,10 @@
    ],
    "embedLink": {
 		"embeddedTemplateName": "viewer",
-		"showDirectURL": true
+		"showDirectURL": true,
+        "showQRCode":true,
+        "qrCodeSize":128,
+        "appDownloadUrl":"http://demo.geo-solutions.it/share/mapstoremobile/MapStoreMobile.apk"
+
 	}
 }

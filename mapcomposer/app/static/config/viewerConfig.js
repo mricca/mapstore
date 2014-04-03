@@ -38,6 +38,20 @@
 			"useTabPanel": true,
 			"toggleGroup": "toolGroup",
 			"actionTarget": {"target": "paneltbar", "index": 24}
+		}, {
+			"ptype": "gxp_addlayer",
+			"showCapabilitiesGrid": true,
+			"useEvents": false,
+			"showReport": false,
+			"directAddLayer": false,
+			"id": "addlayer"
+		}, {
+			"ptype": "gxp_about",
+			"poweredbyURL": "http://www.geo-solutions.it/about/contacts/",
+			"actionTarget": {"target": "panelbbar", "index": 1}
+		}, {
+			"ptype": "gxp_languageselector",
+			"actionTarget": {"target": "panelbbar", "index": 3}
 		}
 	]
 }
