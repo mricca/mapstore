@@ -28,6 +28,9 @@
  */
 MSMTemplateManager = Ext.extend(Ext.form.FormPanel, {
 
+ 	/** xtype = msm_templatemanager **/
+    xtype: "msm_templatemanager",
+
 	title: 'Template manager',
     
     /** api: config[adminUrl]
@@ -84,7 +87,7 @@ MSMTemplateManager = Ext.extend(Ext.form.FormPanel, {
         // create a content provider with init options
 		this.templates = new GeoStore.Templates({
 			authorization: this.auth,
-			url: this.url,
+			url: this.url
 			}).failure( function(response){ 
 				Ext.Msg.show({
                    title: me.failSuccessTitle,
@@ -142,7 +145,7 @@ MSMTemplateManager = Ext.extend(Ext.form.FormPanel, {
 	    			formContainer: this,
 	    			login: this.login,
 	    			geoStoreBase: this.geoStoreBase,
-	    			actionURL: this.adminUrl + "fileManager/extJSbrowser",
+	    			actionURL: this.adminUrl + "mvc/fileManager/extJSbrowser",
 	    			listeners:{
 	    				success: function(){
 	    					// refresh the grid
@@ -202,3 +205,6 @@ MSMTemplateManager = Ext.extend(Ext.form.FormPanel, {
 		});
     }
 });
+
+/** api: xtype = msm_templatemanager */
+Ext.reg(MSMTemplateManager.prototype.xtype, MSMTemplateManager);
