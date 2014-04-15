@@ -1,6 +1,6 @@
 {
    "header": {
-	   "html": "<div align='center' style='background-color:#02004B;background-position:right center;background-image:url(../theme/app/img/banner/Header_geoportale_solo_img.jpg);background-repeat: no-repeat;width:100%;height:100%'><a href='http://www.lamma.rete.toscana.it' target='_blank'><img src='../theme/app/img/banner/logolamma_trasp.png' style='float:left;'/></a></div>",
+	   "html": "<div align='center' style='background-color:#02004B;background-position:right center;background-image:url(theme/app/img/banner/Header_geoportale_solo_img.jpg);background-repeat: no-repeat;width:100%;height:100%'><a href='http://www.lamma.rete.toscana.it' target='_blank'><img src='theme/app/img/banner/logolamma_trasp.png' style='float:left;'/></a></div>",
 	   "container": {
 			"border": false,
 			"header": false,
@@ -14,7 +14,7 @@
 			"height": 90
 	   }
    },
-   "advancedScaleOverlay": true,
+   "advancedScaleOverlay": false,
    "tab": false,
    "gsSources":{
    		"geobasi": {
@@ -307,8 +307,6 @@
 				"index":4
 			}
         }, {
-			"actions": ["-"], "actionTarget": "paneltbar"
-		}, {
 			"ptype": "gxp_addlayer",
 			"showCapabilitiesGrid": true,
 			"useEvents": false,
@@ -341,17 +339,6 @@
 		  },
 		  "outputTarget":"eastTab"
 	   }, {
-			"actions": ["->"], 
-			"actionTarget": "paneltbar"
-		}, {
-			"ptype": "gxp_help",
-			"actionTarget": "paneltbar",
-			"text": "Help",
-			"tooltip":"MapStore Guide",
-			"index": 24,
-			"showOnStartup": false,
-			"fileDocURL": "MapStore-Help.pdf"
-        }, {
 			"ptype": "gxp_languageselector",
 			"actionTarget": {"target": "panelbbar", "index": 3}
 		}
