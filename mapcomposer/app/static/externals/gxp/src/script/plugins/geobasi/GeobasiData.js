@@ -101,47 +101,7 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 		});*/
 
 		
-		Ext.Ajax.request({
-			scope: this,
-			url: this.dataUrl,
-			method: 'POST',
-			params: {
-				service: "WFS",
-				version: "1.1.0",
-				geometryName: "geom",
-				request: "GetFeature",
-				typeName: "geobasi:geobasi_data_analisi",
-				outputFormat: "json",
-				propertyName: "max,min"
-			},
-			success: function (result, request) {
-				try {
-					var jsonData2 = Ext.util.JSON.decode(result.responseText);
-				} catch (e) {
-					Ext.Msg.alert("Error", "Error parsing data from the server");
-					return;
-				}
-				if (jsonData2.features.length <= 0) {
-					Ext.Msg.alert("Nessun dato", "Dati non disponibili per questo criterio di ricerca");
-					return;
-				}
-				
-				var min = jsonData2.features[0].properties.min;
-				var max = jsonData2.features[0].properties.max;
-				
-				this.output.rangeyear.yearRangeSelector.slider.setMinValue(min);
-				this.output.rangeyear.yearRangeSelector.slider.setMaxValue(max);
-				this.output.rangeyear.yearRangeSelector.slider.setValue( 0, min, true );
-				this.output.rangeyear.yearRangeSelector.slider.setValue( 1, max, true );
-				
-				this.output.rangeyear.yearRangeSelector.startValue.setValue(min);
-				this.output.rangeyear.yearRangeSelector.endValue.setValue(max);
-				
-			},					
-			failure: function (result, request) {
-				Ext.Msg.alert("Error", "Server response error");
-			}
-		});
+
 					
         var geobasiData  = {
             xtype:'form',
@@ -510,10 +470,15 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 								//this.output.rangeyear.referenceYear.setText(end);
 							},
 							afterrender: function(component) {
+								//this.setMinMaxValues();
 								if(this.output.rangeyear.yearRangeSelector!=component)return;           
 							}
 						}         
-					}]
+					}],
+					afterrender: function(component) {
+						this.setMinMaxValues();
+						//if(this.output.rangeyear.yearRangeSelector!=component)return;           
+					}					
 				}//,this.uploadPanelForm
             ],
 			buttons:[{
@@ -598,6 +563,56 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
         
         return this.output;*/
     },
+	
+	setMinMaxValues: function(){
+		this.appMask = new Ext.LoadMask(Ext.getBody(), {msg: this.mainLoadingMask});
+		this.appMask.show();
+		Ext.Ajax.request({
+			scope: this,
+			url: this.dataUrl,
+			method: 'POST',
+			params: {
+				service: "WFS",
+				version: "1.1.0",
+				geometryName: "geom",
+				request: "GetFeature",
+				typeName: "geobasi:geobasi_data_analisi",
+				outputFormat: "json",
+				propertyName: "max,min"
+			},
+			success: function (result, request) {
+				try {
+					var jsonData2 = Ext.util.JSON.decode(result.responseText);
+				} catch (e) {
+					Ext.Msg.alert("Error", "Error parsing data from the server");
+					this.appMask.hide();
+					return;
+				}
+				if (jsonData2.features.length <= 0) {
+					Ext.Msg.alert("Nessun dato", "Dati non disponibili per questo criterio di ricerca");
+					this.appMask.hide();
+					return;
+				}
+				
+				var min = jsonData2.features[0].properties.min;
+				var max = jsonData2.features[0].properties.max;
+				
+				this.output.rangeyear.yearRangeSelector.slider.setMinValue(min);
+				this.output.rangeyear.yearRangeSelector.slider.setMaxValue(max);
+				this.output.rangeyear.yearRangeSelector.slider.setValue( 0, min, true );
+				this.output.rangeyear.yearRangeSelector.slider.setValue( 1, max, true );
+				
+				this.output.rangeyear.yearRangeSelector.startValue.setValue(min);
+				this.output.rangeyear.yearRangeSelector.endValue.setValue(max);
+				this.appMask.hide();
+				
+			},					
+			failure: function (result, request) {
+				Ext.Msg.alert("Error", "Server response error");
+				this.appMask.hide();
+			}
+		});	
+	},
 	
 	onRadioGroupAfterRender: function(){
 	
