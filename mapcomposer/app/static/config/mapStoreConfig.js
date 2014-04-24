@@ -14,7 +14,7 @@
 			"height": 130
 	   }
    },
-   "advancedScaleOverlay": false,
+   "scaleOverlayMode": "basic",
    "tab": false,
    "gsSources":{
    		"geobasi": {
