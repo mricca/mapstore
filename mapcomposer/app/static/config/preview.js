@@ -36,17 +36,13 @@
 			"ptype": "gxp_addlayer",
 			"showCapabilitiesGrid": true,
 			"useEvents": false,
-			"showReport": false,
+			"showReport": "always",
 			"directAddLayer": false,
 			"id": "addlayer"
 		}, {
 			"ptype": "gxp_geolocationmenu",
 			"actionTarget": {"target": "paneltbar", "index": 18},
 			"toggleGroup": "toolGroup"
-		}, {
-			"ptype": "gxp_about",
-			"poweredbyURL": "http://www.geo-solutions.it/about/contacts/",
-			"actionTarget": {"target": "panelbbar", "index": 1}
 		}
 	],
 	

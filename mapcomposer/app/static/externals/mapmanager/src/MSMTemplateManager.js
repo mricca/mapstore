@@ -31,7 +31,7 @@ MSMTemplateManager = Ext.extend(Ext.form.FormPanel, {
  	/** xtype = msm_templatemanager **/
     xtype: "msm_templatemanager",
 
-	title: 'Template manager',
+	title: "Template Manager",
     
     /** api: config[adminUrl]
      *  ``String``
@@ -64,8 +64,7 @@ MSMTemplateManager = Ext.extend(Ext.form.FormPanel, {
 	layout:'border',
 	// layout:'column',
 	defaults: {
-	    split: true,
-	    bodyStyle: 'padding:15px'
+	    split: true
 	},
 
     categoryName: "TEMPLATE",
@@ -74,6 +73,11 @@ MSMTemplateManager = Ext.extend(Ext.form.FormPanel, {
 	geoStoreBase: null,
 	url: null,
 	searchUrl: null,
+
+    /** api: config[mediaContent]
+     *  ``String`` relative for the media content in the upload panel
+     */
+    mediaContent: null,
 
     /**
     * Constructor: initComponent 
@@ -99,46 +103,45 @@ MSMTemplateManager = Ext.extend(Ext.form.FormPanel, {
 
     	this.items.push({
     		xtype: "panel",
-    		region:"center",
-			autoScroll: true,
+    		region:"west",
+            width:580,
+            layout:'fit',
+            collapsible:true,
     		items:[{
-            	columnWidth: 0.50,
-				// xtype: 'container',
-				layout: 'fit',
-				items: [{
-					layout: 'fit',
+                    target:this.target,
 					xtype: 'msm_templategrid',
 					searchUrl: this.searchUrl,
-					ref: "../../templateGrid",
+					ref: "../templateGrid",
 					categoryName: this.categoryName,
 					auth: this.auth,
 					pageSize: this.pageSize,
 	    			login: this.login,
 	    			geoBaseMapsUrl: this.url,
-			scope: this,
+                    scope: this,
 		            listeners: {
 		            	'rowclick': this.templateClick, 
 			            scope: this
 		            }
 				}]
-			}]
     	});
 
 		this.items.push({
     		xtype: "panel",
-    		width:700,
-    		region: 'east',
+    		
+    		region: 'center',
     		ref: "east",
     		// split: true,
-	    	collapsible: true,
+	    	collapsible: false,
 			autoScroll: true,
     		// collapseMode: "mini",
     		items:[{
             	// columnWidth: 0.50,
     			xtype: 'tabpanel',
 	    		activeTab: 0,
-				// autoScroll: true,
+				// 
 	    		items:[{
+                    autoScroll: true,
+					target:this.target,
 	    			xtype: "msm_templatepanel",
     				ref: "../../templatePanel",
 	    			templates: this.templates,
@@ -146,6 +149,7 @@ MSMTemplateManager = Ext.extend(Ext.form.FormPanel, {
 	    			login: this.login,
 	    			geoStoreBase: this.geoStoreBase,
 	    			actionURL: this.adminUrl + "mvc/fileManager/extJSbrowser",
+            		mediaContent: this.mediaContent,
 	    			listeners:{
 	    				success: function(){
 	    					// refresh the grid
@@ -172,6 +176,9 @@ MSMTemplateManager = Ext.extend(Ext.form.FormPanel, {
 			url: this.geoStoreBase + "data/" + templateId,
 			method: 'GET',
 			scope: this,
+            headers:{
+                'Authorization' : this.auth
+            },
 			success: function(response, opts){      
 			  
 				var templateConfig;

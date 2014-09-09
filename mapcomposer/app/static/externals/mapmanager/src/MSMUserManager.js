@@ -56,6 +56,12 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
             */
             textName: 'Name',
             /**
+            * Property: textEnabled
+            * {string} column name for enabled column
+            * 
+            */
+            textEnabled : 'Enabled',
+            /**
             * Property: textPassword
             * {string} column name for password
             * 
@@ -303,29 +309,32 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
             border:false,
             /**
             * Property: customFields
-            * {string} additional Fields to place in the Information panel
+            * {string} additional Fields to place in the Information panel.
+            * NOTE: limit to 255 user attributes
             * 
             */	
             customFields:[{
                 xtype: 'textfield',
                 anchor:'90%',
                 id: 'email',
-                allowBlank: false,
+                maxLength:255,
                 blankText: 'email',
                 name: 'attribute.email',
                 fieldLabel: 'email',
-                inputType: 'email',
+                inputType: 'text',
+                vtype:'email',
                 value: ''
             },{
                 xtype: 'textfield',
                 anchor:'90%',
+                maxLength:255,
                 id: 'attribute.company',
                 blankText: 'Company',
                 fieldLabel: 'Company',
                 inputType: 'text',
                 value: ''
                 
-            },{
+            }/*,{
                 xtype: 'datefield',
                 anchor:'90%',
                 id: 'expires',
@@ -334,10 +343,11 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
                 inputType: 'text',
                 value: ''
                 
-            },{
+            }*/,{
                 xtype: 'textarea',
                 anchor:'90%',
                 id: 'notes',
+                maxLength:255,
                 name: 'attribute.notes',
                 blankText: 'Notes',
                 fieldLabel: 'Notes',
@@ -345,6 +355,18 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
                 value: ''
                 
             }],
+            /**
+             * Property: showEnabled
+             * Show 'enabled' property of the user as a checkbox in the user edit.
+             * or as a coumn in the user grid
+             */
+            showEnabled:false,
+
+            /**
+             * Property: addManageGroupsButton
+             * Show 'Manage group' button. Default its true,
+             */
+            addManageGroupsButton: true,
             
 			/**
 		    * Constructor: initComponent 
@@ -432,35 +454,53 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
                             id       :'id',
                             header   : userManager.textId, 
                             sortable : true, 
+                            width: 50,
                             dataIndex: 'id',
                             hidden   : true
                         },
                         {
                             id       :'name',
                             header   : userManager.textName, 
+                            maxLength:20,
                             sortable : true, 
                             dataIndex: 'name'
                         },
                         {
                             header   : userManager.textPassword, 
                             sortable : false, 
+                            maxLength:255,
+                            hideable : false,
                             dataIndex: 'password',
                             hidden   : true
+                        },{
+                            header   : userManager.textEnabled, 
+                            sortable : false, 
+                            dataIndex: 'enabled',
+                            hidden   : !userManager.showEnabled,
+                            width:55,
+                            renderer: function(value, metaData, record, rowIndex, colIndex, store) {
+                                    var classes = 'x-grid-center-icon action_column_btn ' + (value ? 'accept' : 'close');
+                                    return '<div class="'+ classes +'" style="margin:0 auto;"></div>';
+                                return value;
+                             }
                         },
                         {
                             header   : userManager.textRole, 
                             sortable : true, 
                             dataIndex: 'role'
+                           
                         },
                         {
                             xtype: 'actioncolumn',
-                            
+                            hideable:false,
                             width: 50,
                             items: [{
                                 icon   : ASSET.delete_icon, 
                                 tooltip: userManager.tooltipDelete,
                                 getClass: function(v, meta, rec) {
-                                  if(rec.get('name') == "admin" || rec.get('role')=='GUEST') {
+                                  var manager = userManager.login.username;
+                                  var username = rec.get('name');
+                                  if(username == manager || rec.get('role')=='GUEST') {
                                       return 'x-hide-display';
                                   }
                                 },
@@ -511,6 +551,7 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
                           {
                             xtype: 'actioncolumn',
                             width: 50,
+                            hideable:false,
                             items: [{
                                 icon   : ASSET.edit_icon, 
                                 tooltip: userManager.tooltipEdit,
@@ -523,7 +564,7 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
                                    var record = grid.store.getAt(rowIndex);
 
                                    var userdata = {id: record.get('id'), name: record.data.name, role: record.data.role };
-                                   var loadMask = new Ext.LoadMask(Ext.getBody(), {msg:'Wait message'});
+                                   var loadMask = new Ext.LoadMask(Ext.getBody(), {msg:'Wait'});
                                    loadMask.show();
                                    userManager.users.findByPk( record.get('id'), function(data){
                                                         // refresh the store
@@ -539,7 +580,14 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
                     ]});		
 				
 					// the top bar of the user manager window
-					this.tbar = [ this.inputSearch, this.searchButton, this.resetSearchButton, '-', this.createAddUserButton(),"->",this.createManageGroupsButton() ];
+					this.tbar = [ this.inputSearch, this.searchButton, this.resetSearchButton, '-', this.createAddUserButton(),"-"];
+
+                    if(this.addManageGroupsButton){
+                        this.tbar.push(this.createManageGroupsButton());
+                    }
+
+                    var defaultHeaders = this.target.defaultHeaders || {};
+                    defaultHeaders['Accept'] = 'application/json';
 
 					// data store
 					this.store = new Ext.data.JsonStore({
@@ -550,7 +598,7 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
                         successProperty: 'ExtUserList',
                         idProperty: 'id',
                         remoteSort: false,
-                        fields: ['id', 'name', 'password', 'role'],
+                        fields: ['id', 'name', 'password', 'role','enabled'],
                         sortInfo: { field: "name", direction: "ASC" },
                         proxy: new Ext.data.HttpProxy({
                             url: this.getSearchUrl(),
@@ -566,7 +614,7 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
                                    icon: Ext.MessageBox.ERROR
                                 });                                
                             },
-                            defaultHeaders: {'Accept': 'application/json', 'Authorization' : userManager.auth}
+                            headers: {'Accept': 'application/json', 'Authorization' : userManager.auth}
                         })
                         
 					});
@@ -656,10 +704,14 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
             * * Groups
             */
             createNewUserTabPanel: function(){
+                var defaultHeaders = this.target.defaultHeaders || {};
+                defaultHeaders['Accept'] = 'application/json';
+
                 var userDataFields =[{
                         xtype: 'textfield',
                         anchor:'90%',
                         id: 'user-textfield',
+                        maxLength:20,
                         allowBlank: false,
                         blankText: this.textBlankUserName,
                         fieldLabel: this.textName,
@@ -674,6 +726,7 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
                         xtype: 'textfield',
                         anchor:'90%',
                         id: 'password-textfield',
+                        maxLength:255,
                         allowBlank: false,
                         blankText: this.textBlankPw,
                         fieldLabel: this.textPassword,
@@ -685,6 +738,7 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
                         anchor:'90%',
                         id: 'password-confirm-textfield',
                         allowBlank: false,
+                        maxLength:255,
                         blankText: this.textBlankPw,
                         invalidText: this.textPasswordConfError,
                         fieldLabel: this.textPasswordConf,
@@ -720,6 +774,10 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
                              data:[['1', 'USER'], ['2', 'ADMIN']]
                         })
                   }	];
+                  if( this.showEnabled ) {
+                     userDataFields.push({xtype:'checkbox',fieldLabel:this.textEnabled || "Enabled",name:'enabled',checked:true,uncheckedValue: 'false'});
+
+                  }
                   
                   var newUserTabPanel = {
                         xtype:'tabpanel',
@@ -779,12 +837,12 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
                                         idProperty: 'id',
                                         fields: ['id','groupName', 'description'],
                                         proxy: new Ext.data.HttpProxy({
-                                            url: this.geoStoreBase + "usersgroup/",
+                                            url: this.geoStoreBase + "usergroups/",
                                             restful: true,
                                             method : 'GET',
                                             disableCaching: true,
                                             sortInfo: { field: "groupName", direction: "ASC" },
-                                            defaultHeaders: {'Accept': 'application/json', 'Authorization' : this.auth},
+                                            headers: {'Accept': 'application/json', 'Authorization' : this.auth},
                                             failure: function (response) {
                                                 console.error(response); 
                                                   Ext.Msg.show({
@@ -883,13 +941,24 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
 														var roleDropdown = Ext.getCmp("role-dropdown"); 
                                                         // Check Form Validity
 														if ( form.getForm().isValid() && passwordField.getValue() == passwordConfirmField.getValue()){
-                                                            var values = form.getForm().getValues();
+                                                            var values = form.getForm().getFieldValues();
                                                             //get attributes with name attribute.<att_name>
                                                             var attribute = {};
                                                             for(var name in values ){
                                                                 var arr = name.split('.');
                                                                 if(arr.length >1 && arr[0]=='attribute'){
-                                                                    attribute[arr[1]] = values[name];
+                                                                    //special behiviour for dates
+                                                                    var value =values[name];
+                                                                    if(value instanceof Date){
+                                                                      var field = form.getForm().findField(name);
+                                                                      if(field && field.format){
+                                                                        attribute[arr[1]] = value.format(field.format);
+                                                                      }else{
+                                                                        attribute[arr[1]] = value;
+                                                                      }
+                                                                    }else{
+                                                                      attribute[arr[1]] = value;
+                                                                    }
                                                                 }
                                                             }
                                                             //create groups;
@@ -903,13 +972,15 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
                                                                 groups.push({groupName:arr[i]});
                                                               }
                                                             }
+                                                            
                                                             // Save user
                                                             userManager.users.create({ 
                                                                     name: nameField.getValue(), 
                                                                     password:passwordField.getValue(), 
                                                                     role:roleDropdown.getValue(),
                                                                     attribute: attribute,
-                                                                    groups: groups
+                                                                    groups: groups,
+                                                                    enabled: values.enabled 
                                                                 }, 
                                                                 function success(response){                                                                            
                                                                     winAdd.hide();
@@ -980,6 +1051,7 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
                             anchor:'90%',
                             id: 'user-textfield',
                             disabled: true,
+                            maxLength:20,
                             allowBlank: false,
                             blankText: userManager.textBlankUserName,
                             fieldLabel: userManager.textName,
@@ -993,6 +1065,7 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
                       {
                             xtype: 'textfield',
                             anchor:'90%',
+                            maxLength:255,
                             id: 'password-textfield',
                             allowBlank: true,
                             blankText: userManager.textBlankPw,
@@ -1012,6 +1085,7 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
                       {
                             xtype: 'textfield',
                             anchor:'90%',
+                            maxLength:255,
                             id: 'passwordconf-textfield',
                             allowBlank: true,
                             blankText: userManager.textPasswordConf,
@@ -1050,6 +1124,12 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
                                          data:[['1', 'USER'], ['2', 'ADMIN']]
                                       })
                       }];
+                 if( this.showEnabled ) {
+                     userDataFields.push({xtype:'checkbox',fieldLabel:this.textEnabled || "Enabled",name:'enabled',checked:userdata.enabled});
+                  }
+                // headers for the request
+                var defaultHeaders = this.target.defaultHeaders || {};
+                defaultHeaders['Accept'] = 'application/json';
                 // for user is the tab content!!
                 var userFormTabPanel ={
                     xtype:'tabpanel',
@@ -1111,12 +1191,12 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
                                     idProperty: 'id',
                                     fields: ['id','groupName', 'description'],
                                     proxy: new Ext.data.HttpProxy({
-                                        url: this.geoStoreBase + "usersgroup/",
+                                        url: this.geoStoreBase + "usergroups/",
                                         restful: true,
                                         method : 'GET',
                                         disableCaching: true,
                                         sortInfo: { field: "groupName", direction: "ASC" },
-                                        defaultHeaders: {'Accept': 'application/json', 'Authorization' : userManager.auth},
+                                        headers: {'Accept': 'application/json', 'Authorization' : userManager.auth},
                                         failure: function (response) {
                                             console.error(response); 
                                               Ext.Msg.show({
@@ -1230,15 +1310,26 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
                                                 var passwordConfField = Ext.getCmp("passwordconf-textfield");
                                                 var roleDropdown = Ext.getCmp("role-dropdown"); 
                                                 var form = formEdit.getForm();
-                                                var values = form.getValues();
+                                                var values = form.getFieldValues();
                                                 if ( form.isValid() && (passwordField.getValue() == passwordConfField.getValue()) && (isAdmin ? roleDropdown.isValid(false) : true) ){
-                                                    var values = form.getValues();
+                                                    
                                                     //get attributes with name attribute.<att_name>
                                                     var attribute = {};
                                                     for(var name in values ){
                                                         var arr = name.split('.');
                                                         if(arr.length >1 && arr[0]=='attribute'){
-                                                            attribute[arr[1]] = values[name];
+                                                            //special behiviour for dates
+                                                            var value =values[name];
+                                                            if(value instanceof Date){
+                                                              var field = form.findField(name);
+                                                              if(field && field.format){
+                                                                attribute[arr[1]] = value.format(field.format);
+                                                              }else{
+                                                                attribute[arr[1]] = value;
+                                                              }
+                                                            }else{
+                                                              attribute[arr[1]] = value
+                                                            }
                                                         }
                                                     }
                                                     //create groups;
@@ -1257,7 +1348,8 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
                                                               password:passwordField.getValue(), 
                                                               role:roleDropdown.getValue(),
                                                               attribute:attribute,
-                                                              groups:groups
+                                                              groups:groups,
+                                                              enabled: values.enabled //only if present
                                                             }, 
                                                               function(response) {
                                                                 winEdit.hide();
@@ -1309,6 +1401,7 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
                             xtype:'msm_usergroupmanager',
                             geoStoreBase:um.geoStoreBase,
                             auth: um.auth,
+                            target: um.target,
                             layout:'fit'
                         };
                         // for admin it shows the window
@@ -1379,6 +1472,8 @@ MSMUserGroupManager = Ext.extend(Ext.grid.GridPanel, {
     autoExpandColumn: 'description',
     stateful: true,
     initComponent: function(){
+        var defaultHeaders = this.target.defaultHeaders || {};
+        defaultHeaders['Accept'] = 'application/json';
         //groups store (not pagination support because of extjs needs total count to use the pagination bar
         this.store = new Ext.data.JsonStore({
             autoDestroy: true,
@@ -1387,12 +1482,12 @@ MSMUserGroupManager = Ext.extend(Ext.grid.GridPanel, {
             idProperty: 'id',
             fields: ['id','groupName', 'description'],
             proxy: new Ext.data.HttpProxy({
-                url: this.geoStoreBase + "usersgroup/",
+                url: this.geoStoreBase + "usergroups/",
                 restful: true,
                 method : 'GET',
                 disableCaching: true,
                 sortInfo: { field: "groupName", direction: "ASC" },
-                defaultHeaders: {'Accept': 'application/json', 'Authorization' : this.auth},
+                headers: {'Accept': 'application/json', 'Authorization' : this.auth},
                 failure: function (response) {
                     console.error(response); 
                       Ext.Msg.show({
@@ -1407,7 +1502,7 @@ MSMUserGroupManager = Ext.extend(Ext.grid.GridPanel, {
         //this object allows to save,get and delete groups
         this.groups = new GeoStore.UserGroups({ 
                       authorization: this.auth,
-                      url: this.geoStoreBase + 'usersgroup'
+                      url: this.geoStoreBase + 'usergroups'
                     }).failure( function(response){ 
                         console.error(response); 
                           Ext.Msg.show({
@@ -1435,12 +1530,14 @@ MSMUserGroupManager = Ext.extend(Ext.grid.GridPanel, {
                     hidden   : true
                 },{
                     id       :'groupName',
+                    maxLength: 20,
                     header   : this.textGroupName, 
                     sortable : true, 
                     dataIndex: 'groupName',
                     hidden   : false
                 },{
                     id       :'description',
+                    maxLength: 200,
                     header   : this.textDescription, 
                     sortable : true, 
                     dataIndex: 'description',
@@ -1459,7 +1556,7 @@ MSMUserGroupManager = Ext.extend(Ext.grid.GridPanel, {
                         tooltip: this.tooltipDelete,
                         scope:this,
                         getClass: function(v, meta, rec) {
-                          if(rec.get('groupName') == "allresources" || rec.get('groupName') == "anyone") {
+                          if( rec.get('groupName') == "everyone") {
                               return 'x-hide-display';
                           }else{
                             return 'x-grid-center-icon action_column_btn';
@@ -1476,7 +1573,7 @@ MSMUserGroupManager = Ext.extend(Ext.grid.GridPanel, {
                         tooltip: this.tooltipGroupInfo,
                         scope:this,
                         getClass: function(v, meta, rec) {
-                          if(rec.get('groupName') == "allresources" || rec.get('groupName') == "anyone") {
+                          if( /*rec.get('groupName') == "everyone"*/false) {
                               return 'x-hide-display';
                           }else{
                             return 'x-grid-center-icon action_column_btn';
@@ -1498,7 +1595,8 @@ MSMUserGroupManager = Ext.extend(Ext.grid.GridPanel, {
        var  winnewgroup = new Ext.Window({
                     iconCls:'group_add_ic',
                     title:this.textAddGroupButton,
-                    width: 300, height: 200, 
+                    width: 300,
+                    height: 200, 
                     minWidth:250,
                     minHeight:200,
                     resizable: true, 
@@ -1555,6 +1653,7 @@ MSMUserGroupManager = Ext.extend(Ext.grid.GridPanel, {
                             xtype:'textfield',
                             anchor:'90%',
                             name:'groupName',
+                            maxLength:20,                            
                             fieldLabel:ugmanager.textGroupName,
                             allowBlank:false
                         },{
@@ -1562,6 +1661,7 @@ MSMUserGroupManager = Ext.extend(Ext.grid.GridPanel, {
                             anchor:'90%',
                             name:'description',
                             fieldLabel:ugmanager.textDescription,
+                            maxLength:200,
                             allowBlank:true
                         }]
                     }]

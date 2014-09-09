@@ -102,7 +102,7 @@ gxp.plugins.GeoStoreLogin = Ext.extend(gxp.plugins.Tool, {
 	
 	loginLoadingMask: "Login ...",
     
-    
+    scale: 'small',
 
     /** 
      * api: method[addActions]
@@ -111,14 +111,14 @@ gxp.plugins.GeoStoreLogin = Ext.extend(gxp.plugins.Tool, {
         if (this.loginService !== null) {
             var apptarget = this.target;
         
-            var actions = gxp.plugins.GeoStoreLogin.superclass.addActions.apply(this, [                
+            var actions = gxp.plugins.GeoStoreLogin.superclass.addActions.apply(this, [
                 [{
                     menuText: this.loginText,
-                    iconCls: "gxp-icon-login",
-                    anchor:'100%',
+                    iconCls: "login",
                     text: this.loginText,
                     disabled: false,
                     hidden: false,
+                    scale: this.scale || 'small',
                     tooltip: this.loginText,
                     handler: function() {
                         if(!this.logged){
@@ -128,10 +128,11 @@ gxp.plugins.GeoStoreLogin = Ext.extend(gxp.plugins.Tool, {
                     scope: this
                 },{
                     menuText: this.logoutTitle,
-                    iconCls: "gxp-icon-logout",
-                    anchor:'100%',
+                    iconCls: "logout",
+                    scale: this.scale || 'small',
                     text: this.logoutTitle,
                     hidden: true,
+                    
                     disabled: true,
                     tooltip: this.logoutTitle,
                     handler: function() {
@@ -193,6 +194,7 @@ gxp.plugins.GeoStoreLogin = Ext.extend(gxp.plugins.Tool, {
             }],
             buttons: [{
                 text: this.loginText,
+                iconCls:'login',
                 formBind: true,
                 handler: this.submitLogin,
                 scope: this
@@ -203,7 +205,7 @@ gxp.plugins.GeoStoreLogin = Ext.extend(gxp.plugins.Tool, {
                 scope: this
             }]
         });
-        this.forgotPasswordService="a";
+		
         if(this.forgotPasswordService){
             this.panel.add({
                   width: 100,
@@ -225,7 +227,9 @@ gxp.plugins.GeoStoreLogin = Ext.extend(gxp.plugins.Tool, {
               }
             });
         }
+		
         this.win = new Ext.Window({
+            iconCls:'user-icon',
             title: this.loginText,
             layout: "fit",
             width: 275,
@@ -281,9 +285,7 @@ gxp.plugins.GeoStoreLogin = Ext.extend(gxp.plugins.Tool, {
                         icon: Ext.MessageBox.WARNING
                     });
                     return;
-                }
-				
-                
+                }               
 				
                 // save auth info
                 this.token = auth;
@@ -329,7 +331,7 @@ gxp.plugins.GeoStoreLogin = Ext.extend(gxp.plugins.Tool, {
         this.loginAction.disable();
         this.logoutAction.show();
         this.logoutAction.enable();
-        //this.target.setIconClass("gxp-icon-logout");
+        this.target.setIconClass("logout");
         this.logged=true;
         this.win.close();
     },
@@ -344,15 +346,17 @@ gxp.plugins.GeoStoreLogin = Ext.extend(gxp.plugins.Tool, {
     /** api: method[showLogout]
      * Shows the window for logout confirmation.
      */ 
-    showLogout : function(){
-    
+    showLogout : function(){    
         var logoutFunction = function(buttonId, text,opt){        
-            if(buttonId === 'ok'){ 
-                for(var tool in this.target.tools){            
-                    if(this.target.tools[tool].ptype == "gxp_nrl"){  
-                        this.target.tools[tool].disableData();
-                    }                          
-                }
+            if(buttonId === 'ok'){ 			
+				// Clear the sessionStorage
+				for(var i = 0; i < sessionStorage.length; i++) {
+					var key = sessionStorage.key(i);
+					if(key) {
+						sessionStorage.removeItem(key);
+					}
+				}
+				
                 this.loginAction.show();
                 this.loginAction.enable();
                 this.logoutAction.hide();

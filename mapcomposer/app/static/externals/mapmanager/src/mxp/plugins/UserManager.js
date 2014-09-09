@@ -34,14 +34,22 @@ mxp.plugins.UserManager = Ext.extend(mxp.plugins.Tool, {
     /** api: ptype = mxp_usermanager */
     ptype: "mxp_usermanager",
 
-    buttonText: "User manager",
-    tooltipText: "Open user manager",
+    buttonText: "User Manager",
+    tooltipText: "Open User Manager",
     groupsText: "Groups",
     usersText: "Users",
-
+    /** number of users for a page  **/
+    pageSize: 20,
     setActiveOnOutput: true,
+    showEnabled: false,
 
     loginManager: null, 
+
+    /**
+     * Property: addManageGroupsButton
+     * Show 'Manage group' button. Default its true,
+     */
+    addManageGroupsButton: true,
 
     // default configuration for the output
     outputConfig: {
@@ -94,6 +102,7 @@ mxp.plugins.UserManager = Ext.extend(mxp.plugins.Tool, {
             region:'center',
             xtype: "msm_usermanager",
             title: this.usersText,
+            pageSize: this.pageSize,
             iconCls: "open_usermanager",
             id: this.target.userMamanagerId,
             ASSET: this.target.config.ASSET,
@@ -103,8 +112,15 @@ mxp.plugins.UserManager = Ext.extend(mxp.plugins.Tool, {
             url: this.target.geoBaseUsersUrl,
             geoStoreBase: this.target.config.geoStoreBase,
             renderMapToTab: this.outputTarget,
-            header:false
-    	};
+            header:false,
+            addManageGroupsButton: this.addManageGroupsButton,
+            target: this.target,
+            showEnabled:this.showEnabled
+        };
+        //add custom fields
+        if(this.customFields){
+          usermanager.customFields= this.customFields;
+        }
         //TODO
         var groupManager = {
             region:'south',
@@ -118,10 +134,12 @@ mxp.plugins.UserManager = Ext.extend(mxp.plugins.Tool, {
             searchUrl: this.target.geoSearchUsersUrl,
             url: this.target.geoBaseUsersUrl,
             geoStoreBase: this.target.config.geoStoreBase,
+            target: this.target,
             renderMapToTab: this.outputTarget
-    	};
-    	Ext.apply(this.outputConfig, {
+        };
+        Ext.apply(this.outputConfig, {
             xtype: "panel",
+        itemId:'usermanager',
             iconCls: "open_usermanager",
             title: this.buttonText,
             id: this.target.userMamanagerId,
@@ -145,7 +163,7 @@ mxp.plugins.UserManager = Ext.extend(mxp.plugins.Tool, {
                     for(var index = 0; index < this.output[i].ownerCt.items.items.length; index++){
                         var item = this.output[i].ownerCt.items.items[index];
                         // only check iconCls
-                        var isCurrentItem = "open_usermanager" == item.initialConfig["iconCls"];
+                        var isCurrentItem = "usermanager" == item.initialConfig["itemId"];
                         if(isCurrentItem){
                             this.output[i].ownerCt.setActiveTab(index);
                             return;

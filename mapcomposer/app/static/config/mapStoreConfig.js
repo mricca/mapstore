@@ -14,7 +14,7 @@
 			"height": 90
 	   }
    },   
-   "advancedScaleOverlay": true,
+   "scaleOverlayMode": "advanced",
    "gsSources":{
 		"salvador":{
 			"ptype": "gxp_wmssource",
@@ -53,6 +53,16 @@
 		],
 		"layers": [
             {
+				"source": "ol",
+				"group": "background",
+				"fixed": true,
+				"type": "OpenLayers.Layer",
+				"visibility": false,
+				"args": [
+					"None", {"visibility": false}
+				]
+                
+            },{
 				"source": "mapquest",
 				"title": "MapQuest OpenStreetMap",
 				"name": "osm",
@@ -168,6 +178,9 @@
 			"embeddedTemplateName": "viewer",
 			"showDirectURL": true
 		}, {
+			"ptype": "gxp_categoryinitializer",
+            "silentErrors": true
+		}, {
 		   "ptype": "gxp_mouseposition",
 		   "displayProjectionCode":"EPSG:4326",
 		   "customCss": "font-weight: bold; text-shadow: 1px 0px 0px #FAFAFA, 1px 1px 0px #FAFAFA, 0px 1px 0px #FAFAFA,-1px 1px 0px #FAFAFA, -1px 0px 0px #FAFAFA, -1px -1px 0px #FAFAFA, 0px -1px 0px #FAFAFA, 1px -1px 0px #FAFAFA, 1px 4px 5px #aeaeae;color:#050505 "
@@ -175,7 +188,7 @@
 			"ptype": "gxp_addlayer",
 			"showCapabilitiesGrid": true,
 			"useEvents": false,
-			"showReport": false,
+			"showReport": "never",
 			"directAddLayer": false,
 			"id": "addlayer"
 		}, {

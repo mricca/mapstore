@@ -40,7 +40,7 @@ MSMTemplateGridPanel = Ext.extend(Ext.grid.GridPanel, {
     tooltipSearch: "Type a name to search",
     textReset: "Reset",
     tooltipReset: "Clean search",
-    failSuccessTitle: 'Error',
+    failSuccessTitle: "Error",
     resizerText: "Templates per page",
     tooltipDelete: "Delete template",
 	deleteTemplateTitleText: "Attention",
@@ -53,6 +53,13 @@ MSMTemplateGridPanel = Ext.extend(Ext.grid.GridPanel, {
 	 * 
 	 */			
 	pageSize: 50,
+ 
+    /**
+     * Property: expandCollapseOnTopBar
+     * {boolean} Include row expander and collapser buttons on top bar (otherwise it will be added at bottom bar)
+     * 
+     */
+    expandCollapseOnTopBar: true,
 
 	// layout config
 	// layout:'fit',
@@ -65,7 +72,7 @@ MSMTemplateGridPanel = Ext.extend(Ext.grid.GridPanel, {
     categoryName: "TEMPLATE",
 	currentFilter: "",
 	auth: null,
-
+    autoExpandColumn:'name',
     /**
     * Constructor: initComponent 
     * Initializes the component
@@ -127,15 +134,11 @@ MSMTemplateGridPanel = Ext.extend(Ext.grid.GridPanel, {
                        icon: Ext.MessageBox.ERROR
                     });                                
                 },
-                defaultHeaders: {'Accept': 'application/json', 'Authorization' : this.auth}
+                headers: {'Accept': 'application/json', 'Authorization' : this.auth}
             }),
             
             sortInfo: { field: "name", direction: "ASC" }
 		 });
-        store.proxy.getConnection().defaultHeaders = {
-            'Accept': 'application/json', 
-            'Authorization' : this.auth
-        };
 
 		var expander = new Ext.ux.grid.RowExpander({
             /**
@@ -229,55 +232,88 @@ MSMTemplateGridPanel = Ext.extend(Ext.grid.GridPanel, {
 			})
 		});
 
+        // the top bar of the template grid
+        var topBar = [searchField, searchButton, resetSearchButton];
+
+        // bbar as paging
+        var pagingBbar = new MSMPagingToolbar({
+            pageSize : this.pageSize,
+            store : store,
+            grid: this,
+            addMapControls: false,
+            addExpandCollapseControls: !this.expandCollapseOnTopBar,
+            displayInfo: true,
+            plugins: [
+                new Ext.ux.plugin.PagingToolbarResizer( {
+                    options : [5, 10, 20, 50, 100],
+                    displayText: this.resizerText
+                })
+            ]
+        });
+
+        // row expander/collapser on top
+        if(this.expandCollapseOnTopBar){
+            topBar.push("->");
+            topBar.push({
+                text: pagingBbar.textExpandAll,
+                tooltip: pagingBbar.tooltipExpandAll,
+                iconCls: 'row_expand',
+                disabled: false,
+                handler : function() {
+                    expander.expandAll();               
+                },
+                scope: this
+            });
+            topBar.push({
+                text: pagingBbar.textCollapseAll,
+                tooltip: pagingBbar.tooltipCollapseAll,
+                iconCls: 'row_collapse',
+                disabled: false,
+                handler : function() {
+                    expander.collapseAll();
+                },
+                scope: this
+            });
+        }
+
 		Ext.apply(this, {
 			store: store,
-			autoHeight: true,
 			cm: new Ext.grid.ColumnModel({
 				columns: [ expander,
-	        	{
+	        	/*{
 	            	id       :'id',
 	            	header   : this.textId, 
 	            	sortable : true, 
 	            	dataIndex: 'id'
-	        	},
+	        	},*/
 		        {
 		            id       :'name',
 		            header   : this.textName, 
 		            sortable : true, 
 		            dataIndex: 'name'
 		        },
-		        {
+		        /*{
 		            header   : this.textOwner, 
 		            sortable : true, 
 		            dataIndex: 'owner'
-		        },
+		        },*/
 		        {
 		            header   : this.textCreation, 
-		            sortable : true, 
+		            sortable : true,
+                    width: 135,
 		            dataIndex: 'creation'
 		        },
 		        {
 		            header   : this.textLastUpdate, 
 		            sortable : true, 
+                    width: 135,
 		            dataIndex: 'lastUpdate'
 		        }
 		    ]}),		
 			// the top bar of the template grid
-			tbar: [ searchField, searchButton, resetSearchButton],
+			tbar: topBar,
             // bbar as paging
-            bbar: new MSMPagingToolbar({
-	            pageSize : this.pageSize,
-	            store : store,
-	            grid: this,
-                addMapControls: false,
-	            displayInfo: true,
-	            plugins: [
-	            	new Ext.ux.plugin.PagingToolbarResizer( {
-						options : [5, 10, 20, 50, 100],
-						displayText: this.resizerText
-					})
-	            ]
-	        }),
+            bbar: pagingBbar,
         	plugins: expander          
         });
 		

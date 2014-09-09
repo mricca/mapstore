@@ -8,6 +8,7 @@
       "via":"geosolutions_it",
       "hashtags":""
    },
+   "mediaContent":"./externals/mapmanager/theme/media",
    "ASSET":{
         "delete_icon": "./externals/mapmanager/theme/img/user_delete.png",
         "edit_icon": "./externals/mapmanager/theme/img/user_edit.png"
@@ -39,17 +40,19 @@
         "loginManager": "loginTool",
         "actionTarget":null
     },{
+        "ptype": "mxp_categoryinitializer"
+    },{
         "ptype": "mxp_login",
         "pluginId": "loginTool",
         "actionTarget":{
           "target": "north.tbar",
-          "index": 2
+          "index": 3
         }
     },{
         "ptype": "mxp_languageselector",
         "actionTarget":{
           "target": "north.tbar",
-          "index": 6
+          "index": 7
         }
     }],
    "adminTools":[{
@@ -82,13 +85,13 @@
         "pluginId": "loginTool",
         "actionTarget":{
           "target": "north.tbar",
-          "index": 5
+          "index": 10
         }
     },{
         "ptype": "mxp_languageselector",
         "actionTarget":{
           "target": "north.tbar",
-          "index": 10
+          "index": 20
         }
     }],
     "loggedTools":[{

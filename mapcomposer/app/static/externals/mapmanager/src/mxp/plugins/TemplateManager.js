@@ -36,7 +36,7 @@ mxp.plugins.TemplateManager = Ext.extend(mxp.plugins.Tool, {
     ptype: "mxp_templatemanager",
 
     buttonText: "Templates",
-    tooltipText: "Open templates manager",
+    tooltipText: "Open Templates Manager",
 
     loginManager: null,    
 
@@ -84,13 +84,15 @@ mxp.plugins.TemplateManager = Ext.extend(mxp.plugins.Tool, {
              iconCls:'template_manger_ic',
             xtype: "msm_templatemanager",
             id: this.target.templateManagerId,
+			target:this.target,
             auth: this.target.auth,
             login: login.login,
             searchUrl: this.target.geoSearchCategoriesUrl,
             url: this.target.geoBaseMapsUrl,
             geoStoreBase: this.target.config.geoStoreBase,
             closable: true,
-            closeAction: 'close'
+            closeAction: 'close',
+            mediaContent: this.target.initialConfig.mediaContent
         });
         if(this.target.config.adminUrl){
             Ext.apply(this.outputConfig, {
