@@ -1,7 +1,31 @@
 {
-   
-   "advancedScaleOverlay": false,
-   "gsSources":{ 
+   "header": {
+	   "html": ["<div align='center' style='background-color:#02004B;background-position:right center;background-image:url(theme/app/img/banner/Header_geoportale_solo_img.jpg);background-repeat: no-repeat;width:100%;height:100%'></div>"],
+	   "container": {
+			"border": false,
+			"header": false,
+			"collapsible": true,
+			"collapseMode":  "mini",
+			"hideCollapseTool": true,
+			"split": true,
+			"animCollapse": false,
+			"minHeight": 90,
+			"maxHeight": 90,
+			"height": 90
+	   }
+   },   
+   "advancedScaleOverlay": true,
+   "gsSources":{
+		"salvador":{
+			"ptype": "gxp_wmssource",
+			"title": "Salvador GeoServer",
+			"projection":"EPSG:900913",
+			"url": "http://localhost:8080/geoserver/ows",
+			"layerBaseParams": {
+			   "format":"image/png8",
+			   "TILED": true
+			}
+		},    
 		"mapquest": {
 			"ptype": "gxp_mapquestsource"
 		}, 
@@ -21,29 +45,14 @@
 	"map": {
 		"projection": "EPSG:900913",
 		"units": "m",
-		"center": [1250000.000000, 5370000.000000],
-		"zoom":5,
+		"center": [-9930966.24797, 1539441.86367],
+		"zoom":12,
 		"maxExtent": [
 			-20037508.34, -20037508.34,
 			20037508.34, 20037508.34
 		],
 		"layers": [
-			{
-				"source": "google",
-				"title": "Google Roadmap",
-				"name": "ROADMAP",
-				"group": "background"
-			},{
-				"source": "google",
-				"title": "Google Terrain",
-				"name": "TERRAIN",
-				"group": "background"
-			},{
-				"source": "google",
-				"title": "Google Hybrid",
-				"name": "HYBRID",
-				"group": "background"
-			},{
+            {
 				"source": "mapquest",
 				"title": "MapQuest OpenStreetMap",
 				"name": "osm",
@@ -63,25 +72,88 @@
 				"title": "Bing Aerial With Labels",
 				"name": "AerialWithLabels",
 				"group": "background"
+			},{
+				"source": "google",
+				"title": "Google Roadmap",
+				"name": "ROADMAP",
+				"group": "background"
+			},{
+				"source": "google",
+				"title": "Google Terrain",
+				"name": "TERRAIN",
+				"group": "background"
+			},{
+				"source": "google",
+				"title": "Google Hybrid",
+				"name": "HYBRID",
+				"group": "background"
+			},{
+				"source": "salvador",
+                "group": "Limites",
+				"title": "Municipalidades",
+				"name": "salvador:munA_Lambert_NAD27",
+				"displayInLayerSwitcher":true,
+				"visibility": true
+			},{
+				"source": "salvador",
+                "group": "Limites",
+				"title": "Departamentos",
+				"name": "salvador:dptoA_Lambert_NAD27",
+				"displayInLayerSwitcher":true,
+				"visibility": true
+			},{
+				"source": "salvador",
+                "group": "Parcelario",
+				"title": "parcelario_d5",
+				"name": "salvador:parcelario_d5",
+				"displayInLayerSwitcher":true,
+				"visibility": true
+			},{
+				"source": "salvador",
+                "group": "Parcelario",
+				"title": "parcelario_d6",
+				"name": "salvador:parcelario_d6",
+				"displayInLayerSwitcher":true,
+				"visibility": true
+			},{
+				"source": "salvador",
+                "group": "Comunidad",
+				"title": "comunidad_equipamiento_p",
+				"name": "salvador:comunidad_equipamiento_p",
+				"displayInLayerSwitcher":true,
+				"visibility": true
+			},{
+				"source": "salvador",
+                "group": "Comunidad",
+				"title": "comunidad_proyecto_necesidades_p",
+				"name": "salvador:comunidad_proyecto_necesidades_p",
+				"displayInLayerSwitcher":true,
+				"visibility": false
+			},{
+				"source": "salvador",
+                "group": "Comunidad",
+				"title": "comunidad_ubicacion_p",
+				"name": "salvador:comunidad_ubicacion_p",
+				"displayInLayerSwitcher":true,
+				"visibility": true
+			},{
+				"source": "salvador",
+                "group": "Comunidad",
+				"title": "comunidad_vias_accesso_p",
+				"name": "salvador:comunidad_vias_accesso_p",
+				"displayInLayerSwitcher":true,
+				"visibility": true
+			},{
+				"source": "salvador",
+                "group": "Comunidad",
+				"title": "comunidad_vias_internas_p",
+				"name": "salvador:comunidad_vias_internas_p",
+				"displayInLayerSwitcher":true,
+				"visibility": true
 			}
 		]
 	},
     "customPanels":[
-        {
-            "xtype": "panel",
-            "title": "Metadata Explorer",
-            "iconCls": "csw-viewer",             
-            "border": false,
-            "id": "south",
-            "region": "south",
-            "layout": "fit",
-            "split":true,
-            "height": 330,
-            "collapsed": true,
-            "collapsible": true,
-            "ctCls": "south-panel",
-            "header": true
-        }
     ],	
 	"scaleOverlayUnits":{
         "bottomOutUnits":"nmi",    
@@ -99,31 +171,6 @@
 		   "ptype": "gxp_mouseposition",
 		   "displayProjectionCode":"EPSG:4326",
 		   "customCss": "font-weight: bold; text-shadow: 1px 0px 0px #FAFAFA, 1px 1px 0px #FAFAFA, 0px 1px 0px #FAFAFA,-1px 1px 0px #FAFAFA, -1px 0px 0px #FAFAFA, -1px -1px 0px #FAFAFA, 0px -1px 0px #FAFAFA, 1px -1px 0px #FAFAFA, 1px 4px 5px #aeaeae;color:#050505 "
-		}, {
-			"ptype": "gxp_metadataexplorer",
-			"id": "metadataexplorer",
-            "outputTarget": "south",
-            "saveState":true,
-            "cswconfig": {
-                "catalogs": [
-                        {"name": "CSI Piemonte", "url": "http://www.ruparpiemonte.it/geocatalogorp/geonetworkrp/srv/it/csw", "description": "GeoPortale della Regione Piemonte"},
-                        {"name": "Comune di Firenze", "url": "http://datigis.comune.fi.it/geonetwork/srv/it/csw", "description": "GeoPortale del Comune di Firenze"},
-                        {"name": "PTA", "url": "http://pta.partout.it/geoportalPTA/csw", "description": "Piattaforma Tecnologica alpina", "metaDataOptions":{"base":"http://pta.partout.it/geoportalPTA/catalog/search/resource/details.page","idParam":"uuid","idIndex":0}},
-                        {"name": "Treviso", "url": "http://ows.provinciatreviso.it/geonetwork/srv/it/csw", "description": "Treviso Geonetwork"},
-                        {"name": "kscNet", "url": "http://geoportal.kscnet.ru/geonetwork/srv/ru/csw", "description": "kscNet"},
-                        {"name": "CSI-CGIAR", "url": "http://geonetwork.csi.cgiar.org/geonetwork/srv/en/csw", "description" : "CSI-CGIAR"},
-                        {"name": "EauFrance", "url": "http://sandre.eaufrance.fr/geonetwork/srv/fr/csw", "description" : "EauFrance"},
-                        {"name": "SOPAC", "url": "http://geonetwork.sopac.org/geonetwork/srv/en/csw", "description" : "SOPAC"},
-                        {"name": "SADC", "url": "http://www.sadc.int/geonetwork/srv/en/csw", "description" : "SADC"},
-                        {"name": "MAPAS", "url": "http://mapas.mma.gov.br/geonetwork/srv/en/csw", "description" : "MAPAS"}
-                    ],
-                "dcProperty": "title",
-                "cswVersion": "2.0.2",
-                "filterVersion": "1.1.0",
-                "start": 1,
-                "limit": 10,
-                "timeout": 60000
-            }            
 		}, {
 			"ptype": "gxp_addlayer",
 			"showCapabilitiesGrid": true,
@@ -150,10 +197,6 @@
 			"showOnStartup": false,
 			"fileDocURL": "MapStore-Help.pdf"
         }, {
-			"ptype": "gxp_about",
-			"poweredbyURL": "http://www.geo-solutions.it/about/contacts/",
-			"actionTarget": {"target": "panelbbar", "index": 1}
-		}, {
 			"ptype": "gxp_languageselector",
 			"actionTarget": {"target": "panelbbar", "index": 3}
 		}
