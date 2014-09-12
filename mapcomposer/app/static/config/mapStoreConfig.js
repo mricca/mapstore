@@ -5,7 +5,8 @@
 			"border": false,
 			"header": false,
 			"collapsible": true,
-			"collapseMode":  "mini",
+			"collapseMode": "mini",
+            "collapsed": true,
 			"hideCollapseTool": true,
 			"split": true,
 			"animCollapse": false,
@@ -21,6 +22,7 @@
 			"title": "Salvador GeoServer",
 			"projection":"EPSG:900913",
 			"url": "http://localhost:8080/geoserver/ows",
+            "version":"1.1.1",
 			"layerBaseParams": {
 			   "format":"image/png8",
 			   "TILED": true
@@ -164,6 +166,30 @@
 		]
 	},
     "customPanels":[
+	      {
+	          "xtype": "panel",
+	          "title": "FeatureGrid",      
+	          "border": false,
+	          "id": "south",
+	          "region": "south",
+	          "layout": "fit",
+	          "height": 330,
+	          "collapsed": true,
+	          "collapsible": true,
+	          "header": true
+	      },{
+	          "xtype": "panel",
+	          "title": "Query Panel",         
+	          "border": false,
+	          "id": "east",
+	          "width": 400,
+	          "height": 500,
+	          "region": "east",
+	          "layout": "fit",
+	          "collapsed": false,
+	          "collapsible": true,
+	          "header": true
+	      }
     ],	
 	"scaleOverlayUnits":{
         "bottomOutUnits":"nmi",    
@@ -171,8 +197,15 @@
         "topInUnits":"m",    
         "topOutUnits":"km"
     },
-	"customTools":[
-		{
+	"customTools":[{
+           "ptype": "gxp_wpsmanager",
+           "id": "wpsManager",
+           "url": "http://localhost:8080/geoserver/wps",
+           "geostoreUrl": "http://localhost:8080/geostore/rest",
+           "geostoreUser": "admin",
+           "geostorePassword": "admin",
+           "geostoreProxy": "/http_proxy/proxy?url="
+        }, {
 			"ptype": "gxp_embedmapdialog",
 			"actionTarget": {"target": "paneltbar", "index": 2},
 			"embeddedTemplateName": "viewer",
@@ -212,6 +245,125 @@
         }, {
 			"ptype": "gxp_languageselector",
 			"actionTarget": {"target": "panelbbar", "index": 3}
-		}
+		}, {
+		  "ptype": "gxp_featuremanager",
+		  "id": "featuremanager",
+          "paging": true,
+          "pagingType": 1,
+          "autoLoadFeatures": false,
+          "maxFeatures": 10
+	    }, {
+		  "ptype": "gxp_featuregrid",
+		  "featureManager": "featuremanager",
+		  "outputConfig": {
+			  "id": "featuregrid",
+			  "title": "Features"
+		  },
+		  "outputTarget": "south",
+			"exportFormats": ["CSV","shape-zip","excel", "excel2007"],
+			"exportAction": "window",
+			"showNumberOfRecords": true
+	    }, {
+		  "ptype": "gxp_spatialqueryform",
+		  "featureManager": "featuremanager",
+		  "featureGridContainer": "south",
+		  "outputTarget": "east",
+		  "showSelectionSummary": true,
+		  "actions": null,
+		  "id": "bboxquery",
+          "filterLayer": true,
+          "autoComplete": {
+            "sources": ["salvador"],
+            "url": "http://localhost:8080/geoserver/wps",
+            "pageSize": 10
+          },
+		  "outputConfig":{
+			  "outputSRS": "EPSG:900913",
+			  "selectStyle":{
+				  "strokeColor": "#ee9900",
+				  "fillColor": "#ee9900",
+				  "fillOpacity": 0.4,
+				  "strokeWidth": 1
+			  },
+			  "spatialFilterOptions": {	
+				  "lonMax": 20037508.34,   
+				  "lonMin": -20037508.34,
+				  "latMax": 20037508.34,   
+				  "latMin": -20037508.34  
+			  },
+			  "bufferOptions": {
+				"minValue": 1,
+				"maxValue": 1000,
+				"decimalPrecision": 2,
+				"distanceUnits": "m"
+			  }
+		  },          
+		  "spatialSelectorsConfig":{
+		        "bbox":{
+		            "xtype": "gxp_spatial_bbox_selector"
+		        },
+		        "buffer":{
+		            "xtype": "gxp_spatial_buffer_selector",
+					"bufferOptions": {
+						"minValue": 1,
+						"maxValue": 10000,
+						"decimalPrecision": 2
+					}
+		        },
+		        "circle":{
+		            "xtype": "gxp_spatial_circle_selector",
+		            "zoomToCurrentExtent": true
+		        },
+		        "polygon":{
+		            "xtype": "gxp_spatial_polygon_selector"
+		        },
+		        "geocoder":{
+		            "xtype": "gxp_spatial_geocoding_selector",
+		            "multipleSelection": false,
+		            "wfsBaseURL": "http://localhost:8080/geoserver/wfs?",
+		            "geocoderTypeName": "salvador:comunidad_equipamiento_p",
+		            "geocoderTypeRecordModel":[
+		                {
+		                    "name":"id",
+		                    "mapping":"id_comunidad_equipamiento"
+		                },
+		                {
+		                    "name":"nombre",
+		                    "mapping":"properties.nombre"
+		                },
+		                {
+		                    "name":"usuario",
+		                    "mapping":"properties.usuario"
+		                },
+		                {
+		                    "name":"geometry",
+		                    "mapping":"geometry"
+		                }
+		            ],
+		            "geocoderTypeSortBy":null,
+		            "geocoderTypeQueriableAttributes":[
+		                "nombre", "usuario"
+		            ],
+		            "spatialOutputCRS": "EPSG:4326",
+		            "geocoderTypePageSize": 10,
+		            "zoomToCurrentExtent": false
+		        }
+	      }
+    	},{
+            "ptype":"gxp_print",
+            "customParams":{
+                "outputFilename":"mapstore-print"
+            },
+            "ignoreLayers": "Google Hybrid,Bing Aerial,Google Terrain,Google Roadmap,Marker,GeoRefMarker",
+            "printService":"http://localhost:8080/geoserver/pdf/",
+            "legendPanelId":"legendPanel",
+            "actionTarget":{
+                "target":"paneltbar",
+                "index":4
+            },
+            "addLandscapeControl": true,
+            "appendLegendOptions": true,
+            "addGraticuleControl": true
+        }
 	]
 }
