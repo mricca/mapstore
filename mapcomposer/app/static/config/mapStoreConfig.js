@@ -101,65 +101,44 @@
 				"group": "background"
 			},{
 				"source": "salvador",
-                "group": "Limites",
-				"title": "Municipalidades",
-				"name": "salvador:munA_Lambert_NAD27",
+                "group": "Base",
+				"title": "Limites Zonas D5",
+				"name": "SALVADOR:limites_zonas_d5",
 				"displayInLayerSwitcher":true,
 				"visibility": true
 			},{
 				"source": "salvador",
-                "group": "Limites",
-				"title": "Departamentos",
-				"name": "salvador:dptoA_Lambert_NAD27",
+                "group": "Base",
+				"title": "Limites Zonas D6",
+				"name": "SALVADOR:limites_zonas_d6",
 				"displayInLayerSwitcher":true,
 				"visibility": true
 			},{
 				"source": "salvador",
-                "group": "Parcelario",
-				"title": "parcelario_d5",
-				"name": "salvador:parcelario_d5",
+                "group": "Base",
+				"title": "Parcelario D5",
+				"name": "SALVADOR:parcelario_d5",
 				"displayInLayerSwitcher":true,
 				"visibility": true
 			},{
 				"source": "salvador",
-                "group": "Parcelario",
-				"title": "parcelario_d6",
-				"name": "salvador:parcelario_d6",
+                "group": "Base",
+				"title": "Parcelario D6",
+				"name": "SALVADOR:parcelario_d6",
 				"displayInLayerSwitcher":true,
 				"visibility": true
 			},{
 				"source": "salvador",
-                "group": "Comunidad",
-				"title": "comunidad_equipamiento_p",
-				"name": "salvador:comunidad_equipamiento_p",
+                "group": "Base",
+				"title": "Ejes Viales",
+				"name": "SALVADOR:ejes_viales",
 				"displayInLayerSwitcher":true,
 				"visibility": true
 			},{
 				"source": "salvador",
-                "group": "Comunidad",
-				"title": "comunidad_proyecto_necesidades_p",
-				"name": "salvador:comunidad_proyecto_necesidades_p",
-				"displayInLayerSwitcher":true,
-				"visibility": false
-			},{
-				"source": "salvador",
-                "group": "Comunidad",
-				"title": "comunidad_ubicacion_p",
-				"name": "salvador:comunidad_ubicacion_p",
-				"displayInLayerSwitcher":true,
-				"visibility": true
-			},{
-				"source": "salvador",
-                "group": "Comunidad",
-				"title": "comunidad_vias_accesso_p",
-				"name": "salvador:comunidad_vias_accesso_p",
-				"displayInLayerSwitcher":true,
-				"visibility": true
-			},{
-				"source": "salvador",
-                "group": "Comunidad",
-				"title": "comunidad_vias_internas_p",
-				"name": "salvador:comunidad_vias_internas_p",
+                "group": "Base",
+				"title": "Rios San Salvador",
+				"name": "SALVADOR:rios_san_salvador",
 				"displayInLayerSwitcher":true,
 				"visibility": true
 			}
@@ -255,9 +234,12 @@
 	    }, {
 		  "ptype": "gxp_featuregrid",
 		  "featureManager": "featuremanager",
+          "layout": "form",
 		  "outputConfig": {
 			  "id": "featuregrid",
-			  "title": "Features"
+			  "title": "Features",
+              "height": 240,
+              "loadMask": true
 		  },
 		  "outputTarget": "south",
 			"exportFormats": ["CSV","shape-zip","excel", "excel2007"],
@@ -271,7 +253,7 @@
 		  "showSelectionSummary": true,
 		  "actions": null,
 		  "id": "bboxquery",
-          "filterLayer": true,
+          "filterLayer": false,
           "autoComplete": {
             "sources": ["salvador"],
             "url": "http://localhost:8080/geoserver/wps",
