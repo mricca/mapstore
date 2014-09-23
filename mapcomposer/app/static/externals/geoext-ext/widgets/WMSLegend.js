@@ -138,7 +138,8 @@ GeoExt.WMSLegend = Ext.extend(GeoExt.LayerLegend, {
                 });
             } else if(this.defaultStyleIsFirst === true && !styleNames &&
                       !layer.params.SLD && !layer.params.SLD_BODY) {
-                url = styles[0].legend && styles[0].legend.href;
+                //url = styles[0].legend && styles[0].legend.href;
+                url = styles.length == 1 ? styles[0].legend && styles[0].legend.href : styles[1].legend && styles[1].legend.href;
             }
         }
         if(!url) {

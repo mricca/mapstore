@@ -116,11 +116,11 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 		            ptype: "gxp_zoombox", 
                     id: "zoombox_plugin",
                     toggleGroup: this.toggleGroup,
-		            actionTarget: {target: "paneltbar", index: 17}
+		            actionTarget: {target: "paneltbar", index: 18}
 		        }, {
 		            ptype: "gxp_zoom",
                     id: "zoom_plugin",
-		            actionTarget: {target: "paneltbar", index: 18}
+		            actionTarget: {target: "paneltbar", index: 19}
 		        }, {
                     id: "navigationhistory_separator",
 		            actions: ["-"], 
@@ -128,13 +128,13 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 		        }, {
 		            ptype: "gxp_navigationhistory",
                     id: "navigationhistory_plugin",
-		            actionTarget: {target: "paneltbar", index: 19}
+		            actionTarget: {target: "paneltbar", index: 20}
 		        }, {
                     id: "wmsgetfeatureinfo_menu_separator",
 		            actions: ["-"], 
                     actionTarget: "paneltbar"
 		        }, {
-		            ptype: "gxp_wmsgetfeatureinfo_menu", 
+		            ptype: "gxp_wmsgetfeatureinfo", 
                     id: "wmsgetfeatureinfo_plugin",
 					toggleGroup: this.toggleGroup,
 					useTabPanel: true,
@@ -147,15 +147,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 		            ptype: "gxp_measure", 
                     id: "measure_plugin",
                     toggleGroup: this.toggleGroup,
-		            actionTarget: {target: "paneltbar", index: 21}
-		        }, {
-                    id: "googleearth_separator",
-		            actions: ["-"], 
-                    actionTarget: "paneltbar"
-		        }, {
-		            ptype: "gxp_googleearth",
-                    id: "googleearth_plugin",
-		            actionTarget: {target: "paneltbar", index: 25}
+		            actionTarget: {target: "paneltbar", index: 22}
 		        }
 		    ];
 

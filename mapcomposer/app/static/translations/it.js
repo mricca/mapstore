@@ -26,7 +26,7 @@ GeoExt.Lang.add("it", {
         contactText: "Contatto",
         aboutThisMapText: "Informazioni",
         searchTabTitle : "Portale",
-        viewTabTitle : "Vista",
+        viewTabTitle : "Geoportale Presidi Idraulici",
 		markerPopupTitle: "Dettagli",
 		mainLoadingMask: "Attendere prego ..."
     },

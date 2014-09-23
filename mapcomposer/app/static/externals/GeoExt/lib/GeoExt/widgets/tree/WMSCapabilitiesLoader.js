@@ -6,13 +6,20 @@
  * of the license.
  */
 
-Ext.namespace("GeoExt.tree");
-
 /** api: (define)
  *  module = GeoExt.tree
  *  class = WMSCapabilitiesLoader
  *  base_link = `Ext.tree.TreeLoader <http://www.dev.sencha.com/deploy/dev/docs/?class=Ext.tree.TreeLoader>`_
  */
+
+/**
+ * require OpenLayers/Format/WMSCapabilities.js
+ * require OpenLayers/Format/WMSCapabilities/v1_1_1.js
+ * require OpenLayers/Layer/WMS.js
+ * require OpenLayers/BaseTypes/Class.js
+ */
+
+Ext.namespace("GeoExt.tree");
 
 /** api: constructor
  *  .. class:: WMSCapabilitiesLoader
@@ -73,7 +80,7 @@ Ext.extend(GeoExt.tree.WMSCapabilitiesLoader, Ext.tree.TreeLoader, {
     processResponse : function(response, node, callback, scope){
         var capabilities = new OpenLayers.Format.WMSCapabilities().read(
             response.responseXML || response.responseText);
-        this.processLayer(capabilities.capability,
+        capabilities.capability && this.processLayer(capabilities.capability,
             capabilities.capability.request.getmap.href, node);
         if (typeof callback == "function") {
             callback.apply(scope || node, [node]);
@@ -91,7 +98,6 @@ Ext.extend(GeoExt.tree.WMSCapabilitiesLoader, Ext.tree.TreeLoader, {
      *  node.
      */
     createWMSLayer: function(layer, url) {
-    alert("pippo");
         if (layer.name) {
             return new OpenLayers.Layer.WMS( layer.title, url,
                 OpenLayers.Util.extend({formats: layer.formats[0], 

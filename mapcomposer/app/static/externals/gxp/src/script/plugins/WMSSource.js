@@ -335,7 +335,7 @@ gxp.plugins.WMSSource = Ext.extend(gxp.plugins.LayerSource, {
                 config.title || config.name, 
                 layer.url, 
                 params, {
-                    attribution: layer.attribution,
+                    attribution: config.attribution ? layer.attribution : '',
                     maxExtent: maxCachedExtent,
                     restrictedExtent: maxExtent,
                     displayInLayerSwitcher: ("displayInLayerSwitcher" in config) ? config.displayInLayerSwitcher :true,
@@ -344,6 +344,7 @@ gxp.plugins.WMSSource = Ext.extend(gxp.plugins.LayerSource, {
                     visibility: ("visibility" in config) ? config.visibility : true,
                     opacity: ("opacity" in config) ? config.opacity : 1,
                     buffer: ("buffer" in config) ? config.buffer : 0,
+		    dimensions: original.data.dimensions,
                     projection: layerProjection,
                     vendorParams: config.vendorParams,
 					transitionEffect: transitionEffect
@@ -355,6 +356,10 @@ gxp.plugins.WMSSource = Ext.extend(gxp.plugins.LayerSource, {
                 title: config.title, 
                 name: config.name,
                 group: config.group,
+                expanded: config.expanded,
+                checked: config.checked,
+                tiled: config.tiled,
+                displayInLayerSwitcher: config.displayInLayerSwitcher,
                 uuid: config.uuid,
                 gnURL: config.gnURL,
                 source: config.source,
@@ -371,6 +376,10 @@ gxp.plugins.WMSSource = Ext.extend(gxp.plugins.LayerSource, {
                 {name: "source", type: "string"}, 
                 {name: "name", type: "string"}, 
                 {name: "group", type: "string"},
+                {name: "expanded", type: "boolean"},
+                {name: "checked", type: "boolean"},
+                {name: "tiled", type: "boolean"},
+                {name: "displayInLayerSwitcher", type: "boolean"},
 				{name: "uuid", type: "string"},
 				{name: "gnURL", type: "string"},
 				{name: "title", type: "string"},
@@ -387,6 +396,10 @@ gxp.plugins.WMSSource = Ext.extend(gxp.plugins.LayerSource, {
 
             var Record = GeoExt.data.LayerRecord.create(fields);
             record = new Record(data, layer.id);
+        } else {
+            if (window.console && this.store.getCount() > 0) {
+                console.warn("Could not create layer record for layer '" + config.name + "'. Check if the layer is found in the WMS GetCapabilities response.");
+            }
         }
         
         return record;
