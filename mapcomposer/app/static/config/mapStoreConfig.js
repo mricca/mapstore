@@ -105,28 +105,28 @@
 				"title": "Limites Zonas D5",
 				"name": "SALVADOR:limites_zonas_d5",
 				"displayInLayerSwitcher":true,
-				"visibility": true
+				"visibility": false
 			},{
 				"source": "salvador",
                 "group": "Base",
 				"title": "Limites Zonas D6",
 				"name": "SALVADOR:limites_zonas_d6",
 				"displayInLayerSwitcher":true,
-				"visibility": true
+				"visibility": false
 			},{
 				"source": "salvador",
                 "group": "Base",
 				"title": "Parcelario D5",
 				"name": "SALVADOR:parcelario_d5",
 				"displayInLayerSwitcher":true,
-				"visibility": true
+				"visibility": false
 			},{
 				"source": "salvador",
                 "group": "Base",
 				"title": "Parcelario D6",
 				"name": "SALVADOR:parcelario_d6",
 				"displayInLayerSwitcher":true,
-				"visibility": true
+				"visibility": false
 			},{
 				"source": "salvador",
                 "group": "Base",
@@ -140,7 +140,21 @@
 				"title": "Rios San Salvador",
 				"name": "SALVADOR:rios_san_salvador",
 				"displayInLayerSwitcher":true,
-				"visibility": true
+				"visibility": false
+			},{
+				"source": "salvador",
+                "group": "Comunidad Ubication",
+				"title": "Comunidad Ubication",
+				"name": "SALVADOR:comunidad_ubicacion",
+				"displayInLayerSwitcher":true,
+				"visibility": false
+			},{
+				"source": "salvador",
+                "group": "Comunidad Ubication",
+				"title": "Comunidad Directivos",
+				"name": "SALVADOR:comunidad_directivos",
+				"displayInLayerSwitcher":true,
+				"visibility": false
 			}
 		]
 	},
@@ -165,7 +179,7 @@
 	          "height": 500,
 	          "region": "east",
 	          "layout": "fit",
-	          "collapsed": false,
+	          "collapsed": true,
 	          "collapsible": true,
 	          "header": true
 	      }
@@ -176,6 +190,9 @@
         "topInUnits":"m",    
         "topOutUnits":"km"
     },
+    "removeTools": [
+        "gxp_wmsgetfeatureinfo_menu"
+    ],    
 	"customTools":[{
            "ptype": "gxp_wpsmanager",
            "id": "wpsManager",
@@ -193,6 +210,20 @@
 			"ptype": "gxp_categoryinitializer",
             "silentErrors": true
 		}, {
+            "ptype": "gxp_wmsgetfeatureinfo",
+            "id": "wmsgetfeatureinfo_plugin",
+            "toggleGroup": "toolGroup",
+            "closePrevious": true,
+            "useTabPanel": true,
+            "infoPanelId": "",
+            "disableAfterClick": false,
+            "loadingMask": true,
+            "maxFeatures": 100,
+            "actionTarget": {
+                "target": "paneltbar",
+                "index": 21
+            }
+        }, {
 		   "ptype": "gxp_mouseposition",
 		   "displayProjectionCode":"EPSG:4326",
 		   "customCss": "font-weight: bold; text-shadow: 1px 0px 0px #FAFAFA, 1px 1px 0px #FAFAFA, 0px 1px 0px #FAFAFA,-1px 1px 0px #FAFAFA, -1px 0px 0px #FAFAFA, -1px -1px 0px #FAFAFA, 0px -1px 0px #FAFAFA, 1px -1px 0px #FAFAFA, 1px 4px 5px #aeaeae;color:#050505 "

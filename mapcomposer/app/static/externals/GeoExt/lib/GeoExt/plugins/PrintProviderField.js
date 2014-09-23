@@ -117,18 +117,7 @@ GeoExt.plugins.PrintProviderField = Ext.extend(Ext.util.Observable, {
     onRender: function(field) {
         var printProvider = this.printProvider || field.ownerCt.printProvider;
         if(field.store === printProvider.layouts) {
-		
-		
-			var cleanLayoutName = printProvider.layout.get('name').substr(0,2);
-					
-			if(cleanLayoutName){
-				var nr = printProvider.layouts.find("name", cleanLayoutName);
-				var newLayout = printProvider.layouts.getAt(nr);
-				field.setValue(newLayout.get(field.displayField));
-			}else {
-				field.setValue(printProvider.layout.get(field.displayField));
-			}
-				
+            field.setValue(printProvider.layout.get(field.displayField));
             printProvider.on({
                 "layoutchange": this.onProviderChange,
                 scope: this
@@ -157,12 +146,7 @@ GeoExt.plugins.PrintProviderField = Ext.extend(Ext.util.Observable, {
         if(record) {
             switch(field.store) {
                 case printProvider.layouts:
-					var newLayoutName = record.get('name') + printProvider.layout.get('name').substr(2);
-					
-					var nr = printProvider.fullLayouts.find("name", newLayoutName);
-					var newLayout = printProvider.fullLayouts.getAt(nr);
-					
-                    printProvider.setLayout(newLayout);
+                    printProvider.setLayout(record);
                     break;
                 case printProvider.dpis:
                     printProvider.setDpi(record);
@@ -181,7 +165,7 @@ GeoExt.plugins.PrintProviderField = Ext.extend(Ext.util.Observable, {
      */
     onProviderChange: function(printProvider, rec) {
         if(!this._updating) {
-            //this.target.setValue(rec.get(this.target.displayField));
+            this.target.setValue(rec.get(this.target.displayField));
         }
     },
     
