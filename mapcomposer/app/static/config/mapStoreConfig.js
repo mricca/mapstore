@@ -16,6 +16,7 @@
 	   }
    },   
    "scaleOverlayMode": "advanced",
+   "tab": false,
    "gsSources":{
 		"salvador":{
 			"ptype": "gxp_wmssource",
@@ -68,37 +69,44 @@
 				"source": "mapquest",
 				"title": "MapQuest OpenStreetMap",
 				"name": "osm",
-				"group": "background"
+				"group": "background",
+				"visibility": false
 			},{
 				"source": "osm",
 				"title": "Open Street Map",
 				"name": "mapnik",
-				"group": "background"
+				"group": "background",
+				"visibility": false
 			},{
 				"source": "bing",
 				"title": "Bing Aerial",
 				"name": "Aerial",
-				"group": "background"
+				"group": "background",
+				"visibility": false
 			},{
 				"source": "bing",
 				"title": "Bing Aerial With Labels",
 				"name": "AerialWithLabels",
-				"group": "background"
+				"group": "background",
+				"visibility": true
 			},{
 				"source": "google",
 				"title": "Google Roadmap",
 				"name": "ROADMAP",
-				"group": "background"
+				"group": "background",
+				"visibility": false
 			},{
 				"source": "google",
 				"title": "Google Terrain",
 				"name": "TERRAIN",
-				"group": "background"
+				"group": "background",
+				"visibility": false
 			},{
 				"source": "google",
 				"title": "Google Hybrid",
 				"name": "HYBRID",
-				"group": "background"
+				"group": "background",
+				"visibility": false
 			},{
 				"source": "salvador",
                 "group": "Base",
@@ -133,14 +141,14 @@
 				"title": "Ejes Viales",
 				"name": "SALVADOR:ejes_viales",
 				"displayInLayerSwitcher":true,
-				"visibility": true
+				"visibility": false
 			},{
 				"source": "salvador",
                 "group": "Base",
 				"title": "Rios San Salvador",
 				"name": "SALVADOR:rios_san_salvador",
 				"displayInLayerSwitcher":true,
-				"visibility": false
+				"visibility": true
 			},{
 				"source": "salvador",
                 "group": "Comunidad Ubication",
@@ -153,6 +161,83 @@
                 "group": "Comunidad Ubication",
 				"title": "Comunidad Directivos",
 				"name": "SALVADOR:comunidad_directivos",
+				"displayInLayerSwitcher":true,
+				"visibility": false
+			},{
+				"source": "salvador",
+                "group": "Comunidad Ubication",
+				"title": "Comunidad Presupuesto Participativo",
+				"name": "SALVADOR:comunidad_presupuesto_participativo",
+				"displayInLayerSwitcher":true,
+				"visibility": false
+			},{
+				"source": "salvador",
+                "group": "Comunidad Ubication",
+				"title": "Comunidad Estado Juridico",
+				"name": "SALVADOR:comunidad_estado_juridico",
+				"displayInLayerSwitcher":true,
+				"visibility": false
+			},{
+				"source": "salvador",
+                "group": "Comunidad Ubication",
+				"title": "Comunidad Comunidad Comitees",
+				"name": "SALVADOR:comunidad_comitees",
+				"displayInLayerSwitcher":true,
+				"visibility": false
+			},{
+				"source": "salvador",
+                "group": "Comunidad Ubication",
+				"title": "Comunidad Proyecto Gestion",
+				"name": "SALVADOR:comunidad_proyecto_gestion",
+				"displayInLayerSwitcher":true,
+				"visibility": false
+			},{
+				"source": "salvador",
+                "group": "Comunidad Ubication",
+				"title": "Comunidad Proyecto Ejecution",
+				"name": "SALVADOR:comunidad_proyecto_ejecution",
+				"displayInLayerSwitcher":true,
+				"visibility": false
+			},{
+				"source": "salvador",
+                "group": "Comunidad Ubication",
+				"title": "Comunidad Campanas Salud",
+				"name": "SALVADOR:comunidad_campanas_salud",
+				"displayInLayerSwitcher":true,
+				"visibility": false
+			},{
+				"source": "salvador",
+                "group": "Comunidad Ubication",
+				"title": "Comunidad Fichas",
+				"name": "SALVADOR:comunidad_fichas",
+				"displayInLayerSwitcher":true,
+				"visibility": false
+			},{
+				"source": "salvador",
+                "group": "Comunidad Equipamiento",
+				"title": "Comunidad Equipamiento",
+				"name": "SALVADOR:comunidad_equipamiento",
+				"displayInLayerSwitcher":true,
+				"visibility": false
+			},{
+				"source": "salvador",
+                "group": "Comunidad Vias Internas",
+				"title": "Comunidad Vias Internas",
+				"name": "SALVADOR:comunidad_vias_internas",
+				"displayInLayerSwitcher":true,
+				"visibility": false
+			},{
+				"source": "salvador",
+                "group": "Comunidad Vias Accesso",
+				"title": "Comunidad Vias Accesso",
+				"name": "SALVADOR:comunidad_vias_accesso",
+				"displayInLayerSwitcher":true,
+				"visibility": false
+			},{
+				"source": "salvador",
+                "group": "Comunidad Proyecto Necesidades",
+				"title": "Comunidad Proyecto Necesidades",
+				"name": "SALVADOR:comunidad_proyecto_necesidades",
 				"displayInLayerSwitcher":true,
 				"visibility": false
 			}
@@ -194,21 +279,10 @@
         "gxp_wmsgetfeatureinfo_menu"
     ],    
 	"customTools":[{
-           "ptype": "gxp_wpsmanager",
-           "id": "wpsManager",
-           "url": "http://localhost:8080/geoserver/wps",
-           "geostoreUrl": "http://localhost:8080/geostore/rest",
-           "geostoreUser": "admin",
-           "geostorePassword": "admin",
-           "geostoreProxy": "/http_proxy/proxy?url="
-        }, {
 			"ptype": "gxp_embedmapdialog",
 			"actionTarget": {"target": "paneltbar", "index": 2},
 			"embeddedTemplateName": "viewer",
 			"showDirectURL": true
-		}, {
-			"ptype": "gxp_categoryinitializer",
-            "silentErrors": true
 		}, {
             "ptype": "gxp_wmsgetfeatureinfo",
             "id": "wmsgetfeatureinfo_plugin",
@@ -221,8 +295,26 @@
             "maxFeatures": 100,
             "actionTarget": {
                 "target": "paneltbar",
-                "index": 21
+                "index": 20
             }
+        }, {
+			"actions": ["-"], 
+			"actionTarget": "paneltbar"
+		},{
+            "ptype":"gxp_print",
+            "customParams":{
+                "outputFilename":"mapstore-print"
+            },
+            "ignoreLayers": "Google Hybrid,Bing Aerial,Google Terrain,Google Roadmap,Marker,GeoRefMarker",
+            "printService":"http://localhost:8080/geoserver/pdf",
+            "legendPanelId":"legendPanel",
+            "actionTarget":{
+                "target":"paneltbar",
+                "index":24
+            },
+            "addLandscapeControl": true,
+            "appendLegendOptions": true,
+            "addGraticuleControl": true
         }, {
 		   "ptype": "gxp_mouseposition",
 		   "displayProjectionCode":"EPSG:4326",
@@ -362,21 +454,6 @@
 		            "zoomToCurrentExtent": false
 		        }
 	      }
-    	},{
-            "ptype":"gxp_print",
-            "customParams":{
-                "outputFilename":"mapstore-print"
-            },
-            "ignoreLayers": "Google Hybrid,Bing Aerial,Google Terrain,Google Roadmap,Marker,GeoRefMarker",
-            "printService":"http://localhost:8080/geoserver/pdf/",
-            "legendPanelId":"legendPanel",
-            "actionTarget":{
-                "target":"paneltbar",
-                "index":4
-            },
-            "addLandscapeControl": true,
-            "appendLegendOptions": true,
-            "addGraticuleControl": true
-        }
+    	}
 	]
 }
