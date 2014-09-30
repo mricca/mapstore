@@ -8,7 +8,6 @@
 
 /**
  * @include GeoExt/data/FeatureReader.js
- * require OpenLayers/Feature/Vector.js
  */
 
 /** api: (define)
@@ -421,15 +420,7 @@ GeoExt.data.FeatureStoreMixin = function() {
                     }
                 }
             }
-        },
-
-        /** private: method[destroy]
-         */
-        destroy: function() {
-            this.unbind();
-            GeoExt.data.FeatureStore.superclass.destroy.call(this);
         }
-
     };
 };
 

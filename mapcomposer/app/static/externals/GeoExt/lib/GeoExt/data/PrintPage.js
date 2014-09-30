@@ -5,20 +5,13 @@
  * See http://svn.geoext.org/core/trunk/geoext/license.txt for the full text
  * of the license.
  */
-
-/**
- * require OpenLayers/Feature/Vector.js
- * require OpenLayers/Geometry.js
- * require OpenLayers/Util.js
- * require OpenLayers/BaseTypes/Bounds.js
- */
+Ext.namespace("GeoExt.data");
 
 /** api: (define)
  *  module = GeoExt.data
  *  class = PrintPage
  *  base_link = `Ext.util.Observable <http://dev.sencha.com/deploy/dev/docs/?class=Ext.util.Observable>`_
  */
-Ext.namespace("GeoExt.data");
 
 /** api: constructor
  *  .. class:: PrintPage

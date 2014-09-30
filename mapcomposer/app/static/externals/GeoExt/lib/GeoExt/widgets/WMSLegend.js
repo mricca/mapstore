@@ -9,8 +9,6 @@
 /**
  * @include GeoExt/widgets/LegendImage.js
  * @requires GeoExt/widgets/LayerLegend.js
- * require OpenLayers/Util.js
- * require OpenLayers/Layer/WMS.js
  */
 
 /** api: (define)
@@ -50,6 +48,20 @@ GeoExt.WMSLegend = Ext.extend(GeoExt.LayerLegend, {
      *  GetLegendGraphic request? Defaults to true.
      */
     useScaleParameter: true,
+    
+    /** api: config[minScale]
+     *  ``Number``
+     *  If useScaleParameter is true, we can set the minimum SCALE
+     *  to use for SLD WMS to a fixed value. Defaults to -1 (no minimum).     
+     */    
+    minScale: -1,
+    
+    /** api: config[maxScale]
+     *  ``Number``
+     *  If useScaleParameter is true, we can set the maximum SCALE
+     *  to use for SLD WMS to a fixed value. Defaults to -1 (no maximum).     
+     */    
+    maxScale: -1,
 
     /** api: config[baseParams]
      * ``Object``
@@ -132,6 +144,7 @@ GeoExt.WMSLegend = Ext.extend(GeoExt.LayerLegend, {
         if(!url) {
             url = layer.getFullRequestString({
                 REQUEST: "GetLegendGraphic",
+				SERVICE: "WMS",
                 WIDTH: null,
                 HEIGHT: null,
                 EXCEPTIONS: "application/vnd.ogc.se_xml",
@@ -140,27 +153,40 @@ GeoExt.WMSLegend = Ext.extend(GeoExt.LayerLegend, {
                 STYLE: (styleName !== '') ? styleName: null,
                 STYLES: null,
                 SRS: null,
-                FORMAT: null,
-                TIME: null
+                FORMAT: null
             });
         }
-        if (url.toLowerCase().indexOf("request=getlegendgraphic") != -1) {
-            if (url.toLowerCase().indexOf("format=") == -1) {
-                url = Ext.urlAppend(url, "FORMAT=image/gif");
+		
+        // add scale parameter - also if we have the url from the record's
+        // styles data field and it is actually a GetLegendGraphic request.
+        if(this.useScaleParameter === true &&
+                url.toLowerCase().indexOf("request=getlegendgraphic") != -1) {
+            var scale = layer.map.getScale();
+            if(this.minScale !== -1 && scale < this.minScale) {
+                scale = this.minScale;
             }
-            // add scale parameter - also if we have the url from the record's
-            // styles data field and it is actually a GetLegendGraphic request.
-            if (this.useScaleParameter === true) {
-                var scale = layer.map.getScale();
-                url = Ext.urlAppend(url, "SCALE=" + scale);
+            if(this.maxScale !== -1 && scale > this.maxScale) {
+                scale = this.maxScale;
             }
+            url = Ext.urlAppend(url, "SCALE=" + scale);
         }
-        var params = Ext.apply({}, this.baseParams);
+		
+		var lowerUrl = url.toLowerCase();
+		if(lowerUrl.indexOf("request=getlegendgraphic") != -1 && 
+			lowerUrl.indexOf("service=wms") == -1){
+			url += "&SERVICE=WMS";
+		}
+		
+        var params = this.baseParams || {};
+        Ext.applyIf(params, {FORMAT: 'image/png'});
+		
         if (layer.params._OLSALT) {
             // update legend after a forced layer redraw
             params._OLSALT = layer.params._OLSALT;
         }
-        url = Ext.urlAppend(url, Ext.urlEncode(params));
+        if(url.indexOf('?') > 0) {
+            url = Ext.urlEncode(params, url);
+        }
         
         return url;
     },
@@ -222,7 +248,7 @@ GeoExt.WMSLegend = Ext.extend(GeoExt.LayerLegend, {
      */
     beforeDestroy: function() {
         if (this.useScaleParameter === true) {
-            var layer = this.layerRecord.getLayer();
+            var layer = this.layerRecord.getLayer()
             layer && layer.events &&
                 layer.events.unregister("moveend", this, this.onLayerMoveend);
         }
@@ -235,7 +261,7 @@ GeoExt.WMSLegend = Ext.extend(GeoExt.LayerLegend, {
  *  Private override
  */
 GeoExt.WMSLegend.supports = function(layerRecord) {
-    return layerRecord.getLayer() instanceof OpenLayers.Layer.WMS ? 1 : 0;
+    return layerRecord.getLayer() instanceof OpenLayers.Layer.WMS;
 };
 
 /** api: legendtype = gx_wmslegend */

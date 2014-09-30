@@ -9,9 +9,6 @@
 /**
  * @include GeoExt/widgets/FeatureRenderer.js
  * @requires GeoExt/widgets/LayerLegend.js
- * requires OpenLayers/Style.js
- * requires OpenLayers/Rule.js
- * requires OpenLayers/Layer/Vector.js
  */
 
 /** api: (define)
@@ -144,7 +141,6 @@ GeoExt.VectorLegend = Ext.extend(GeoExt.LayerLegend, {
         if (this.layerRecord) {
             this.layer = this.layerRecord.getLayer();
             if (this.layer.map) {
-                this.map = this.layer.map;
                 this.currentScaleDenominator = this.layer.map.getScale();
                 this.layer.map.events.on({
                     "zoomend": this.onMapZoom,
@@ -303,7 +299,6 @@ GeoExt.VectorLegend = Ext.extend(GeoExt.LayerLegend, {
         if (style.rules.length === 0) {
             this.rules = [
                 new OpenLayers.Rule({
-                    title: style.title,
                     symbolizer: style.createSymbolizer(this.feature)
                 })
             ];
@@ -656,53 +651,8 @@ GeoExt.VectorLegend = Ext.extend(GeoExt.LayerLegend, {
             }
         }
         delete this.layer;
-        delete this.map;
         delete this.rules;
         GeoExt.VectorLegend.superclass.beforeDestroy.apply(this, arguments);
-    },
-
-    /** private: method[onStoreRemove]
-     *  Handler for remove event of the layerStore
-     *
-     *  :param store: ``Ext.data.Store`` The store from which the record was
-     *      removed.
-     *  :param record: ``Ext.data.Record`` The record object corresponding
-     *      to the removed layer.
-     *  :param index: ``Integer`` The index in the store.
-     */
-    onStoreRemove: function(store, record, index) {
-        if (record.getLayer() === this.layer) {
-            if (this.map && this.map.events) {
-                this.map.events.un({
-                    "zoomend": this.onMapZoom,
-                    scope: this
-                });
-    }
-        }
-    },
-
-    /** private: method[onStoreAdd]
-     *  Handler for add event of the layerStore
-     *
-     *  :param store: ``Ext.data.Store`` The store to which the record was
-     *      added.
-     *  :param records: Array(``Ext.data.Record``) The record object(s) corresponding
-     *      to the added layer(s).
-     *  :param index: ``Integer`` The index in the store at which the record
-     *      was added.
-     */
-    onStoreAdd: function(store, records, index) {
-        for (var i=0, len=records.length; i<len; i++) {
-            var record = records[i];
-            if (record.getLayer() === this.layer) {
-                if (this.layer.map && this.layer.map.events) {
-                    this.layer.map.events.on({
-                        "zoomend": this.onMapZoom,
-                        scope: this
-});
-                }
-            }
-        }
     }
 
 });
@@ -711,7 +661,7 @@ GeoExt.VectorLegend = Ext.extend(GeoExt.LayerLegend, {
  *  Private override
  */
 GeoExt.VectorLegend.supports = function(layerRecord) {
-    return layerRecord.getLayer() instanceof OpenLayers.Layer.Vector ? 1 : 0;
+    return layerRecord.getLayer() instanceof OpenLayers.Layer.Vector;
 };
 
 /** api: legendtype = gx_vectorlegend */

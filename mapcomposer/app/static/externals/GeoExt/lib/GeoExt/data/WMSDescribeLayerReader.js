@@ -6,11 +6,6 @@
  * of the license.
  */
 
-/**
- * require OpenLayers/Format/WMSDescribeLayer.js
- * require OpenLayers/Format/WMSDescribeLayer/v1_1.js
- */
-
 /** api: (define)
  *  module = GeoExt.data
  *  class = WMSDescribeLayerReader

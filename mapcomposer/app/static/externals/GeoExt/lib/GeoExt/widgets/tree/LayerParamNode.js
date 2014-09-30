@@ -8,7 +8,6 @@
 
 /*
  * @include GeoExt/widgets/MapPanel.js
- * require OpenLayers/Layer.js
  */
 
 /** api: (define)

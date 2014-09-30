@@ -8,7 +8,6 @@
 
 /**
  * @include GeoExt/data/FeatureRecord.js
- * require OpenLayers/Feature/Vector.js
  */
 
 /** api: (define)
