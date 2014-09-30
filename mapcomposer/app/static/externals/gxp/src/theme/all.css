@@ -254,7 +254,7 @@
 }
 
 /* gxp_queryform */
-.x-btn .gxp-icon-find, .x-menu-item .gxp-icon-find { 
+.x-btn .gxp-icon-find, .x-menu-item .gxp-icon-find, .gxp-icon-find { 
     background-image: url(img/silk/find.png);
 }
 

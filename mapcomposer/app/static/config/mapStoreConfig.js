@@ -1,6 +1,6 @@
 {
    "header": {
-	   "html": ["<div align='center' style='background-image:url(theme/app/img/banner/bgimg.jpg);background-repeat: repeat;width:100%;height:100%'><a href='http://www.regione.toscana.it' target='_blank'><img src='theme/app/img/banner/Marchio Regione Toscana sn.jpg' style='float:right;height:90px;top:15px'/></a><a href='http://www.lamma.rete.toscana.it' target='_blank'><img src='theme/app/img/banner/logolamma_trasp.png' style='float:right;height:90px;top:15px'/></a><a href='http://www.igg.cnr.it' target='_blank'><img src='theme/app/img/banner/Logo IGG.jpg' style='float:right;height:90px;top:15px'/></a><a href='http://www.arpat.toscana.it' target='_blank'><img src='theme/app/img/banner/logo-verticale-colori.jpg' style='float:right;height:90px;top:15px'/></a><a href='http://www.unipi.it' target='_blank'><img src='theme/app/img/banner/marchio_unipi_pant541_288.gif' style='float:right;height:90px;top:15px'/></a><img src='theme/app/img/banner/geobasi_title.png' style='float:left;position:absolute;top:0px;left:20px;'/></div>"],
+	   "html": ["<div align='center' style='background-image:url(theme/app/img/banner/bgimg1.jpg);background-repeat: repeat;width:100%;height:100%'><a target='_blank'><img src='theme/app/img/banner/geobasi_titolo.png' style='float:left;position:absolute;top:10px;left:20px;z-index: 10'/></a><img src='theme/app/img/banner/header_geobasi_Loghi_fin3.png' style='float:right;position:absolute;top:0px;right:0px;'/></div>"],
 	   "container": {
 			"border": false,
 			"header": false,
@@ -9,17 +9,17 @@
 			"hideCollapseTool": true,
 			"split": true,
 			"animCollapse": false,
-			"minHeight": 130,
-			"maxHeight": 130,
-			"height": 130
+			"minHeight": 100,
+			"maxHeight": 100,
+			"height": 100
 	   }
    },
-   "scaleOverlayMode": "basic",
+   "scaleOverlayMode": "advanced",
    "tab": false,
    "gsSources":{
    		"geobasi": {
 			"ptype": "gxp_wmssource",
-			"url": "http://159.213.57.108/geoserver_geobasi/ows",
+			"url": "http://159.213.57.108/geoserver/ows",
 			"title": "Geobasi",
 			"SRS": "EPSG:3003",
 			"version":"1.1.1",
@@ -27,17 +27,6 @@
 				1547065, 4677785,
 				1803065, 4933785
 			],				
-			"layerBaseParams":{
-				"FORMAT":"image/png8",
-				"TILED":true
-			}
-		},
-		"geobasi_gwc": {
-			"ptype": "gxp_wmssource",
-			"url": "http://159.213.57.108/geoserver_geobasi/gwc/service/wms",
-			"title": "Geobasi_gwc",
-			"SRS": "EPSG:3003",
-			"version":"1.1.1",
 			"layerBaseParams":{
 				"FORMAT":"image/png8",
 				"TILED":true
@@ -90,7 +79,7 @@
 		},
    		"geoscopio_idrografia": {
 			"ptype": "gxp_wmssource",
-			"url": "http://www502.regione.toscana.it/cartografia/wmsraster/com.rt.wms.RTmap/wms?map=wmsidrogr&map_resolution=91&language=ita&",
+			"url": "http://web.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmsidrogr&map_resolution=91&language=ita&",
 			"title": "Geoscopio idrografia",
 			"SRS": "EPSG:3003",
 			"version":"1.3.0",
@@ -139,8 +128,8 @@
 			{
 				"source": "geoscopio",
 				"group": "background",
-				"title": "SFONDO_RT",
-				"name": "rt_sfondo.sfumo_paesaggistico.50k",
+				"title": "Basi di sfondo",
+				"name": "rt_sfondo.batimetriche",
 				"displayInLayerSwitcher": true,
 				"visibility": true,
 				"tiled": false,
@@ -148,7 +137,16 @@
 			},{
 				"source": "geoscopio",
 				"group": "background",
-				"title": "SFONDO_RT",
+				"title": "Basi di sfondo",
+				"name": "rt_sfondo.hills",
+				"displayInLayerSwitcher": false,
+				"visibility": true,
+				"tiled": false,
+				"attribution": false
+			},{
+				"source": "geoscopio",
+				"group": "background",
+				"title": "Basi di sfondo",
 				"name": "rt_sfondo.intorno_toscana",
 				"displayInLayerSwitcher": false,
 				"visibility": true,
@@ -156,33 +154,112 @@
 				"attribution": false
 			},{
 				"source": "geoscopio_ortofoto",
-				"group": "ORTOFOTO",
-				"title": "ORTOFOTO RT 2010",
+				"group": "Ortofotocarte 1:10.000",
+				"title": "Anno 2010 col - AGEA",
 				"name": "rt_ofc.10k10",
 				"displayInLayerSwitcher": true,
 				"visibility": false,
 				"tiled": false,
 				"attribution": false
 			},{
-				"source": "geobasi_gwc",
-				"group": "Acquiferi",
-				"title": "Acquiferi in roccia",
+				"source": "geoscopio_ortofoto",
+				"group": "Ortofotocarte 1:10.000",
+				"title": "Anno 2007 col - CGR",
+				"name": "rt_ofc.10k07",
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": false,
+				"attribution": false
+			},{
+				"source": "geoscopio_ortofoto",
+				"group": "Ortofotocarte 1:10.000",
+				"title": "Anno 1996 bn - AIMA",
+				"name": "rt_ofc.10k96",
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": false,
+				"attribution": false
+			},{
+				"source": "geoscopio_ortofoto",
+				"group": "Ortofotocarte 1:10.000",
+				"title": "Anno 1988 bn - RT",
+				"name": "rt_ofc.10k88",
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": false,
+				"attribution": false
+			},{
+				"source": "geoscopio_ortofoto",
+				"group": "Ortofotocarte 1:10.000",
+				"title": "Anno 1978 bn - RT",
+				"name": "rt_ofc.10k78",
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": false,
+				"attribution": false
+			},{
+				"source": "geoscopio_ortofoto",
+				"group": "Ortofotocarte 1:10.000",
+				"title": "Anno 1954 bn - RT-IGM",
+				"name": "rt_ofc.10k54",
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": false,
+				"attribution": false
+			},{
+				"source": "geoscopio_ctr",
+				"group": "Basi cartografiche",
+				"title": "CTR 1:10.000 Raster BW",
+				"name": "rt_ctr.10k",
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": false,
+				"attribution": false
+			},{
+				"source": "geoscopio_ctr",
+				"group": "Basi cartografiche",
+				"title": "CTR 1:10.000 Raster GL",
+				"name": "rt_ctr.ctr10kgreylight",
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": false,
+				"attribution": false
+			},{
+				"source": "geobasi",
+				"group": "Corpi idrici sotterranei",
+				"title": "In roccia",
 				"name": "geobasi:cis_roccia",
 				"displayInLayerSwitcher": true,
-				"opacity": 0.6,
+				"opacity": 1.0,
 				"visibility": false
 			},{
-				"source": "geobasi_gwc",
-				"group": "Acquiferi",
-				"title": "Acquiferi in alluvione",
+				"source": "geobasi",
+				"group": "Corpi idrici sotterranei",
+				"title": "Alluvionali",
 				"name": "geobasi:cis_alluvioni",
 				"displayInLayerSwitcher": true,
-				"opacity": 0.6,				
+				"opacity": 1.0,
 				"visibility": false
 			},{
-				"source": "geobasi_gwc",
+				"source": "geobasi",
 				"group": "Idrografia",
-				"title": "Bacini",
+				"title": "Sottobacini corpi idrici superficiali",
+				"name": "geobasi:ci_rwtw_bacini",
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": true
+			},{
+				"source": "geobasi",
+				"group": "Idrografia",
+				"title": "Corpi idrici superficiali",
+				"name": "geobasi:ci_rwtw",
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": true
+			},{
+				"source": "geobasi",
+				"group": "Idrografia",
+				"title": "Bacini di primo ordine",
 				"name": "geobasi:bacini_idro",
 				"displayInLayerSwitcher": true,
 				"visibility": false,
@@ -190,38 +267,30 @@
 			},{
 				"source": "geoscopio_idrografia",
 				"group": "Idrografia",
-				"title": "IDROGRAFIA",
+				"title": "Corsi d'acqua",
 				"name": "rt_idrogr.corsi.rt.line",
 				"displayInLayerSwitcher": true,
 				"visibility": true,
 				"tiled": false
 			},{
-				"source": "geobasi_gwc",
+				"source": "geobasi",
 				"group": "Geobasi",
-				"title": "Geobasi Campioni",
-				"name": "geobasi:geobasi_campioni",
+				"title": "Stream Sediment",
+				"name": "geobasi:geobasi_sedimenti",
 				"displayInLayerSwitcher": true,
 				"visibility": false,
 				"tiled": true
 			},{
-				"source": "geobasi_gwc",
+				"source": "geobasi",
 				"group": "Geobasi",
-				"title": "Geobasi Analisi",
-				"name": "geobasi:geobasi_analisi",
-				"displayInLayerSwitcher": true,
-				"visibility": false,
-				"tiled": true
-			},{
-				"source": "geobasi_gwc",
-				"group": "Geobasi",
-				"title": "Geobasi Analisi ARPAT",
-				"name": "geobasi:geobasi_arpat",
+				"title": "Acque",
+				"name": "geobasi:geobasi_acque",
 				"displayInLayerSwitcher": true,
 				"visibility": false,
 				"tiled": true
 			},{
 				"source": "geoscopio_amb_ammin",
-				"group": "Ambiti-Amministrativi",
+				"group": "Ambiti amministrativi",
 				"title": "Province",
 				"name": "rt_ambamm.idprovince.rt.poly",
 				"displayInLayerSwitcher": true,
@@ -229,7 +298,7 @@
 				"tiled": false
 			},{
 				"source": "geoscopio_amb_ammin",
-				"group": "Ambiti-Amministrativi",
+				"group": "Ambiti amministrativi",
 				"title": "Comuni",
 				"name": "rt_ambamm.idcomuni.rt.poly",
 				"displayInLayerSwitcher": true,
@@ -243,16 +312,15 @@
 			"xtype": "panel",
 			"border": false,
 			"split": true,
-			"id": "east",
+			"id": "west",
 			"border":false,
-			"region":"east",
+			"region":"west",
 			"layout":"fit",
             "collapsible": true,
             "collapseMode": "mini",
 			"enableTabScroll" : true,
             "header": true,
-			"width": 380,
-			"minWidth": 380
+			"width": 340
       }
     ],
 	"scaleOverlayUnits":{
@@ -278,6 +346,7 @@
             "infoPanelId": "",
             "disableAfterClick": false,
             "loadingMask": true,
+			"maxFeatures": 100,
             "actionTarget":{
                 "target":"paneltbar",
                 "index":20
@@ -292,40 +361,25 @@
 		   "displayProjectionCode":"EPSG:3003",
 		   "customCss": "font-weight: bold; text-shadow: 1px 0px 0px #FAFAFA, 1px 1px 0px #FAFAFA, 0px 1px 0px #FAFAFA,-1px 1px 0px #FAFAFA, -1px 0px 0px #FAFAFA, -1px -1px 0px #FAFAFA, 0px -1px 0px #FAFAFA, 1px -1px 0px #FAFAFA, 1px 4px 5px #aeaeae;color:#050505"
 		}, {
-			"ptype": "gxp_print",
-			"customParams":{
-				"outputFilename":"mapstore-print"
-			},
-			"printService": "http://159.213.57.108/geoserver_geobasi/pdf/",
-			"legendPanelId": "legendPanel",
-			"appendLegendOptions": true,
-			"addGraticuleControl": true,
-			"legendOnSeparatePage": true,
-			"addLandscapeControl": true,
-			"actionTarget":{
-			    "target": "paneltbar",
-				"index":4
-			}
-        }, {
 			"ptype": "gxp_addlayer",
 			"showCapabilitiesGrid": true,
 			"useEvents": false,
 			"showReport": false,
 			"directAddLayer": false,
 			"id": "addlayer"
-		}, {
+		},{
 		  "ptype":"gxp_maingeobasi",
 		  "outputConfig":{
-			 "id":"eastTab",
-			 "region":"east",
+			 "id":"westTab",
+			 "region":"west",
 			 "startTab":"geobasidata"
 		  },
-		  "outputTarget":"east"
+		  "outputTarget":"west"
 	   },{
 		  "ptype":"gxp_geobasidata",
 		  "id":"geobasidataToolId",
-          "dataUrl":"http://159.213.57.108/geoserver_geobasi/ows",
-		  "rangesUrl": "http://159.213.57.108/geoserver_geobasi/geobasi/ows?service=WFS&version=1.1.0&request=GetFeature&typeName=geobasi:geobasi_data_analisi&proprtyName='min,max'outputFormat=json",
+          "dataUrl":"http://159.213.57.108/geoserver/ows",
+		  "rangesUrl": "http://159.213.57.108/geoserver/geobasi/ows?service=WFS&version=1.1.0&request=GetFeature&typeName=geobasi:geobasi_data_analisi&proprtyName='min,max'outputFormat=json",
 		  "highChartExportUrl" :"http://84.33.2.75/highcharts-export/",
 		  "outputConfig":{
 			 "itemId":"geobasidata",
@@ -337,10 +391,18 @@
 				"decimalPrecision":2
 			 }
 		  },
-		  "outputTarget":"eastTab"
-	   }, {
-			"ptype": "gxp_languageselector",
-			"actionTarget": {"target": "panelbbar", "index": 3}
-		}
+		  "outputTarget":"westTab"
+	   },{
+		  "ptype":"gxp_geobasiinfo",
+		  "id":"geobasiinfoToolId",
+		  "outputTarget":"westTab"
+	   },{
+		  "ptype":"gxp_wfsrtsearch",
+		  "id":"wfsrtsearch",
+		  "outputConfig":{
+			 "itemId":"wfsrtsearchID"
+		  },
+		  "outputTarget":"east"
+	   }
 	]
 }

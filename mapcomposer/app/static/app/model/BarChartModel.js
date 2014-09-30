@@ -22,6 +22,12 @@ Ext4.define('GeoBasi.model.BarChartModel', {
 		'bbox',
 		'spatialFilter',
 		'jsonData',
-		'classe'
+		'classe',
+        'dmgeomattipo_descr',
+        'startYear',
+        'endYear',
+        'nullDate', {
+            name: 'vectorSelectionArea', type: 'string'
+        }
 	]
 });

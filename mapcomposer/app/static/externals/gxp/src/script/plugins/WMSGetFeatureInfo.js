@@ -97,6 +97,8 @@ gxp.plugins.WMSGetFeatureInfo = Ext.extend(gxp.plugins.Tool, {
      *  
      */
      disableAfterClick: false,
+	 
+	 maxFeatures: 10,
      
     /** api: method[addActions]
      */
@@ -154,6 +156,7 @@ gxp.plugins.WMSGetFeatureInfo = Ext.extend(gxp.plugins.Tool, {
                     layers: [x.getLayer()],
                     vendorParams: vendorParams,
                     authentication: this.authentication,
+					maxFeatures: this.maxFeatures,
                     eventListeners: {
                         beforegetfeatureinfo: function(evt) {
                             //first getFeatureInfo in chain

@@ -52,6 +52,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
     xhrTroubleText: "Communication Trouble: Status ",
     layersText: "Layers",
 	legendText: "Legend",
+	searchText: "Ricerca",
     titleText: "Title",
     saveErrorText: "Trouble saving: ",
     
@@ -443,12 +444,12 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
         this.appMask = new Ext.LoadMask(Ext.getBody(), {msg: this.mainLoadingMask});
 		this.appMask.show();
 		
-        var westPanel = new Ext.TabPanel({
+        var east = new Ext.TabPanel({
             border: false,
             activeTab:0,
-            id: 'west',
-            region: "west",
-            width: 250,
+            id: 'east',
+            region: "east",
+            width: 240,
             split: true,
             collapsible: true,
             collapseMode: "mini",
@@ -598,7 +599,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
             tbar: this.toolbar
         });
 		
-        var portalPanels = [this.mapPanelContainer, westPanel];
+        var portalPanels = [this.mapPanelContainer, east];
 		
 		//collect additional panels to add them after init portal
 		var additionalPanels = [];

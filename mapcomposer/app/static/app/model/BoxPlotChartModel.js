@@ -24,6 +24,16 @@ Ext4.define('GeoBasi.model.BoxPlotChartModel', {
     }, {
      name: 'matrice', type: 'string'
     }, {
+     name: 'dmgeomattipo_descr', type: 'string'
+    }, {
+     name: 'startYear', type: 'string'
+    }, {
+     name: 'endYear', type: 'string'
+    }, {
+     name: 'nullDate', type: 'string'
+    }, {
+     name: 'vectorSelectionArea', type: 'string'
+    }, {
      name: 'log', type: 'string'
     }, {
      name: 'bbox', type: 'auto'

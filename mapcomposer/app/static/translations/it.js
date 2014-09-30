@@ -22,7 +22,7 @@ GeoExt.Lang.add("it", {
         contactText: "Contatto",
         aboutThisMapText: "Informazioni",
         searchTabTitle : "Portale",
-        viewTabTitle : "Vista",
+        viewTabTitle : "GEOBASI - DataBase Geochimico Regionale",
 		markerPopupTitle: "Dettagli",
 		mainLoadingMask: "Attendere prego ..."
     },

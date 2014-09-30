@@ -17,7 +17,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
 /** api: (define)
  *  module = gxp.form
  *  class = WFSSearchComboBox
@@ -33,11 +32,11 @@ Ext.namespace("gxp.form");
  *  will be populated with records that match the features querible attributes.
  *  Records have fields configured in recordModel variable and Queriable attributes are
  *  configured in queriableAttributes variable.
- *  
  *
- */   
+ *
+ */
 gxp.form.WFSSearchComboBox = Ext.extend(Ext.form.ComboBox, {
-    
+
     /** api: xtype = gxp_googlegeocodercombo */
     xtype: "gxp_searchboxcombo",
 
@@ -45,366 +44,367 @@ gxp.form.WFSSearchComboBox = Ext.extend(Ext.form.ComboBox, {
      *  ``Number`` Delay before the search occurs.  Default is 100ms.
      */
     queryDelay: 100,
-    
-	/** private: config[typeAhead]
-	 * the queryParameter for WFS
-	 */
-	queryParam : "cql_filter",
-	typeAhead: false,
-	displayInfo: false,
-	hideTrigger:true,
-	
+
+    /** private: config[typeAhead]
+     * the queryParameter for WFS
+     */
+    queryParam: "cql_filter",
+    typeAhead: false,
+    displayInfo: false,
+    hideTrigger: true,
+
     /** api: config[displayField]
-	 * If a template is not defined, this is the field to show.
-	 * for the exemple below it can be "codice_ato"
+     * If a template is not defined, this is the field to show.
+     * for the exemple below it can be "codice_ato"
      */
     displayField: null,
-	
-	/** api: config[mapPanel]
+
+    /** api: config[mapPanel]
      *  the mapPanel
      */
-	mapPanel:  null,
-	/** api: config[url]
+    mapPanel: null,
+    /** api: config[url]
      *  url to perform requests
      */
-	url:  null,
-	/** api: config[typeName]
+    url: null,
+    /** api: config[typeName]
      *  the tipe name to search
      */
-	typeName: null,
-	/**
-	 * private config[root]
-	 * the root node containing feature data.
-	 */
-	root:'features',
-	/**
-	 * private config[recordId]
-	 * the id of the record.
-	 */
-	recordId: 'fid',
-	
-	custom  : null,
-	
-	geometry: null,
-	
-	/** api: config[recordModel]
+    typeName: null,
+    /**
+     * private config[root]
+     * the root node containing feature data.
+     */
+    root: 'features',
+    /**
+     * private config[recordId]
+     * the id of the record.
+     */
+    recordId: 'fid',
+
+    custom: null,
+
+    geometry: null,
+
+    /** api: config[recordModel]
      *  ``Ext.Record | Array`` record model to create the store
      *  for restricting search.
-	 * exemple: 
-	 * recordModel: [
-	 *	{name: 'id', mapping: 'id'},
-	 *	{name: 'geometry', mapping: 'geometry'},
-	 *	{name: 'codice_ato', mapping: 'properties.codice_ato'},
-	 *	{name: 'denominazi', mapping: 'properties.denominazi'}
-	 *	
-	 *	 ],
+     * exemple:
+     * recordModel: [
+     *    {name: 'id', mapping: 'id'},
+     *    {name: 'geometry', mapping: 'geometry'},
+     *    {name: 'codice_ato', mapping: 'properties.codice_ato'},
+     *    {name: 'denominazi', mapping: 'properties.denominazi'}
+     *
+     *     ],
      */
-	recordModel: null,
-	
-	/** api: config[queriableAttributes]
+    recordModel: null,
+
+    /** api: config[queriableAttributes]
      *  ``String | Array`` feature attributes to query
      *  for restricting search.
-	 * for the exemple is ['codice_ato','denominazi']
+     * for the exemple is ['codice_ato','denominazi']
      */
-	queriableAttributes : [] ,
-	
-	/** api: config[sortBy]
+    queriableAttributes: [],
+
+    /** api: config[sortBy]
      *  ``String | Array`` sorting attribute
      *  needed for pagination.
      */
-	sortBy : null,
+    sortBy: null,
 
-	/** api: config[pageSize]
+    /** api: config[pageSize]
      *  ``Integer`` page size of result list.
      *  needed for pagination. default is 10
      */
-	pageSize: null,
-	/** api: config[loadingText]
-     *  ``String`` loading text for i18n 
+    pageSize: null,
+    /** api: config[loadingText]
+     *  ``String`` loading text for i18n
      */
-	loadingText: 'Searching...',
-	/** api: config[emptyText]
-     *  ``String`` empty text for i18n 
+    loadingText: 'Searching...',
+    /** api: config[emptyText]
+     *  ``String`` empty text for i18n
      */
-	emptyText: "Search",
-	/** api: config[width]
+    emptyText: "Search",
+    /** api: config[width]
      *  ``int`` width of the text box. default is 200
      */
-	width: 200,
-	
-	/** defines style for the search result item
-	 */
-	itemSelector:  'div.search-item',
-	
-	/** api: config[tpl]
+    width: 200,
+
+    /** defines style for the search result item
+     */
+    itemSelector: 'div.search-item',
+
+    /** api: config[tpl]
      *  ``Ext.XTemplate`` the template to show results.
      */
-	tpl: null,
-	
-	/** api: config[predicate]
+    tpl: null,
+
+    /** api: config[predicate]
      *  ``String`` predicate to use for search (LIKE,ILIKE,=...).
      */
-	predicate: 'ILIKE',
-	/** api: config[vendorParams]
+    predicate: 'ILIKE',
+    /** api: config[vendorParams]
      *  ``String`` additional parameters object. cql_filters
-	 *  is used in AND the search params. (see listeners->beforequery)
+     *  is used in AND the search params. (see listeners->beforequery)
      */
-	vendorParams: '',
+    vendorParams: '',
 
-	outputFormat: 'application/json',
-	
-    clearOnFocus:true,
-	
-	filter: null,
-	
-	zoomTo: null,
-	
-	highlightLayer: null,
-	
-	highlightLayerStyle: {},
-	
-	versionWFS: '1.1.0',
-	
+    outputFormat: 'application/json',
+
+    clearOnFocus: true,
+
+    filter: null,
+
+    zoomTo: null,
+
+    highlightLayer: null,
+
+    highlightLayerStyle: {},
+
+    versionWFS: '1.1.0',
+
     /** private: method[initComponent]
      *  Override
      */
-    initComponent: function() {
-		
+    initComponent: function () {
+
         this.store = new Ext.data.JsonStore({
-			combo: this,
-			root: this.root,
-			messageProperty: 'crs',
-			autoLoad: false,
-			fields:this.recordModel,
-			mapPanel: this.mapPanel,
+            combo: this,
+            root: this.root,
+            messageProperty: 'crs',
+            autoLoad: false,
+            fields: this.recordModel,
+            mapPanel: this.mapPanel,
             url: this.url,
-			vendorParams: this.vendorParams,
-			paramNames:{
-				start: "startindex",
-				limit: "maxfeatures",
-				sort: "sortBy"
-			},
-			baseParams:{
-				service:'WFS',
-				version: this.versionWFS,
-				request:'GetFeature',
-				typeName:this.typeName ,
-				outputFormat: this.outputFormat,
-				sortBy: this.sortBy
-				
-			
-			},
-			listeners:{
-				beforeload: function(store){
-					var mapPanel = (this.mapPanel?this.mapPanel:this.combo.target.mapPanel);
-					store.setBaseParam( 'srsName', mapPanel.map.getProjection() );
-					for (var name in this.vendorParams ) {
-					    if(this.vendorParams.hasOwnProperty(name)){
-    						if(name!='cql_filter' && name != "startindex" && name != "maxfeatures" && name != 'outputFormat' ){
-    							store.setBaseParam(store, this.vendorParams[name]);
-    						}
-						}
-					}
-				}
-			},
-			
-			loadRecords : function(o, options, success){
-				if (this.isDestroyed === true) {
-					return;
-				}
-				if(!o || success === false){
-					if(success !== false){
-						this.fireEvent('load', this, [], options);
-					}
-					if(options.callback){
-						options.callback.call(options.scope || this, [], options, false, o);
-					}
-					return;
-				}
-				this.combo.crs = this.reader.jsonData.crs;
-				//custom total workaround
-				var estimateTotal = function(o,options,store){
-					var current = o.totalRecords +  options.params[store.paramNames.start] ;
-					var currentCeiling = options.params[store.paramNames.start] + options.params[store.paramNames.limit];
-					if(current < currentCeiling){
-						return current;
-					}else{
-						return 100000000000000000; 
-					}
-	
-				};
-				o.totalRecords = estimateTotal(o,options,this);
-				//end of custom total workaround
-				
-				var r = o.records, t = o.totalRecords || r.length;
-				if(!options || options.add !== true){
-					if(this.pruneModifiedRecords){
-						this.modified = [];
-					}					
-					for(var i = 0, len = r.length; i < len; i++){
-						r[i].join(this);
-					}					
-					if(this.snapshot){
-						this.data = this.snapshot;
-						delete this.snapshot;
-					}					
-					this.clearData();
-					this.data.addAll(r);
-					this.totalLength = t;
-					this.applySort();
-					this.fireEvent('datachanged', this);
-				}else{
-					this.totalLength = Math.max(t, this.data.length+r.length);
-					this.add(r);
-				}
-				this.fireEvent('load', this, r, options);
-				if(options.callback){
-					options.callback.call(options.scope || this, r, options, true);
-				}
-			}
-			
+            vendorParams: this.vendorParams,
+            paramNames: {
+                start: "startindex",
+                limit: "maxfeatures",
+                sort: "sortBy"
+            },
+            baseParams: {
+                service: 'WFS',
+                version: this.versionWFS,
+                request: 'GetFeature',
+                typeName: this.typeName,
+                outputFormat: this.outputFormat,
+                sortBy: this.sortBy
+
+
+            },
+            listeners: {
+                beforeload: function (store) {
+                    var mapPanel = (this.mapPanel ? this.mapPanel : this.combo.target.mapPanel);
+                    store.setBaseParam('srsName', mapPanel.map.getProjection());
+                    for (var name in this.vendorParams) {
+                        if (this.vendorParams.hasOwnProperty(name)) {
+                            if (name != 'cql_filter' && name != "startindex" && name != "maxfeatures" && name != 'outputFormat') {
+                                store.setBaseParam(store, this.vendorParams[name]);
+                            }
+                        }
+                    }
+                }
+            },
+
+            loadRecords: function (o, options, success) {
+                if (this.isDestroyed === true) {
+                    return;
+                }
+                if (!o || success === false) {
+                    if (success !== false) {
+                        this.fireEvent('load', this, [], options);
+                    }
+                    if (options.callback) {
+                        options.callback.call(options.scope || this, [], options, false, o);
+                    }
+                    return;
+                }
+                this.combo.crs = this.reader.jsonData.crs;
+                //custom total workaround
+                var estimateTotal = function (o, options, store) {
+                    var current = o.totalRecords + options.params[store.paramNames.start];
+                    var currentCeiling = options.params[store.paramNames.start] + options.params[store.paramNames.limit];
+                    if (current < currentCeiling) {
+                        return current;
+                    } else {
+                        return 100000000000000000;
+                    }
+
+                };
+                o.totalRecords = estimateTotal(o, options, this);
+                //end of custom total workaround
+
+                var r = o.records,
+                    t = o.totalRecords || r.length;
+                if (!options || options.add !== true) {
+                    if (this.pruneModifiedRecords) {
+                        this.modified = [];
+                    }
+                    for (var i = 0, len = r.length; i < len; i++) {
+                        r[i].join(this);
+                    }
+                    if (this.snapshot) {
+                        this.data = this.snapshot;
+                        delete this.snapshot;
+                    }
+                    this.clearData();
+                    this.data.addAll(r);
+                    this.totalLength = t;
+                    this.applySort();
+                    this.fireEvent('datachanged', this);
+                } else {
+                    this.totalLength = Math.max(t, this.data.length + r.length);
+                    this.add(r);
+                }
+                this.fireEvent('load', this, r, options);
+                if (options.callback) {
+                    options.callback.call(options.scope || this, r, options, true);
+                }
+            }
+
         });
 
         return gxp.form.WFSSearchComboBox.superclass.initComponent.apply(this, arguments);
     },
-	listeners: {
-		focus: function() {
-			if(this.clearOnFocus) this.clearValue();
-		},
-		beforequery:function(queryEvent){
-			var mapPanel = (this.mapPanel?this.mapPanel:this.combo.target.mapPanel);		
-			var queryString = queryEvent.query;
-			queryEvent.query = "";
-			
-			var OGCXmlFilter;
-			
-			if(this.queryParam === 'Filter'){
-				var filter = new OpenLayers.Filter.Logical({
-					type: OpenLayers.Filter.Logical.OR,
-					filters: [
-						new OpenLayers.Filter.Comparison({
-							type: OpenLayers.Filter.Comparison.LIKE,
-							property: this.queriableAttributes[0],
-							value:  "%" + queryString.toUpperCase() + "%"
-						})
-					]
-				});
+    listeners: {
+        focus: function () {
+            if (this.clearOnFocus) this.clearValue();
+        },
+        beforequery: function (queryEvent) {
+            var mapPanel = (this.mapPanel ? this.mapPanel : this.combo.target.mapPanel);
+            var queryString = queryEvent.query;
+            queryEvent.query = "";
 
-				if(filter){
-					var node = new OpenLayers.Format.Filter({
-						version: "1.1.0",
-						srsName: mapPanel.map.getProjection(),
-						geometryName: "geom"
-					}).write(filter);
+            var OGCXmlFilter;
 
-					OGCXmlFilter = new OpenLayers.Format.XML().write(node);
-				}else{
-					OGCXmlFilter = false;
-				}
-				
-				queryEvent.query = OGCXmlFilter;
-				
-			}else{
+            if (this.queryParam === 'Filter') {
+                var filter = new OpenLayers.Filter.Logical({
+                    type: OpenLayers.Filter.Logical.OR,
+                    filters: [
+                        new OpenLayers.Filter.Comparison({
+                            type: OpenLayers.Filter.Comparison.LIKE,
+                            property: this.queriableAttributes[0],
+                            value: "%" + queryString.toUpperCase() + "%"
+                        })
+                    ]
+                });
 
-				for( var i = 0 ; i < this.queriableAttributes.length ; i++){
-					queryEvent.query +=  "(" + this.queriableAttributes[i] + " "+this.predicate+" '%" + queryString.toUpperCase() + "%')";
-					if ( i < this.queriableAttributes.length -1) {
-						queryEvent.query += " OR ";
-					}
-				}
-				
-				//add cql filter in and with the other condictions
-				if(this.vendorParams && this.vendorParams.cql_filter) {
-					queryEvent.query = "(" + queryEvent.query + ")AND(" +this.vendorParams.cql_filter +")";
-				}
+                if (filter) {
+                    var node = new OpenLayers.Format.Filter({
+                        version: "1.1.0",
+                        srsName: mapPanel.map.getProjection(),
+                        geometryName: "geom"
+                    }).write(filter);
 
-			}
-		
-		},
-		select : function(combo, record) {
-			if (record && record.data.custom) {
-				this.custom = record.data.custom;
-			} else {
-				this.custom = null;
-			}
-			if (record && record.data.geometry) {
-				var wkt_options = {};
-				var geojson_format = new OpenLayers.Format.GeoJSON({
-					ignoreExtraDims: true
-				});
-				var testFeature = geojson_format.read(record.data.geometry);
-				var wkt = new OpenLayers.Format.WKT(wkt_options);
-				var out = wkt.write(testFeature);
-				
-				var geomCollectionIndex = out.indexOf('GEOMETRYCOLLECTION(');
-				if (geomCollectionIndex == 0) {
-					out = out.substring(19,out.length-1);
-				}
-				this.geometry = out;
-			} else {
-				this.geometry = null;
-			}
-			
-			if(this.zoomTo && this.geometry){
+                    OGCXmlFilter = new OpenLayers.Format.XML().write(node);
+                } else {
+                    OGCXmlFilter = false;
+                }
 
-				var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
-				renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;      			
-		
-				this.geoJSON = new OpenLayers.Format.WKT();
-				this.geoJSONgeometry = this.geoJSON.read(this.geometry);
-				this.mapPanel.map.zoomToExtent(this.geoJSONgeometry.geometry.getBounds());
-				
-				if (!this.newLayer){
-				
-					var layerStyle= this.highlightLayerStyle || {
-						strokeColor: "#FF00FF",
-						strokeWidth: 2,
-						fillColor: "#FF00FF",
-						fillOpacity: 0.8
-					};				
-					
-					this.newLayer = new OpenLayers.Layer.Vector(this.highlightLayer,{
-											displayInLayerSwitcher: true,
-											style: layerStyle,
-											visibility: true,
-											renderers: renderer
-										});
-										
-					this.newLayer.addFeatures([this.geoJSONgeometry]);
-					this.newLayer.restrictedExtent = this.geoJSONgeometry.geometry.getBounds();
-					this.mapPanel.map.addLayers([this.newLayer]);
-					
-				}else{
-				
-					this.newLayer.removeAllFeatures();
-					this.newLayer.addFeatures([this.geoJSONgeometry]);
-					this.newLayer.restrictedExtent = this.geoJSONgeometry.geometry.getBounds();
-					this.newLayer.setVisibility(true);
-					
-				}
-					
-			}
-		}
-	},
-	
-	getCustom : function() {
-		return this.custom;
-	},
-	
-	getGeometry : function() {
-		return this.geometry;
-	},
-	
-	//custom initList to have custom toolbar.
-	
-	initList : function(){
-        if(!this.list){
+                queryEvent.query = OGCXmlFilter;
+
+            } else {
+
+                for (var i = 0; i < this.queriableAttributes.length; i++) {
+                    queryEvent.query += "(" + this.queriableAttributes[i] + " " + this.predicate + " '%" + queryString.toUpperCase() + "%')";
+                    if (i < this.queriableAttributes.length - 1) {
+                        queryEvent.query += " OR ";
+                    }
+                }
+
+                //add cql filter in and with the other condictions
+                if (this.vendorParams && this.vendorParams.cql_filter) {
+                    queryEvent.query = "(" + queryEvent.query + ")AND(" + this.vendorParams.cql_filter + ")";
+                }
+
+            }
+
+        },
+        select: function (combo, record) {
+            if (record && record.data.custom) {
+                this.custom = record.data.custom;
+            } else {
+                this.custom = null;
+            }
+            if (record && record.data.geometry) {
+                var wkt_options = {};
+                var geojson_format = new OpenLayers.Format.GeoJSON({
+                    ignoreExtraDims: true
+                });
+                var testFeature = geojson_format.read(record.data.geometry);
+                var wkt = new OpenLayers.Format.WKT(wkt_options);
+                var out = wkt.write(testFeature);
+
+                var geomCollectionIndex = out.indexOf('GEOMETRYCOLLECTION(');
+                if (geomCollectionIndex == 0) {
+                    out = out.substring(19, out.length - 1);
+                }
+                this.geometry = out;
+            } else {
+                this.geometry = null;
+            }
+
+            if (this.zoomTo && this.geometry) {
+
+                var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
+                renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
+
+                this.geoJSON = new OpenLayers.Format.WKT();
+                this.geoJSONgeometry = this.geoJSON.read(this.geometry);
+                this.mapPanel.map.zoomToExtent(this.geoJSONgeometry.geometry.getBounds());
+
+                if (!this.newLayer) {
+
+                    var layerStyle = this.highlightLayerStyle || {
+                        strokeColor: "#FF00FF",
+                        strokeWidth: 2,
+                        fillColor: "#FF00FF",
+                        fillOpacity: 0.8
+                    };
+
+                    this.newLayer = new OpenLayers.Layer.Vector(this.highlightLayer, {
+                        displayInLayerSwitcher: true,
+                        style: layerStyle,
+                        visibility: true,
+                        renderers: renderer
+                    });
+
+                    this.newLayer.addFeatures([this.geoJSONgeometry]);
+                    this.newLayer.restrictedExtent = this.geoJSONgeometry.geometry.getBounds();
+                    this.mapPanel.map.addLayers([this.newLayer]);
+
+                } else {
+
+                    this.newLayer.removeAllFeatures();
+                    this.newLayer.addFeatures([this.geoJSONgeometry]);
+                    this.newLayer.restrictedExtent = this.geoJSONgeometry.geometry.getBounds();
+                    this.newLayer.setVisibility(true);
+
+                }
+
+            }
+        }
+    },
+
+    getCustom: function () {
+        return this.custom;
+    },
+
+    getGeometry: function () {
+        return this.geometry;
+    },
+
+    //custom initList to have custom toolbar.
+
+    initList: function () {
+        if (!this.list) {
             var cls = 'x-combo-list',
                 listParent = Ext.getDom(this.getListParent() || Ext.getBody()),
-                zindex = parseInt(Ext.fly(listParent).getStyle('z-index') ,10);
+                zindex = parseInt(Ext.fly(listParent).getStyle('z-index'), 10);
 
-            if (this.ownerCt && !zindex){
-                this.findParentBy(function(ct){
+            if (this.ownerCt && !zindex) {
+                this.findParentBy(function (ct) {
                     zindex = parseInt(ct.getPositionEl().getStyle('z-index'), 10);
                     return !!zindex;
                 });
@@ -414,7 +414,7 @@ gxp.form.WFSSearchComboBox = Ext.extend(Ext.form.ComboBox, {
                 parentEl: listParent,
                 shadow: this.shadow,
                 cls: [cls, this.listClass].join(' '),
-                constrain:false,
+                constrain: false,
                 zindex: (zindex || 12000) + 5
             });
 
@@ -422,43 +422,50 @@ gxp.form.WFSSearchComboBox = Ext.extend(Ext.form.ComboBox, {
             this.list.setSize(lw, 0);
             this.list.swallowEvent('mousewheel');
             this.assetHeight = 0;
-            if(this.syncFont !== false){
+            if (this.syncFont !== false) {
                 this.list.setStyle('font-size', this.el.getStyle('font-size'));
             }
-            if(this.title){
-                this.header = this.list.createChild({cls:cls+'-hd', html: this.title});
+            if (this.title) {
+                this.header = this.list.createChild({
+                    cls: cls + '-hd',
+                    html: this.title
+                });
                 this.assetHeight += this.header.getHeight();
             }
 
-            this.innerList = this.list.createChild({cls:cls+'-inner'});
+            this.innerList = this.list.createChild({
+                cls: cls + '-inner'
+            });
             this.mon(this.innerList, 'mouseover', this.onViewOver, this);
             this.mon(this.innerList, 'mousemove', this.onViewMove, this);
             this.innerList.setWidth(lw - this.list.getFrameWidth('lr'));
 
-            if(this.pageSize){
-                this.footer = this.list.createChild({cls:cls+'-ft'});
-				
-				//
-				// custom pagin toolbar 
-				//
+            if (this.pageSize) {
+                this.footer = this.list.createChild({
+                    cls: cls + '-ft'
+                });
+
+                //
+                // custom pagin toolbar 
+                //
                 this.pageTb = new Ext.PagingToolbar({
                     store: this.store,
                     pageSize: this.pageSize,
-                    renderTo:this.footer,
-					afterPageText:"",
-					beforePageText:"",
-					listeners:{
-						render: function(){
-							this.last.setVisible(false);
-							//this.inputItem.disable();
-						}
-					}
+                    renderTo: this.footer,
+                    afterPageText: "",
+                    beforePageText: "",
+                    listeners: {
+                        render: function () {
+                            this.last.setVisible(false);
+                            //this.inputItem.disable();
+                        }
+                    }
                 });
-				
+
                 this.assetHeight += this.footer.getHeight();
             }
 
-            if(!this.tpl){
+            if (!this.tpl) {
                 this.tpl = '{' + this.displayField + '}';
             }
 
@@ -473,25 +480,26 @@ gxp.form.WFSSearchComboBox = Ext.extend(Ext.form.ComboBox, {
             });
 
             this.mon(this.view, {
-                containerclick : this.onViewClick,
-                click : this.onViewClick,
-                scope :this
+                containerclick: this.onViewClick,
+                click: this.onViewClick,
+                scope: this
             });
 
             this.bindStore(this.store, true);
 
-            if(this.resizable){
-                this.resizer = new Ext.Resizable(this.list,  {
-                   pinned:true, handles:'se'
+            if (this.resizable) {
+                this.resizer = new Ext.Resizable(this.list, {
+                    pinned: true,
+                    handles: 'se'
                 });
-                this.mon(this.resizer, 'resize', function(r, w, h){
-                    this.maxHeight = h-this.handleHeight-this.list.getFrameWidth('tb')-this.assetHeight;
+                this.mon(this.resizer, 'resize', function (r, w, h) {
+                    this.maxHeight = h - this.handleHeight - this.list.getFrameWidth('tb') - this.assetHeight;
                     this.listWidth = w;
                     this.innerList.setWidth(w - this.list.getFrameWidth('lr'));
                     this.restrictHeight();
                 }, this);
 
-                this[this.pageSize?'footer':'innerList'].setStyle('margin-bottom', this.handleHeight+'px');
+                this[this.pageSize ? 'footer' : 'innerList'].setStyle('margin-bottom', this.handleHeight + 'px');
             }
         }
     }

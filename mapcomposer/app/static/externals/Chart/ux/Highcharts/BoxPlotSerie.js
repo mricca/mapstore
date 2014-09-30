@@ -37,10 +37,6 @@ Ext4.define('Chart.ux.Highcharts.BoxPlotSerie', {
      * The median data field
      */
     medianDataIndex: null,
-    
-    minDataIndex: null,
-    
-    maxDataIndex: null,
 
     getData: function(record, index) {
         return [ 
