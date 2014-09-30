@@ -6,10 +6,6 @@
  * of the license.
  */
 
-/**
- * require OpenLayers/Util.js
- */
-
 /** api: (define)
  *  module = GeoExt.state
  *  class = PermalinkProvider

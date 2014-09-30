@@ -7,7 +7,6 @@
 /**
  * @include GeoExt/widgets/tips/LayerOpacitySliderTip.js
  * @include GeoExt/data/LayerRecord.js
- * require OpenLayers/Layer.js
  */
 
 /** api: (define)

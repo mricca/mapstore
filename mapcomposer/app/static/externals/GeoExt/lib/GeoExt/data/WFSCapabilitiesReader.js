@@ -8,12 +8,6 @@
 
 /**
  * @include GeoExt/data/LayerRecord.js
- * require OpenLayers/Format/WFSCapabilities.js
- * require OpenLayers/Format/WFSCapabilities/v1_1_0.js
- * require OpenLayers/Protocol/WFS.js
- * require OpenLayers/Protocol/WFS/v1_0_0.js
- * require OpenLayers/Strategy/Fixed.js
- * require OpenLayers/Layer/Vector.js
  */
 
 /** api: (define)
@@ -26,12 +20,7 @@ Ext.namespace("GeoExt.data");
 /** api: constructor
  *  .. class:: WFSCapabilitiesReader(meta, recordType)
  *  
- *      :param meta: ``Object`` Reader configuration from which:
- *          ``layerOptions`` is an optional object (or function that returns
- *          an object) passed as default options to the
- *          ``OpenLayers.Layer.Vector`` constructor.
- *          ``protocolOptions`` is an optional set of parameters to pass to the
- *          ``OpenLayers.Protocol.WFS`` constructor.
+ *      :param meta: ``Object`` Reader configuration.
  *      :param recordType: ``Array | Ext.data.Record`` An array of field
  *          configuration objects or a record object.  Default is
  *          :class:`GeoExt.data.LayerRecord`.
@@ -95,7 +84,7 @@ Ext.extend(GeoExt.data.WFSCapabilitiesReader, Ext.data.DataReader, {
         var featureTypes = data.featureTypeList.featureTypes;
         var fields = this.recordType.prototype.fields;
 
-        var featureType, values, field, v, parts, layer;
+        var featureType, values, field, v, parts, layer, values;
         var layerOptions, protocolOptions;
 
         var protocolDefaults = {
@@ -132,10 +121,8 @@ Ext.extend(GeoExt.data.WFSCapabilitiesReader, Ext.data.DataReader, {
                     protocol: new OpenLayers.Protocol.WFS(protocolOptions),
                     strategies: [new OpenLayers.Strategy.Fixed()]
                 };
-                var metaLayerOptions = this.meta.layerOptions;
-                if (metaLayerOptions) {
-                    Ext.apply(layerOptions, Ext.isFunction(metaLayerOptions) ?
-                        metaLayerOptions() : metaLayerOptions);
+                if(this.meta.layerOptions) {
+                    Ext.apply(layerOptions, this.meta.layerOptions);
                 }
 
                 values.layer = new OpenLayers.Layer.Vector(

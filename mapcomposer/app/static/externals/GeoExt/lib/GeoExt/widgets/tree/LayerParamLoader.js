@@ -5,17 +5,13 @@
  * See http://svn.geoext.org/core/trunk/geoext/license.txt for the full text
  * of the license.
  */
-
-/*
- * require OpenLayers/Layer/HTTPRequest.js
- */
+Ext.namespace("GeoExt.tree");
 
 /** api: (define)
  *  module = GeoExt.tree
  *  class = LayerParamLoader
  *  base_link = `Ext.util.Observable <http://dev.sencha.com/deploy/dev/docs/?class=Ext.util.Observable>`_
  */
-Ext.namespace("GeoExt.tree");
 
 /** api: constructor
  *  .. class:: LayerParamLoader

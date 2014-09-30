@@ -8,7 +8,6 @@
 
 /**
  * @include GeoExt/widgets/tips/ZoomSliderTip.js
- * require OpenLayers/Util.js
  */
 
 /** api: (define)

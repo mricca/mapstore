@@ -48,9 +48,7 @@ GeoExt.data.AttributeStoreMixin = function() {
                         undefined
                     ),
                     reader: new GeoExt.data.AttributeReader(
-                        c, c.fields || ["name", "type", "restriction", {
-                            name: "nillable", type: "boolean"
-                        }]
+                        c, c.fields || ["name", "type", "restriction"]
                     )
                 })
             );
