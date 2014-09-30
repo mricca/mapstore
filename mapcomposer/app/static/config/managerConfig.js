@@ -8,6 +8,7 @@
       "via":"geosolutions_it",
       "hashtags":""
    },
+   "mediaContent":"./externals/mapmanager/theme/media",
    "ASSET":{
         "delete_icon": "./externals/mapmanager/theme/img/user_delete.png",
         "edit_icon": "./externals/mapmanager/theme/img/user_edit.png"
@@ -38,6 +39,8 @@
         "ptype": "mxp_mapmanager",
         "loginManager": "loginTool",
         "actionTarget":null
+    },{
+        "ptype": "mxp_categoryinitializer"
     },{
         "ptype": "mxp_login",
         "pluginId": "loginTool",

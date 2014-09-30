@@ -56,6 +56,12 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
             */
             textName: 'Name',
             /**
+            * Property: textEnabled
+            * {string} column name for enabled column
+            * 
+            */
+            textEnabled : 'Enabled',
+            /**
             * Property: textPassword
             * {string} column name for password
             * 
@@ -351,9 +357,16 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
             }],
             /**
              * Property: showEnabled
-             * Show 'enabled' property of the user as a checkbox and allows to change it
+             * Show 'enabled' property of the user as a checkbox in the user edit.
+             * or as a coumn in the user grid
              */
             showEnabled:false,
+
+            /**
+             * Property: addManageGroupsButton
+             * Show 'Manage group' button. Default its true,
+             */
+            addManageGroupsButton: true,
             
 			/**
 		    * Constructor: initComponent 
@@ -441,6 +454,7 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
                             id       :'id',
                             header   : userManager.textId, 
                             sortable : true, 
+                            width: 50,
                             dataIndex: 'id',
                             hidden   : true
                         },
@@ -455,23 +469,38 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
                             header   : userManager.textPassword, 
                             sortable : false, 
                             maxLength:255,
+                            hideable : false,
                             dataIndex: 'password',
                             hidden   : true
+                        },{
+                            header   : userManager.textEnabled, 
+                            sortable : false, 
+                            dataIndex: 'enabled',
+                            hidden   : !userManager.showEnabled,
+                            width:55,
+                            renderer: function(value, metaData, record, rowIndex, colIndex, store) {
+                                    var classes = 'x-grid-center-icon action_column_btn ' + (value ? 'accept' : 'close');
+                                    return '<div class="'+ classes +'" style="margin:0 auto;"></div>';
+                                return value;
+                             }
                         },
                         {
                             header   : userManager.textRole, 
                             sortable : true, 
                             dataIndex: 'role'
+                           
                         },
                         {
                             xtype: 'actioncolumn',
-                            
+                            hideable:false,
                             width: 50,
                             items: [{
                                 icon   : ASSET.delete_icon, 
                                 tooltip: userManager.tooltipDelete,
                                 getClass: function(v, meta, rec) {
-                                  if(rec.get('name') == "admin" || rec.get('role')=='GUEST') {
+                                  var manager = userManager.login.username;
+                                  var username = rec.get('name');
+                                  if(username == manager || rec.get('role')=='GUEST') {
                                       return 'x-hide-display';
                                   }
                                 },
@@ -522,6 +551,7 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
                           {
                             xtype: 'actioncolumn',
                             width: 50,
+                            hideable:false,
                             items: [{
                                 icon   : ASSET.edit_icon, 
                                 tooltip: userManager.tooltipEdit,
@@ -534,7 +564,7 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
                                    var record = grid.store.getAt(rowIndex);
 
                                    var userdata = {id: record.get('id'), name: record.data.name, role: record.data.role };
-                                   var loadMask = new Ext.LoadMask(Ext.getBody(), {msg:'Wait message'});
+                                   var loadMask = new Ext.LoadMask(Ext.getBody(), {msg:'Wait'});
                                    loadMask.show();
                                    userManager.users.findByPk( record.get('id'), function(data){
                                                         // refresh the store
@@ -550,7 +580,14 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
                     ]});		
 				
 					// the top bar of the user manager window
-					this.tbar = [ this.inputSearch, this.searchButton, this.resetSearchButton, '-', this.createAddUserButton(),"->",this.createManageGroupsButton() ];
+					this.tbar = [ this.inputSearch, this.searchButton, this.resetSearchButton, '-', this.createAddUserButton(),"-"];
+
+                    if(this.addManageGroupsButton){
+                        this.tbar.push(this.createManageGroupsButton());
+                    }
+
+                    var defaultHeaders = this.target.defaultHeaders || {};
+                    defaultHeaders['Accept'] = 'application/json';
 
 					// data store
 					this.store = new Ext.data.JsonStore({
@@ -561,7 +598,7 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
                         successProperty: 'ExtUserList',
                         idProperty: 'id',
                         remoteSort: false,
-                        fields: ['id', 'name', 'password', 'role'],
+                        fields: ['id', 'name', 'password', 'role','enabled'],
                         sortInfo: { field: "name", direction: "ASC" },
                         proxy: new Ext.data.HttpProxy({
                             url: this.getSearchUrl(),
@@ -577,7 +614,7 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
                                    icon: Ext.MessageBox.ERROR
                                 });                                
                             },
-                            defaultHeaders: {'Accept': 'application/json', 'Authorization' : userManager.auth}
+                            headers: {'Accept': 'application/json', 'Authorization' : userManager.auth}
                         })
                         
 					});
@@ -667,6 +704,9 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
             * * Groups
             */
             createNewUserTabPanel: function(){
+                var defaultHeaders = this.target.defaultHeaders || {};
+                defaultHeaders['Accept'] = 'application/json';
+
                 var userDataFields =[{
                         xtype: 'textfield',
                         anchor:'90%',
@@ -735,7 +775,7 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
                         })
                   }	];
                   if( this.showEnabled ) {
-                     userDataFields.push({xtype:'checkbox',fieldLabel:this.textEmabled || "Enabled",name:'enabled',checked:true,uncheckedValue: 'false'});
+                     userDataFields.push({xtype:'checkbox',fieldLabel:this.textEnabled || "Enabled",name:'enabled',checked:true,uncheckedValue: 'false'});
 
                   }
                   
@@ -802,7 +842,7 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
                                             method : 'GET',
                                             disableCaching: true,
                                             sortInfo: { field: "groupName", direction: "ASC" },
-                                            defaultHeaders: {'Accept': 'application/json', 'Authorization' : this.auth},
+                                            headers: {'Accept': 'application/json', 'Authorization' : this.auth},
                                             failure: function (response) {
                                                 console.error(response); 
                                                   Ext.Msg.show({
@@ -907,7 +947,18 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
                                                             for(var name in values ){
                                                                 var arr = name.split('.');
                                                                 if(arr.length >1 && arr[0]=='attribute'){
-                                                                    attribute[arr[1]] = values[name];
+                                                                    //special behiviour for dates
+                                                                    var value =values[name];
+                                                                    if(value instanceof Date){
+                                                                      var field = form.getForm().findField(name);
+                                                                      if(field && field.format){
+                                                                        attribute[arr[1]] = value.format(field.format);
+                                                                      }else{
+                                                                        attribute[arr[1]] = value;
+                                                                      }
+                                                                    }else{
+                                                                      attribute[arr[1]] = value;
+                                                                    }
                                                                 }
                                                             }
                                                             //create groups;
@@ -1074,8 +1125,11 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
                                       })
                       }];
                  if( this.showEnabled ) {
-                     userDataFields.push({xtype:'checkbox',fieldLabel:this.textEmabled || "Enabled",name:'enabled',checked:userdata.enabled});
+                     userDataFields.push({xtype:'checkbox',fieldLabel:this.textEnabled || "Enabled",name:'enabled',checked:userdata.enabled});
                   }
+                // headers for the request
+                var defaultHeaders = this.target.defaultHeaders || {};
+                defaultHeaders['Accept'] = 'application/json';
                 // for user is the tab content!!
                 var userFormTabPanel ={
                     xtype:'tabpanel',
@@ -1142,7 +1196,7 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
                                         method : 'GET',
                                         disableCaching: true,
                                         sortInfo: { field: "groupName", direction: "ASC" },
-                                        defaultHeaders: {'Accept': 'application/json', 'Authorization' : userManager.auth},
+                                        headers: {'Accept': 'application/json', 'Authorization' : userManager.auth},
                                         failure: function (response) {
                                             console.error(response); 
                                               Ext.Msg.show({
@@ -1264,7 +1318,18 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
                                                     for(var name in values ){
                                                         var arr = name.split('.');
                                                         if(arr.length >1 && arr[0]=='attribute'){
-                                                            attribute[arr[1]] = values[name];
+                                                            //special behiviour for dates
+                                                            var value =values[name];
+                                                            if(value instanceof Date){
+                                                              var field = form.findField(name);
+                                                              if(field && field.format){
+                                                                attribute[arr[1]] = value.format(field.format);
+                                                              }else{
+                                                                attribute[arr[1]] = value;
+                                                              }
+                                                            }else{
+                                                              attribute[arr[1]] = value
+                                                            }
                                                         }
                                                     }
                                                     //create groups;
@@ -1336,6 +1401,7 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
                             xtype:'msm_usergroupmanager',
                             geoStoreBase:um.geoStoreBase,
                             auth: um.auth,
+                            target: um.target,
                             layout:'fit'
                         };
                         // for admin it shows the window
@@ -1406,6 +1472,8 @@ MSMUserGroupManager = Ext.extend(Ext.grid.GridPanel, {
     autoExpandColumn: 'description',
     stateful: true,
     initComponent: function(){
+        var defaultHeaders = this.target.defaultHeaders || {};
+        defaultHeaders['Accept'] = 'application/json';
         //groups store (not pagination support because of extjs needs total count to use the pagination bar
         this.store = new Ext.data.JsonStore({
             autoDestroy: true,
@@ -1419,7 +1487,7 @@ MSMUserGroupManager = Ext.extend(Ext.grid.GridPanel, {
                 method : 'GET',
                 disableCaching: true,
                 sortInfo: { field: "groupName", direction: "ASC" },
-                defaultHeaders: {'Accept': 'application/json', 'Authorization' : this.auth},
+                headers: {'Accept': 'application/json', 'Authorization' : this.auth},
                 failure: function (response) {
                     console.error(response); 
                       Ext.Msg.show({

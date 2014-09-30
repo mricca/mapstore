@@ -35,7 +35,7 @@ background: url('../img/logo.png') center no-repeat;
 /* CLASSES */
 /* -------------------- */
 .add{
-background:url(../images/add.png) no-repeat 10px 8px;
+background:url(../img/add.png) no-repeat 10px 8px;
 text-indent:30px;
 display:block;
 }
@@ -125,8 +125,12 @@ display:block;
 .map_edit .x-btn-text-icon {
     background-image: url(../img/map_edit.png);
 }
-.table_edit {
+.table_edit,.x-panel-tl .x-panel-header.table_edit{
     background-image: url(../img/table_edit.png);
+}
+
+.resource_edit,.x-panel-tl .x-panel-header.resource_edit{
+    background-image: url(../img/report_edit.png);
 }
 
 .row_expand {
@@ -295,11 +299,54 @@ left: 80px !important;
 .information_ic{
     background-image: url(../img/information.png);
 }
+.refresh_ic{
+    background-image: url(../img/arrow_refresh.png);
+}
 
-
+.delete_ic {
+    background:url(../img/delete.png)
+}
 .action_column_btn{
     background-repeat: no-repeat;
     width:20px;
     height:20px;
 }
 
+/* simple colors for rows red green yellow  */
+.row-red {
+    background-color: rgb(255, 134, 134);
+}
+.row-green {
+    background-color: rgb(178, 235, 178);
+}
+.row-yellow  {
+    background-color: rgb(255, 255, 161);
+}
+.gwc_ic{
+    background-image: url(../img/gwc.png);
+}
+
+
+/* mxp_categoryinitializer */
+.initCategoriesMessage{
+    padding: 20px;
+}
+/* Resource permission */
+.lock_ic{
+    background-image: url(../img/lock.png);
+
+}
+/** schedule tasks **/
+.sheduled_task_ic{
+    background-image: url(../img/sheduled_task.png);
+}
+.clock_ic{
+    background-image: url(../img/clock.png) !important;;
+}
+
+/* style for geostore dataview */
+.chooser-view .x-view-selected {
+background: #DFEDFF;
+border: 1px solid #6593cf;
+padding: 4px;
+}

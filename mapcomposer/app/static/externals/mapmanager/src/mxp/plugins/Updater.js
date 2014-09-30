@@ -28,19 +28,22 @@ Ext.ns("mxp.plugins");
 /** api: constructor
  *  .. class:: Updater(config)
  *
- *    Open a file browser that can update layers
+ *    Open a plugin to interact with GeoBatch 
+ *    and OpenSDI Mangager to :
+ *    * upload files
+ *    * obtain information and clean consumers for a particular flow
  */
 mxp.plugins.Updater = Ext.extend(mxp.plugins.Tool, {
     
-    /** api: ptype = mxp_servicemanager */
+    /** api: ptype = mxp_updater */
     ptype: "mxp_updater",
 
     buttonText: "Updater",
+	uploadFilesText:'Upload Files',
 
     loginManager: null,    
     setActiveOnOutput: true,
-    actionURL: null,
-
+    
     /** api: method[addActions]
      */
     addActions: function() {
@@ -81,37 +84,90 @@ mxp.plugins.Updater = Ext.extend(mxp.plugins.Tool, {
         
         this.outputConfig = this.outputConfig || {};
 
-        var actionURL = this.actionURL ? this.actionURL : // the action URL is configured in th plugin
-            this.target.adminUrl ? this.target.adminUrl + "mvc/fileManager/extJSbrowser" : // use relative path from adminUrl
-            "/opensdi2-manager/mvc/fileManager/extJSbrowser"; // by default search on root opensdi-manager2
-
         var uploadUrl = this.uploadUrl ? this.uploadUrl : // the upload URL is configured in th plugin
             this.target.adminUrl ? this.target.adminUrl + "mvc/fileManager/upload" : // use relative path from adminUrl
             "/opensdi2-manager/mvc/fileManager/upload"; // by default search on root opensdi-manager2
-        Ext.apply(this.outputConfig, {
-            defaultHeaders: "Authentication : " + this.auth,
-            xtype: "FileBrowser",
+            
+        var me = this;
+        var pluploadPanel = {
+            xtype:'pluploadpanel',
+            region:'west',
+			iconCls:'inbox-upload_ic',
+			title:this.uploadFilesText,
+            autoScroll:true,
+            width:400,
+            ref:'uploader',
+            collapsible:true,   
+            url: uploadUrl,
+            multipart: true,
+            auth: this.auth,
+			mediaContent: this.target.initialConfig.mediaContent,
+            listeners:{
+                beforestart:function() {
+                    var multipart_params =  pluploadPanel.multipart_params || {};
+                    //TODO add multipart_params
+                    pluploadPanel.multipart_params = multipart_params;
+                },
+                fileUploaded:function(file) {
+                    var pan =this;
+                    setTimeout(function(){pan.refOwner.grid.store.load()},5000);
+                },
+                uploadcomplete:function() {
+                    var pan =this;
+                    setTimeout(function(){pan.refOwner.grid.store.load()},5000);
+                }
+            }
+        }
+        Ext.apply(this.outputConfig,{   
             layout: 'border',
+			itemId:'Updater',
+            xtype:'panel',
             closable: true,
             closeAction: 'close',
-            autoWidth: true,
             iconCls: "update_manager_ic",  
             header: false,
+            deferredReneder:false,
             viewConfig: {
                 forceFit: true
             },
             title: this.buttonText,
-            rootText:"root",
-            // layout: "fit",
-            // path:"root",
-            readOnly:false,
-            enableBrowser:true,
-            enableUpload:true,
-            uploadUrl: proxy + uploadUrl, //TODO: check if same source
-            
-            url: actionURL
+            items:[
+                {
+                    xtype:'mxp_geobatch_consumer_grid',
+                    geoBatchRestURL: this.geoBatchRestURL,
+                    GWCRestURL: this.GWCRestURL,
+                    layout:'fit',
+                    autoScroll:true,
+                    auth: this.auth,
+                    autoWidth:true,
+                    region:'center',
+                    ref:'grid'
+                },  
+                pluploadPanel
+            ]
         });
-
+		// In user information the output is generated in the component and we can't check the item.initialConfig.
+        if(this.output.length > 0
+            && this.outputTarget){
+            for(var i = 0; i < this.output.length; i++){
+                if(this.output[i].ownerCt
+                    && this.output[i].ownerCt.xtype 
+                    && this.output[i].ownerCt.xtype == "tabpanel"
+                    && !this.output[i].isDestroyed){
+                    var outputConfig = config || this.outputConfig;
+                    // Not duplicate tabs
+                    for(var index = 0; index < this.output[i].ownerCt.items.items.length; index++){
+                        var item = this.output[i].ownerCt.items.items[index];
+                        // only check iconCls
+                        var isCurrentItem = "Updater" == item.initialConfig["itemId"];
+                        if(isCurrentItem){
+                            this.output[i].ownerCt.setActiveTab(index);
+                            return;
+                        }
+                    } 
+                }
+            }
+        }
         return mxp.plugins.Updater.superclass.addOutput.apply(this, arguments);
     }
 });

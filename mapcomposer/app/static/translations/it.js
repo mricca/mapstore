@@ -1,6 +1,10 @@
 /**
  * Copyright (c) 2009-2010 The Open Planning Project
  */
+/*
+	NOTE: configuration customization could override
+	these strings
+*/
 
 GeoExt.Lang.add("it", {
     "GeoExplorer.prototype": {
@@ -368,7 +372,11 @@ GeoExt.Lang.add("it", {
         exportCSVMultipleText: "Tutte le pagine",
         failedExportCSV: "Impossibile esportare nel formato CSV",
         invalidParameterValueErrorText: "Valore parametro non valido",
-		zoomToFeature: "Zoom alla Feature"            
+		zoomToFeature: "Zoom alla Feature",
+		exportTitleText: "Esporta",
+		pageLabel: "Pagina",
+		pageOfLabel: "di",
+		totalRecordsLabel: "Elementi Totali"		
     },
 	
     "gxp.plugins.QueryForm.prototype": {
@@ -644,7 +652,7 @@ GeoExt.Lang.add("it", {
         southLabel : "Sud",
         setAoiTitle : "Bounding Box",
         setAoiText : "Disegna",
-        setAoiTooltip : "Enable the SetBox control to draw a ROI (Bounding Box) on the map",
+        setAoiTooltip : "Abilita il controllo SetBox per disegnare l'area d'interesse (Bounding Box) sulla mappa",
         areaLabel : "Area",
         perimeterLabel : "Perimetro",
         radiusLabel : "Raggio",
@@ -700,7 +708,14 @@ GeoExt.Lang.add("it", {
         lengthLabel: "Lunghezza",
         radiusLabel : "Raggio",
         centroidLabel : "Centroide",
-        selectionSummary: "Sommario delle Selezioni"
+        selectionSummary: "Sommario delle Selezioni",
+        geometryOperationText: "Operazione geometrica",
+        geometryOperationEmptyText: "Seleziona una operazione",
+        distanceTitleText: "Distanza",
+        distanceUnitsTitleText: "Unità di misura",
+        noOperationTitleText: "Operazione non valida",
+        noOperationMsgText: "Prego, selezionare una operazione prima di eseguire la query",
+        noCompleteMsgText: "Prego, completare il riempimento della form prima di eseguire la query"
     },
     
     "gxp.widgets.form.spatialselector.BBOXSpatialSelectorMethod.prototype" :{
@@ -712,7 +727,7 @@ GeoExt.Lang.add("it", {
         southLabel : "Sud",
         setAoiTitle : "Bounding Box",
         setAoiText : "Disegna",
-        setAoiTooltip : "Enable the SetBox control to draw a ROI (Bounding Box) on the map"
+        setAoiTooltip : "Abilita il controllo SetBox per disegnare l'area d'interesse (Bounding Box) sulla mappa"
     },
     
     "gxp.widgets.form.spatialselector.BufferSpatialSelectorMethod.prototype" :{
@@ -723,8 +738,8 @@ GeoExt.Lang.add("it", {
     },
     
     "gxp.widgets.form.spatialselector.CircleSpatialSelectorMethod.prototype" :{
-        name  : 'Circle',
-        label : 'Circle'
+        name  : 'Cerchio',
+        label : 'Cerchio'
     },
     
     "gxp.widgets.form.spatialselector.GeocoderSpatialSelectorMethod.prototype" :{
@@ -750,15 +765,100 @@ GeoExt.Lang.add("it", {
     },
     
     "gxp.widgets.form.spatialselector.PolygonSpatialSelectorMethod.prototype" :{
-        name  : 'Polygon',
-        label : 'Polygon'
+        name  : 'Poligono',
+        label : 'Poligono'
+    },
+
+    "gxp.plugins.spatialselector.Geocoder.prototype" :{
+        titleText: "Geocoder",
+        searchText: "Ricerca",
+        searchTpText: "Ricerca la zona selezionata ed esegui lo zoom sulla mappa",
+        resetText: "Azzeramento",
+        resetTpText: "Azzeramento ricerca zona",
+        translatedKeys: {
+            "name": "Strada",
+            "number": "Numero"
+        }
     },
 	
 	"gxp.plugins.ResourceStatus.prototype":{
 		rootNodeText: "Risorse Importate",
 		serviceErrorTitle: "Errore Servizio",
 		tabTitle: "Importati",
-		layerNodeName: "Livelli",
-		serviceNodeName: "Servizi"
-    }
+		layerNodeName: "Risorse",
+		waitMsg: "Caricamento Risorse ...",
+		expandAllText: "Espandi Tutti i Nodi",
+		collapseAllText: "Collassa Tutti i Nodi"
+    },
+	
+	"gxp.plugins.SpatialSelectorQueryForm.prototype":{
+        noFilterSelectedMsgTitle: "Nessun filtro selezionato",    
+        noFilterSelectedMsgText: "Devi selezionare almeno un filtro",    
+        invalidRegexFieldMsgTitle: "Campo non valido",    
+        invalidRegexFieldMsgText: "Uno o più campi non sono stati riempiti correttamente!"
+    },
+	
+	"gxp.plugins.FeatureManager.prototype":{
+        noValidWmsVersionMsgTitle: 'Versione WMS non valida',    
+        noValidWmsVersionMsgText: "Il plugin queryForm non funziona con una sorgente WMS versione: "
+    },
+	
+    "gxp.data.WMTSCapabilitiesReader.prototype" : {
+        noLayerInProjectionError: "Nessun layer disponibile su questo server nel sistema di coordinate della mappa",
+        warningTitle: "Attenzione"
+    },
+	
+    "gxp.data.TMSCapabilitiesReader.prototype" : {
+        noLayerInProjectionError: "Nessun layer disponibile su questo server nel sistema di coordinate della mappa",
+        warningTitle: "Attenzione"
+    },
+
+	"gxp.plugins.AdvancedSnappingAgent.prototype":{
+        tooltipText: "Abilita/Disabilita Aggancio"
+    },
+	
+    "gxp.PlaybackToolbar.prototype": {
+        playLabel: "Play",
+        playTooltip: "Play",
+        stopLabel: "Stop",
+        stopTooltip: "Stop",
+        fastforwardLabel: "FFWD",
+        fastforwardTooltip: "Doppia velocità di animazione",
+        backLabel:'Indietro',
+        backTooltip:'Diminuisci di uno step',            
+        nextLabel: "Avanti",
+        nextTooltip: "Avanza di uno step",
+        resetLabel: "Reset",
+        resetTooltip: "Stazioni ultimo aggiornamento",
+        loopLabel: "Loop",
+        loopTooltip: "Animazione continua",
+        normalTooltip: "Ritorno alla riproduzione normale",
+        pauseLabel: "Pausa",
+        pauseTooltip: "Pausa"
+    },
+	
+    "gxp.PlaybackOptionsPanel.prototype": {
+        optionTitleText: "Opzioni Data e Tempo",
+        rangeFieldsetText: "Intervallo di tempo",
+        animationFieldsetText: "Opzioni di animazione",
+        startText: "Inizio",
+        endText: "Fine",
+        saveText: 'Salva',
+        cancelText: 'Cancella',        
+        listOnlyText: "Utilizzare solamente l'elenco dei valori esatti",
+        stepText: "Step animazione",
+        unitsText: "Unità animazione",
+        frameRateText:'Velocità animazione (s)',
+        noUnitsText: "Snap To Time List",
+        loopText: "Animazione continua",
+        reverseText: "Inverti animazione",
+        rangeChoiceText: "Choose the range for the time control",
+        rangedPlayChoiceText: "Playback Mode",
+        secondsText: 'Secondi', 
+        minutesText: 'Minuti', 
+        hoursText: 'Ore', 
+        daysText: 'Giorni', 
+        monthsText: 'Mesi', 
+        yearsText: 'Anni'
+    }  
 });

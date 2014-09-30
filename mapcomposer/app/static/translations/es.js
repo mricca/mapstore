@@ -5,6 +5,7 @@
 	NOTE: configuration customization could override
 	these strings
 */
+
 GeoExt.Lang.add("es", {
     "GeoExplorer.prototype": {
         zoomSliderText: "<div>Nivel de zoom: {zoom}</div><div>Escala: 1:{scale}</div>",
@@ -347,7 +348,10 @@ GeoExt.Lang.add("es", {
         comboFormatEmptyText: "Por favor, seleccione un formato",
         noFormatTitleText: "Formato inválido",
         noFormatBodyText: "Por favor, seleccione un formato válido",
-        exportTitleText: "Exportar"
+        exportTitleText: "Exportar",
+		pageLabel: "Página",
+		pageOfLabel: "de",
+		totalRecordsLabel: "Registros Totales"
     },
     "gxp.plugins.QueryForm.prototype": {
         queryActionText: "Consultar",
@@ -612,6 +616,45 @@ GeoExt.Lang.add("es", {
         loadInMapStoreMobileText: "Mobile",
         openImageInANewTab: "Abrir imagen en una nueva pestaña"
 	},
+
+    "gxp.widgets.form.SpatialSelectorField.prototype" :{
+        title : "Región de Interés",
+        selectionMethodLabel : "Método de selección",
+        comboEmptyText : "Seleccione un método..",
+        comboSelectionMethodLabel : "Selección",
+        northLabel : "Norte",
+        westLabel : "Oeste",
+        eastLabel : "Este",
+        southLabel : "Sur",
+        setAoiTitle : "Bounding Box",
+        setAoiText : "Dibuja",
+        setAoiTooltip : "Permita al control de SetBox dibujar un ROI (Saltando la Caja) sobre el mapa",
+        areaLabel : "Área",
+        perimeterLabel : "Perímetro",
+        radiusLabel : "Rayo",
+        centroidLabel : "Centroide",
+        latitudeEmptyText : 'Y',
+        longitudeEmptyText : 'X',
+        geocodingFieldSetTitle : "GeoCoder",
+        geocodingPanelTitle : "Elegir una Localidad",
+        geocodingPanelBtnRefreshTxt : "Enseña Geometrías",
+        geocodingPanelBtnDestroyTxt : "Escondes Geometrías",
+        geocodingPanelBtnDeleteTxt : "Remueves Localidad",
+        geocodingPanelLocationHeader: "Localidad",
+        geocodingPanelCustomHeader: "Pariente",
+        geocodingPanelGeometryHeader: "WKT de la Geometría",
+        geocodingPanelBtnSelectAllTxt : "Selecciona Todo", 
+        geocodingPanelBtnDeSelectAllTxt : "Deseleziona Todo", 
+        geocodingPanelMsgRemRunningTitle : "Remueves Localidad",
+        geocodingPanelMsgRemRunningMsg : "¿Quieres remover las Localidades seleccionadas por la lista?",
+        geocodingFieldLabel : "Busca una Localidad",
+        geocodingFieldEmptyText : "Insertas Localidad...",
+        geocodingFieldBtnAddTooltip : "Añades una Localidad a la lista",
+        geocodingFieldBtnDelTooltip : "Limpias...",
+        selectionSummary : "Sumario de las Selecciones",
+        geocoderSelectorsLabels: ['Unión de las geometrías', 'Lista de los Área Administrativa', 'Área Administrativa y sottoaree'],
+        selectionReturnTypeLabel: "Tipo de selección"
+    },
     
     "gxp.plugins.WFSGrid.prototype":{
         displayMsgPaging: "Elementos {0} - {1} of {2}",
@@ -717,7 +760,46 @@ GeoExt.Lang.add("es", {
 		rootNodeText: "Recursos Import",
 		serviceErrorTitle: "Error de Servicio",
 		tabTitle: "Importado",
-		layerNodeName: "Niveles",
-		serviceNodeName: "Servicio"
-    }
+		layerNodeName: "Recursos",
+		waitMsg: "Cargar Recursos ...",
+		expandAllText: "Expandir Todos Los Nodos",
+		collapseAllText: "Contraer Todos Los Nodos"
+    },
+	
+	"gxp.plugins.SpatialSelectorQueryForm.prototype":{
+        noFilterSelectedMsgTitle: "No hay filtros seleccionados",    
+        noFilterSelectedMsgText: "Debe seleccionar al menos un filtro",    
+        invalidRegexFieldMsgTitle: "Dominios no válidoss",    
+        invalidRegexFieldMsgText: "Uno o más dominios están rellenados correctamente!"
+    },
+	
+	"gxp.plugins.FeatureManager.prototype":{
+        noValidWmsVersionMsgTitle: 'WMS versión no válida',    
+        noValidWmsVersionMsgText: "El plugin QueryForm no funciona con una versión origen WMS: "
+    },
+
+    "gxp.plugins.CategoriesInitializer.prototype":{
+        geostoreInitializationTitleText: "Error en la inicialización",
+        geostoreInitializationText: "La respuesta de GeoStore no es la esperada",
+        notInitializedCategories: "Faltan gategorías: '{0}'. ¿Quiere crearlas?",
+        userFieldText: "Usuario",
+        passwordFieldText: "Contraseña",
+        acceptText: "Crear",
+        cancelText: "Cancelar",
+        notInitializedCategoriesWithCredentials: "<div class='initCategoriesMessage'>Si es administrador introduzca sus credenciales para crear las categorías: '{0}'</div>"
+    },
+	
+    "gxp.data.WMTSCapabilitiesReader.prototype" : {
+        noLayerInProjectionError: "No layer in the current map projection is available on this server",
+        warningTitle: "advertencia"
+    },
+	
+    "gxp.data.TMSCapabilitiesReader.prototype" : {
+        noLayerInProjectionError: "No layer in the current map projection is available on this server",
+        warningTitle: "advertencia"
+    },
+	
+	"gxp.plugins.AdvancedSnappingAgent.prototype":{
+        tooltipText: "Activar/Desactivar Snapping"
+    }  
 });
