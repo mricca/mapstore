@@ -22,7 +22,7 @@
 			"ptype": "gxp_wmssource",
 			"title": "Salvador GeoServer",
 			"projection":"EPSG:900913",
-			"url": "http://localhost:8080/geoserver/ows",
+			"url": "http://159.213.57.108/geoserver/ows",
             "version":"1.1.1",
 			"layerBaseParams": {
 			   "format":"image/png8",
@@ -157,92 +157,91 @@
 			},{
 				"source": "salvador",
                 "group": "Comunidad Ubication",
-				"title": "Comunidad Ubication",
+				"title": "Comunidad Comitees",
+				"name": "SALVADOR:comunidad_comitees",
+				"displayInLayerSwitcher":false,
+				"visibility": true,
+                "opacity": 0.0
+			},{
+				"source": "salvador",
+                "group": "Comunidad Ubication",
+				"title": "Proyecto Gestion",
+				"name": "SALVADOR:comunidad_proyecto_gestion",
+				"displayInLayerSwitcher":false,
+				"visibility": true,
+                "opacity": 0.0
+			},{
+				"source": "salvador",
+                "group": "Comunidad Ubication",
+				"title": "Proyecto Ejecution",
+				"name": "SALVADOR:comunidad_proyecto_ejecution",
+				"displayInLayerSwitcher":false,
+				"visibility": true,
+                "opacity": 0.0
+			},{
+				"source": "salvador",
+                "group": "Comunidad Ubication",
+				"title": "Campanas Salud",
+				"name": "SALVADOR:comunidad_campanas_salud",
+				"displayInLayerSwitcher":false,
+				"visibility": true,
+                "opacity": 0.0
+			},{
+				"source": "salvador",
+                "group": "Comunidad Ubication",
+				"title": "Fichas",
+				"name": "SALVADOR:comunidad_fichas",
+				"displayInLayerSwitcher":false,
+				"visibility": true,
+                "opacity": 0.0
+			},{
+				"source": "salvador",
+                "group": "Comunidad Ubication",
+				"title": "Comunidad",
 				"name": "SALVADOR:comunidad_ubicacion",
 				"displayInLayerSwitcher":true,
-				"visibility": false
+				"visibility": true
 			},{
 				"source": "salvador",
                 "group": "Comunidad Ubication",
-				"title": "Comunidad Directivos",
-				"name": "SALVADOR:comunidad_directivos",
-				"displayInLayerSwitcher":true,
-				"visibility": false
-			},{
-				"source": "salvador",
-                "group": "Comunidad Ubication",
-				"title": "Comunidad Presupuesto Participativo",
-				"name": "SALVADOR:comunidad_presupuesto_participativo",
-				"displayInLayerSwitcher":true,
-				"visibility": false
-			},{
-				"source": "salvador",
-                "group": "Comunidad Ubication",
-				"title": "Comunidad Estado Juridico",
-				"name": "SALVADOR:comunidad_estado_juridico",
-				"displayInLayerSwitcher":true,
-				"visibility": false
-			},{
-				"source": "salvador",
-                "group": "Comunidad Ubication",
-				"title": "Comunidad Comunidad Comitees",
-				"name": "SALVADOR:comunidad_comitees",
-				"displayInLayerSwitcher":true,
-				"visibility": false
-			},{
-				"source": "salvador",
-                "group": "Comunidad Ubication",
-				"title": "Comunidad Proyecto Gestion",
-				"name": "SALVADOR:comunidad_proyecto_gestion",
-				"displayInLayerSwitcher":true,
-				"visibility": false
-			},{
-				"source": "salvador",
-                "group": "Comunidad Ubication",
-				"title": "Comunidad Proyecto Ejecution",
-				"name": "SALVADOR:comunidad_proyecto_ejecution",
-				"displayInLayerSwitcher":true,
-				"visibility": false
-			},{
-				"source": "salvador",
-                "group": "Comunidad Ubication",
-				"title": "Comunidad Campanas Salud",
-				"name": "SALVADOR:comunidad_campanas_salud",
-				"displayInLayerSwitcher":true,
-				"visibility": false
-			},{
-				"source": "salvador",
-                "group": "Comunidad Ubication",
-				"title": "Comunidad Fichas",
-				"name": "SALVADOR:comunidad_fichas",
-				"displayInLayerSwitcher":true,
-				"visibility": false
-			},{
-				"source": "salvador",
-                "group": "Comunidad Equipamiento",
-				"title": "Comunidad Equipamiento",
+				"title": "Equipamiento",
 				"name": "SALVADOR:comunidad_equipamiento",
 				"displayInLayerSwitcher":true,
 				"visibility": false
 			},{
 				"source": "salvador",
-                "group": "Comunidad Vias Internas",
-				"title": "Comunidad Vias Internas",
+                "group": "Comunidad Ubication",
+				"title": "Vias Internas",
 				"name": "SALVADOR:comunidad_vias_internas",
 				"displayInLayerSwitcher":true,
 				"visibility": false
 			},{
 				"source": "salvador",
-                "group": "Comunidad Vias Accesso",
-				"title": "Comunidad Vias Accesso",
+                "group": "Comunidad Ubication",
+				"title": "Vias Accesso",
 				"name": "SALVADOR:comunidad_vias_accesso",
 				"displayInLayerSwitcher":true,
 				"visibility": false
 			},{
 				"source": "salvador",
-                "group": "Comunidad Proyecto Necesidades",
-				"title": "Comunidad Proyecto Necesidades",
+                "group": "Comunidad Ubication",
+				"title": "Proyecto Necesidades",
 				"name": "SALVADOR:comunidad_proyecto_necesidades",
+				"displayInLayerSwitcher":true,
+				"visibility": false
+			},{
+				"source": "salvador",
+                "group": "Alerta",
+				"title": "Alerta Tipo Botadero Basura",
+				"name": "SALVADOR:alerta_tipo_botadero_basura",
+				"displayInLayerSwitcher":false,
+				"visibility": true,
+                "opacity": 0.0
+			},{
+				"source": "salvador",
+                "group": "Alerta",
+				"title": "Peligro Vulnerabilidad",
+				"name": "SALVADOR:alerta_peligro_vulnerabilidad",
 				"displayInLayerSwitcher":true,
 				"visibility": false
 			}
@@ -311,7 +310,7 @@
                 "outputFilename":"mapstore-print"
             },
             "ignoreLayers": "Google Hybrid,Bing Aerial,Google Terrain,Google Roadmap,Marker,GeoRefMarker",
-            "printService":"http://localhost:8080/geoserver/pdf",
+            "printService":"http://159.213.57.108/geoserver/pdf",
             "legendPanelId":"legendPanel",
             "actionTarget":{
                 "target":"paneltbar",
@@ -384,7 +383,7 @@
           "filterLayer": false,
           "autoComplete": {
             "sources": ["salvador"],
-            "url": "http://localhost:8080/geoserver/wps",
+            "url": "http://159.213.57.108/geoserver/wps",
             "pageSize": 10
           },
 		  "outputConfig":{
@@ -430,7 +429,7 @@
 		        "geocoder":{
 		            "xtype": "gxp_spatial_geocoding_selector",
 		            "multipleSelection": false,
-		            "wfsBaseURL": "http://localhost:8080/geoserver/wfs?",
+		            "wfsBaseURL": "http://159.213.57.108/geoserver/wfs?",
 		            "geocoderTypeName": "salvador:comunidad_equipamiento_p",
 		            "geocoderTypeRecordModel":[
 		                {
