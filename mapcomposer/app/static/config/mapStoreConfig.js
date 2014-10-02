@@ -108,6 +108,11 @@
 			}
 		}
 	},
+	"loadingPanel": {
+		"width": 100,
+		"height": 100,
+		"center": true
+	},
 	"map": {
 		"projection": "EPSG:3003",
 		"displayProjection": "EPSG:3003",
