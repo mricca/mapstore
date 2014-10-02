@@ -76,10 +76,6 @@ GeoExt.plugins.AttributeForm.prototype = {
      *  ``Ext.form.FormPanel`` This form panel.
      */
     formPanel: null,
-    
-    /** api: config[recordToFieldOptions]
-     *  ``Object`` Options to pass on to :meth:`GeoExt.form.recordToField`.
-     */
 
     /** private: method[init]
      *  :param formPanel: class:`Ext.form.FormPanel`
@@ -139,9 +135,7 @@ GeoExt.plugins.AttributeForm.prototype = {
      */
     fillForm: function() {
         this.attributeStore.each(function(record) {
-            var field = GeoExt.form.recordToField(record, Ext.apply({
-                checkboxLabelProperty: 'fieldLabel'
-            }, this.recordToFieldOptions || {}));
+            var field = GeoExt.form.recordToField(record);
             if(field) {
                 this.formPanel.add(field);
             }

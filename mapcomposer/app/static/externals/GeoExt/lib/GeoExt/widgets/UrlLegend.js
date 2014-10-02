@@ -54,7 +54,7 @@ GeoExt.UrlLegend = Ext.extend(GeoExt.LayerLegend, {
  *  Private override
  */
 GeoExt.UrlLegend.supports = function(layerRecord) {
-    return layerRecord.get("legendURL") == null ? 0 : 10;
+    return layerRecord.get("legendURL") != null;
 };
 
 /** api: legendtype = gx_urllegend */

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008-2011 The Open Source Geospatial Foundation
+ * Copyright (c) 2008-2009 The Open Source Geospatial Foundation
  *
  * Published under the BSD license.
  * See http://svn.geoext.org/core/trunk/geoext/license.txt for the full text
@@ -35,18 +35,7 @@ Ext.onReady(function() {
         },
         plugins: [
             new GeoExt.plugins.AttributeForm({
-                attributeStore: attributeStore,
-                recordToFieldOptions: {
-                    labelTpl: new Ext.XTemplate(
-                        '{name}{[this.getStar(values)]}', {
-                            compiled: true,
-                            disableFormats: true,
-                            getStar: function(v) {
-                                return v.nillable ? '' : ' *';
-                            }
-                        }
-                    )
-                }
+                attributeStore: attributeStore
             })
         ]
     });

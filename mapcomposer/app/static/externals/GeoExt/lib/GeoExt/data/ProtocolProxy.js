@@ -6,10 +6,6 @@
  * of the license.
  */
 
-/**
- * require OpenLayers/BaseTypes.js
- */
-
 /** api: (define)
  *  module = GeoExt.data
  *  class = ProtocolProxy

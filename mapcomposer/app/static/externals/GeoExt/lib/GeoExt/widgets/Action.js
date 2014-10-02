@@ -6,10 +6,6 @@
  * of the license.
  */
 
-/**
- * require OpenLayers/Control.js
- */
-
 /** api: (define)
  *  module = GeoExt
  *  class = Action
@@ -132,10 +128,6 @@ GeoExt.Action = Ext.extend(Ext.Action, {
             if((config.pressed || config.checked) && ctrl.map) {
                 ctrl.activate();
             }
-            if (ctrl.active) {
-                config.pressed = true;
-                config.checked = true;
-            }
             ctrl.events.on({
                 activate: this.onCtrlActivate,
                 deactivate: this.onCtrlDeactivate,
@@ -198,18 +190,12 @@ GeoExt.Action = Ext.extend(Ext.Action, {
             if(!this._activating) {
                 this._activating = true;
                 this.control.activate();
-                // update initialConfig for next component created from this action
-                this.initialConfig.pressed = true;
-                this.initialConfig.checked = true;
                 this._activating = false;
             }
         } else {
             if(!this._deactivating) {
                 this._deactivating = true;
                 this.control.deactivate();
-                // update initialConfig for next component created from this action
-                this.initialConfig.pressed = false;
-                this.initialConfig.checked = false;
                 this._deactivating = false;
             }
         }
