@@ -2,6 +2,21 @@
    "scaleOverlayMode": "advanced",
    "tab": false,
    "gsSources":{
+   		"geoserver_centraline": {
+			"ptype": "gxp_wmssource",
+			"url": "http://159.213.57.108/geoserver/wms",
+			"title": "Geoserver Centraline",
+			"SRS": "EPSG:3003",
+			"version":"1.1.1",
+			"layersCachedExtent": [
+				1547065, 4677785,
+				1803065, 4933785
+			],			
+			"layerBaseParams":{
+				"FORMAT":"image/png8",
+				"TILED":false
+			}
+		},   
    		"geoscopio": {
 			"ptype": "gxp_wmssource",
 			"url": "http://www502.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmssfondo&map_resolution=91&language=ita",
@@ -179,6 +194,22 @@
 				"displayInLayerSwitcher": true,
 				"visibility": false,
 				"tiled": false
+			},{
+				"source": "geoserver_centraline",
+				"group": "WEB CAM",
+				"title": "WebCam Consorzio LaMMA",
+				"name": "CENTRALINE:lamma_webcam_3003",
+				"displayInLayerSwitcher": true,
+				"visibility": true,
+				"tiled": true
+			},{
+				"source": "geoserver_centraline",
+				"group": "CENTRALINE",
+				"title": "Esempio Pioggia",
+				"name": "CENTRALINE:pioggia_ora_buona",
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": true
 			}
 		]
 	},
