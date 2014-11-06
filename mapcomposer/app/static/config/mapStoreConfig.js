@@ -17,12 +17,72 @@
 				"TILED":false
 			}
 		},   
+   		"geoscopio_osm_b": {
+			"ptype": "gxp_wmssource",
+			"url": "http://www502.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmsosm_b&map_resolution=91&",
+			"title": "Geoscopio OSM stile Bing",
+			"SRS": "EPSG:3003",
+			"version":"1.3.0",
+			"layersCachedExtent": [
+				1547065, 4677785,
+				1803065, 4933785
+			],			
+			"layerBaseParams":{
+				"FORMAT":"image/png",
+				"TILED":false
+			}
+		},      
+   		"geoscopio_osm_g": {
+			"ptype": "gxp_wmssource",
+			"url": "http://www502.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmsosm_g&map_resolution=91&",
+			"title": "Geoscopio OSM stile Google",
+			"SRS": "EPSG:3003",
+			"version":"1.3.0",
+			"layersCachedExtent": [
+				1547065, 4677785,
+				1803065, 4933785
+			],			
+			"layerBaseParams":{
+				"FORMAT":"image/png",
+				"TILED":false
+			}
+		}, 
+   		"geoscopio_osm_m": {
+			"ptype": "gxp_wmssource",
+			"url": "http://www502.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmsosm_m&map_resolution=91&",
+			"title": "Geoscopio OSM stile Michelin",
+			"SRS": "EPSG:3003",
+			"version":"1.3.0",
+			"layersCachedExtent": [
+				1547065, 4677785,
+				1803065, 4933785
+			],			
+			"layerBaseParams":{
+				"FORMAT":"image/png",
+				"TILED":false
+			}
+		},
+   		"geoscopio_osm_d": {
+			"ptype": "gxp_wmssource",
+			"url": "http://www502.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmsosm_d&map_resolution=91&",
+			"title": "Geoscopio OSM stile OSM",
+			"SRS": "EPSG:3003",
+			"version":"1.3.0",
+			"layersCachedExtent": [
+				1547065, 4677785,
+				1803065, 4933785
+			],			
+			"layerBaseParams":{
+				"FORMAT":"image/png",
+				"TILED":false
+			}
+		},        
    		"geoscopio": {
 			"ptype": "gxp_wmssource",
-			"url": "http://www502.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmssfondo&map_resolution=91&language=ita",
+			"url": "http://www502.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmssfondo&map_resolution=91&",
 			"title": "Geoscopio basi",
 			"SRS": "EPSG:3003",
-			"version":"1.1.1",
+			"version":"1.3.0",
 			"layersCachedExtent": [
 				1547065, 4677785,
 				1803065, 4933785
@@ -34,10 +94,10 @@
 		},
    		"geoscopio_ortofoto": {
 			"ptype": "gxp_wmssource",
-			"url": "http://web.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmsofc",
+			"url": "http://www502.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmsofc&map_resolution=91&",
 			"title": "Geoscopio ortofoto",
 			"SRS": "EPSG:3003",
-			"version":"1.1.1",
+			"version":"1.3.0",
 			"layersCachedExtent": [
 				1547065, 4677785,
 				1803065, 4933785
@@ -49,10 +109,10 @@
 		},
    		"geoscopio_ctr": {
 			"ptype": "gxp_wmssource",
-			"url": "http://web.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmsctr",
+			"url": "http://www502.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmsctr&map_resolution=91&",
 			"title": "Geoscopio CTR",
 			"SRS": "EPSG:3003",
-			"version":"1.1.1",
+			"version":"1.3.0",
 			"layersCachedExtent": [
 				1547065, 4677785,
 				1803065, 4933785
@@ -64,10 +124,10 @@
 		},
    		"geoscopio_idrografia": {
 			"ptype": "gxp_wmssource",
-			"url": "http://web.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmsidrogr&map_resolution=91&language=ita&",
+			"url": "http://www502.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmsidrogr&map_resolution=91&",
 			"title": "Geoscopio idrografia",
 			"SRS": "EPSG:3003",
-			"version":"1.1.1",
+			"version":"1.3.0",
 			"layersCachedExtent": [
 				1547065, 4677785,
 				1803065, 4933785
@@ -79,10 +139,10 @@
 		},
    		"geoscopio_amb_ammin": {
 			"ptype": "gxp_wmssource",
-			"url": "http://www502.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmsambamm&",
+			"url": "http://www502.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmsambamm&map_resolution=91&",
 			"title": "Geoscopio ambiti amministrativi",
 			"SRS": "EPSG:3003",
-			"version":"1.1.1",
+			"version":"1.3.0",
 			"layersCachedExtent": [
 				1547065, 4677785,
 				1803065, 4933785
@@ -109,10 +169,6 @@
 		"maxExtent": [
 				708923.00, 4290035.00,
 				2631134.00, 5369149.00
-		],
-		"restrictedExtent": [
-				708923.00, 4290035.00,
-				2631134.00, 5369149.00
 		],        
 		"layers": [
 			{
@@ -123,7 +179,8 @@
 				"displayInLayerSwitcher": true,
 				"visibility": true,
 				"tiled": false,
-				"attribution": false
+				"attribution": false,
+                "queryable": false
 			},{
 				"source": "geoscopio",
 				"group": "background",
@@ -132,7 +189,8 @@
 				"displayInLayerSwitcher": false,
 				"visibility": true,
 				"tiled": false,
-				"attribution": false
+				"attribution": false,
+                "queryable": false
 			},{
 				"source": "geoscopio",
 				"group": "background",
@@ -141,7 +199,8 @@
 				"displayInLayerSwitcher": false,
 				"visibility": true,
 				"tiled": false,
-				"attribution": false
+				"attribution": false,
+                "queryable": false
 			},{
 				"source": "geoscopio_ortofoto",
 				"group": "Ortofotocarte 1:10.000",
@@ -151,7 +210,44 @@
 				"displayInLayerSwitcher": true,
 				"visibility": false,
 				"tiled": false,
-				"attribution": false
+				"attribution": false,
+                "queryable": false
+			},{
+				"source": "geoscopio_osm_b",
+				"group": "Toscana OSM Dataset",
+				"title": "Stile Bing",
+				"name": "default",
+				"displayInLayerSwitcher": true,
+				"visibility": true,
+				"tiled": false,
+                "queryable": false
+			},{
+				"source": "geoscopio_osm_g",
+				"group": "Toscana OSM Dataset",
+				"title": "Stile Google",
+				"name": "default",
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": false,
+                "queryable": false
+			},{
+				"source": "geoscopio_osm_m",
+				"group": "Toscana OSM Dataset",
+				"title": "Stile Michelin",
+				"name": "default",
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": false,
+                "queryable": false
+			},{
+				"source": "geoscopio_osm_d",
+				"group": "Toscana OSM Dataset",
+				"title": "Stile OSM",
+				"name": "default",
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": false,
+                "queryable": false
 			},{
 				"source": "geoscopio_idrografia",
 				"group": "Idrografia",
@@ -159,7 +255,8 @@
 				"name": "rt_idrogr.corsi.rt.line",
 				"displayInLayerSwitcher": true,
 				"visibility": true,
-				"tiled": false
+				"tiled": false,
+                "queryable": false
 			},{
 				"source": "geoscopio_ctr",
 				"group": "Basi cartografiche",
@@ -168,7 +265,8 @@
 				"displayInLayerSwitcher": true,
 				"visibility": false,
 				"tiled": false,
-				"attribution": false
+				"attribution": false,
+                "queryable": false
 			},{
 				"source": "geoscopio_ctr",
 				"group": "Basi cartografiche",
@@ -177,15 +275,17 @@
 				"displayInLayerSwitcher": true,
 				"visibility": false,
 				"tiled": false,
-				"attribution": false
+				"attribution": false,
+                "queryable": false
 			},{
 				"source": "geoscopio_amb_ammin",
 				"group": "Ambiti amministrativi",
 				"title": "Province",
 				"name": "rt_ambamm.idprovince.rt.poly",
 				"displayInLayerSwitcher": true,
-				"visibility": true,
-				"tiled": false
+				"visibility": false,
+				"tiled": false,
+                "queryable": false
 			},{
 				"source": "geoscopio_amb_ammin",
 				"group": "Ambiti amministrativi",
@@ -193,23 +293,17 @@
 				"name": "rt_ambamm.idcomuni.rt.poly",
 				"displayInLayerSwitcher": true,
 				"visibility": false,
-				"tiled": false
+				"tiled": false,
+                "queryable": false
 			},{
 				"source": "geoserver_centraline",
 				"group": "WEB CAM",
-				"title": "WebCam Consorzio LaMMA",
+				"title": "Consorzio LaMMA",
 				"name": "CENTRALINE:lamma_webcam_3003",
 				"displayInLayerSwitcher": true,
 				"visibility": true,
-				"tiled": true
-			},{
-				"source": "geoserver_centraline",
-				"group": "CENTRALINE",
-				"title": "Esempio Pioggia",
-				"name": "CENTRALINE:pioggia_ora_buona",
-				"displayInLayerSwitcher": true,
-				"visibility": false,
-				"tiled": true
+				"tiled": false,
+                "ratio": 3
 			}
 		]
 	},
@@ -224,46 +318,42 @@
 	},
     "removeTools": [
         "gxp_wmsgetfeatureinfo_menu",
-        "googleearth_plugin"
-    ], 	
+        "googleearth_plugin",
+        "googleearth_separator"
+    ],
+    "customPanels":[
+        {
+            "xtype": "panel",
+            "title": "Pannello WEBCAM",
+            "border": false,
+            "id": "south",
+            "region": "south",
+            "layout": "fit",
+            "split":true,
+            "height": 180,
+            "collapsed": false,
+            "collapsible": true,
+            "header": true
+        }
+    ],
 	"customTools": [
-		{
-			"ptype": "gxp_embedmapdialog",
-			"actionTarget": {"target": "paneltbar", "index": 2},
-			"embeddedTemplateName": "viewer",
-			"showDirectURL": true
-		}, {
-			"ptype": "gxp_categoryinitializer",
-            "silentErrors": true
-		},{
+        {
             "ptype":"gxp_wmsgetfeatureinfo",
             "id": "wmsgetfeatureinfo_plugin",
             "toggleGroup":"toolGroup",
             "closePrevious": true,
             "useTabPanel": true,
             "infoPanelId": "",
+            "pressed": true,
             "disableAfterClick": false,
             "loadingMask": true,
 			"maxFeatures": 100,
+            "popupHeight": 350,
+            "popupWidth": 450,            
             "actionTarget":{
                 "target":"paneltbar",
                 "index":21
             }
-        }, {
-            "ptype":"gxp_print",
-            "customParams":{
-                "outputFilename":"mapstore-print"
-            },
-            "ignoreLayers": "Google Hybrid,Bing Aerial,Google Terrain,Google Roadmap,Marker,GeoRefMarker",
-            "printService":"http://159.213.57.108/geoserver/pdf",
-            "legendPanelId":"legendPanel",
-            "actionTarget":{
-                "target":"paneltbar",
-                "index":24
-            },
-            "addLandscapeControl": true,
-            "appendLegendOptions": true,
-            "addGraticuleControl": true
         }, {
 		   "ptype": "gxp_mouseposition",
 		   "displayProjectionCode":"EPSG:3003",
@@ -292,6 +382,35 @@
 			"ptype": "gxp_about",
 			"poweredbyURL": "http://www.geo-solutions.it/about/contacts/",
 			"actionTarget": {"target": "panelbbar", "index": 1}
-		}
+		}, {
+            "ptype": "gxp_wfsgrid",
+            "wfsURL": "http://159.213.57.108/geoserver/wfs",
+            "featureType": "lamma_webcam_3003",
+            "outputTarget": "south",
+            "srsName": "EPSG:3003",
+            "paging": false,
+            "pageSize": 10,
+            "fields": [
+                {
+                    "name": "localita",
+                    "mapping": "localita"
+                }
+            ],
+            "columns": [
+                {
+                    "header": "LOCALITA'",
+                    "dataIndex": "localita"
+                }
+            ],
+            "actionColumns": [{
+                "type": "checkDisplay",
+                "layerName": "Highlight Layer",
+                "sourceSRS": "EPSG:3003"
+            },
+            {
+                "type": "zoom",
+                "sourceSRS": "EPSG:3003"
+            }]            
+        }
 	]
 }
