@@ -198,6 +198,7 @@ gxp.plugins.WFSGrid = Ext.extend(gxp.plugins.Tool, {
                     var geometry = me.getGeometry(record,sourceSRS);
                     var ppp = geometry.getBounds();
                     map.zoomToExtent(geometry.getBounds(),true);
+                    map.getLayersByName("Anno 2013 col - AGEA")[0].setVisibility(true);
                 }
             }]  
         };
