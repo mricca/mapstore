@@ -473,7 +473,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
             activeTab:0,
             id: 'west',
             region: "west",
-            width: 300,
+            width: 200,
             split: true,
             collapsible: true,
             collapseMode: "mini",
@@ -1423,10 +1423,10 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
     getAuth: function(){
         var auth;
         //get from the parent
-        if(window.parent && window.parent.window && window.parent.window.manager && window.parent.window.manager.auth){
+        /*if(window.parent && window.parent.window && window.parent.window.manager && window.parent.window.manager.auth){
           auth = window.parent.window.manager.auth;
           return auth;
-        }
+        }*/
         //if not present
         //get from the session storage
         var existingUserDetails = sessionStorage["userDetails"];
