@@ -373,7 +373,8 @@ gxp.plugins.WMSSource = Ext.extend(gxp.plugins.LayerSource, {
                 elevations: "elevations" in config ? config.elevations : null,
                 fixed: config.fixed,
                 selected: "selected" in config ? config.selected : false,
-                layer: layer
+                layer: layer,
+                queryable: config.queryable
             }, original.data);
             
             // add additional fields
@@ -392,7 +393,8 @@ gxp.plugins.WMSSource = Ext.extend(gxp.plugins.LayerSource, {
                 {name: "fixed", type: "boolean"},
                 {name: "selected", type: "boolean"},
                 {name: "times", type: "string"},
-                {name: "elevations", type: "string"}
+                {name: "elevations", type: "string"},
+                {name: "queryable", type: "boolean"}
             ];
 
             original.fields.each(function(field) {

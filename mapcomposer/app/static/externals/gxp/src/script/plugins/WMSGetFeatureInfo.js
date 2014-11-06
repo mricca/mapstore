@@ -100,6 +100,14 @@ gxp.plugins.WMSGetFeatureInfo = Ext.extend(gxp.plugins.Tool, {
 	 
 	 maxFeatures: 10,
      
+     popupHeight: 320,
+     
+     popupWidth: 490,
+     
+     pressed: false,
+     
+     infoText: "WebCam Info",
+
     /** api: method[addActions]
      */
     addActions: function() {
@@ -107,10 +115,12 @@ gxp.plugins.WMSGetFeatureInfo = Ext.extend(gxp.plugins.Tool, {
         
         var actions = gxp.plugins.WMSGetFeatureInfo.superclass.addActions.call(this, [{
             tooltip: this.infoActionTip,
+            text: this.infoText,
             iconCls: "gxp-icon-getfeatureinfo",
             toggleGroup: this.toggleGroup,
             enableToggle: true,
             allowDepress: true,
+            pressed: this.pressed,
             toggleHandler: function(button, pressed) {
                 for (var i = 0, len = info.controls.length; i < len; i++){
                     if (pressed) {
@@ -307,8 +317,8 @@ gxp.plugins.WMSGetFeatureInfo = Ext.extend(gxp.plugins.Tool, {
                 layout: this.useTabPanel ? "fit" : "accordion",
                 location: evt.xy,
                 map: this.target.mapPanel,
-                width: 490,
-                height: 320,
+                width: this.popupWidth,
+                height: this.popupHeight,
                 //fill: false,
                 /*anchored: true,
                 unpinnable : true,*/
