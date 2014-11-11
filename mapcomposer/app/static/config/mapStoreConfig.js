@@ -37,7 +37,7 @@
 			"url": "http://www502.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmssfondo&map_resolution=91&language=ita",
 			"title": "Geoscopio basi",
 			"SRS": "EPSG:3003",
-			"version":"1.3.0",
+			"version":"1.1.1",
 			"layersCachedExtent": [
 				1547065, 4677785,
 				1803065, 4933785
@@ -49,10 +49,10 @@
 		},
    		"geoscopio_ortofoto": {
 			"ptype": "gxp_wmssource",
-			"url": "http://web.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmsofc",
+			"url": "http://www502.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmsofc",
 			"title": "Geoscopio ortofoto",
 			"SRS": "EPSG:3003",
-			"version":"1.3.0",
+			"version":"1.1.1",
 			"layersCachedExtent": [
 				1547065, 4677785,
 				1803065, 4933785
@@ -64,10 +64,10 @@
 		},
    		"geoscopio_ctr": {
 			"ptype": "gxp_wmssource",
-			"url": "http://web.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmsctr",
+			"url": "http://www502.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmsctr",
 			"title": "Geoscopio CTR",
 			"SRS": "EPSG:3003",
-			"version":"1.3.0",
+			"version":"1.1.1",
 			"layersCachedExtent": [
 				1547065, 4677785,
 				1803065, 4933785
@@ -79,10 +79,10 @@
 		},
    		"geoscopio_idrografia": {
 			"ptype": "gxp_wmssource",
-			"url": "http://web.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmsidrogr&map_resolution=91&language=ita&",
+			"url": "http://www502.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmsidrogr&map_resolution=91&language=ita&",
 			"title": "Geoscopio idrografia",
 			"SRS": "EPSG:3003",
-			"version":"1.3.0",
+			"version":"1.1.1",
 			"layersCachedExtent": [
 				1547065, 4677785,
 				1803065, 4933785
@@ -97,7 +97,7 @@
 			"url": "http://www502.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmsambamm&",
 			"title": "Geoscopio ambiti amministrativi",
 			"SRS": "EPSG:3003",
-			"version":"1.3.0",
+			"version":"1.1.1",
 			"layersCachedExtent": [
 				1547065, 4677785,
 				1803065, 4933785
@@ -365,6 +365,21 @@
 			"ptype": "gxp_categoryinitializer",
             "silentErrors": true
 		}, {
+            "ptype": "gxp_print",
+            "customParams":{
+                "outputFilename": "mapstore-print"
+            },
+            "ignoreLayers": "Google Hybrid,Bing Aerial,Google Terrain,Google Roadmap,Marker,GeoRefMarker",
+            "printService": "http://159.213.57.108/geoserver/pdf",
+            "legendPanelId": "legendPanel",
+            "actionTarget":{
+                "target": "paneltbar",
+                "index": 24
+            },
+            "addLandscapeControl": true,
+            "appendLegendOptions": true,
+            "addGraticuleControl": true
+        }, {
 		   "ptype": "gxp_mouseposition",
 		   "displayProjectionCode":"EPSG:3003",
 		   "customCss": "font-weight: bold; text-shadow: 1px 0px 0px #FAFAFA, 1px 1px 0px #FAFAFA, 0px 1px 0px #FAFAFA,-1px 1px 0px #FAFAFA, -1px 0px 0px #FAFAFA, -1px -1px 0px #FAFAFA, 0px -1px 0px #FAFAFA, 1px -1px 0px #FAFAFA, 1px 4px 5px #aeaeae;color:#050505"
