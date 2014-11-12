@@ -9,13 +9,14 @@
 			"hideCollapseTool": true,
 			"split": true,
 			"animCollapse": false,
+            "collapsed": true,
 			"minHeight": 100,
 			"maxHeight": 100,
 			"height": 100
 	   }
    },
    "scaleOverlayMode": "advanced",
-   "tab": false,
+   "tab": true,
    "gsSources":{
    		"geobasi": {
 			"ptype": "gxp_wmssource",
@@ -278,22 +279,6 @@
 				"visibility": true,
 				"tiled": false
 			},{
-				"source": "geobasi",
-				"group": "Geobasi",
-				"title": "Stream Sediment",
-				"name": "geobasi:geobasi_sedimenti",
-				"displayInLayerSwitcher": true,
-				"visibility": false,
-				"tiled": true
-			},{
-				"source": "geobasi",
-				"group": "Geobasi",
-				"title": "Acque",
-				"name": "geobasi:geobasi_acque",
-				"displayInLayerSwitcher": true,
-				"visibility": false,
-				"tiled": true
-			},{
 				"source": "geoscopio_amb_ammin",
 				"group": "Ambiti amministrativi",
 				"title": "Province",
@@ -309,6 +294,22 @@
 				"displayInLayerSwitcher": true,
 				"visibility": false,
 				"tiled": false
+			},{
+				"source": "geobasi",
+				"group": "Numerosita' campionaria totale del Geobasi",
+				"title": "Stream Sediment",
+				"name": "geobasi:geobasi_sedimenti",
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": true
+			},{
+				"source": "geobasi",
+				"group": "Numerosita' campionaria totale del Geobasi",
+				"title": "Acque",
+				"name": "geobasi:geobasi_acque",
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": true
 			}
 		]
 	},

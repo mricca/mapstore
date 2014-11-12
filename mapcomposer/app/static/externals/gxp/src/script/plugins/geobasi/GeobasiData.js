@@ -134,72 +134,7 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
             frame:false,
             items:[{
                     xtype: 'fieldset',
-                    title:'Seleziona tipo monitoraggio',
-                    anchor:'100%',
-                    ref: 'comboView1',
-                    collapsible:false,
-                    forceLayout:true, //needed to force to read values from this fieldset
-                    collapsed:false,
-					items:[{
-                            xtype: 'combo',
-                            ref: '../monitoraggio',
-                            id: 'monitoraggioId',
-                            anchor:'100%',
-                            fieldLabel: this.selMonitoraggio,
-                            typeAhead: true,
-                            triggerAction: 'all',
-                            lazyRender:false,
-                            mode: 'local',
-                            name:'tipomonitoraggio',
-                            forceSelected:true,
-                            allowBlank:false,
-                            autoLoad:true,
-                            displayField: 'label',
-                            valueField:'coeff',
-                            value:"01",
-                            readOnly:false,
-                            store: new Ext.data.JsonStore({
-                                fields:[
-                                        {name:'name',dataIndex:'name'},
-                                        {name:'label',dataIndex:'label'},
-                                        {name:'coeff',dataIndex:'coeff'},
-                                        {name:'shortName', dataindex: 'shortName'},
-                                        {name:'cid', dataindex: 'cid'}
-                                ],
-                                data:[
-                                    {label: 'Tutte le tipologie', coeff:"01"},
-									{label: 'Monitoraggio SI', coeff:"02"},
-                                    {label: 'Monitoraggio NO', coeff:"03"}
-                                ]
-                            })
-						}]
-                },{ 
-                    xtype: 'fieldset',
-                    title:'Seleziona tipo valore',
-                    anchor:'100%',
-                    ref: 'comboView2',
-                    collapsible:false,
-                    forceLayout:true, //needed to force to read values from this fieldset
-                    collapsed:false,
-					iconCls: "gxp-icon-select-log-geobasi",
-					items:[{
-						fieldLabel: this.selElabMethod,
-						xtype: 'radiogroup',
-						anchor:'100%',
-						autoHeight:true,
-						checkboxToggle:true,
-						name:'elabMethodType',
-						ref:'elabMethodType',
-						autoHeight: true,
-						defaultType: 'radio', // each item will be a radio button
-						items:[
-							{boxLabel: 'Scala logaritmica' , name: 'elabmethodtype', inputValue: 1},
-							{boxLabel: 'Valori reali', name: 'elabmethodtype', inputValue: 2, checked: true}
-						]
-					}]
-                },{
-                    xtype: 'fieldset',
-                    title:'Selezione Matrice - Elemento - Metodo Analitico',
+                    title:'<span style="color:red;">Selezione Matrice - Elemento - Metodo Analitico</span>',
                     anchor:'100%',
                     ref: 'comboView3',
                     collapsible:false,
@@ -480,15 +415,57 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
                             })
                     }]
                 },
-					this.areaDamage
-				,{
+					this.areaDamage,
+                {
                     xtype: 'fieldset',
-                    title:'Seleziona Range',
+                    title:'<span style="color:red;">Selezione presenza monitoraggio</span>',
+                    anchor:'100%',
+                    ref: 'comboView1',
+                    iconCls: 'gxp-icon-geobasi-monitoraggio',
+                    collapsible:true,
+                    forceLayout:true, //needed to force to read values from this fieldset
+                    collapsed:true,
+					items:[{
+                            xtype: 'combo',
+                            ref: '../monitoraggio',
+                            id: 'monitoraggioId',
+                            anchor:'100%',
+                            fieldLabel: this.selMonitoraggio,
+                            typeAhead: true,
+                            triggerAction: 'all',
+                            lazyRender:false,
+                            mode: 'local',
+                            name:'tipomonitoraggio',
+                            forceSelected:true,
+                            allowBlank:false,
+                            autoLoad:true,
+                            displayField: 'label',
+                            valueField:'coeff',
+                            value:"01",
+                            readOnly:false,
+                            store: new Ext.data.JsonStore({
+                                fields:[
+                                        {name:'name',dataIndex:'name'},
+                                        {name:'label',dataIndex:'label'},
+                                        {name:'coeff',dataIndex:'coeff'},
+                                        {name:'shortName', dataindex: 'shortName'},
+                                        {name:'cid', dataindex: 'cid'}
+                                ],
+                                data:[
+                                    {label: 'Tutte le tipologie', coeff:"01"},
+									{label: 'Monitoraggio SI', coeff:"02"},
+                                    {label: 'Monitoraggio NO', coeff:"03"}
+                                ]
+                            })
+						}]
+                }, {
+                    xtype: 'fieldset',
+                    title:'<span style="color:red;">Selezione intervallo temporale</span>',
                     anchor:'100%',
                     ref: 'rangeyear',
-                    collapsible:false,
+                    collapsible:true,
                     forceLayout:true, //needed to force to read values from this fieldset
-                    collapsed:false,
+                    collapsed:true,
 					iconCls: "gxp-icon-time-range",
                     items:[{
 						xtype: 'checkbox',
@@ -516,7 +493,32 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 						//this.setMinMaxValues();
 						//if(this.output.rangeyear.yearRangeSelector!=component)return;           
 					}					
-				}//,this.uploadPanelForm
+				}, //,this.uploadPanelForm
+                { 
+                    xtype: 'fieldset',
+                    title:'<span style="color:red;">Metodi trasformazione dati</span>',
+                    anchor:'100%',
+                    ref: 'comboView2',
+                    collapsible:true,
+                    forceLayout:true, //needed to force to read values from this fieldset
+                    collapsed:true,
+					iconCls: "gxp-icon-select-log-geobasi",
+					items:[{
+						fieldLabel: this.selElabMethod,
+						xtype: 'radiogroup',
+						anchor:'100%',
+						autoHeight:true,
+						checkboxToggle:true,
+						name:'elabMethodType',
+						ref:'elabMethodType',
+						autoHeight: true,
+						defaultType: 'radio', // each item will be a radio button
+						items:[
+							{boxLabel: 'Valori reali', name: 'elabmethodtype', inputValue: 2, checked: true},                        
+							{boxLabel: 'Scala logaritmica' , name: 'elabmethodtype', inputValue: 1}
+						]
+					}]
+                }
             ],
 			buttons:[{
                 url: this.dataUrl,
@@ -658,32 +660,7 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 	onRadioGroupChange: function(){
 	
 	}
-	
-	/*,
-	
-    setRadioQtip: function (t){ 
-        var o = { 
-            afterrender: function() {
-                //Ext.QuickTips.init();
-                var id  = Ext.get(Ext.DomQuery.select('#x-form-el-'+this.id+' div'));
-                Ext.QuickTips.register({ target:  id.elements[id.elements.length-1].id, text: t});
-            },
-            destroy:function(){
-                var id = Ext.get(Ext.DomQuery.select('#x-form-el-'+this.id+' div'));
-                Ext.QuickTips.unregister(id.elements[id.elements.length-1].id);
-            },                                
-            enable: function() {
-                var id = Ext.get(Ext.DomQuery.select('#x-form-el-'+this.id+' div'));
-                Ext.QuickTips.unregister(id.elements[id.elements.length-1].id);
-            },
-            disable: function() {
-                //Ext.QuickTips.init();
-                var id  = Ext.get(Ext.DomQuery.select('#x-form-el-'+this.id+' div'));
-                Ext.QuickTips.register({ target:  id.elements[id.elements.length-1].id, text: t});
-            }
-        }        
-        return o;
-    }*/
+
  });
  
  Ext.preg(gxp.plugins.geobasi.GeobasiData.prototype.ptype, gxp.plugins.geobasi.GeobasiData);

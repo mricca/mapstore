@@ -40,7 +40,7 @@ gxp.form.SelDamageArea = Ext.extend(Ext.form.FieldSet, {
      * ``String``
      * Text for fieldSet title (i18n).
      */
-    selAreaDamageTitle: "Selezione area",
+    selAreaDamageTitle: '<span style="color:red;">Selezione area geografica</span>',
 
     /** api: config[selAreaDamageLabel]
      * ``String``
@@ -74,7 +74,13 @@ gxp.form.SelDamageArea = Ext.extend(Ext.form.FieldSet, {
     comboBufferSelection: "Buffer",
 
     iconCls: "gxp-icon-select-area-geobasi",
+    
+    collapsible:true,
+    
+    forceLayout:true, //needed to force to read values from this fieldset
 
+    collapsed:true,
+    
     initComponent: function () {
 
         var me = this;

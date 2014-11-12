@@ -272,6 +272,11 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 						if(south){
 							south.collapse();
 						}
+                        
+						var west = Ext.getCmp('west');
+						if(west){
+							west.collapse();
+						}                        
                     } else {
                         var tree = Ext.getCmp('tree');
 						if(tree){
@@ -290,6 +295,11 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 						if(south){
 							south.expand();
 						}
+                        
+						var west = Ext.getCmp('west');
+						if(west){
+							west.expand();
+						}                         
                     }
                 }
             });

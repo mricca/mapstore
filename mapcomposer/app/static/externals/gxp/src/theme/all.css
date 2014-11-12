@@ -538,6 +538,10 @@ div.olMap div.gx-overlay-playback {
     background-image: url(img/silk/chart_line.png) !important;
 }
 
+.x-btn .gxp-icon-geobasi-monitoraggio, .x-menu-item .gxp-icon-geobasi-monitoraggio, .gxp-icon-geobasi-monitoraggio {
+    background-image: url(img/silk/chart_curve.png) !important;
+}
+
 .x-btn .gxp-icon-time-range, .x-menu-item .gxp-icon-time-range, .gxp-icon-time-range {
     background-image: url(img/silk/time.png) !important;
 }
