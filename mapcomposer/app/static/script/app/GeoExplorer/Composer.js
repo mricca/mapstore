@@ -276,7 +276,13 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 						var west = Ext.getCmp('west');
 						if(west){
 							west.collapse();
-						}                        
+						}    
+
+						var msheader = Ext.getCmp('msheader');
+						if(msheader){
+							msheader.collapse();
+						}                          
+                        
                     } else {
                         var tree = Ext.getCmp('tree');
 						if(tree){
@@ -299,7 +305,12 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 						var west = Ext.getCmp('west');
 						if(west){
 							west.expand();
-						}                         
+						}                   
+
+						var msheader = Ext.getCmp('msheader');
+						if(msheader){
+							msheader.expand();
+						}                          
                     }
                 }
             });

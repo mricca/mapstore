@@ -649,6 +649,7 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
                                 marginRight: 130,
                                 marginBottom: 120,
                                 zoomType: 'xy'
+                                //,inverted: true
                             },
                             title: {
                                 text: "Box Plot",
