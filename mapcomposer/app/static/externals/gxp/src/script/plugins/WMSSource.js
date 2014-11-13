@@ -365,7 +365,7 @@ gxp.plugins.WMSSource = Ext.extend(gxp.plugins.LayerSource, {
 			}else{
 				transitionEffect = this.target.map.animatedZooming.transitionEffect;
 			}
-            
+        }
 			layer = new OpenLayers.Layer.WMS(
                 config.title || config.name, 
                 layer.url, 
