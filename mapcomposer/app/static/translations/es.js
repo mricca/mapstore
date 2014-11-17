@@ -28,7 +28,7 @@ GeoExt.Lang.add("es", {
 		resetButtonTooltip: "Resetear página",
 		helpButtonTooltip: "Ayuda",
         searchTabTitle : "Búsqueda",
-        viewTabTitle : "Vista",
+        viewTabTitle : "Estrategias de desarrollo urbano sostenible: la gestión asociada y participativa del territorio a través del SIG-P",
         portalTabTitle : "Portal",
 		markerPopupTitle: "Detalles",
 		mainLoadingMask: "Por favor, espere..."

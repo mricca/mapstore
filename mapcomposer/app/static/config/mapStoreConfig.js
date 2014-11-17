@@ -16,17 +16,23 @@
 	   }
    },   
    "scaleOverlayMode": "advanced",
-   "tab": false,
+   "tab": true,
    "gsSources":{
 		"salvador":{
 			"ptype": "gxp_wmssource",
 			"title": "Salvador GeoServer",
 			"projection":"EPSG:900913",
-			"url": "http://159.213.57.108/geoserver/ows",
+			"url": "http://159.213.57.108/geoserver/SALVADOR/ows",
             "version":"1.1.1",
+            "loadingProgress": true,
+            "layersCachedExtent": [
+                -20037508.34, -20037508.34,
+                20037508.34, 20037508.34
+            ],            
 			"layerBaseParams": {
-			   "format":"image/png8",
-			   "TILED": true
+			   "FORMAT":"image/png8",
+			   "TILED": false,
+               "TILESORIGIN": [-180,-90]
 			}
 		},    
 		"mapquest": {
@@ -93,7 +99,7 @@
 				"title": "Bing Aerial With Labels",
 				"name": "AerialWithLabels",
 				"group": "background",
-				"visibility": true
+				"visibility": false
 			},{
 				"source": "google",
 				"title": "Google Roadmap",
@@ -111,221 +117,265 @@
 				"title": "Google Hybrid",
 				"name": "HYBRID",
 				"group": "background",
-				"visibility": false
+				"visibility": true
 			},{
 				"source": "salvador",
-                "group": "BASE",
-				"title": "Limites Zonas D5",
-				"name": "SALVADOR:limites_zonas_d5",
-				"displayInLayerSwitcher":true,
-				"visibility": false
-			},{
-				"source": "salvador",
-                "group": "BASE",
-				"title": "Limites Zonas D6",
-				"name": "SALVADOR:limites_zonas_d6",
-				"displayInLayerSwitcher":true,
-				"visibility": false
-			},{
-				"source": "salvador",
+                "tiled": false,
                 "group": "BASE",
 				"title": "Parcelario D5",
-				"name": "SALVADOR:parcelario_d5",
+				"name": "parcelario_d5",
 				"displayInLayerSwitcher":true,
 				"visibility": false
 			},{
 				"source": "salvador",
+                "tiled": false,
                 "group": "BASE",
 				"title": "Parcelario D6",
-				"name": "SALVADOR:parcelario_d6",
+				"name": "parcelario_d6",
 				"displayInLayerSwitcher":true,
 				"visibility": false
 			},{
 				"source": "salvador",
+                "tiled": false,
+                "group": "BASE",
+				"title": "Limites Zonas D5",
+				"name": "limites_zonas_d5",
+				"displayInLayerSwitcher":true,
+				"visibility": false
+			},{
+				"source": "salvador",
+                "tiled": false,
+                "group": "BASE",
+				"title": "Limites Zonas D6",
+				"name": "limites_zonas_d6",
+				"displayInLayerSwitcher":true,
+				"visibility": false
+			},{
+				"source": "salvador",
+                "tiled": false,
                 "group": "BASE",
 				"title": "Ejes Viales",
-				"name": "SALVADOR:ejes_viales",
+				"name": "ejes_viales",
 				"displayInLayerSwitcher":true,
-				"visibility": false
+				"visibility": true
 			},{
 				"source": "salvador",
+                "tiled": false,
                 "group": "BASE",
 				"title": "Rios San Salvador",
-				"name": "SALVADOR:rios_san_salvador",
+				"name": "rios_san_salvador",
 				"displayInLayerSwitcher":true,
 				"visibility": true
 			},{
 				"source": "salvador",
+                "format":"image/jpeg",
+                "tiled": false,
                 "group": "COMUNIDAD",
 				"title": "Comunidad Comitees",
-				"name": "SALVADOR:comunidad_comitees",
+				"name": "comunidad_comitees",
 				"displayInLayerSwitcher":false,
 				"visibility": true,
                 "opacity": 0.0
 			},{
 				"source": "salvador",
+                "format":"image/jpeg",            
+                "tiled": false,
                 "group": "COMUNIDAD",
 				"title": "Comunidad Proyecto Gestion",
-				"name": "SALVADOR:comunidad_proyecto_gestion",
+				"name": "comunidad_proyecto_gestion",
 				"displayInLayerSwitcher":false,
 				"visibility": true,
                 "opacity": 0.0
 			},{
 				"source": "salvador",
+                "format":"image/jpeg",
+                "tiled": false,                
                 "group": "COMUNIDAD",
 				"title": "Comunidad Proyecto Ejecution",
-				"name": "SALVADOR:comunidad_proyecto_ejecution",
+				"name": "comunidad_proyecto_ejecution",
 				"displayInLayerSwitcher":false,
 				"visibility": true,
                 "opacity": 0.0
 			},{
 				"source": "salvador",
+                "format":"image/jpeg",                
+                "tiled": false,                
                 "group": "COMUNIDAD",
 				"title": "Comunidad Campanas Salud",
-				"name": "SALVADOR:comunidad_campanas_salud",
+				"name": "comunidad_campanas_salud",
 				"displayInLayerSwitcher":false,
 				"visibility": true,
                 "opacity": 0.0
 			},{
 				"source": "salvador",
+                "format":"image/jpeg",
+                "tiled": false,                
                 "group": "COMUNIDAD",
 				"title": "Comunidad Fichas",
-				"name": "SALVADOR:comunidad_fichas",
+				"name": "comunidad_fichas",
 				"displayInLayerSwitcher":false,
 				"visibility": true,
                 "opacity": 0.0
 			},{
 				"source": "salvador",
+                "tiled": false,
                 "group": "COMUNIDAD",
 				"title": "Comunidad Ubication",
-				"name": "SALVADOR:comunidad_ubicacion",
+				"name": "comunidad_ubicacion",
 				"displayInLayerSwitcher":true,
-				"visibility": true
+				"visibility": true,
+                "opacity": 0.8
 			},{
 				"source": "salvador",
+                "tiled": false,
                 "group": "COMUNIDAD",
 				"title": "Comunidad Equipamiento",
-				"name": "SALVADOR:comunidad_equipamiento",
+				"name": "comunidad_equipamiento",
 				"displayInLayerSwitcher":true,
 				"visibility": false
 			},{
 				"source": "salvador",
+                "tiled": false,
                 "group": "COMUNIDAD",
 				"title": "Comunidad Vias Internas",
-				"name": "SALVADOR:comunidad_vias_internas",
+				"name": "comunidad_vias_internas",
 				"displayInLayerSwitcher":true,
 				"visibility": false
 			},{
 				"source": "salvador",
+                "tiled": false,
                 "group": "COMUNIDAD",
 				"title": "Comunidad Vias Accesso",
-				"name": "SALVADOR:comunidad_vias_accesso",
+				"name": "comunidad_vias_accesso",
 				"displayInLayerSwitcher":true,
 				"visibility": false
 			},{
 				"source": "salvador",
+                "tiled": false,
                 "group": "COMUNIDAD",
 				"title": "Comunidad Proyecto Necesidades",
-				"name": "SALVADOR:comunidad_proyecto_necesidades",
+				"name": "comunidad_proyecto_necesidades",
 				"displayInLayerSwitcher":true,
 				"visibility": false
 			},{
 				"source": "salvador",
+                "format":"image/jpeg",            
+                "tiled": false,                
                 "group": "ALERTA",
 				"title": "Alerta Tipo Botadero Basura",
-				"name": "SALVADOR:alerta_tipo_botadero_basura",
+				"name": "alerta_tipo_botadero_basura",
 				"displayInLayerSwitcher":false,
 				"visibility": true,
                 "opacity": 0.0
 			},{
 				"source": "salvador",
+                "format":"image/jpeg", 
+                "tiled": false,                
                 "group": "ALERTA",
 				"title": "Alerta Temprana Fichas",
-				"name": "SALVADOR:alerta_temprana_fichas",
+				"name": "alerta_temprana_fichas",
 				"displayInLayerSwitcher":false,
 				"visibility": true,
                 "opacity": 0.0
 			},{
 				"source": "salvador",
+                "tiled": false,
                 "group": "ALERTA",
 				"title": "Alerta Peligro Vulnerabilidad",
-				"name": "SALVADOR:alerta_peligro_vulnerabilidad",
+				"name": "alerta_peligro_vulnerabilidad",
 				"displayInLayerSwitcher":true,
-				"visibility": false
+				"visibility": false,
+                "ratio": 3
 			},{
 				"source": "salvador",
+                "format":"image/jpeg",    
+                "tiled": false,                
                 "group": "RIESGO",
 				"title": "Riesgo Posibles Afectados",
-				"name": "SALVADOR:riesgo_posibles_afectados",
+				"name": "riesgo_posibles_afectados",
 				"displayInLayerSwitcher":false,
 				"visibility": true,
                 "opacity": 0.0
 			},{
 				"source": "salvador",
+                "format":"image/jpeg",    
+                "tiled": false,                
                 "group": "RIESGO",
 				"title": "Riesgo Frecuencia",
-				"name": "SALVADOR:riesgo_frecuencia",
+				"name": "riesgo_frecuencia",
 				"displayInLayerSwitcher":false,
 				"visibility": true,
                 "opacity": 0.0
 			},{
 				"source": "salvador",
+                "format":"image/jpeg",                
+                "tiled": false,                
                 "group": "RIESGO",
 				"title": "Riesgo Obras",
-				"name": "SALVADOR:riesgo_obras",
+				"name": "riesgo_obras",
 				"displayInLayerSwitcher":false,
 				"visibility": true,
                 "opacity": 0.0
 			},{
 				"source": "salvador",
+                "format":"image/jpeg",      
+                "tiled": false,                
                 "group": "RIESGO",
 				"title": "Riesgo Otras Amenaza",
-				"name": "SALVADOR:riesgo_otras_amenaza",
+				"name": "riesgo_otras_amenaza",
 				"displayInLayerSwitcher":false,
 				"visibility": true,
                 "opacity": 0.0
 			},{
 				"source": "salvador",
+                "format":"image/jpeg",
+                "tiled": false,                
                 "group": "RIESGO",
 				"title": "Riesgo Acciones Sugeridas",
-				"name": "SALVADOR:riesgo_acciones_sugeridas",
+				"name": "riesgo_acciones_sugeridas",
 				"displayInLayerSwitcher":false,
 				"visibility": true,
                 "opacity": 0.0
 			},{
 				"source": "salvador",
+                "format":"image/jpeg",            
+                "tiled": false,                
                 "group": "RIESGO",
 				"title": "Riesgo Fichas",
-				"name": "SALVADOR:riesgo_fichas",
+				"name": "riesgo_fichas",
 				"displayInLayerSwitcher":false,
 				"visibility": true,
                 "opacity": 0.0
 			},{
 				"source": "salvador",
+                "tiled": false,
                 "group": "RIESGO",
 				"title": "Riesgo Peligro Vulnerabilidad",
-				"name": "SALVADOR:riesgo_peligro_vulnerabilidad",
+				"name": "riesgo_peligro_vulnerabilidad",
 				"displayInLayerSwitcher":true,
 				"visibility": false
 			},{
 				"source": "salvador",
+                "tiled": false,
                 "group": "RIESGO",
 				"title": "Riesgo Infraestructura Expuesta",
-				"name": "SALVADOR:riesgo_infraestructura_expuesta",
+				"name": "riesgo_infraestructura_expuesta",
 				"displayInLayerSwitcher":true,
 				"visibility": false
 			},{
 				"source": "salvador",
+                "tiled": false,
                 "group": "INUNDACIONES",
 				"title": "Inundaciones Danos Ocasionados Poly",
-				"name": "SALVADOR:inundaciones_danos_ocasionados_poly",
+				"name": "inundaciones_danos_ocasionados_poly",
 				"displayInLayerSwitcher":true,
 				"visibility": false
 			},{
 				"source": "salvador",
+                "tiled": false,
                 "group": "INUNDACIONES",
 				"title": "Inundaciones Danos Ocasionados Point",
-				"name": "SALVADOR:inundaciones_danos_ocasionados_point",
+				"name": "inundaciones_danos_ocasionados_point",
 				"displayInLayerSwitcher":true,
 				"visibility": false
 			}
