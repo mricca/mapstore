@@ -365,59 +365,84 @@ gxp.plugins.WMSSource = Ext.extend(gxp.plugins.LayerSource, {
 			}else{
 				transitionEffect = this.target.map.animatedZooming.transitionEffect;
 			}
-        }
-			layer = new OpenLayers.Layer.WMS(
-                config.title || config.name, 
-                layer.url, 
-                params, {
-                    attribution: config.attribution ? layer.attribution : '',
-                    maxExtent: maxCachedExtent,
-                    restrictedExtent: maxExtent,
-                    displayInLayerSwitcher: ("displayInLayerSwitcher" in config) ? config.displayInLayerSwitcher :true,
-                    singleTile: ("tiled" in config) ? !config.tiled : false,
-                    ratio: config.ratio || 1,
-                    visibility: ("visibility" in config) ? config.visibility : true,
-                    opacity: ("opacity" in config) ? config.opacity : 1,
-                    buffer: ("buffer" in config) ? config.buffer : 0,
-                    loadingProgress: config.loadingProgress || this.loadingProgress || false,
-		    dimensions: original.data.dimensions,
-                    projection: layerProjection,
-                    vendorParams: config.vendorParams,
-					displayOutsideMaxExtent: true,
-					transitionEffect: transitionEffect
-                }
-			);
-
-		// data for the new record
-		var data = Ext.applyIf({
-			title: config.title, 
-			name: config.name,
-			group: config.group,
-			uuid: config.uuid,
-			gnURL: config.gnURL,
-			source: config.source,
-			properties: "gxp_wmslayerpanel",
-			times: "times" in config ? config.times : null,
-			elevations: "elevations" in config ? config.elevations : null,
-			fixed: config.fixed,
-			selected: "selected" in config ? config.selected : false,
-			layer: layer
-		}, original.data);
+		}
 		
-		// add additional fields
-		var fields = [
-			{name: "source", type: "string"}, 
-			{name: "name", type: "string"}, 
-			{name: "group", type: "string"},
-			{name: "uuid", type: "string"},
-			{name: "gnURL", type: "string"},
-			{name: "title", type: "string"},
-			{name: "properties", type: "string"},
-			{name: "fixed", type: "boolean"},
-			{name: "selected", type: "boolean"},
-			{name: "times", type: "string"},
-			{name: "elevations", type: "string"}
-		];
+		layer = new OpenLayers.Layer.WMS(
+			config.title || config.name, 
+			layer.url, 
+			params, {
+				attribution: config.attribution ? layer.attribution : '',
+				maxExtent: maxCachedExtent,
+				restrictedExtent: maxExtent,
+				displayInLayerSwitcher: ("displayInLayerSwitcher" in config) ? config.displayInLayerSwitcher :true,
+				singleTile: ("tiled" in config) ? !config.tiled : false,
+				ratio: config.ratio || 1,
+				visibility: ("visibility" in config) ? config.visibility : true,
+				opacity: ("opacity" in config) ? config.opacity : 1,
+				buffer: ("buffer" in config) ? config.buffer : 0,
+				loadingProgress: config.loadingProgress || this.loadingProgress || false,
+		dimensions: original.data.dimensions,
+				projection: layerProjection,
+				vendorParams: config.vendorParams,
+				transitionEffect: transitionEffect,
+                minScale: config.minscale,
+                maxScale: config.maxscale,                
+                displayOutsideMaxExtent: ("displayOutsideMaxExtent" in config) ? config.displayOutsideMaxExtent : true
+			}
+		);
+
+        // data for the new record
+        var data = Ext.applyIf({
+            title: config.title, 
+            name: config.name,
+            group: config.group,
+            expanded: config.expanded,
+            checked: config.checked,
+            tiled: config.tiled,
+            displayInLayerSwitcher: config.displayInLayerSwitcher,
+            uuid: config.uuid,
+            gnURL: config.gnURL,
+            source: config.source,
+            properties: "gxp_wmslayerpanel",
+            times: "times" in config ? config.times : null,
+            elevations: "elevations" in config ? config.elevations : null,
+            fixed: config.fixed,
+            selected: "selected" in config ? config.selected : false,
+            layer: layer,
+            queryable: config.queryable,
+            getGraph: config.getGraph,
+            graphTable: config.graphTable,
+            graphAttribute: config.graphAttribute, 
+            cumulative: config.cumulative,
+            queryable: config.queryable,
+            tabCode: config.tabCode
+        }, original.data);
+        
+        // add additional fields
+        var fields = [
+            {name: "source", type: "string"}, 
+            {name: "name", type: "string"}, 
+            {name: "group", type: "string"},
+            {name: "expanded", type: "boolean"},
+            {name: "checked", type: "boolean"},
+            {name: "tiled", type: "boolean"},
+            {name: "displayInLayerSwitcher", type: "boolean"},
+            {name: "uuid", type: "string"},
+            {name: "gnURL", type: "string"},
+            {name: "title", type: "string"},
+            {name: "properties", type: "string"},
+            {name: "fixed", type: "boolean"},
+            {name: "selected", type: "boolean"},
+            {name: "times", type: "string"},
+            {name: "elevations", type: "string"},
+            {name: "queryable", type: "boolean"},
+            {name: "getGraph", type: "boolean"},
+            {name: "graphTable", type: "string"},
+            {name: "graphAttribute", type: "string"},
+            {name: "cumulative", type: "boolean"},
+            {name: "queryable", type: "boolean"},
+            {name: "tabCode", type: "string"}
+        ];
 
 		original.fields.each(function(field) {
 			fields.push(field);

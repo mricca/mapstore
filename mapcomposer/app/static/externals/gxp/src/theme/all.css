@@ -407,8 +407,8 @@ div.map-overlay div.overlay-element {
 div.olMap div.gx-overlay-playback {
     position: absolute;
     z-index: 1000;
-    top: 22px;
-    left: 80px;
+    top: 60px;
+    left: 120px;
 }
 .gx-overlay-playback.x-toolbar {
     background: none;
@@ -555,4 +555,9 @@ div.olMap div.gx-overlay-playback {
 
 .x-btn .gxp-icon-select-log-geobasi, .x-tree-node .gxp-icon-select-log-geobasi, .gxp-icon-select-log-geobasi {
     background-image: url(img/silk/calculator.png);
+}
+
+/* gxp_wfsgetgraphs */
+.x-btn .gxp-icon-graph-wfs, .x-menu-item .gxp-icon-graph-wfs, .x-tree-node .gxp-icon-graph-wfs {
+    background-image: url(img/silk/chart_curve.png);
 }
