@@ -21,7 +21,7 @@
 	"gsSources": {
 		"geobasi": {
 			"ptype": "gxp_wmssource",
-			"url": "http://159.213.57.108/geoserver/ows",
+			"url": "http://159.213.57.108/geoserver/geobasi/ows",
 			"title": "Geobasi",
 			"SRS": "EPSG:3003",
 			"version": "1.1.1",
@@ -32,7 +32,7 @@
 			4933785],
 			"layerBaseParams": {
 				"FORMAT": "image/png8",
-				"TILED": true
+				"TILED": false
 			}
 		},
 		"geoscopio": {
@@ -262,46 +262,48 @@
 			"source": "geobasi",
 			"group": "Corpi idrici sotterranei",
 			"title": "In roccia",
-			"name": "geobasi:cis_roccia",
+			"name": "cis_roccia",
 			"displayInLayerSwitcher": true,
 			"opacity": 1.0,
-			"visibility": false
+			"visibility": false,
+			"tiled": false
 		},
 		{
 			"source": "geobasi",
 			"group": "Corpi idrici sotterranei",
 			"title": "Alluvionali",
-			"name": "geobasi:cis_alluvioni",
+			"name": "cis_alluvioni",
 			"displayInLayerSwitcher": true,
 			"opacity": 1.0,
-			"visibility": false
+			"visibility": false,
+			"tiled": false
 		},
 		{
 			"source": "geobasi",
 			"group": "Idrografia",
 			"title": "Sottobacini corpi idrici superficiali",
-			"name": "geobasi:ci_rwtw_bacini",
+			"name": "ci_rwtw_bacini",
 			"displayInLayerSwitcher": true,
 			"visibility": false,
-			"tiled": true
+			"tiled": false
 		},
 		{
 			"source": "geobasi",
 			"group": "Idrografia",
 			"title": "Corpi idrici superficiali",
-			"name": "geobasi:ci_rwtw",
+			"name": "ci_rwtw",
 			"displayInLayerSwitcher": true,
 			"visibility": false,
-			"tiled": true
+			"tiled": false
 		},
 		{
 			"source": "geobasi",
 			"group": "Idrografia",
 			"title": "Bacini di primo ordine",
-			"name": "geobasi:bacini_idro",
+			"name": "bacini_idro",
 			"displayInLayerSwitcher": true,
 			"visibility": false,
-			"tiled": true
+			"tiled": false
 		},
 		{
 			"source": "geoscopio_idrografia",
@@ -334,19 +336,19 @@
 			"source": "geobasi",
 			"group": "Numerosita' campionaria totale del Geobasi",
 			"title": "Stream Sediment",
-			"name": "geobasi:geobasi_sedimenti",
+			"name": "geobasi_sedimenti",
 			"displayInLayerSwitcher": true,
 			"visibility": false,
-			"tiled": true
+			"tiled": false
 		},
 		{
 			"source": "geobasi",
 			"group": "Numerosita' campionaria totale del Geobasi",
 			"title": "Acque",
-			"name": "geobasi:geobasi_acque",
+			"name": "geobasi_acque",
 			"displayInLayerSwitcher": true,
 			"visibility": false,
-			"tiled": true
+			"tiled": false
 		}]
 	},
 	"customPanels": [{
