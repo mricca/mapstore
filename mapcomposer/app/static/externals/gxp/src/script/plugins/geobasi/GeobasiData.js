@@ -465,7 +465,7 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
                     ref: 'rangeyear',
                     collapsible:true,
                     forceLayout:true, //needed to force to read values from this fieldset
-                    collapsed:true,
+                    collapsed:false,
 					iconCls: "gxp-icon-time-range",
                     items:[{
 						xtype: 'checkbox',
@@ -485,14 +485,17 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 							},
 							afterrender: function(component) {
 								this.setMinMaxValues();
-								if(this.output.rangeyear.yearRangeSelector!=component)return;           
+								if(this.output.rangeyear.yearRangeSelector!=component)return;
 							}
 						}         
-					}],
-					afterrender: function(component) {
-						//this.setMinMaxValues();
-						//if(this.output.rangeyear.yearRangeSelector!=component)return;           
-					}					
+					}]
+                    /*,listeners:{
+                        scope:this,
+                        'expand': function(component) {
+                            this.setMinMaxValues();
+                            if(this.output.rangeyear.yearRangeSelector!=component)return;            
+                        }	                    
+                    }*/
 				}, //,this.uploadPanelForm
                 { 
                     xtype: 'fieldset',

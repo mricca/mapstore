@@ -442,10 +442,6 @@
 		"layertree.contextMenu"]
 	},
 	{
-		"ptype": "gxp_categoryinitializer",
-		"silentErrors": true
-	},
-	{
 		"ptype": "gxp_mouseposition",
 		"displayProjectionCode": "EPSG:3003",
 		"customCss": "font-weight: bold; text-shadow: 1px 0px 0px #FAFAFA, 1px 1px 0px #FAFAFA, 0px 1px 0px #FAFAFA,-1px 1px 0px #FAFAFA, -1px 0px 0px #FAFAFA, -1px -1px 0px #FAFAFA, 0px -1px 0px #FAFAFA, 1px -1px 0px #FAFAFA, 1px 4px 5px #aeaeae;color:#050505"
