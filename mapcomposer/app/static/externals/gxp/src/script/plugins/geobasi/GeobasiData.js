@@ -134,7 +134,7 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
             frame:false,
             items:[{
                     xtype: 'fieldset',
-                    title:'<span style="color:red;">Selezione Matrice - Elemento - Metodo Analitico</span>',
+                    title:'<span style="color:#C53430;">Selezione Matrice - Elemento - Metodo Analitico</span>',
                     anchor:'100%',
                     ref: 'comboView3',
                     collapsible:false,
@@ -418,7 +418,7 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 					this.areaDamage,
                 {
                     xtype: 'fieldset',
-                    title:'<span style="color:red;">Selezione presenza monitoraggio</span>',
+                    title:'<span style="color:#C53430;">Selezione presenza monitoraggio</span>',
                     anchor:'100%',
                     ref: 'comboView1',
                     iconCls: 'gxp-icon-geobasi-monitoraggio',
@@ -460,7 +460,7 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 						}]
                 }, {
                     xtype: 'fieldset',
-                    title:'<span style="color:red;">Selezione intervallo temporale</span>',
+                    title:'<span style="color:#C53430;">Selezione intervallo temporale</span>',
                     anchor:'100%',
                     ref: 'rangeyear',
                     collapsible:true,
@@ -499,7 +499,7 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 				}, //,this.uploadPanelForm
                 { 
                     xtype: 'fieldset',
-                    title:'<span style="color:red;">Metodi trasformazione dati</span>',
+                    title:'<span style="color:#C53430;">Metodi trasformazione dati</span>',
                     anchor:'100%',
                     ref: 'comboView2',
                     collapsible:true,
@@ -542,7 +542,7 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 				pagePosition: [10000,400],
 				iconCls: "gxp-icon-geobasi-barchart",
                 xtype: 'gxp_geobasiDataBarChartButton',
-				text: "ColumnChart",
+				text: "Istogramma",
                 ref: '../submitButtonColumnChart',
                 target:this,
                 form: this,

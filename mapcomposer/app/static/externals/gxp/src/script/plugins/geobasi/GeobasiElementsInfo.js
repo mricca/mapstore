@@ -85,7 +85,7 @@ gxp.plugins.geobasi.GeobasiElementsInfo = Ext.extend(gxp.plugins.Tool, {
             //TODO year ranges (from available data)            
         }
 
-        var self = this;   
+        var me = this;   
         this.elementsInformationData = this.target.elementsData.elements;
 
 		var elementsInformationDataReader = new Ext.data.ArrayReader({}, [

@@ -646,10 +646,10 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
                         chartConfig: {
                             chart: {
                                 backgroundColor: '#FFFFFF',
-                                marginRight: 130,
-                                marginBottom: 120,
+                                marginRight: 50,
+                                marginBottom: 80,
                                 zoomType: 'xy'
-                                //,inverted: true
+                                ,inverted: true
                             },
                             title: {
                                 text: "Box Plot",
@@ -664,6 +664,10 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
                                 title: {
                                     text: '',
                                     align: 'middle'
+                                },
+                                labels: {
+                                    rotation: 40,
+                                    y: 55 
                                 }
                             },
                             yAxis: {
@@ -672,14 +676,16 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
                                 },
                                 plotLines: [{
                                     value: 0,
-                                    color: '#FF0000',
-                                    width: 1,
+                                    color: '#C53430',
+                                    width: 2,
                                     zIndex: 4,
                                     label: {
                                         text: 'Mediana totale:',
+                                        rotation: 0,
                                         align: 'center',
+                                        x: 70,
                                         style: {
-                                            color: 'red'
+                                            color: '#C53430'
                                         }
                                     }
                                 }]

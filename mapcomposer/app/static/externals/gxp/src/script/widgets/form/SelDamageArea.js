@@ -40,7 +40,7 @@ gxp.form.SelDamageArea = Ext.extend(Ext.form.FieldSet, {
      * ``String``
      * Text for fieldSet title (i18n).
      */
-    selAreaDamageTitle: '<span style="color:red;">Selezione area geografica</span>',
+    selAreaDamageTitle: '<span style="color:#C53430;">Selezione area geografica</span>',
 
     /** api: config[selAreaDamageLabel]
      * ``String``

@@ -631,7 +631,7 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
                         series: [{
                             type: 'column',
                             dataIndex: 'valore',
-                            name: 'Column Chart',
+                            name: 'Istogramma',
                             colors: this.colors,
                             turboThreshold: 100000,
                             listeners: {
@@ -677,7 +677,7 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
                                         })
                                     });                                    
 
-                                    var vector_layer = new OpenLayers.Layer.Vector('Column Chart - Classe: ' + record.data.classe + " - Elemento: " + record.data.sigla + " - Numerosità: " + record.data.valore + " - Ampiezza: " + record.data.uuidelemento, {
+                                    var vector_layer = new OpenLayers.Layer.Vector('Istogramma - Classe: ' + record.data.classe + " - Elemento: " + record.data.sigla + " - Numerosità: " + record.data.valore + " - Ampiezza: " + record.data.uuidelemento, {
                                         //strategies: [new OpenLayers.Strategy.Fixed()],
                                         styleMap: styleMap,
                                         renderers: renderer,
@@ -731,7 +731,7 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
                                 zoomType: 'xy'
                             },
                             title: {
-                                text: 'Column Chart',
+                                text: 'Istogramma',
                                 x: -20 //center
                             },
                             subtitle: {
@@ -900,7 +900,7 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
 
                     //if (!myTabPanel) {
                     var myTabPanel = new Ext4.window.Window({
-                        title: 'Column Chart',
+                        title: 'Istogramma',
                         id: this.chartID,
                         itemId: 'barchart_tab',
                         border: true,
@@ -934,7 +934,7 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
 
                 Ext4.getCmp(this.chartID).expand(true);
                 
-                var newTitle = this.chartID == "added_barChart" ? 'Column Chart Nuovo Dataset' : 'Column Chart Geobasi';
+                var newTitle = this.chartID == "added_barChart" ? 'Istogramma Nuovo Dataset' : 'Istogramma Geobasi';
                 
                 Ext4.getCmp(this.chartID).setTitle(newTitle);
 
@@ -960,7 +960,7 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
                     var selectionArea = records.get('vectorSelectionArea') != "false" ? " - Selezione: " + records.get('vectorSelectionArea') : "";
                     var nullDateString = records.get('nullDate') == 'true' ? 'SI' : 'NO';
                     mainChart.chartConfig.chart.backgroundColor = this.chartID == "added_barChart" ? '#F1F9C3' : '#FFFFFF';
-                    //mainChart.chartConfig.title.text = this.chartID == "added_barChart" ? 'Column Chart Nuovo Dataset' : 'Column Chart Geobasi';
+                    //mainChart.chartConfig.title.text = this.chartID == "added_barChart" ? 'Istogramma Nuovo Dataset' : 'Istogramma Geobasi';
                     mainChart.chartConfig.subtitle.text = 'Totale valori: ' + records.get('totaleRiprova') + " - Numero Classi: " + records.get('num_classi') + " - Ampiezza Classi: " + records.get('ampiezza_classi') + ' - Tipo Matrice: ' + records.get('dmgeomattipo_descr').toUpperCase() + " - Periodo dal " + records.get('startYear') + " al " + records.get('endYear') + " - Valori senza data: " + nullDateString + selectionArea;;
                     mainChart.chartConfig.title.text = 'Metodo Analitico: ' + records.get('tipoMeta') + newTitle;
                     var unitaMisura = records.get('matrice').substr(0, 2) === "01" ? "(mg/L)" : "(ppm)"
