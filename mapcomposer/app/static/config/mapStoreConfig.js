@@ -482,6 +482,11 @@
 		"outputTarget": "westTab"
 	},
 	{
+		"ptype": "gxp_geobasielementsinfo",
+		"id": "geobasielementsinfoToolId",
+		"outputTarget": "westTab"
+	},
+	{
 		"ptype": "gxp_geobasiinfo",
 		"id": "geobasiinfoToolId",
 		"outputTarget": "westTab"

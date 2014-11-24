@@ -341,5 +341,34 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 				loading.hide();
 			};
 		}
-	}
+	},
+
+    /*
+     * private: method[viewElementsInfo]
+     */
+    viewElementsInfo: function(link, title){
+        var tabPanel = Ext.getCmp(app.renderToTab);
+        
+        var tabs = tabPanel.find('title', title);
+        if(tabs && tabs.length > 0){
+            tabPanel.setActiveTab(tabs[0]); 
+        }else{
+            
+            var linkTab = new Ext.Panel({
+                title: title,
+                id:title + "_elementTab", 
+                layout:'fit', 
+                tabTip: title,
+                closable: true,
+                items: [ 
+                    new Ext.ux.IFrameComponent({ 
+                        url: link
+                    }) 
+                ]
+            });
+            
+            tabPanel.add(linkTab);
+            tabPanel.setActiveTab(linkTab.getId());
+        }
+    }
 });

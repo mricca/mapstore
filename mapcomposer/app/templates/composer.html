@@ -83,6 +83,8 @@
 	
     <!-- geocoding data  -->
     <script type="text/javascript" src="data/georeferences.js"></script>
+    <!-- elements data  -->
+    <script type="text/javascript" src="data/elementsData.js"></script>    
      <!-- QR Code -->
     <script type="text/javascript" src="script/qrcodejs.js"></script>
     <!-- common data  -->
@@ -440,7 +442,8 @@
 				scaleOverlayUnits: serverConfig.scaleOverlayUnits,
                 georeferences: georeferences_data,
                 map: serverConfig.map,
-				customTools: serverConfig.customTools
+				customTools: serverConfig.customTools,
+                elementsData: elementsData
             }, mapIdentifier, authorization && authorization == "false" ? null: authorization, fullScreen, templateId);   
             
             app.on({
