@@ -108,11 +108,6 @@
 			}
 		}
 	},
-	"loadingPanel": {
-		"width": 100,
-		"height": 100,
-		"center": true
-	},
 	"map": {
 		"projection": "EPSG:3003",
 		"displayProjection": "EPSG:3003",
@@ -175,7 +170,7 @@
                 "opacity": 0.4,
 				"displayInLayerSwitcher": true,
 				"visibility": false,
-				"tiled": true
+				"tiled": false
 			},{
 				"source": "geoscopio_rischio_idrogeo",
 				"group": "Direttiva alluvioni - Rischio",
@@ -249,22 +244,6 @@
 				"tiled": false,
 				"attribution": false
 			},{
-				"source": "geoscopio_idrografia",
-				"group": "Idrografia",
-				"title": "Corsi d'acqua",
-				"name": "rt_idrogr.corsi.rt.line",
-				"displayInLayerSwitcher": true,
-				"visibility": true,
-				"tiled": false
-			},{
-				"source": "geoserver_ret",
-				"group": "Reticolo Idrografico RT",
-				"title": "Categorie RD 523/1904-bozza",
-				"name": "RETICOLO_GESTIONE:Classifiche_GC_06_2013",
-				"displayInLayerSwitcher": true,
-				"visibility": false,
-				"tiled": true
-			},{
 				"source": "geoscopio_ctr",
 				"group": "Basi cartografiche",
 				"title": "CTR 1:10.000 Raster BW",
@@ -282,6 +261,38 @@
 				"visibility": false,
 				"tiled": false,
 				"attribution": false
+			},{
+				"source": "geoscopio_idrografia",
+				"group": "Idrografia",
+				"title": "Corsi d'acqua",
+				"name": "rt_idrogr.corsi.rt.line",
+				"displayInLayerSwitcher": true,
+				"visibility": true,
+				"tiled": false
+			},{
+				"source": "geoserver_ret",
+				"group": "Reticolo Gestione RT",
+				"title": "Comprensori ai sensi della L.R.79/2012",
+				"name": "RETICOLO_GESTIONE:proposta_comprensori_lr79_2012",
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": true
+			},{
+				"source": "geoserver_ret",
+				"group": "Reticolo Gestione RT",
+				"title": "Reticolo di Gestione (SETT. 2014)",
+				"name": "RETICOLO_GESTIONE:reticolo_lr79_2012",
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": true
+			},{
+				"source": "geoserver_ret",
+				"group": "Reticolo Gestione RT",
+				"title": "Categorie RD 523/1904-bozza (SETT. 2014)",
+				"name": "RETICOLO_GESTIONE:reticolo_lr79_2012_gc",
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": true
 			},{
 				"source": "geoserver_ret",
 				"group": "Censimento Opere Idrauliche (AREALI)",
@@ -680,9 +691,6 @@
 			"actionTarget": {"target": "paneltbar", "index": 2},
 			"embeddedTemplateName": "viewer",
 			"showDirectURL": true
-		}, {
-			"ptype": "gxp_categoryinitializer",
-            "silentErrors": true
 		},{
             "ptype":"gxp_wmsgetfeatureinfo",
             "id": "wmsgetfeatureinfo_plugin",
@@ -723,7 +731,6 @@
             "index":26
         }, {
 			"ptype": "gxp_about",
-			"poweredbyURL": "http://www.geo-solutions.it/about/contacts/",
 			"actionTarget": {"target": "panelbbar", "index": 1}
 		}
 	]

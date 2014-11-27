@@ -20,6 +20,7 @@
 
 /**
  * @requires plugins/Tool.js
+ * @requires widgets/tree/LayerNodeUI.js
  */
 
 /** api: (define)
@@ -162,7 +163,7 @@ gxp.plugins.LayerTree = Ext.extend(gxp.plugins.Tool, {
         //
         // create our own layer node UI class, using the TreeNodeUIEventMixin
         //
-        var LayerNodeUI = Ext.extend(GeoExt.tree.LayerNodeUI,
+        var LayerNodeUI = Ext.extend(gxp.tree.LayerNodeUI,
             new GeoExt.tree.TreeNodeUIEventMixin());
         
         var treeRoot = new Ext.tree.TreeNode({
@@ -455,6 +456,17 @@ gxp.plugins.LayerTree = Ext.extend(gxp.plugins.Tool, {
                         }
                     }else{
                         var parent = node.parentNode;
+                        
+                        //Fix the temporal layer enablement.
+                        //Layer is not showed in the map if we select time interval and then check the layer from the layer tree.
+                        if(checked){
+                            var timeManagers = this.target.mapPanel.map.getControlsByClass('OpenLayers.Control.TimeManager');
+                            var layer = node.layer;
+                            if ( layer instanceof OpenLayers.Layer.WMS && timeManagers[0]){
+                                timeManagers[0].timeAgents[0].applyTime(layer,timeManagers[0].currentTime);
+                            }
+                        }
+                        
                         if(checked && !parent.getUI().isChecked()){
                             parent.getUI().toggleCheck(checked);
                         }else if(!checked && parent.getUI().isChecked()){
