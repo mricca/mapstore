@@ -35,6 +35,38 @@
 				"TILED": false
 			}
 		},
+		"geoscopio_ambcens": {
+			"ptype": "gxp_wmssource",
+			"url": "http://www502.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmsambcens&version=1.3.0&map_resolution=91&map_mnt=cartoteca&",
+			"title": "Geoscopio AMBITI_CENSUARI",
+			"SRS": "EPSG:3003",
+			"version": "1.3.0",
+            "loadingProgress": true,
+			"layersCachedExtent": [1547065,
+			4677785,
+			1803065,
+			4933785],
+			"layerBaseParams": {
+				"FORMAT": "image/png",
+				"TILED": false
+			}
+		},
+		"geoscopio_topogr": {
+			"ptype": "gxp_wmssource",
+			"url": "http://www502.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmstopogr&version=1.3.0&map_resolution=91&map_mnt=cartoteca&",
+			"title": "Geoscopio BASI TOPOGRAFICHE",
+			"SRS": "EPSG:3003",
+			"version": "1.3.0",
+            "loadingProgress": true,
+			"layersCachedExtent": [1547065,
+			4677785,
+			1803065,
+			4933785],
+			"layerBaseParams": {
+				"FORMAT": "image/png",
+				"TILED": false
+			}
+		},        
 		"geoscopio": {
 			"ptype": "gxp_wmssource",
 			"url": "http://www502.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmssfondo&map_resolution=91&language=ita",
@@ -152,16 +184,6 @@
 			"source": "geoscopio",
 			"group": "background",
 			"title": "Basi di sfondo",
-			"name": "rt_sfondo.hills",
-			"displayInLayerSwitcher": false,
-			"visibility": true,
-			"tiled": false,
-			"attribution": false
-		},
-		{
-			"source": "geoscopio",
-			"group": "background",
-			"title": "Basi di sfondo",
 			"name": "rt_sfondo.intorno_toscana",
 			"displayInLayerSwitcher": false,
 			"visibility": true,
@@ -176,6 +198,8 @@
 			"displayInLayerSwitcher": true,
 			"visibility": false,
 			"tiled": false,
+            "expanded": false,
+            "checked": false,
 			"attribution": false
 		},
 		{
@@ -186,6 +210,8 @@
 			"displayInLayerSwitcher": true,
 			"visibility": false,
 			"tiled": false,
+            "expanded": false,
+            "checked": false,            
 			"attribution": false
 		},
 		{
@@ -196,6 +222,8 @@
 			"displayInLayerSwitcher": true,
 			"visibility": false,
 			"tiled": false,
+            "expanded": false,
+            "checked": false,            
 			"attribution": false
 		},
 		{
@@ -206,6 +234,8 @@
 			"displayInLayerSwitcher": true,
 			"visibility": false,
 			"tiled": false,
+            "expanded": false,
+            "checked": false,            
 			"attribution": false
 		},
 		{
@@ -216,6 +246,8 @@
 			"displayInLayerSwitcher": true,
 			"visibility": false,
 			"tiled": false,
+            "expanded": false,
+            "checked": false,            
 			"attribution": false
 		},
 		{
@@ -226,6 +258,8 @@
 			"displayInLayerSwitcher": true,
 			"visibility": false,
 			"tiled": false,
+            "expanded": false,
+            "checked": false,            
 			"attribution": false
 		},
 		{
@@ -236,6 +270,19 @@
 			"displayInLayerSwitcher": true,
 			"visibility": false,
 			"tiled": false,
+            "expanded": false,
+            "checked": false,            
+			"attribution": false
+		},
+		{
+			"source": "geoscopio_topogr",
+			"group": "Basi cartografiche",
+			"title": "Carta Topografica 50k",
+            "maxscale": 15000, 
+			"name": "rt_topogr.topografica50k.grey.rt",
+			"displayInLayerSwitcher": true,
+			"visibility": true,
+			"tiled": false,
 			"attribution": false
 		},
 		{
@@ -243,8 +290,9 @@
 			"group": "Basi cartografiche",
 			"title": "CTR 1:10.000 Raster BW",
 			"name": "rt_ctr.10k",
+            "minscale": 15000,             
 			"displayInLayerSwitcher": true,
-			"visibility": false,
+			"visibility": true,
 			"tiled": false,
 			"attribution": false
 		},
@@ -252,9 +300,20 @@
 			"source": "geoscopio_ctr",
 			"group": "Basi cartografiche",
 			"title": "CTR 1:10.000 Raster GL",
+            "minscale": 15000,            
 			"name": "rt_ctr.ctr10kgreylight",
 			"displayInLayerSwitcher": true,
 			"visibility": false,
+			"tiled": false,
+			"attribution": false
+		},
+		{
+			"source": "geoscopio_ambcens",
+			"group": "Toponimi",
+			"title": "Toponimi - Centri e nuclei 2011",
+			"name": "rt_amb_cens.centri_nuclei_2011",
+			"displayInLayerSwitcher": true,
+			"visibility": true,
 			"tiled": false,
 			"attribution": false
 		},
@@ -320,7 +379,7 @@
 			"title": "Province",
 			"name": "rt_ambamm.idprovince.rt.poly",
 			"displayInLayerSwitcher": true,
-			"visibility": true,
+			"visibility": false,
 			"tiled": false
 		},
 		{
@@ -361,11 +420,8 @@
 		"region": "east",
 		"layout": "fit",
 		"collapsible": true,
-		"enableTabScroll": true,
 		"header": true,
 		"width": 340,
-        "minWidth": 340,
-        "maxWidth": 340,        
 		"items": [{
 			"border": false,
 			"xtype": "tabpanel",
@@ -375,8 +431,8 @@
 			"width": 340,
 			"split": true,
 			"collapsible": false,
-			"enableTabScroll": true,
 			"header": false,
+            "enableTabScroll": true,
 			"items": [{
 				"autoScroll": true,
 				"tbar": [],
@@ -435,6 +491,19 @@
 			"index": 13
 		}
 	},{
+        "ptype":"gxp_nominatimgeocoder",
+        "outputConfig":{
+            "emptyText":"Nominatim GeoCoder",
+             "vendorOptions":{
+                "bounded":1,
+                "countrycodes":"it",
+                "addressdetails":0
+            },
+            "boundOption":"max"
+        },
+        "outputTarget":"paneltbar",
+        "index":24
+    },{
 		"ptype": "gxp_layerproperties",
 		"id": "layerproperties_plugin",
 		"geobasiChart": true,
