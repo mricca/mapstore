@@ -629,7 +629,7 @@
 				"name": "lamma:cfr_monitoraggio072014",
 				"displayInLayerSwitcher": true,
 				"visibility": false,
-				"tiled": true
+				"tiled": false
 			},{
 				"source": "geoscopio_amb_ammin",
 				"group": "Ambiti amministrativi",
