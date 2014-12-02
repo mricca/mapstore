@@ -115,8 +115,7 @@ gxp.plugins.spatialselector.Locator = Ext.extend(gxp.plugins.Tool, {
                     iconCls: "gxp-icon-geolocationmenu",
                     tooltip: "Locator",
                     enableToggle: true,
-                    allowDepress: true,        
-                    toggleGroup: "toolGroup",
+                    allowDepress: true,
                     scope: this, 
                     listeners: {
                         toggle: function(button, pressed) {
