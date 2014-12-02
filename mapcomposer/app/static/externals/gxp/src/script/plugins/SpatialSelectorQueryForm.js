@@ -93,6 +93,12 @@ gxp.plugins.SpatialSelectorQueryForm = Ext.extend(gxp.plugins.QueryForm, {
      */    
     autoComplete: null,
     
+    /** api: config[collapsedFirst]
+     * ``Boolean``
+     * Config to set default collapsed spatial query form on startup
+     */    
+    collapsedFirst: false,
+    
     init: function(target) {
         
         var me = this;
@@ -153,7 +159,7 @@ gxp.plugins.SpatialSelectorQueryForm = Ext.extend(gxp.plugins.QueryForm, {
                 ref: "spatialSelectorFieldset",
                 title: spatialSelectorOutput.title,
                 checkboxToggle: true,
-                collapsed : false,
+                collapsed : me.collapsedFirst,
                 items: [spatialSelectorOutput],
                 listeners: {
                     scope: this,
