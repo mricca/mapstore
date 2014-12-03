@@ -1,0 +1,19 @@
+/*FIX FOLLSCREEN BEHAVIOUR */
+.x-layout-collapsed{
+    position:absolute;
+    left:-10000px;
+    top:-10000px;
+    visibility:hidden;
+    /*width:20px !important;
+    height:20px !important;*/
+    overflow:hidden;
+	border:0px solid;
+	z-index:20;
+}
+
+.x-layout-collapsed.x-layout-cmini-east {
+    border:0 none;
+    width:0px !important;
+    padding:0;
+    background-color:transparent;
+}

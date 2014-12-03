@@ -94,13 +94,13 @@
             "items": [
 				{
 					"xtype": "container",
-					"title": "Griglia Entit&agrave;",
+					"title": "Griglia Risultati",
 					"border": false,
 					"layout": "fit",
 					"id": "featuregrid"
 				},{
 					"xtype": "container",
-					"title": "Metadata Explorer",
+					"title": "Metadati",
 					"iconCls": "csw-viewer",             
 					"border": false,
 					"layout": "fit",
@@ -110,7 +110,7 @@
         },
         {
               "xtype": "panel",
-              "title": "Query Panel",        
+              "title": "Pannello Ricerche",        
               "border": false,
               "id": "east",
               "width": 400,

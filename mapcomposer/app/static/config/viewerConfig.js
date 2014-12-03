@@ -87,10 +87,10 @@
             "region": "east",
             "layout": "fit",
             "collapsed": true,
-            "split": true,
+            "split": false,
             "collapsible": true,
-            "collapseMode": "mini",              
-            "header": false
+            "header": false,
+            "collapseMode": "mini"
         }
     ],	
 	"customTools":[
