@@ -88,6 +88,7 @@
             "layout": "fit",
             "collapsed": true,
             "split": false,
+            "hidden": true,
             "collapsible": true,
             "header": false,
             "collapseMode": "mini"

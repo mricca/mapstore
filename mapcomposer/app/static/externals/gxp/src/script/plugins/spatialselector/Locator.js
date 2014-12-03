@@ -126,8 +126,10 @@ gxp.plugins.spatialselector.Locator = Ext.extend(gxp.plugins.Tool, {
                             }
                             
                             if(pressed){
-                                Ext.getCmp(this.outputTarget).expand();
+                                Ext.getCmp(this.outputTarget).show();                            
+                                Ext.getCmp(this.outputTarget).expand();                                
                             }else{
+                                Ext.getCmp(this.outputTarget).hide();                            
                                 Ext.getCmp(this.outputTarget).collapse();
                             } 
                         },
