@@ -252,7 +252,8 @@ gxp.widgets.button.NrlAgrometTabButton = Ext.extend(Ext.Button, {
 				header:'Year',
 				name: 'year',
 				dataIndex: 'year',
-				width:50
+				width:50,
+                hidden: true
 			},{
 				sortable: true, 
 				header:'Month',

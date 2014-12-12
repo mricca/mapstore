@@ -242,7 +242,11 @@ gxp.plugins.nrl.ReportCropData = Ext.extend(gxp.plugins.nrl.CropStatus, {
     },
 
     generateAllFieldItems: function(){
-        var items = [this.getSeasonFieldItem(),this.getAoIFieldItem()];
+        var items = [
+            this.getSeasonFieldItem(),
+            this.getMonthRangeSelectorItem(),
+            this.getAoIFieldItem()
+        ];
 
         items.push(this.getCommodityFieldItem());
 
@@ -353,6 +357,14 @@ gxp.plugins.nrl.ReportCropData = Ext.extend(gxp.plugins.nrl.CropStatus, {
             }
         };
     },
+    
+    getMonthRangeSelectorItem: function(){
+        return {
+            ref: 'monthRangeSelector',
+            xtype: 'monthyearrangeselector',
+            anchor:'100%'
+        };
+    },
 
     seasonRadioChange: function(c,checked){
         var commodity = this.ownerCt.Commodity;
@@ -366,6 +378,16 @@ gxp.plugins.nrl.ReportCropData = Ext.extend(gxp.plugins.nrl.CropStatus, {
             yrs.setMinValue(selectedCommodity.get('min'));
             
         }
+        
+        if(checked.inputValue == 'RABI'){
+            //Nov-Apr
+            this.refOwner.monthRangeSelector.setValue(0,10,true);
+            this.refOwner.monthRangeSelector.setValue(1,15  ,true);
+        }else{
+            //May-Oct
+            this.refOwner.monthRangeSelector.setValue(1,21,true);
+            this.refOwner.monthRangeSelector.setValue(0,16,true);
+        }        
     },
 
     getAoIFieldItem: function(){
