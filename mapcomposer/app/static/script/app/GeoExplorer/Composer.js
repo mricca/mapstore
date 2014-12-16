@@ -64,9 +64,8 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 		            }
 		        }, {
 		            ptype: "gxp_addlayers",
-                    id: "addlayers_plugin",
-		            actionTarget: "tree.tbar",
-					id: "addlayers"
+                    id: "addlayers_plugin"
+                    /*,actionTarget: "tree.tbar"*/
 		        }, {
 		            ptype: "gxp_removelayer",
                     id: "removelayer_plugin",
@@ -152,11 +151,11 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                     id: "googleearth_separator",
 		            actions: ["-"], 
                     actionTarget: "paneltbar"
-		        }, {
+		        }/*, {
 		            ptype: "gxp_googleearth",
                     id: "googleearth_plugin",
 		            actionTarget: {target: "paneltbar", index: 25}
-		        }
+		        }*/
 		    ];
 
             if(config.removeTools) {

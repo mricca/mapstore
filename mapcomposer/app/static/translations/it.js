@@ -26,7 +26,7 @@ GeoExt.Lang.add("it", {
         contactText: "Contatto",
         aboutThisMapText: "Informazioni",
         searchTabTitle : "Portale",
-        viewTabTitle : "Vista",
+        viewTabTitle : "Documento annuale difesa del suolo 2015: censimento/studi e progetti.",
 		markerPopupTitle: "Dettagli",
 		mainLoadingMask: "Attendere prego ..."
     },
