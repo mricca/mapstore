@@ -77,6 +77,7 @@
 				"TILED":false
 			}
 		},
+<<<<<<< HEAD
    		"geoscopio_idrografia": {
 			"ptype": "gxp_wmssource",
 			"url": "http://web.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmsidrogr&map_resolution=91&language=ita&",
@@ -107,6 +108,11 @@
 				"TILED":false
 			}
 		}
+	},
+	"loadingPanel": {
+		"width": 100,
+		"height": 100,
+		"center": true
 	},
 	"map": {
 		"projection": "EPSG:3003",

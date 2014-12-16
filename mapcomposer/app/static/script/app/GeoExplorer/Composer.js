@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Copyright (c) 2009-2010 The Open Planning Project
  *
  * @requires GeoExplorer.js
@@ -134,7 +134,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                     actionTarget: "paneltbar"
 		        }, {
 		            ptype: "gxp_wmsgetfeatureinfo_menu", 
-                    id: "wmsgetfeatureinfo_plugin",
+                    id: "wmsgetfeatureinfo_menu_plugin",
 					toggleGroup: this.toggleGroup,
 					useTabPanel: true,
 		            actionTarget: {target: "paneltbar", index: 20}
@@ -147,15 +147,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
                     id: "measure_plugin",
                     toggleGroup: this.toggleGroup,
 		            actionTarget: {target: "paneltbar", index: 21}
-		        }, {
-                    id: "googleearth_separator",
-		            actions: ["-"], 
-                    actionTarget: "paneltbar"
-		        }/*, {
-		            ptype: "gxp_googleearth",
-                    id: "googleearth_plugin",
-		            actionTarget: {target: "paneltbar", index: 25}
-		        }*/
+		        }
 		    ];
 
             if(config.removeTools) {
