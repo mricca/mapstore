@@ -79,8 +79,8 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
             //TODO year ranges (from available data)            
         }
 		this.areaDamage = new gxp.form.SelDamageArea(Ext.apply({
-                                localeGeoserverUrl: "http://159.213.57.108/geoserver/ows?",
-                                remoteGeoserverUrl: "http://www502.regione.toscana.it:80/wfsvector/com.rt.wfs.RTmap/wfs",
+                                localeGeoserverUrl: this.localeGeoserverUrl, //"http://159.213.57.108/geoserver/ows?",
+                                remoteGeoserverUrl: this.remoteGeoserverUrl, //"http://www502.regione.toscana.it:80/wfsvector/com.rt.wfs.RTmap/wfs",
 								map: app.mapPanel.map,
 								mapPanel: app.mapPanel
 							},this.outputConfig));

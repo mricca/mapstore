@@ -540,6 +540,8 @@
 		"dataUrl": "http://www506.regione.toscana.it/geoserver/ows",
 		"rangesUrl": "http://www506.regione.toscana.it/geoserver/geobasi/ows?service=WFS&version=1.1.0&request=GetFeature&typeName=geobasi:geobasi_data_analisi&proprtyName='min,max'outputFormat=json",
 		"highChartExportUrl": "http://84.33.2.75/highcharts-export/",
+        "localeGeoserverUrl": "http://www506.regione.toscana.it/geoserver/ows?",
+        "remoteGeoserverUrl": "http://www502.regione.toscana.it:80/wfsvector/com.rt.wfs.RTmap/wfs",
 		"outputConfig": {
 			"itemId": "geobasidata",
 			"outputSRS": "EPSG:3003",
