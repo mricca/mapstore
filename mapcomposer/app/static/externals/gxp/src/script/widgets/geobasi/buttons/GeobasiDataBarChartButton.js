@@ -30,7 +30,7 @@ Ext.namespace('gxp.widgets.button');
  */
 gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
 
-    /** api: xtype = gxp_geobasiDataChartButton */
+    /** api: xtype = gxp_geobasiDataBarChartButton */
     xtype: 'gxp_geobasiDataBarChartButton',
 
     form: null,
@@ -173,6 +173,20 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
             Ext.MessageBox.getDialog().getEl().setStyle("zIndex", 100000);                    
             return;        
         }else*/
+        
+        if(data2.elemento == ""){
+            Ext.MessageBox.show({
+                title: 'Campi obbligatori',
+                msg: 'Devi selezionare un Elemento!!!',
+                buttons: Ext.Msg.OK,
+                animEl: 'elId',
+                icon: Ext.MessageBox.INFO
+            });
+
+            //Ext.Msg.alert("Nessun dato", "Dati non disponibili per questo criterio di ricerca");
+            Ext.MessageBox.getDialog().getEl().setStyle("zIndex", 100000);                    
+            return;        
+        }
         
         if(data2.Metodo_analitico === ""){
             Ext.MessageBox.show({
@@ -999,6 +1013,14 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
 
         if (baciniFilter) {
 
+            var app = window.app;
+            var map = app.mapPanel.map;
+            
+            var baciniWfsLayer = app.mapPanel.map.getLayersByName("Intersect Bacini")[0];
+            if (baciniWfsLayer){
+                app.mapPanel.map.removeLayer(baciniWfsLayer);
+            }
+                        
             var layerBacini = new OpenLayers.Layer.Vector("Intersect Bacini");
 
             var getFeatureFromWFS = function (response) {
@@ -1050,7 +1072,7 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
                         }
                         var app = window.app;
                         var map = app.mapPanel.map;
-
+                        
                         map.addLayers([layerBacini]);
 
                         var allowNullFilter = new OpenLayers.Filter.Comparison({

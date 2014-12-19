@@ -23,15 +23,15 @@
 Ext.namespace('gxp.widgets.button');
 
 /** api: constructor
- *  .. class:: GeobasiDataCurvaCumButton(config)
+ *  .. class:: GeobasiDataDownloadButton(config)
  *
  *    Base class to create chart
  *
  */
-gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
+gxp.widgets.button.GeobasiDataDownloadButton = Ext.extend(Ext.Button, {
 
-    /** api: xtype = gxp_geobasiDataChartButton */
-    xtype: 'gxp_geobasiDataCurvaCumButton',
+    /** api: xtype = gxp_geobasiDataDownloadButton */
+    xtype: 'gxp_geobasiDataDownloadButton',
 
     form: null,
 
@@ -39,7 +39,9 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
 
     filter: null,
 
-    layer: "geobasi:geobasi_boxplot_view",
+    barchart_layer: "geobasi:geobasi_barchart_view",
+    
+    boxplot_layer: "geobasi:geobasi_boxplot_view",
 
     addedLayer: null,
 
@@ -47,53 +49,31 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
 
     pagePosition: null,
 
-    mainLoadingMask: "Attendere prego, creazione grafico in corso...",
+    mainLoadingMask: "Attendere prego, download dei dati in corso...",
+
+    colors: [
+        '#00FFFF',
+        '#0000FF',
+        '#8A2BE2',
+        '#A52A2A',
+        '#DEB887',
+        '#5F9EA0',
+        '#7FFF00',
+        '#D2691E',
+        '#FF7F50',
+        '#6495ED',
+        '#DC143C',
+        '#006400',
+        '#FF00FF',
+        '#FFD700',
+        '#FF4500'
+    ],
 
     handler: function () {
-
 
         var me = this;
 
         var myFilter;
-
-        /*if(this.filter.bufferFieldset.hidden === false){
-            var radius = this.filter.bufferFieldset.bufferField.getValue(); 
-            
-            //
-            // create point from your lat and lon of your selected feature
-            //
-            var coordinates = this.filter.bufferFieldset.coordinatePicker.getCoordinate();
-            var radiusPoint = new OpenLayers.Geometry.Point(coordinates[0], coordinates[1]);
-            
-            var polygon;
-            if(this.filter.geodesic){
-                polygon = OpenLayers.Geometry.Polygon.createGeodesicPolygon(
-                    radiusPoint,
-                    radius,
-                    100, 
-                    0,
-                    this.target.mapPanel.map.getProjectionObject()
-                );
-            }else{
-                polygon = OpenLayers.Geometry.Polygon.createRegularPolygon(
-                    radiusPoint,
-                    radius,
-                    100, 
-                    0
-                );
-            }
-            
-            var bounds = polygon.getBounds();                            
-            polygon.bounds = bounds;
-            
-            var radiusFilter = new OpenLayers.Filter.Spatial({
-                type: OpenLayers.Filter.Spatial.INTERSECTS,
-                property: "geom",
-                value: polygon
-            });
-                            
-            myFilter = radiusFilter;            
-        }else if(this.filter.filterPolygon && this.filter.filterPolygon.value){*/
 
         if (this.filter.filterPolygon && this.filter.filterPolygon.value) {
             myFilter = this.filter.filterPolygon;
@@ -143,10 +123,10 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
         var data = this.form.output.getForm().getValues();
         var data2 = this.form.output.getForm().getFieldValues();
 
-        if(data2.elemento === ""){
+        if(data2.elemento == ""){
             Ext.MessageBox.show({
                 title: 'Campi obbligatori',
-                msg: 'Devi selezionare un elemento!!!',
+                msg: 'Devi selezionare un Elemento!!!',
                 buttons: Ext.Msg.OK,
                 animEl: 'elId',
                 icon: Ext.MessageBox.INFO
@@ -155,6 +135,20 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
             //Ext.Msg.alert("Nessun dato", "Dati non disponibili per questo criterio di ricerca");
             Ext.MessageBox.getDialog().getEl().setStyle("zIndex", 100000);                    
             return;        
+        }
+        
+        this.tipometaStatQuery = false;
+
+        if (data2.Metodo_analitico == '-999') {
+            this.tipometaStatQuery = "IS NULL";
+        /*} else if (data2.Metodo_analitico == "") {
+            this.tipometaStatQuery = " IN (IS NULL\\,IS NOT NULL)";*/
+        } else if (this.addedLayer) {
+            this.tipometaStatQuery = data2.Metodo_analitico;
+        } else if (data2.Metodo_analitico === ""){
+            this.tipometaStatQuery = false;
+        }else {
+            this.tipometaStatQuery = "= " + "\\'" + data2.Metodo_analitico + "\\'";
         }
 
         var monitoraggioValue;
@@ -165,9 +159,19 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
             monitoraggioValue = ' = true';
         }else{
             monitoraggioValue = ' = false';
-        }  
-                
-        var viewparams2 = "monitoraggio:" + monitoraggioValue + ";" + "tygeomat:" + data2.tipo_matrice + ";" + "sigla_el:" + data2.elemento;
+        }
+        
+        if(this.tipometaStatQuery){
+            var viewparams2 = data2.Metodo_analitico == '-999' ? "monitoraggio:" + monitoraggioValue + ";" +
+                "tygeomat:" + data2.tipo_matrice + ";" +
+                "sigla_el:" + data2.elemento + ";" +
+                "tipometa:" + this.tipometaStatQuery : "monitoraggio:" + monitoraggioValue + ";" +
+                "tygeomat:" + data2.tipo_matrice + ";" +
+                "sigla_el:" + data2.elemento + ";" +
+                "tipometa:" + this.tipometaStatQuery;
+        }else{
+            var viewparams2 = "monitoraggio:" + monitoraggioValue + ";" + "tygeomat:" + data2.tipo_matrice + ";" + "sigla_el:" + data2.elemento;
+        }
 
         this.appMask = new Ext.LoadMask(Ext.getBody(), {
             msg: this.mainLoadingMask
@@ -189,45 +193,216 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
 
         var num_ele = json.features.length;
 
-        var cumulata = [];
         var custLog = function (x, base) {
-            // Created 1997 by Brian Risk.  http://brianrisk.com
-            return (Math.log(x)) / (Math.log(base));
+                // Created 1997 by Brian Risk.  http://brianrisk.com
+                return (Math.log(x)) / (Math.log(base));
+            }
+            // Calcolo del numero appropriato delle classi secondo la FORMULA DI STURGES
+            // http://www.gobnf.com/formule/default.aspx?code=0030031LKBP1
+            // http://www.aracneeditrice.it/pdf/991.pdf
+        var numClassi = 1 + (10 / 3) * (custLog(num_ele, 10));
+
+
+        // Prendo il valore reale o calcolo il logaritmo naturale dei valori a seconda della scelta effettuata dall'utente
+        var resultsLog = [];
+        for (var x = 0; x < num_ele; x++) {
+            resultsLog[x] = {
+                //valore: metodoElaborazione == "1" ? Math.round10(Math.log(json.features[x].properties.valore),-4) : Math.round10(json.features[x].properties.valore,-4)
+                valore: metodoElaborazione == "1" ? Math.round10(Math.log(json.features[x].properties.valore), -4) : Math.round10(json.features[x].properties.valore, -4)
+            };
+            this.jsonData2.features[x].attributes = {
+                valore: resultsLog[x].valore,
+                classe: 0,
+                colore: ''
+            };
         }
 
+        var conteggio = resultsLog.length;
 
-        for (var c = 0; c < num_ele; c++) {
-            cumulata[c] = {
-                cumX: metodoElaborazione == "1" ? [Math.round10(Math.log(json.features[c].properties.valore), -4), Math.round10(((c + 1) - 0.5) / num_ele, -4)] : [Math.round10(json.features[c].properties.valore, -4), Math.round10(((c + 1) - 0.5) / num_ele, -4)]
-                //cumY: (((c+1)-0.5) / num_ele)
-                //metodoElaborazione == "1" ? Math.round10(Math.log(json.features[x].properties.valore), -4) : Math.round10(json.features[x].properties.valore, -4)
+        // Estraggo il valore minimo e il valore massimo
+        // dall'array dei valori per il calcolo dell'ampiezza delle classi
+        // per la realizzazione del grafico a barre        
+        var barMinimo = resultsLog[0].valore;
+        var barMassimo = resultsLog[conteggio - 1].valore;
+
+        //echo gettype($barMassimo['valore'])." - ".gettype($barMinimo['valore']) . " - ";
+
+        // Calcolo l'ampiezza delle classi
+        var ampClassiInit = (barMassimo - barMinimo) / Math.round(numClassi);
+        var ampClassi = Math.round10(ampClassiInit, -4);
+
+        //echo $ampClassi;
+        //exit(0);
+
+        // Creo array per inserire il conteggio degli alementi appartenenti ad ogni classe
+        var numerositaClassi = new Array();
+        for (var i = 0; i < Math.round(numClassi); i++) {
+            numerositaClassi[i] = {
+                classe: i,
+                conteggio: 0,
+                ampiezza: ampClassi,
+                num_ele: num_ele,
+                /*ampiezzaMin: metodoElaborazione == "1" ? Math.round10(Math.exp(barMinimo) + (Math.exp(ampClassi) * (i)), -4) : Math.round10(barMinimo + (ampClassi * (i)), -4),
+                ampiezzaMax: metodoElaborazione == "1" ? Math.round10(Math.exp(barMinimo) + (Math.exp(ampClassi) * (i + 1)), -4) : Math.round10(barMinimo + (ampClassi * (i + 1)), -4)*/
+                ampiezzaMin: metodoElaborazione == "1" ? Math.round10(barMinimo + (ampClassi * (i)), -4) : Math.round10(barMinimo + (ampClassi * (i)), -4),
+                ampiezzaMax: metodoElaborazione == "1" ? Math.round10(barMinimo + (ampClassi * (i + 1)), -4) : Math.round10(barMinimo + (ampClassi * (i + 1)), -4)                
+            };
+        }
+
+        // Conteggio gli elementi appartenenti alla prima e all'ultima classe
+        for (var x = 0; x < num_ele; x++) {
+            if (resultsLog[x].valore < barMinimo + ampClassi) {
+                numerositaClassi[0].conteggio++;
+                this.jsonData2.features[x].attributes.classe = numerositaClassi[0].classe + 1;
+                this.jsonData2.features[x].attributes.colore = this.colors[numerositaClassi[0].classe];
+                resultsLog[x].valore = "undefined";
+
+            } else if (resultsLog[x].valore >= (barMinimo + (ampClassi * (Math.round(numClassi))))) {
+                numerositaClassi[Math.round(numClassi) - 1].conteggio++;
+                this.jsonData2.features[x].attributes.classe = numerositaClassi[Math.round(numClassi) - 1].classe + 1;
+                this.jsonData2.features[x].attributes.colore = this.colors[numerositaClassi[Math.round(numClassi) - 1].classe];
+                resultsLog[x].valore = "undefined";
             }
         }
 
-        var dataPoints = [];
+        // Conteggio gli elementi appartenenti alle classi intermedie
+        for (var y = 1; y < Math.round(numClassi); y++) {
+            for (var x = 0; x < num_ele; x++) {
+                var aaa = resultsLog[x].valore;
+                var bbb = barMinimo + (ampClassi * (y));
+                var ccc = barMinimo + (ampClassi * (y + 1));
+                if (resultsLog[x].valore >= (barMinimo + (ampClassi * (y))) && resultsLog[x].valore < (barMinimo + (ampClassi * (y + 1)))) {
+                    numerositaClassi[y].conteggio++;
+                    this.jsonData2.features[x].attributes.classe = numerositaClassi[y].classe + 1;
+                    this.jsonData2.features[x].attributes.colore = this.colors[numerositaClassi[y].classe];
+                    resultsLog[x].valore = "undefined";
+                }
 
-        var newNumEle = num_ele <= 1000 ? num_ele : 1000
-        for (var i = 0; i < newNumEle; i++) {
+            }
+
+        }
+
+        /*#######################################################################
+        #                                                                      #
+        #                               FINE                                   #
+        #  CALCOLO DINAMICO DELLE CLASSI PER LA DISTRIBUZIONE DI FREQUENZA     #
+        #                                                                      #
+        ########################################################################*/
+
+        var countElem = 0;
+        var dataPoints = [];
+        var resp;
+        var classe;
+        var classe_num;
+
+        for (var i = 0; i < numerositaClassi.length; i++) {
+            countElem = countElem + numerositaClassi[i].conteggio;
+        }
+
+        for (var i = 0; i < numerositaClassi.length; i++) {
+            classe_num = numerositaClassi[i].classe + 1;
+            classe = numerositaClassi[i].ampiezzaMin + " | " + numerositaClassi[i].ampiezzaMax;
             dataPoints[i] = {
-                uuidelemento: cumulata[i].cumX,
-                totaleRiprova: num_ele,
+                uuidelemento: classe,
+                classe: classe_num,
+                color: this.colors[i],
+                valore: numerositaClassi[i].conteggio,
+                //totaleDaDB: $num_ele_stat,
+                totaleOriginale: numerositaClassi[i].num_ele,
+                totaleRiprova: countElem,
+                tipoMeta: !json.features[i].properties.tipometa ? 'non specificato' : json.features[i].properties.tipometa,
+                num_classi: numerositaClassi.length,
+                ampiezza_classi: metodoElaborazione == "1" ? Math.round10(Math.exp(ampClassi), -4) : ampClassi,
                 sigla: json.features[i].properties.sigla_el,
                 matrice: json.features[i].properties.tygeomat,
+                dmgeomattipo_descr: json.features[i].properties.dmgeomattipo_descr,
                 log: metodoElaborazione,
+                viewparams: this.viewparams3,
                 bbox: json.bbox,
                 spatialFilter: this.xml ? this.xml : null,
+                jsonData: this.jsonData2,
                 dmgeomattipo_descr: this.form.output.getForm().getValues().tipo_matrice,
                 startYear: this.form.output.getForm().getValues().startYear,
                 endYear: this.form.output.getForm().getValues().endYear,
                 nullDate: this.form.output.getForm().getFieldValues().allownull,
-                vectorSelectionArea: this.vectorSelectionArea,                
-                jsonData: json
+                vectorSelectionArea: this.vectorSelectionArea
             };
         }
 
         return dataPoints;
     },
 
+    /** api: method[doDownloadPost]
+     * create a dummy iframe and a form. Submit the form 
+     */    
+     
+    doDownloadPost: function(url, data,outputFormat){
+        //        
+        //delete other iframes appended
+        //
+        if(document.getElementById(this.downloadFormId)) {
+            document.body.removeChild(document.getElementById(this.downloadFormId)); 
+        }
+        if(document.getElementById(this.downloadIframeId)) {
+            document.body.removeChild(document.getElementById(this.downloadIframeId));
+        }
+        // create iframe
+        var iframe = document.createElement("iframe");
+        iframe.setAttribute("style","visiblity:hidden;width:0px;height:0px;");
+        this.downloadIframeId = Ext.id();
+        iframe.setAttribute("id",this.downloadIframeId);
+        iframe.setAttribute("name",this.downloadIframeId);
+        document.body.appendChild(iframe);
+        iframe.onload = function(){
+            if(!iframe.contentWindow) return;
+            
+            var error ="";
+            var body = iframe.contentWindow.document.getElementsByTagName('body')[0];
+            var content ="";
+            if (body.textContent){
+              content = body.textContent;
+            }else{
+              content = body.innerText;
+            }
+            try{
+                var serverError = Ext.util.JSON.decode(content);
+                error = serverError.exceptions[0].text
+            }catch(err){
+                error = body.innerHTML || content;
+            }
+             Ext.Msg.show({
+                title: me.invalidParameterValueErrorText,
+                msg: "outputFormat: " + outputFormat + "</br></br>" +
+                      "</br></br>" +
+                     "Error: " + error,
+                buttons: Ext.Msg.OK,
+                icon: Ext.MessageBox.ERROR
+            });   
+        }
+        var me = this;
+        
+        // submit form with enctype = application/xml
+        var form = document.createElement("form");
+        this.downloadFormId = Ext.id();
+        form.setAttribute("id", this.downloadFormId);
+        form.setAttribute("method", "POST");
+        //this is to skip cross domain exception notifying the response body
+        var urlregex =/^https?:\/\//i;
+        //if absoulte url and do not contain the local host
+        var iframeURL = (!urlregex.test(url) || url.indexOf(location.host)>0) ? url :  proxy + encodeURIComponent(url);
+        form.setAttribute("action", iframeURL );
+        form.setAttribute("target",this.downloadIframeId);
+        
+        var hiddenField = document.createElement("input");      
+        hiddenField.setAttribute("name", "filter");
+        hiddenField.value= data;
+        form.appendChild(hiddenField);
+        document.body.appendChild(form);
+        form.submit(); 
+        
+        this.appMask.hide();
+    },
+    
     /**  
      * api: method[makeChart]
      */
@@ -243,7 +418,7 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
                 type: OpenLayers.Filter.Logical.AND,
                 filters: []
             });
-
+            
             for (var i = 0; i < newViewParams.length; i++) {
                 var addedFilterType;
                 var addedFilterValue;
@@ -252,8 +427,9 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
                     addedFilterValue = newViewParams[i].split(':')[1] + "%";
                 }else if(newViewParams[i].split(':')[0] === "monitoraggio"){
                     if(newViewParams[i].split(':')[1] == " IS NOT NULL"){
-                        addedFilterType = OpenLayers.Filter.Comparison.NOT_EQUAL_TO;
-                        addedFilterValue = null;
+                        addedFilterType = OpenLayers.Filter.Comparison.IS_NULL;
+                        addedFilterType = !addedFilterType;
+                        addedFilterValue = "";
                     }else if(newViewParams[i].split(':')[1] == " = true"){
                         addedFilterType = OpenLayers.Filter.Comparison.EQUAL_TO;
                         addedFilterValue = "true";
@@ -298,51 +474,32 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
             this.xml = new OpenLayers.Format.XML().write(node);
         }
 
-        Ext.Ajax.request({
+        var url = this.url;
+        var service = "?service=WFS";
+        var version = "&version=1.1.0";
+        var geometryName = "&geomtryName=geom";
+        var request = "&request=GetFeature";
+        var filter = "&filter=" + this.xml;
+        //var cql_filter = "&cql_filter=" + dateFilter;
+        var typeName = this.tipometaStatQuery ? "&typeName=" + this.barchart_layer : "&typeName=" + this.boxplot_layer;
+        var outputFormat = "&outputformat=CSV";
+        var exception = "&exceptions=application/json";
+        var propertyName = "&propertyName=fonte,codsito,data_aaaa,data_mm,data_gg,monitoraggio,dmgeomattipo_descr,tygeomat,toponimo,foglioigm50k,codcomune,sigla_el,valore,tipometa,geom";
+        var sortBy = "&sortBy=valore";
+        this.viewParams = "&viewparams="+viewparams2;
+        
+        //this.stringURLTot = url + service + version + geometryName + request + filter + typeName + outputFormat + propertyName + sortBy + viewParams;
+        this.stringURLTot = url + service + version + geometryName + request + typeName + outputFormat + propertyName + sortBy + exception +  encodeURI(this.viewParams);
+        OpenLayers.Request.POST({
             scope: this,
-            url: this.url,
-            method: 'POST',
-            params: this.addedLayer ? {
-                service: "WFS",
-                version: "1.1.0",
-                geometryName: "geom",
-                request: "GetFeature",
-                filter: this.xml,
-                typeName: this.layer,
-                outputFormat: "json",
-                propertyName: "fonte,codsito,data_aaaa,data_mm,data_gg,monitoraggio,dmgeomattipo_descr,tygeomat,toponimo,foglioigm50k,codcomune,sigla_el,valore,tipometa,geom",
-                sortBy: "valore"
-            } : {
-                service: "WFS",
-                version: "1.1.0",
-                geometryName: "geom",
-                request: "GetFeature",
-                filter: this.xml,
-                typeName: this.layer,
-                outputFormat: "json",
-                propertyName: "fonte,codsito,data_aaaa,data_mm,data_gg,monitoraggio,dmgeomattipo_descr,tygeomat,toponimo,foglioigm50k,codcomune,sigla_el,valore,tipometa,geom",
-                sortBy: "valore",
-                viewparams: viewparams2
-            },
-            success: function (result, request) {
-                try {
-                    var jsonData2 = Ext.util.JSON.decode(result.responseText);
-                } catch (e) {
-                    this.appMask.hide();
-
-                    Ext.MessageBox.show({
-                        title: 'Error',
-                        msg: 'Error parsing data from the server',
-                        buttons: Ext.Msg.OK,
-                        animEl: 'elId',
-                        icon: Ext.MessageBox.ERROR
-                    });
-
-                    //Ext.Msg.alert("Nessun dato", "Dati non disponibili per questo criterio di ricerca");
-                    Ext.MessageBox.getDialog().getEl().setStyle("zIndex", 100000);                    
-                    return;
-                }
-                if (jsonData2.features.length <= 0) {
+            url: this.stringURLTot,
+            data: this.xml,
+            callback: function(request){
+                var stringa = request.responseText;
+                
+                if (stringa.length > 200){
+                    this.doDownloadPost(this.stringURLTot, this.xml, "CSV");
+                }else{
                     this.appMask.hide();
                     
                     Ext.MessageBox.show({
@@ -355,224 +512,10 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
 
                     //Ext.Msg.alert("Nessun dato", "Dati non disponibili per questo criterio di ricerca");
                     Ext.MessageBox.getDialog().getEl().setStyle("zIndex", 100000);
-                    return;
+                    return;              
                 }
-
-                //var aggregatedDataOnly = (granType == "pakistan");
-                //var data = this.getData(jsonData, aggregatedDataOnly);
-                var data = this.form.output.getForm().getValues();
-                //var data1 = this.jsonData1;
-                var metodoElaborazione = data.elabmethodtype;
-
-                //var dataCharts = this.getData(jsonData2, metodoElaborazione, data1);
-                var dataCharts = this.getData(jsonData2, metodoElaborazione);
-
-                //var charts  = this.makeChart(data, this.chartOpt, listVar, aggregatedDataOnly);
-
-                var mainChart = Ext4.getCmp('geobasi_curvacum' + "_" + this.chartID);
-
-                var gridStore = Ext4.data.StoreManager.lookup("BarChartStore");
-
-                if (!mainChart) {
-                    var hcConfig = {
-                        series: [{
-                            type: 'scatter',
-                            lineWidth: 1,
-                            //xField: 'uuidelemento',
-                            turboThreshold: 10000, // to accept point object configuration        
-                            yField: 'uuidelemento',
-                            visible: true
-                        }],
-                        height: 500,
-                        width: 650,
-                        initAnimAfterLoad: true,
-                        chartConfig: {
-                            chart: {
-                                marginRight: 130,
-                                marginBottom: 160,
-                                zoomType: 'xy'
-                            },
-                            title: {
-                                text: 'Curva Cumulata',
-                                x: -20 //center
-                            },
-                            subtitle: {
-                                text: '',
-                                x: -20
-                            },
-                            xAxis: [{
-                                title: {
-                                    text: '',
-                                    margin: 20
-                                },
-                                labels: {
-                                    rotation: -45,
-                                    align: 'right',
-                                    style: {
-                                        fontSize: '10px',
-                                        fontFamily: 'Verdana, sans-serif'
-                                    },
-                                    y: 15,
-                                    formatter: function () {
-                                        return this.value;
-                                    }
-
-                                }
-                            }],
-                            yAxis: {
-                                title: {
-                                    text: 'Elemento: '
-                                },
-                                plotLines: [{
-                                    value: 0.95,
-                                    color: '#FF0000',
-                                    width: 1,
-                                    zIndex: 4,
-                                    label: {
-                                        text: '',
-                                        align: 'center',
-                                        style: {
-                                            color: 'red'
-                                        }
-                                    }
-                                }]
-                            },
-                            tooltip: {
-                                formatter: function () {
-                                    if (this.point.data) {
-                                        return 'X : ' + this.point.data.classe + ' - Y : ' + this.y;
-                                    } else {
-                                        return 'X : ' + (this.point.x + 1) + ' - Y : ' + this.y;
-                                    }
-                                }
-
-                            },
-                            legend: {
-                                layout: 'vertical',
-                                align: 'right',
-                                verticalAlign: 'top',
-                                x: -10,
-                                y: 100,
-                                borderWidth: 0
-                            },
-                            /*
-                            plotOptions: {
-                                series: {
-                                    pointPadding: 0,
-                                    groupPadding: 0,
-                                    borderWidth: 0,
-                                    turboThreshold: 30000,
-                                    shadow: false
-                                },
-                                column: {
-                                    colorByPoint: true
-                                }
-                            },
-                            credits: {
-                                text: 'Consorzio LaMMA',
-                                href: 'http://www.lamma.rete.toscana.it',
-                                style: {
-                                    cursor: 'pointer',
-                                    color: '#707070',
-                                    fontSize: '12px'
-                                }
-                            }*/
-                        }
-                    };
-
-                    hcConfig.id = 'geobasi_curvacum' + "_" + this.chartID;
-                    mainChart = Ext4.widget('highchart', hcConfig);
-
-                    //if (!myTabPanel) {
-                    var myTabPanel = new Ext4.window.Window({
-                        title: 'Curva Cumulata',
-                        id: this.chartID,
-                        itemId: 'curvacum_tab',
-                        border: true,
-                        autoScroll: true,
-                        //height: 500,
-                        //width: 650,
-                        layout: 'fit',
-                        maximizable: true,
-                        maximized: false,
-                        collapsible: true,
-                        collapsed: false,
-                        //tabTip: 'Box Plot',
-                        closable: true,
-                        constrain: true,
-                        listeners: {
-                            expand: function(p, eOpts){
-                                p.items.items[0].refresh();
-                                //Ext4.getCmp(this.chartID).refresh();
-                            }
-                        }
-                    });
-                    Ext4.getCmp(this.chartID).show();
-
-                    Ext4.getCmp(this.chartID).add(mainChart);
-                    Ext4.getCmp(this.chartID).setPagePosition(this.pagePosition);                    
-                    //tabPanel.add(myTabPanel);
-                }
-
-
-                //}
-
-                //var dataCharts2 = Ext.util.JSON.encode(dataCharts);
-
-                Ext4.getCmp(this.chartID).expand(true);
-                
-                var newTitle = this.chartID == "added_curvaCum" ? 'Cumulata Nuovo Dataset' : 'Cumulata Geobasi';
-                
-                Ext4.getCmp(this.chartID).setTitle(newTitle);                
-
-                var proxy = new Ext4.data.proxy.Memory({
-                    reader: {
-                        type: 'json',
-                        root: 'data'
-                    }
-                });
-
-                //gridStore.setProxy(proxy);
-
-                //gridStore.sync();                            
-                gridStore && mainChart.bindStore(gridStore);
-                gridStore.loadData(dataCharts);
-                //Ext.getCmp('id_mapTab').setActiveTab('boxplot_tab');
-
-                gridStore.each(function (records) {
-                    var selectionArea = records.get('vectorSelectionArea') != "false" ? " - Selezione: " + records.get('vectorSelectionArea') : "";
-                    mainChart.chartConfig.chart.backgroundColor = this.chartID == "added_curvaCum" ? '#F1F9C3' : '#FFFFFF';
-                    mainChart.chartConfig.title.text = this.chartID == "added_curvaCum" ? 'Cumulata Nuovo Dataset' : 'Cumulata Geobasi';
-                    mainChart.chartConfig.yAxis.plotLines[0].value = 0.95; //records.get('median');
-                    mainChart.chartConfig.yAxis.plotLines[0].label.text = '95° percentile';
-                    var nullDateString = records.get('nullDate') == 'true' ? 'SI' : 'NO';
-                    //mainChart.chartConfig.series[1].visible = false;
-                    mainChart.chartConfig.subtitle.text = 'Totale valori: ' + records.get('totaleRiprova') + ' - Tipo Matrice: ' + records.get('dmgeomattipo_descr').toUpperCase() + " - Periodo dal " + records.get('startYear') + " al " + records.get('endYear') + " - Valori senza data: " + nullDateString + selectionArea;;
-                    var unitaMisura = records.get('matrice').substr(0, 2) === "01" ? "(mg/L)" : "(ppm)"
-                    mainChart.chartConfig.yAxis.title.text = 'Elemento: ' + records.get('sigla') + " " + unitaMisura;
-                    var logText = records.get('log') === "1" ? "( scala logaritmica )" : "( valori reali )";
-                    mainChart.chartConfig.xAxis[0].title.text = logText;
-                },this);
-                mainChart.draw();
-
-                this.appMask.hide();
-
-            },
-            failure: function (result, request) {
-                this.appMask.hide();
-               
-                Ext.MessageBox.show({
-                    title: 'Error',
-                    msg: 'Server response error',
-                    buttons: Ext.Msg.OK,
-                    animEl: 'elId',
-                    icon: Ext.MessageBox.ERROR
-                });
-
-                //Ext.Msg.alert("Nessun dato", "Dati non disponibili per questo criterio di ricerca");
-                Ext.MessageBox.getDialog().getEl().setStyle("zIndex", 100000);
             }
-        });
+        });        
 
     },
 
@@ -590,7 +533,7 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
             if (baciniWfsLayer){
                 app.mapPanel.map.removeLayer(baciniWfsLayer);
             }
-            
+        
             var layerBacini = new OpenLayers.Layer.Vector("Intersect Bacini");
 
             var getFeatureFromWFS = function (response) {
@@ -881,4 +824,5 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
     }
 
 })();
-Ext.reg(gxp.widgets.button.GeobasiDataCurvaCumButton.prototype.xtype, gxp.widgets.button.GeobasiDataCurvaCumButton);
+
+Ext.reg(gxp.widgets.button.GeobasiDataDownloadButton.prototype.xtype, gxp.widgets.button.GeobasiDataDownloadButton);
