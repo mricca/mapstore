@@ -109,7 +109,8 @@ gxp.form.SelDamageArea = Ext.extend(Ext.form.FieldSet, {
 
 
         this.searchWFSComboAlluvioni = new gxp.form.WFSSearchComboBox({
-            url: "http://159.213.57.108/geoserver/ows?",
+            //url: "http://159.213.57.108/geoserver/ows?",
+            url: this.localeGeoserverUrl,
             versionWFS: '1.1.0',
             typeName: "geobasi:cis_alluvioni",
             mapPanel: this.mapPanel,
@@ -146,7 +147,8 @@ gxp.form.SelDamageArea = Ext.extend(Ext.form.FieldSet, {
         });
 
         this.searchWFSComboRoccia = new gxp.form.WFSSearchComboBox({
-            url: "http://159.213.57.108/geoserver/ows?",
+            //url: "http://159.213.57.108/geoserver/ows?",
+            url: this.localeGeoserverUrl,
             versionWFS: '1.1.0',
             typeName: "geobasi:cis_roccia",
             mapPanel: this.mapPanel,
@@ -183,7 +185,8 @@ gxp.form.SelDamageArea = Ext.extend(Ext.form.FieldSet, {
         });
 
         this.searchWFSComboComuniRT = new gxp.form.WFSSearchComboBox({
-            url: "http://www502.regione.toscana.it:80/wfsvector/com.rt.wfs.RTmap/wfs",
+            //url: "http://www502.regione.toscana.it:80/wfsvector/com.rt.wfs.RTmap/wfs",
+            url: this.remoteGeoserverUrl,
             versionWFS: '1.1.0',
             typeName: "sita:listacomunirtpoly",
             mapPanel: this.mapPanel,

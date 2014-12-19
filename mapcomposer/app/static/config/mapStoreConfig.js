@@ -21,7 +21,7 @@
 	"gsSources": {
 		"geobasi": {
 			"ptype": "gxp_wmssource",
-			"url": "http://159.213.57.108/geoserver/geobasi/ows",
+			"url": "http://www506.regione.toscana.it/geoserver/geobasi/ows",
 			"title": "Geobasi",
 			"SRS": "EPSG:3003",
 			"version": "1.1.1",
@@ -535,8 +535,8 @@
 	{
 		"ptype": "gxp_geobasidata",
 		"id": "geobasidataToolId",
-		"dataUrl": "http://159.213.57.108/geoserver/ows",
-		"rangesUrl": "http://159.213.57.108/geoserver/geobasi/ows?service=WFS&version=1.1.0&request=GetFeature&typeName=geobasi:geobasi_data_analisi&proprtyName='min,max'outputFormat=json",
+		"dataUrl": "http://www506.regione.toscana.it/geoserver/ows",
+		"rangesUrl": "http://www506.regione.toscana.it/geoserver/geobasi/ows?service=WFS&version=1.1.0&request=GetFeature&typeName=geobasi:geobasi_data_analisi&proprtyName='min,max'outputFormat=json",
 		"highChartExportUrl": "http://84.33.2.75/highcharts-export/",
 		"outputConfig": {
 			"itemId": "geobasidata",
