@@ -341,7 +341,7 @@ gxp.plugins.WMSSource = Ext.extend(gxp.plugins.LayerSource, {
 			STYLES: styles || "",
 			FORMAT: config.format,
 			TRANSPARENT: config.transparent,
-			//CQL_FILTER: config.cql_filter,
+			CQL_FILTER: config.cql_filter,
 			TIME: config.time,
 			ELEVATION: config.elevation
 		}, this.layerBaseParams);

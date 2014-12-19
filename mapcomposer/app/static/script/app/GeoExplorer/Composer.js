@@ -64,8 +64,9 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 		            }
 		        }, {
 		            ptype: "gxp_addlayers",
-                    id: "addlayers_plugin"
-                    /*,actionTarget: "tree.tbar"*/
+                    id: "addlayers_plugin",
+		            actionTarget: "tree.tbar",
+					id: "addlayers"
 		        }, {
 		            ptype: "gxp_removelayer",
                     id: "removelayer_plugin",
