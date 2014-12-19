@@ -422,6 +422,7 @@
 		"collapsible": true,
 		"header": true,
 		"width": 340,
+        "minWidth": 340,
 		"items": [{
 			"border": false,
 			"xtype": "tabpanel",
@@ -461,7 +462,8 @@
 		"collapsible": true,
 		"enableTabScroll": true,
 		"header": true,
-		"width": 340
+		"width": 340,
+        "minWidth": 340
 	}],
 	"scaleOverlayUnits": {
 		"bottomOutUnits": "nmi",

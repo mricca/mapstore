@@ -521,6 +521,18 @@ div.olMap div.gx-overlay-playback {
 
 /* geobasi_charts */
 
+.left-right-buttons .x-panel-btns {
+    text-align: 'center'
+}
+
+.left-right-buttons .x-panel-btns table {
+    width: 100%;
+}
+
+.left-right-buttons .x-panel-btns .x-btn-left {
+    float: left;
+}
+
 .x-btn .gxp-icon-geobasi-chartmenu, .x-menu-item .gxp-icon-geobasi-chartmenu {
     background-image: url(img/silk/chart_organisation.png) !important;
 }
@@ -546,18 +558,29 @@ div.olMap div.gx-overlay-playback {
 }
 
 .x-btn .gxp-icon-select-area-geobasi, .x-tree-node .gxp-icon-select-area-geobasi, .gxp-icon-select-area-geobasi {
-    background-image: url(img/silk/shape_group.png);
+    background-image: url(img/silk/shape_group.png) !important;
 }
 
 .x-btn .gxp-icon-select-elem-geobasi, .x-tree-node .gxp-icon-select-elem-geobasi, .gxp-icon-select-elem-geobasi {
-    background-image: url(img/silk/application_form.png);
+    background-image: url(img/silk/application_form.png) !important;
 }
 
 .x-btn .gxp-icon-select-log-geobasi, .x-tree-node .gxp-icon-select-log-geobasi, .gxp-icon-select-log-geobasi {
-    background-image: url(img/silk/calculator.png);
+    background-image: url(img/silk/calculator.png) !important;
 }
 
+.x-btn .gxp-icon-download-csv-geobasi, .x-tree-node .gxp-icon-download-csv-geobasi, .gxp-icon-download-csv-geobasi {
+    background-image: url(img/geosilk/disk.png) !important;
+}
+
+.x-btn .gxp-icon-map-filter-geobasi, .x-tree-node .gxp-icon-map-filter-geobasi, .gxp-icon-map-filter-geobasi {
+    background-image: url(img/silk/map_filter.png) !important;
+}
+
+.x-btn .gxp-icon-analisi-statistica-geobasi, .x-tree-node .gxp-icon-analisi-statistica-geobasi, .gxp-icon-analisi-statistica-geobasi {
+    background-image: url(img/silk/cog.png) !important;
+}
 /* gxp_wfsgetgraphs */
 .x-btn .gxp-icon-graph-wfs, .x-menu-item .gxp-icon-graph-wfs, .x-tree-node .gxp-icon-graph-wfs {
-    background-image: url(img/silk/chart_curve.png);
+    background-image: url(img/silk/chart_curve.png) !important;
 }

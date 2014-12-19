@@ -195,74 +195,6 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
         });
 
     },
-    /** api: method[doDownloadPost]
-     * create a dummy iframe and a form. Submit the form 
-     */    
-     
-    doDownloadPost: function(url, data,outputFormat){
-        //        
-        //delete other iframes appended
-        //
-        if(document.getElementById(this.downloadFormId)) {
-            document.body.removeChild(document.getElementById(this.downloadFormId)); 
-        }
-        if(document.getElementById(this.downloadIframeId)) {
-            document.body.removeChild(document.getElementById(this.downloadIframeId));
-        }
-        // create iframe
-        var iframe = document.createElement("iframe");
-        iframe.setAttribute("style","visiblity:hidden;width:0px;height:0px;");
-        this.downloadIframeId = Ext.id();
-        iframe.setAttribute("id",this.downloadIframeId);
-        iframe.setAttribute("name",this.downloadIframeId);
-        document.body.appendChild(iframe);
-        iframe.onload = function(){
-            if(!iframe.contentWindow) return;
-            
-            var error ="";
-            var body = iframe.contentWindow.document.getElementsByTagName('body')[0];
-            var content ="";
-            if (body.textContent){
-              content = body.textContent;
-            }else{
-              content = body.innerText;
-            }
-            try{
-                var serverError = Ext.util.JSON.decode(content);
-                error = serverError.exceptions[0].text
-            }catch(err){
-                error = body.innerHTML || content;
-            }
-             Ext.Msg.show({
-                title: me.invalidParameterValueErrorText,
-                msg: "outputFormat: " + outputFormat + "</br></br>" +
-                      "</br></br>" +
-                     "Error: " + error,
-                buttons: Ext.Msg.OK,
-                icon: Ext.MessageBox.ERROR
-            });   
-        }
-        var me = this;
-        
-        // submit form with enctype = application/xml
-        var form = document.createElement("form");
-        this.downloadFormId = Ext.id();
-        form.setAttribute("id", this.downloadFormId);
-        form.setAttribute("method", "POST");
-        //this is to skip cross domain exception notifying the response body
-        var urlregex =/^https?:\/\//i;
-        //if absoulte url and do not contain the local host
-        var iframeURL = (!urlregex.test(url) || url.indexOf(location.host)>0) ? url :  proxy + encodeURIComponent(url);
-        form.setAttribute("action", iframeURL );
-        form.setAttribute("target",this.downloadIframeId);
-        
-        var hiddenField = document.createElement("input");      
-        hiddenField.setAttribute("name", "filter");
-        hiddenField.value= data;
-        form.appendChild(hiddenField);
-        document.body.appendChild(form);
-        form.submit(); 
-    },
     
     /**  
      * api: method[getData]
@@ -497,7 +429,7 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
         return dataPoints;
 
     },
-
+    
     /**  
      * api: method[makeChart]
      */
@@ -567,37 +499,6 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
 
             this.xml = new OpenLayers.Format.XML().write(node);
         }
-        
-        var url = this.url;
-        var service = "?service=WFS";
-        var version = "&version=1.1.0";
-        var geometryName = "&geomtryName=geom";
-        var request = "&request=GetFeature";
-        var filter = "&filter=" + this.xml;
-        //var cql_filter = "&cql_filter=" + dateFilter;
-        var typeName = "&typeName=" + this.layer;
-        var outputFormat = "&outputformat=CSV";
-        var exception = "&exceptions=application/json";
-        var propertyName = "&propertyName=fonte,codsito,data_aaaa,data_mm,data_gg,monitoraggio,dmgeomattipo_descr,tygeomat,toponimo,foglioigm50k,codcomune,sigla_el,valore,tipometa,geom";
-        var sortBy = "&sortBy=valore";
-        //this.viewParams = "&viewparams="+viewparams2;
-        this.viewParams = "&viewparams=monitoraggio: IS NOT NULL;tygeomat:01;sigla_el:Ca";
-        this.pluto = viewparams2;
-        
-        //this.stringURLTot = url + service + version + geometryName + request + filter + typeName + outputFormat + propertyName + sortBy + viewParams;
-        this.stringURLTot = url + service + version + geometryName + request + typeName + outputFormat + propertyName + sortBy + exception + this.viewParams;
-        OpenLayers.Request.POST({
-            scope: this,
-            url: this.stringURLTot,
-            data: this.xml,
-            callback: function(request){
-                this.doDownloadPost(this.stringURLTot, this.xml, "CSV");
-                    var pippo = 0;
-            }
-        });        
-        //window.open(stringURLTot);
-        //this.appMask.hide();
-        //return;
         
         Ext.Ajax.request({
             scope: this,
@@ -907,6 +808,14 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
 
         if (baciniFilter) {
 
+            var app = window.app;
+            var map = app.mapPanel.map;
+            
+            var baciniWfsLayer = app.mapPanel.map.getLayersByName("Intersect Bacini")[0];
+            if (baciniWfsLayer){
+                app.mapPanel.map.removeLayer(baciniWfsLayer);
+            }
+            
             var layerBacini = new OpenLayers.Layer.Vector("Intersect Bacini");
 
             var getFeatureFromWFS = function (response) {
@@ -958,7 +867,7 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
                         }
                         var app = window.app;
                         var map = app.mapPanel.map;
-
+                        
                         map.addLayers([layerBacini]);
 
                         var allowNullFilter = new OpenLayers.Filter.Comparison({
