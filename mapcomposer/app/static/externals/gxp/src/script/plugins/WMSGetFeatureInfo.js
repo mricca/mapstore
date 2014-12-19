@@ -77,6 +77,11 @@ gxp.plugins.WMSGetFeatureInfo = Ext.extend(gxp.plugins.Tool, {
      *  Use a loading mask during get feature info.
      */
     useTabPanel: false,
+    /** api: config[regex]
+     *  ``regex``
+     *  Use a regex to filter if some result is returned in html response.
+     */
+    regex:"\\s*$",    
     
     noDataMsg: "No data returned from the server",
     

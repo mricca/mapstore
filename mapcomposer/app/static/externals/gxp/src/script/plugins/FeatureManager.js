@@ -435,11 +435,12 @@ gxp.plugins.FeatureManager = Ext.extend(gxp.plugins.Tool, {
      */
     setLayer: function(layerRecord) {
         var change = this.fireEvent("beforelayerchange", this, layerRecord);
+        var queryPanel = layerRecord.data.queryPanel;
         if (change !== false) {
             if (layerRecord !== this.layerRecord) {
                 this.clearFeatureStore();
                 this.layerRecord = layerRecord;
-                if (layerRecord) {
+                if (layerRecord && queryPanel) {
                     this.autoLoadFeatures === true ?
                         this.loadFeatures() :
                         this.setFeatureStore();

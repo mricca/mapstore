@@ -372,7 +372,8 @@
 				"displayInLayerSwitcher": true,
 				"visibility": false,
 				"tiled": false,
-				"attribution": false
+				"attribution": false,
+                "queryPanel": true
 			},{
 				"source": "db_segnalazioni",
 				"group": "Proposta per DADS 2015",
@@ -382,7 +383,8 @@
 				"displayInLayerSwitcher": true,
 				"visibility": false,
 				"tiled": false,
-				"attribution": false
+				"attribution": false,
+                "queryPanel": true
 			},{
 				"source": "db_segnalazioni",
 				"group": "Proposta per DADS 2015",
@@ -392,7 +394,8 @@
 				"displayInLayerSwitcher": true,
 				"visibility": false,
 				"tiled": false,
-				"attribution": false
+				"attribution": false,
+                "queryPanel": true
 			},{
 				"source": "db_segnalazioni",
 				"group": "Proposta per DADS 2015",
@@ -402,7 +405,8 @@
 				"displayInLayerSwitcher": true,
 				"visibility": false,
 				"tiled": false,
-				"attribution": false
+				"attribution": false,
+                "queryPanel": true
 			},{
 				"source": "db_segnalazioni",
 				"group": "Proposta per DADS 2015",
@@ -412,7 +416,8 @@
 				"displayInLayerSwitcher": true,
 				"visibility": false,
 				"tiled": false,
-				"attribution": false
+				"attribution": false,
+                "queryPanel": true
 			},{
 				"source": "db_segnalazioni",
 				"group": "Proposta per DADS 2015",
@@ -422,7 +427,8 @@
 				"displayInLayerSwitcher": true,
 				"visibility": false,
 				"tiled": false,
-				"attribution": false
+				"attribution": false,
+                "queryPanel": true
 			},{
 				"source": "db_segnalazioni",
 				"group": "Proposta per DADS 2015",
@@ -432,7 +438,8 @@
 				"displayInLayerSwitcher": true,
 				"visibility": false,
 				"tiled": false,
-				"attribution": false
+				"attribution": false,
+                "queryPanel": true
 			},{
 				"source": "db_segnalazioni",
 				"group": "Proposta per DADS 2015",
@@ -442,7 +449,8 @@
 				"displayInLayerSwitcher": true,
 				"visibility": false,
 				"tiled": false,
-				"attribution": false
+				"attribution": false,
+                "queryPanel": true
 			},{
 				"source": "db_segnalazioni",
 				"group": "Proposta per DADS 2015",
@@ -452,7 +460,8 @@
 				"displayInLayerSwitcher": true,
 				"visibility": false,
 				"tiled": false,
-				"attribution": false
+				"attribution": false,
+                "queryPanel": true
 			},{
 				"source": "db_segnalazioni",
 				"group": "Proposta per DADS 2015",
@@ -462,7 +471,8 @@
 				"displayInLayerSwitcher": true,
 				"visibility": false,
 				"tiled": false,
-				"attribution": false
+				"attribution": false,
+                "queryPanel": true
 			},{
 				"source": "db_segnalazioni",
 				"group": "DADS 2014 finanziati con DGRT 1194 2013",
@@ -471,7 +481,8 @@
 				"displayInLayerSwitcher": true,
 				"visibility": false,
 				"tiled": false,
-				"attribution": false
+				"attribution": false,
+                "queryPanel": true
 			}
 		]
 	},
@@ -490,7 +501,7 @@
     "customPanels":[
 	      {
 	          "xtype": "panel",
-	          "title": "FeatureGrid",      
+	          "title": "Risultati Ricerche",      
 	          "border": false,
 	          "id": "south",
 	          "region": "south",
@@ -501,7 +512,7 @@
 	          "header": true
 	      },{
 	          "xtype": "panel",
-	          "title": "Query Panel",         
+	          "title": "Pannello Ricerche",         
 	          "border": false,
 	          "id": "east",
 	          "width": 400,
@@ -558,10 +569,6 @@
             "outputTarget":"paneltbar",
             "index":26
         }, {
-			"ptype": "gxp_about",
-			"poweredbyURL": "http://www.geo-solutions.it/about/contacts/",
-			"actionTarget": {"target": "panelbbar", "index": 1}
-		}, {
 		  "ptype": "gxp_featuremanager",
 		  "id": "featuremanager",
           "paging": true,
@@ -590,6 +597,12 @@
 		  "showSelectionSummary": true,
 		  "actions": null,
 		  "id": "bboxquery",
+          "spatialSelectorFieldsetCollapsedFirst": true,    
+          "spatialSelectorFieldsetHidden": true,    
+          "spatialSelectorFieldsetCheckboxToggle": false,        
+          "attributeFieldsetCollapsedFirst": false,        
+          "attributeFieldsetHidden": false,      
+          "attributeFieldsetCheckboxToggle": false,    
           "filterLayer": false,
           "autoComplete": {
             "sources": ["db_segnalazioni"],
