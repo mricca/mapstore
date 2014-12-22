@@ -446,15 +446,7 @@ gxp.plugins.SpatialSelectorQueryForm = Ext.extend(gxp.plugins.QueryForm, {
                 collapsed : false,
                 hidden: false,
                 forceLayout : true,
-                items: [{
-                        xtype: 'panel',
-                        ref: 'dataCalcolo',
-                        name: 'dataCalcolo',
-                        id: 'timeVisualizationID',
-                        forceLayout : true,
-                        header: false,
-                        html: ''                        
-                    }],
+                cls: 'selected-query-layer',
                 listeners: {
                     scope: this,
                     expand: function(panel){

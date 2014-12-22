@@ -452,21 +452,25 @@ gxp.plugins.FeatureManager = Ext.extend(gxp.plugins.Tool, {
                         east.expand();                             
                     }                   
                     
-                    var layerTitle = layerRecord.data.title;
-                    
-                    selectedLayerToQueryId.on('afterlayout',function(e){
-                        selectedLayerToQueryId.body.update('<div style="color:red;font-weight: bold;">' + layerTitle + '</div>');
-                    });
-                    
-                    if(selectedLayerToQueryId.body)
-                        selectedLayerToQueryId.body.update('<div style="color:red;font-weight: bold;">' + layerTitle + '</div>');
+                    if(selectedLayerToQueryId){
+                        var layerTitle = layerRecord.data.title;
+                        
+                        selectedLayerToQueryId.on('afterlayout',function(e){
+                            selectedLayerToQueryId.body.update(layerTitle);
+                        });
+                        
+                        if(selectedLayerToQueryId.body)
+                            selectedLayerToQueryId.body.update(layerTitle);
+                    }
                     
                     this.autoLoadFeatures === true ?
                         this.loadFeatures() :
                         this.setFeatureStore();
                 } else {
                     this.fireEvent("layerchange", this, null);
-                    selectedLayerToQueryId.body.update('');
+                    
+                    if(selectedLayerToQueryId)
+                        selectedLayerToQueryId.body.update('');
                 }
             }
         }
