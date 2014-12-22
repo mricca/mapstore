@@ -503,6 +503,7 @@
 	          "xtype": "panel",
 	          "title": "Risultati Ricerche",      
 	          "border": false,
+              "collapsedonfull": true,
 	          "id": "south",
 	          "region": "south",
 	          "layout": "fit",
@@ -521,7 +522,8 @@
 	          "layout": "fit",
 	          "collapsed": true,
 	          "collapsible": true,
-	          "header": true
+	          "header": true,
+              "collapsedonfull": true
 	      }
     ],	    
 	"customTools": [
@@ -586,9 +588,7 @@
               "loadMask": true
 		  },
 		  "outputTarget": "south",
-			"exportFormats": ["CSV","shape-zip","excel", "excel2007"],
-			"exportAction": "window",
-			"showNumberOfRecords": true
+		  "showNumberOfRecords": true
 	    }, {
 		  "ptype": "gxp_spatialqueryform",
 		  "featureManager": "featuremanager",

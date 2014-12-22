@@ -439,6 +439,34 @@ gxp.plugins.SpatialSelectorQueryForm = Ext.extend(gxp.plugins.QueryForm, {
             items: [
             {
                 xtype: "fieldset",
+                id: "selectedLayerToQueryId",
+                ref: "selectedLayerToQuery",
+                title: "Layer Selezionato",
+                checkboxToggle: false,
+                collapsed : false,
+                hidden: false,
+                forceLayout : true,
+                items: [{
+                        xtype: 'panel',
+                        ref: 'dataCalcolo',
+                        name: 'dataCalcolo',
+                        id: 'timeVisualizationID',
+                        forceLayout : true,
+                        header: false,
+                        html: ''                        
+                    }],
+                listeners: {
+                    scope: this,
+                    expand: function(panel){
+                        panel.doLayout();
+                    },
+                    collapse: function(panel) {
+                        this.spatialSelector.reset();
+                    }
+                }
+            },            
+            {
+                xtype: "fieldset",
                 ref: "spatialSelectorFieldset",
                 title: spatialSelectorOutput.title,
                 checkboxToggle: me.spatialSelectorFieldsetCheckboxToggle,
