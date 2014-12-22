@@ -617,7 +617,7 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
 
                 Ext.Ajax.request({
                     scope: this,
-                    url: 'http://159.213.57.108/geoserver/wfs',
+                    url: 'http://www506.regione.toscana.it/geoserver/wfs',
                     method: 'POST',
                     params: {
                         service: "WFS",
@@ -770,7 +770,7 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
 
 
             var protocol = new OpenLayers.Protocol.WFS({
-                url: "http://159.213.57.108/geoserver/wfs",
+                url: "http://www506.regione.toscana.it/geoserver/wfs",
                 version: "1.1.0",
                 featureType: "ci_rwtw_bacini",
                 featureNS: "http://geobasi",
