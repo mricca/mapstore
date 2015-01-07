@@ -946,7 +946,7 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
                         form: this,
                         disabled: false,
                         filter: this.areaDamage,
-                        addedLayer: false/*,
+                        addedLayer: false,
                         handler: function() {
                             Ext.MessageBox.show({
                                 title: 'Informazione',
@@ -958,7 +958,7 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 
                             Ext.MessageBox.getDialog().getEl().setStyle("zIndex", 100000);
                             return;
-                        }*/
+                        }
                     }]
                 }
             ]
