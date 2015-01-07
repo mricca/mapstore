@@ -435,16 +435,42 @@ gxp.plugins.FeatureManager = Ext.extend(gxp.plugins.Tool, {
      */
     setLayer: function(layerRecord) {
         var change = this.fireEvent("beforelayerchange", this, layerRecord);
+        
+        //if true the layer is enable to query
+        var queryPanel = layerRecord.data.queryPanel;
+        var selectedLayerToQueryId = Ext.getCmp('selectedLayerToQueryId');
+        
         if (change !== false) {
             if (layerRecord !== this.layerRecord) {
                 this.clearFeatureStore();
                 this.layerRecord = layerRecord;
-                if (layerRecord) {
+                if (layerRecord && queryPanel) {
+                    
+                    //expand query panel
+                    var east = Ext.getCmp('east');
+                    if(east && east.collapsed){
+                        east.expand();                             
+                    }                   
+                    
+                    if(selectedLayerToQueryId){
+                        var layerTitle = layerRecord.data.title;
+                        
+                        selectedLayerToQueryId.on('afterlayout',function(e){
+                            selectedLayerToQueryId.body.update(layerTitle);
+                        });
+                        
+                        if(selectedLayerToQueryId.body)
+                            selectedLayerToQueryId.body.update(layerTitle);
+                    }
+                    
                     this.autoLoadFeatures === true ?
                         this.loadFeatures() :
                         this.setFeatureStore();
                 } else {
                     this.fireEvent("layerchange", this, null);
+                    
+                    if(selectedLayerToQueryId)
+                        selectedLayerToQueryId.body.update('');
                 }
             }
         }
@@ -669,19 +695,30 @@ gxp.plugins.FeatureManager = Ext.extend(gxp.plugins.Tool, {
                             fields.push(field);
                         }
                     }, this);
-                    var protocolOptions = {
+                    
+                    var protocolOptions = {    
                         srsName: this.target.mapPanel.map.getProjection(),
                         url: schema.url,
                         featureType: schema.reader.raw.featureTypes[0].typeName,
                         featureNS: schema.reader.raw.targetNamespace,
                         geometryName: geometryName
                     };
+                    
+                    //
+                    // Check for existing 'viewparams' inside the selected layer
+                    //
+                    var layer = record.getLayer();
+                    if(layer){
+                        protocolOptions = Ext.applyIf(protocolOptions, layer.vendorParams ? {viewparams: layer.vendorParams.viewparams} : {});
+                    }
+
                     this.hitCountProtocol = new OpenLayers.Protocol.WFS(Ext.apply({
                         version: "1.1.0",
                         readOptions: {output: "object"},
                         resultType: "hits",
                         filter: filter
                     }, protocolOptions));
+                    
                     this.featureStore = new gxp.data.WFSFeatureStore(Ext.apply({
                         fields: fields,
                         proxy: {

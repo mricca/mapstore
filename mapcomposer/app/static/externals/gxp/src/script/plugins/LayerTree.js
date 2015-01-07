@@ -206,6 +206,8 @@ gxp.plugins.LayerTree = Ext.extend(gxp.plugins.Tool, {
              **/
             if(groupNames.length > 0){
                 groupConfig.title= groupNames[locIndex] ? groupNames[locIndex] : groupNames[0];
+                groupConfig.expanded = this.groups[group].expanded == false ? false : true;
+                groupConfig.checked = this.groups[group].checked == false ? null : false;
             }
             
             //
@@ -214,12 +216,12 @@ gxp.plugins.LayerTree = Ext.extend(gxp.plugins.Tool, {
             var text = groupConfig.title;
             /*if(groupConfig.title.indexOf("_") != -1)        
                 text = text.replace(/_+/g, " ");   */
-                
+            
             treeRoot.appendChild(new GeoExt.tree.LayerContainer({
                 text: text,
                 iconCls: "gxp-folder",
-                checked: false,
-                expanded: true,
+                checked: groupConfig.checked,
+                expanded: groupConfig.expanded,
                 group: group == defaultGroup ? undefined : group,
                 loader: new GeoExt.tree.LayerLoader({
                     baseAttrs: groupConfig.exclusive ?
@@ -454,6 +456,17 @@ gxp.plugins.LayerTree = Ext.extend(gxp.plugins.Tool, {
                         }
                     }else{
                         var parent = node.parentNode;
+                        
+                        //Fix the temporal layer enablement.
+                        //Layer is not showed in the map if we select time interval and then check the layer from the layer tree.
+                        if(checked){
+                            var timeManagers = this.target.mapPanel.map.getControlsByClass('OpenLayers.Control.TimeManager');
+                            var layer = node.layer;
+                            if ( layer instanceof OpenLayers.Layer.WMS && timeManagers[0]){
+                                timeManagers[0].timeAgents[0].applyTime(layer,timeManagers[0].currentTime);
+                            }
+                        }
+                        
                         if(checked && !parent.getUI().isChecked()){
                             parent.getUI().toggleCheck(checked);
                         }else if(!checked && parent.getUI().isChecked()){

@@ -609,7 +609,8 @@ GeoExt.Lang.add("es", {
 		previewText: "Vista previa",				
 		embedCodeTitle: "Código embebido",
 		embedURL: "URL directa",		
-		urlLabel: "URL",
+		embedUrlLabel: "EMBED",
+		composerUrlLabel: "FULL",
 		showMapTooltip: "Mostar en una nueva ventana",
         loadMapText: "Cargar el mapa", 
         downloadAppText: "Cargar este mapa (instalar la aplicación primero)", 
@@ -801,5 +802,9 @@ GeoExt.Lang.add("es", {
 	
 	"gxp.plugins.AdvancedSnappingAgent.prototype":{
         tooltipText: "Activar/Desactivar Snapping"
+    },
+	
+	"gxp.plugins.StaticPage.prototype": {
+        tabTitle: "Página estática"
     }  
 });

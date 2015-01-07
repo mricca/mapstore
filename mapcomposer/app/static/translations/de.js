@@ -647,7 +647,8 @@ GeoExt.Lang.add("de", {
 		previewText: "Vorschau",				
 		embedCodeTitle: "Embed Code",
 		embedURL: "Direct URL",		
-		urlLabel: "URL",
+		embedUrlLabel: "EMBED",
+		composerUrlLabel: "FULL",
 		showMapTooltip: "In einem neuen Fenster anzeigen",
         loadMapText: "Load this Map (installieren Sie zuerst die Anwendung)", 
         downloadAppText: "Die Anwendung Installieren", 
@@ -869,5 +870,9 @@ GeoExt.Lang.add("de", {
         daysText: 'Tage', 
         monthsText: 'Monate', 
         yearsText: 'Jahre'        
-    }   
+    },
+	
+	"gxp.plugins.StaticPage.prototype": {
+        tabTitle: "Statische Seite"
+    }  
 });

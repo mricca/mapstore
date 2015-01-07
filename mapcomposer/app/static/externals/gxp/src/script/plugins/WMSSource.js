@@ -335,18 +335,28 @@ gxp.plugins.WMSSource = Ext.extend(gxp.plugins.LayerSource, {
 		}
 		
 		var styles = this.getLayerStyle(config);
-
+	
 		// use all params from sources layerBaseParams option
 		var params = Ext.applyIf({
 			STYLES: styles || "",
 			FORMAT: config.format,
 			TRANSPARENT: config.transparent,
-			CQL_FILTER: config.cql_filter,
+			//CQL_FILTER: config.cql_filter,
+			TIME: config.time,
 			ELEVATION: config.elevation
 		}, this.layerBaseParams);
 		
+		// ///////////////////////////////////////////////////////
+		// Check for existing 'viewparams' in config and apply 
+		// them into the WMS params of the layer
+		// ///////////////////////////////////////////////////////
+		if(config.vendorParams){
+			params = Ext.applyIf(params, config.vendorParams);   
+		}
+		
 		// use all params from original
 		params = Ext.applyIf(params, layer.params);
+
 
 		// /////////////////////////////////////////////////////////
 		// Checking if the OpenLayers transition should be 
@@ -371,7 +381,7 @@ gxp.plugins.WMSSource = Ext.extend(gxp.plugins.LayerSource, {
 			config.title || config.name, 
 			layer.url, 
 			params, {
-				attribution: layer.attribution,
+				attribution: config.attribution ? layer.attribution : '',
 				maxExtent: maxCachedExtent,
 				restrictedExtent: maxExtent,
 				displayInLayerSwitcher: ("displayInLayerSwitcher" in config) ? config.displayInLayerSwitcher :true,
@@ -381,43 +391,69 @@ gxp.plugins.WMSSource = Ext.extend(gxp.plugins.LayerSource, {
 				opacity: ("opacity" in config) ? config.opacity : 1,
 				buffer: ("buffer" in config) ? config.buffer : 0,
 				loadingProgress: config.loadingProgress || this.loadingProgress || false,
-		dimensions: original.data.dimensions,
+				dimensions: original.data.dimensions,
 				projection: layerProjection,
 				vendorParams: config.vendorParams,
-				transitionEffect: transitionEffect
+				transitionEffect: transitionEffect,
+                minScale: config.minscale,
+                maxScale: config.maxscale,                
+                displayOutsideMaxExtent: ("displayOutsideMaxExtent" in config) ? config.displayOutsideMaxExtent : true
 			}
 		);
 
-		// data for the new record
-		var data = Ext.applyIf({
-			title: config.title, 
-			name: config.name,
-			group: config.group,
-			uuid: config.uuid,
-			gnURL: config.gnURL,
-			source: config.source,
-			properties: "gxp_wmslayerpanel",
-			times: "times" in config ? config.times : null,
-			elevations: "elevations" in config ? config.elevations : null,
-			fixed: config.fixed,
-			selected: "selected" in config ? config.selected : false,
-			layer: layer
-		}, original.data);
-		
-		// add additional fields
-		var fields = [
-			{name: "source", type: "string"}, 
-			{name: "name", type: "string"}, 
-			{name: "group", type: "string"},
-			{name: "uuid", type: "string"},
-			{name: "gnURL", type: "string"},
-			{name: "title", type: "string"},
-			{name: "properties", type: "string"},
-			{name: "fixed", type: "boolean"},
-			{name: "selected", type: "boolean"},
-			{name: "times", type: "string"},
-			{name: "elevations", type: "string"}
-		];
+        // data for the new record
+        var data = Ext.applyIf({
+            title: config.title, 
+            name: config.name,
+            group: config.group,
+            expanded: config.expanded,
+            checked: config.checked,
+            tiled: config.tiled,
+            displayInLayerSwitcher: config.displayInLayerSwitcher,
+            uuid: config.uuid,
+            gnURL: config.gnURL,
+            source: config.source,
+            properties: "gxp_wmslayerpanel",
+            times: "times" in config ? config.times : null,
+            elevations: "elevations" in config ? config.elevations : null,
+            fixed: config.fixed,
+            selected: "selected" in config ? config.selected : false,
+            layer: layer,
+            queryable: config.queryable,
+            getGraph: config.getGraph,
+            graphTable: config.graphTable,
+            graphAttribute: config.graphAttribute, 
+            cumulative: config.cumulative,
+            queryable: config.queryable,
+            tabCode: config.tabCode,
+            queryPanel: "queryPanel" in config ? config.queryPanel : false,
+        }, original.data);
+        
+        // add additional fields
+        var fields = [
+            {name: "source", type: "string"}, 
+            {name: "name", type: "string"}, 
+            {name: "group", type: "string"},
+            {name: "expanded", type: "boolean"},
+            {name: "checked", type: "boolean"},
+            {name: "tiled", type: "boolean"},
+            {name: "displayInLayerSwitcher", type: "boolean"},
+            {name: "uuid", type: "string"},
+            {name: "gnURL", type: "string"},
+            {name: "title", type: "string"},
+            {name: "properties", type: "string"},
+            {name: "fixed", type: "boolean"},
+            {name: "selected", type: "boolean"},
+            {name: "times", type: "string"},
+            {name: "elevations", type: "string"},
+            {name: "queryable", type: "boolean"},
+            {name: "getGraph", type: "boolean"},
+            {name: "graphTable", type: "string"},
+            {name: "graphAttribute", type: "string"},
+            {name: "cumulative", type: "boolean"},
+            {name: "queryable", type: "boolean"},
+            {name: "tabCode", type: "string"}
+        ];
 
 		original.fields.each(function(field) {
 			fields.push(field);
@@ -666,7 +702,11 @@ gxp.plugins.WMSSource = Ext.extend(gxp.plugins.LayerSource, {
 					styles = defaultStyle; 
 				}
 			} 
-		}
+		}else{
+			if(config.styles){
+				styles = config.styles;
+			}				
+		}  
 
 		return styles;
 		
