@@ -770,7 +770,8 @@ GeoExt.Lang.add("en", {
         noFilterSelectedMsgTitle: "No filter selected",    
         noFilterSelectedMsgText: "You must select at least one filter",    
         invalidRegexFieldMsgTitle: "Invalid Fields",    
-        invalidRegexFieldMsgText: "One or more fields are incorrect!"
+        invalidRegexFieldMsgText: "One or more fields are incorrect!",
+        selectedLayerFielsetText: "Selected layer"
     },
 
 	"gxp.plugins.FeatureManager.prototype":{

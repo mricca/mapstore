@@ -16,13 +16,14 @@
 	   }
    },   
    "scaleOverlayMode": "advanced",
+   "actionToolScale": "medium", 
    "tab": true,
    "gsSources":{
 		"salvador":{
 			"ptype": "gxp_wmssource",
 			"title": "Salvador GeoServer",
 			"projection":"EPSG:900913",
-			"url": "http://159.213.57.108/geoserver/SALVADOR/ows",
+			"url": "http://159.213.57.108/geoserver_salvador/SALVADOR/ows",
             "version":"1.1.1",
             "loadingProgress": true,
             "layersCachedExtent": [
@@ -125,7 +126,8 @@
 				"title": "Parcelario D5",
 				"name": "parcelario_d5",
 				"displayInLayerSwitcher":true,
-				"visibility": false
+				"visibility": false,
+                "queryPanel": true
 			},{
 				"source": "salvador",
                 "tiled": false,
@@ -133,7 +135,8 @@
 				"title": "Parcelario D6",
 				"name": "parcelario_d6",
 				"displayInLayerSwitcher":true,
-				"visibility": false
+				"visibility": false,
+                "queryPanel": true
 			},{
 				"source": "salvador",
                 "tiled": false,
@@ -141,7 +144,8 @@
 				"title": "Limites Zonas D5",
 				"name": "limites_zonas_d5",
 				"displayInLayerSwitcher":true,
-				"visibility": false
+				"visibility": false,
+                "queryPanel": true
 			},{
 				"source": "salvador",
                 "tiled": false,
@@ -149,7 +153,8 @@
 				"title": "Limites Zonas D6",
 				"name": "limites_zonas_d6",
 				"displayInLayerSwitcher":true,
-				"visibility": false
+				"visibility": false,
+                "queryPanel": true
 			},{
 				"source": "salvador",
                 "tiled": false,
@@ -157,7 +162,8 @@
 				"title": "Ejes Viales",
 				"name": "ejes_viales",
 				"displayInLayerSwitcher":true,
-				"visibility": true
+				"visibility": true,
+                "queryPanel": true
 			},{
 				"source": "salvador",
                 "tiled": false,
@@ -165,7 +171,8 @@
 				"title": "Rios San Salvador",
 				"name": "rios_san_salvador",
 				"displayInLayerSwitcher":true,
-				"visibility": true
+				"visibility": true,
+                "queryPanel": true
 			},{
 				"source": "salvador",
                 "format":"image/jpeg",
@@ -224,7 +231,8 @@
 				"name": "comunidad_ubicacion",
 				"displayInLayerSwitcher":true,
 				"visibility": true,
-                "opacity": 0.8
+                "opacity": 0.8,
+                "queryPanel": true
 			},{
 				"source": "salvador",
                 "tiled": false,
@@ -232,7 +240,8 @@
 				"title": "Comunidad Equipamiento",
 				"name": "comunidad_equipamiento",
 				"displayInLayerSwitcher":true,
-				"visibility": false
+				"visibility": false,
+                "queryPanel": true
 			},{
 				"source": "salvador",
                 "tiled": false,
@@ -240,7 +249,8 @@
 				"title": "Comunidad Vias Internas",
 				"name": "comunidad_vias_internas",
 				"displayInLayerSwitcher":true,
-				"visibility": false
+				"visibility": false,
+                "queryPanel": true
 			},{
 				"source": "salvador",
                 "tiled": false,
@@ -248,7 +258,8 @@
 				"title": "Comunidad Vias Accesso",
 				"name": "comunidad_vias_accesso",
 				"displayInLayerSwitcher":true,
-				"visibility": false
+				"visibility": false,
+                "queryPanel": true
 			},{
 				"source": "salvador",
                 "tiled": false,
@@ -256,7 +267,8 @@
 				"title": "Comunidad Proyecto Necesidades",
 				"name": "comunidad_proyecto_necesidades",
 				"displayInLayerSwitcher":true,
-				"visibility": false
+				"visibility": false,
+                "queryPanel": true
 			},{
 				"source": "salvador",
                 "format":"image/jpeg",            
@@ -285,7 +297,8 @@
 				"name": "alerta_peligro_vulnerabilidad",
 				"displayInLayerSwitcher":true,
 				"visibility": false,
-                "ratio": 3
+                "ratio": 3,
+                "queryPanel": true
 			},{
 				"source": "salvador",
                 "format":"image/jpeg",    
@@ -353,7 +366,8 @@
 				"title": "Riesgo Peligro Vulnerabilidad",
 				"name": "riesgo_peligro_vulnerabilidad",
 				"displayInLayerSwitcher":true,
-				"visibility": false
+				"visibility": false,
+                "queryPanel": true
 			},{
 				"source": "salvador",
                 "tiled": false,
@@ -361,7 +375,8 @@
 				"title": "Riesgo Infraestructura Expuesta",
 				"name": "riesgo_infraestructura_expuesta",
 				"displayInLayerSwitcher":true,
-				"visibility": false
+				"visibility": false,
+                "queryPanel": true
 			},{
 				"source": "salvador",
                 "tiled": false,
@@ -369,7 +384,8 @@
 				"title": "Inundaciones Danos Ocasionados Poly",
 				"name": "inundaciones_danos_ocasionados_poly",
 				"displayInLayerSwitcher":true,
-				"visibility": false
+				"visibility": false,
+                "queryPanel": true
 			},{
 				"source": "salvador",
                 "tiled": false,
@@ -377,15 +393,17 @@
 				"title": "Inundaciones Danos Ocasionados Point",
 				"name": "inundaciones_danos_ocasionados_point",
 				"displayInLayerSwitcher":true,
-				"visibility": false
+				"visibility": false,
+                "queryPanel": true
 			}
 		]
 	},
     "customPanels":[
 	      {
 	          "xtype": "panel",
-	          "title": "FeatureGrid",      
+	          "title": "Feature Grid",      
 	          "border": false,
+              "collapsedonfull": true,
 	          "id": "south",
 	          "region": "south",
 	          "layout": "fit",
@@ -404,7 +422,8 @@
 	          "layout": "fit",
 	          "collapsed": true,
 	          "collapsible": true,
-	          "header": true
+	          "header": true,
+              "collapsedonfull": true
 	      }
     ],	
 	"scaleOverlayUnits":{
@@ -414,7 +433,7 @@
         "topOutUnits":"km"
     },
     "removeTools": [
-        "gxp_wmsgetfeatureinfo_menu"
+        "wmsgetfeatureinfo_menu_plugin"
     ],    
 	"customTools":[{
 			"ptype": "gxp_embedmapdialog",
@@ -433,7 +452,7 @@
             "maxFeatures": 100,
             "actionTarget": {
                 "target": "paneltbar",
-                "index": 20
+                "index": 14
             }
         }, {
 			"actions": ["-"], 
@@ -444,7 +463,7 @@
                 "outputFilename":"mapstore-print"
             },
             "ignoreLayers": "Google Hybrid,Bing Aerial,Google Terrain,Google Roadmap,Marker,GeoRefMarker",
-            "printService":"http://159.213.57.108/geoserver/pdf",
+            "printService":"http://159.213.57.108/geoserver_salvador/pdf",
             "legendPanelId":"legendPanel",
             "actionTarget":{
                 "target":"paneltbar",
@@ -514,10 +533,16 @@
 		  "showSelectionSummary": true,
 		  "actions": null,
 		  "id": "bboxquery",
+          "spatialSelectorFieldsetCollapsedFirst": true,    
+          "spatialSelectorFieldsetHidden": true,    
+          "spatialSelectorFieldsetCheckboxToggle": false,        
+          "attributeFieldsetCollapsedFirst": false,        
+          "attributeFieldsetHidden": false,      
+          "attributeFieldsetCheckboxToggle": false,    
           "filterLayer": false,
           "autoComplete": {
             "sources": ["salvador"],
-            "url": "http://159.213.57.108/geoserver/wps",
+            "url": "http://159.213.57.108/geoserver_salvador/wps",
             "pageSize": 10
           },
 		  "outputConfig":{
@@ -559,37 +584,6 @@
 		        },
 		        "polygon":{
 		            "xtype": "gxp_spatial_polygon_selector"
-		        },
-		        "geocoder":{
-		            "xtype": "gxp_spatial_geocoding_selector",
-		            "multipleSelection": false,
-		            "wfsBaseURL": "http://159.213.57.108/geoserver/wfs?",
-		            "geocoderTypeName": "salvador:comunidad_equipamiento_p",
-		            "geocoderTypeRecordModel":[
-		                {
-		                    "name":"id",
-		                    "mapping":"id_comunidad_equipamiento"
-		                },
-		                {
-		                    "name":"nombre",
-		                    "mapping":"properties.nombre"
-		                },
-		                {
-		                    "name":"usuario",
-		                    "mapping":"properties.usuario"
-		                },
-		                {
-		                    "name":"geometry",
-		                    "mapping":"geometry"
-		                }
-		            ],
-		            "geocoderTypeSortBy":null,
-		            "geocoderTypeQueriableAttributes":[
-		                "nombre", "usuario"
-		            ],
-		            "spatialOutputCRS": "EPSG:4326",
-		            "geocoderTypePageSize": 10,
-		            "zoomToCurrentExtent": false
 		        }
 	      }
     	}

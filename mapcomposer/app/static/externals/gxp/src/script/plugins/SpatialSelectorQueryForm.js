@@ -54,6 +54,8 @@ gxp.plugins.SpatialSelectorQueryForm = Ext.extend(gxp.plugins.QueryForm, {
     
     invalidRegexFieldMsgText: "One or more fields are incorrect!",    
     
+    selectedLayerFielsetText: "Capa seleccionada",
+    
     /** api: config[spatialSelectorsConfig]
      * ``Object``
      * Spatial selector pluggins configurations. 
@@ -441,7 +443,7 @@ gxp.plugins.SpatialSelectorQueryForm = Ext.extend(gxp.plugins.QueryForm, {
                 xtype: "fieldset",
                 id: "selectedLayerToQueryId",
                 ref: "selectedLayerToQuery",
-                title: "Layer Selezionato",
+                title: me.selectedLayerFielsetText,
                 checkboxToggle: false,
                 collapsed : false,
                 hidden: false,
