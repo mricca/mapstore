@@ -127,7 +127,7 @@
 				"name": "parcelario_d5",
 				"displayInLayerSwitcher":true,
 				"visibility": false,
-                "queryPanel": true
+                "queryPanel": false
 			},{
 				"source": "salvador",
                 "tiled": false,
@@ -136,7 +136,7 @@
 				"name": "parcelario_d6",
 				"displayInLayerSwitcher":true,
 				"visibility": false,
-                "queryPanel": true
+                "queryPanel": false
 			},{
 				"source": "salvador",
                 "tiled": false,
@@ -145,7 +145,7 @@
 				"name": "limites_zonas_d5",
 				"displayInLayerSwitcher":true,
 				"visibility": false,
-                "queryPanel": true
+                "queryPanel": false
 			},{
 				"source": "salvador",
                 "tiled": false,
@@ -154,7 +154,7 @@
 				"name": "limites_zonas_d6",
 				"displayInLayerSwitcher":true,
 				"visibility": false,
-                "queryPanel": true
+                "queryPanel": false
 			},{
 				"source": "salvador",
                 "tiled": false,
