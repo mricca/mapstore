@@ -431,6 +431,7 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
         for (var i = 0; i < numerositaClassi.length; i++) {
             classe_num = numerositaClassi[i].classe + 1;
             classe = numerositaClassi[i].ampiezzaMin + " | " + numerositaClassi[i].ampiezzaMax;
+            
             dataPoints[i] = {
                 uuidelemento: classe,
                 classe: classe_num,
@@ -968,11 +969,13 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
                 gridStore.loadData(dataCharts);
                 //Ext.getCmp('id_mapTab').setActiveTab('barchart_tab');
 
-                gridStore.each(function (records) {
+                var records = gridStore.first();
+                
+                //gridStore.each(function (records) {
                     //var grafico = mainChart;
                     var newTitle = this.chartID == "added_barChart" ? ' - Nuovo Dataset' : ' - Geobasi';
                     var selectionArea = records.get('vectorSelectionArea') != "false" ? " - Selezione: " + records.get('vectorSelectionArea') : "";
-                    var nullDateString = records.get('nullDate') == 'true' ? 'SI' : 'NO';
+                    var nullDateString = records.get('nullDate') ? 'SI' : 'NO';
                     mainChart.chartConfig.chart.backgroundColor = this.chartID == "added_barChart" ? '#F1F9C3' : '#FFFFFF';
                     //mainChart.chartConfig.title.text = this.chartID == "added_barChart" ? 'Istogramma Nuovo Dataset' : 'Istogramma Geobasi';
                     mainChart.chartConfig.subtitle.text = 'Totale valori: ' + records.get('totaleRiprova') + " - Numero Classi: " + records.get('num_classi') + " - Ampiezza Classi: " + records.get('ampiezza_classi') + ' - Tipo Matrice: ' + records.get('dmgeomattipo_descr').toUpperCase() + " - Periodo dal " + records.get('startYear') + " al " + records.get('endYear') + " - Valori senza data: " + nullDateString + selectionArea;;
@@ -982,7 +985,7 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
                     mainChart.chartConfig.yAxis.title.text = 'Frequenza';
                     var logText = records.get('log') === "1" ? "( scala logaritmica )" : "( valori reali )";
                     mainChart.chartConfig.xAxis[0].title.text = 'Elemento: ' + records.get('sigla') + " " + unitaMisura + ' - ' + logText;
-                },this);
+                //},this);
                 mainChart.draw();
 
                 this.appMask.hide();

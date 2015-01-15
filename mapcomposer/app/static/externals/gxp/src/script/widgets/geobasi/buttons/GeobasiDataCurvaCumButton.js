@@ -209,7 +209,7 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
         var newNumEle = num_ele <= 1000 ? num_ele : 1000
         for (var i = 0; i < newNumEle; i++) {
             dataPoints[i] = {
-                uuidelemento: cumulata[i].cumX,
+                uuidelemento: cumulata[i].cumX/*,
                 totaleRiprova: num_ele,
                 sigla: json.features[i].properties.sigla_el,
                 matrice: json.features[i].properties.tygeomat,
@@ -221,7 +221,7 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
                 endYear: this.form.output.getForm().getValues().endYear,
                 nullDate: this.form.output.getForm().getFieldValues().allownull,
                 vectorSelectionArea: this.vectorSelectionArea,                
-                jsonData: json
+                jsonData: json*/
             };
         }
 
@@ -538,21 +538,23 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
                 gridStore && mainChart.bindStore(gridStore);
                 gridStore.loadData(dataCharts);
                 //Ext.getCmp('id_mapTab').setActiveTab('boxplot_tab');
+                
+                var records = gridStore.first();
 
-                gridStore.each(function (records) {
-                    var selectionArea = records.get('vectorSelectionArea') != "false" ? " - Selezione: " + records.get('vectorSelectionArea') : "";
+                //gridStore.each(function (records) {
+                    /*var selectionArea = records.get('vectorSelectionArea') != "false" ? " - Selezione: " + records.get('vectorSelectionArea') : "";
                     mainChart.chartConfig.chart.backgroundColor = this.chartID == "added_curvaCum" ? '#F1F9C3' : '#FFFFFF';
                     mainChart.chartConfig.title.text = this.chartID == "added_curvaCum" ? 'Cumulata Nuovo Dataset' : 'Cumulata Geobasi';
                     mainChart.chartConfig.yAxis.plotLines[0].value = 0.95; //records.get('median');
                     mainChart.chartConfig.yAxis.plotLines[0].label.text = '95° percentile';
-                    var nullDateString = records.get('nullDate') == 'true' ? 'SI' : 'NO';
+                    var nullDateString = records.get('nullDate') ? 'SI' : 'NO';
                     //mainChart.chartConfig.series[1].visible = false;
                     mainChart.chartConfig.subtitle.text = 'Totale valori: ' + records.get('totaleRiprova') + ' - Tipo Matrice: ' + records.get('dmgeomattipo_descr').toUpperCase() + " - Periodo dal " + records.get('startYear') + " al " + records.get('endYear') + " - Valori senza data: " + nullDateString + selectionArea;;
                     var unitaMisura = records.get('matrice').substr(0, 2) === "01" ? "(mg/L)" : "(ppm)"
                     mainChart.chartConfig.yAxis.title.text = 'Elemento: ' + records.get('sigla') + " " + unitaMisura;
                     var logText = records.get('log') === "1" ? "( scala logaritmica )" : "( valori reali )";
-                    mainChart.chartConfig.xAxis[0].title.text = logText;
-                },this);
+                    mainChart.chartConfig.xAxis[0].title.text = logText;*/
+                //},this);
                 mainChart.draw();
 
                 this.appMask.hide();

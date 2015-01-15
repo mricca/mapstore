@@ -403,6 +403,7 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
             var obj = null;
 
             //dataPoints.data[i] = {
+            
             dataPoints[i] = {
                 experiment: metodoAnalitico === '-999' ? 'Metodo Analitico non specificato' : metodoAnalitico,
                 min: Math.round10(newMin, -5),
@@ -420,8 +421,10 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
                 endYear: this.form.output.getForm().getValues().endYear,
                 nullDate: this.form.output.getForm().getFieldValues().allownull,
                 vectorSelectionArea: this.vectorSelectionArea,
-                log: metodoElaborazione,
-                bbox: outlierBbox
+                log: metodoElaborazione
+                /*
+                ,
+                bbox: outlierBbox*/
             };
 
         }
@@ -763,7 +766,9 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
                 gridStore.loadData(dataCharts);
                 //Ext.getCmp('id_mapTab').setActiveTab('boxplot_tab');
 
-                gridStore.each(function (records) {
+                var records = gridStore.first();
+                
+                //gridStore.each(function (records) {
                     var selectionArea = records.get('vectorSelectionArea') != "false" ? " - Selezione: " + records.get('vectorSelectionArea') : "";
                     mainChart.chartConfig.chart.backgroundColor = this.chartID == "added_boxPlot" ? '#F1F9C3' : '#FFFFFF';
                     mainChart.chartConfig.title.text = this.chartID == "added_boxPlot" ? 'Box Plot Nuovo Dataset' : 'Box Plot Geobasi';
@@ -771,13 +776,13 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
                     mainChart.chartConfig.yAxis.plotLines[0].value = records.get('median');
                     mainChart.chartConfig.yAxis.plotLines[0].label.text = 'Mediana totale: ' + records.get('median');
                     mainChart.chartConfig.series[1].visible = false;
-                    var nullDateString = records.get('nullDate') == 'true' ? 'SI' : 'NO';
+                    var nullDateString = records.get('nullDate') ? 'SI' : 'NO';
                     mainChart.chartConfig.subtitle.text = 'Totale valori: ' + records.get('totaleRiprova') + ' - Tipo Matrice: ' + records.get('dmgeomattipo_descr').toUpperCase() + " - Periodo dal " + records.get('startYear') + " al " + records.get('endYear') + " - Valori senza data: " + nullDateString + selectionArea;
                     var unitaMisura = records.get('matrice').substr(0, 2) === "01" ? "(mg/L)" : "(ppm)"
                     mainChart.chartConfig.yAxis.title.text = 'Elemento: ' + records.get('sigla') + " " + unitaMisura;
                     var logText = records.get('log') === "1" ? "( scala logaritmica )" : "( valori reali )";
                     mainChart.chartConfig.xAxis.title.text = 'Metodo Analitico - ' + logText;
-                },this);
+                //},this);
                 mainChart.draw();
 
                 this.appMask.hide();
