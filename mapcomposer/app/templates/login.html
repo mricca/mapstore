@@ -1,5 +1,22 @@
 <% extends ./base.html %>
 <% subskin extrahead %>
+
+	<!--jquery and highcharts lib>
+	<link href='http://fonts.googleapis.com/css?family=Squada+One' rel='stylesheet' type='text/css'> 
+    <script type="text/javascript" src="script/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="script/Highcharts401/js/highcharts.js"></script>
+    <script type="text/javascript" src="script/Highcharts401/js/highcharts-more.js"></script>
+    <script type="text/javascript" src="script/Highcharts401/js/modules/funnel.js"></script>
+    <script type="text/javascript" src="script/Highcharts401/js/modules/exporting.js"></script-->
+    
+    <script type="text/javascript" src="script/jquery.min.js"></script>
+    <script type="text/javascript" src="script/highcharts.js"></script>
+
+	<script type="text/javascript" src="script/app.js"></script>
+
+    <!-- HighStock resources -->
+    <!--script type="text/javascript" src="script/HighStockExt.js"></script--> 
+
     <!-- OpenLayers resources -->
     <link rel="stylesheet" type="text/css" href="externals/openlayers/theme/default/style.css">
 
@@ -38,17 +55,17 @@
 
     <script type="text/javascript" src="script/gxp.js"></script> 
 
-    <!--script type="text/javascript" src="script/proj4js.js"></script-->
-	<!--script type="text/javascript" src="script/projCodes.js"></script-->
+    <script type="text/javascript" src="script/proj4js.js"></script>
+	<script type="text/javascript" src="script/projCodes.js"></script>
 
     <!-- GeoExplorer resources -->
     <link rel="stylesheet" type="text/css" href="theme/app/geoexplorer.css" />
     <link rel="stylesheet" type="text/css" href="theme/app/mapstore.css" />
-   
 	
 	<!-- Advanced Scalebar CSS -->
-	<!--link rel="stylesheet" type="text/css" href="theme/app/scalebar-fat.css" /-->
-    <link rel="stylesheet" type="text/css" href="theme/app/scalebar-thin.css" />
+
+	<link rel="stylesheet" type="text/css" href="theme/app/scalebar-fat.css">
+    <!--link rel="stylesheet" type="text/css" href="theme/app/scalebar-thin.css"-->
 	
     <!--[if IE]><link rel="stylesheet" type="text/css" href="theme/app/ie.css"/><![endif]-->        
 
@@ -60,8 +77,14 @@
     <script type="text/javascript" src="auth/base64.js"></script>
     <script type="text/javascript" src="script/metadataexplorer.js"></script>
     
+    <!-- highcharts resources -->
+    <!-- script type="text/javascript" src="script/jquery.min.js"></script -->
+    <!-- script type="text/javascript" src="script/highcharts.js"></script -->
+	
     <!-- geocoding data  -->
     <script type="text/javascript" src="data/georeferences.js"></script>
+    <!-- elements data  -->
+    <script type="text/javascript" src="data/elementsData.js"></script>    
      <!-- QR Code -->
     <script type="text/javascript" src="script/qrcodejs.js"></script>
     <!-- common data  -->
@@ -397,7 +420,8 @@
                     scaleOverlayUnits: serverConfig.scaleOverlayUnits,
                     georeferences: georeferences_data,
                     map: serverConfig.map,
-                    customTools: serverConfig.customTools
+                    customTools: serverConfig.customTools,
+	                elementsData: elementsData
                 }, mapIdentifier, authorization, fullScreen, templateId);   
                 
                 app.on({
