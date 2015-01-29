@@ -22,6 +22,11 @@ var elementsData = {
             "http://www506.regione.toscana.it/schede_elementi/Boro.pdf",
             "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_b_edit.pdf"
         ],[
+            "Cadmio",
+            "Cd",
+            "http://www506.regione.toscana.it/schede_elementi/Cadmio.pdf",
+            "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_cd_edit.pdf"
+        ],[
             "Cobalto",
             "Co",
             "http://www506.regione.toscana.it/schede_elementi/Cobalto.pdf",
