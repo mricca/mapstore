@@ -53,7 +53,7 @@ GeoExt.Lang.add("it", {
     "gxp.plugins.AddLayers.prototype": {
         addActionMenuText: "Aggiungi livello",
         addActionTip: "Aggiungi livello",
-        addServerText: "Aggiungi un nuovo Server",
+        addServerText: "Aggiungi Server",
         addButtonText: "Aggiungi livelli",
         untitledText: "Senza Titolo",
         addLayerSourceErrorText: "Errore nel recuperare le WMS capabilities ({msg}).\nSi prega di controllare l'URL e di riprovare ancora.",
@@ -244,11 +244,37 @@ GeoExt.Lang.add("it", {
     },
 
     "gxp.NewSourceWindow.prototype": {
-        title: "Aggiungi nuovo Server...",
+        title: "Aggiungi Server",
         cancelText: "Cancella",
         addServerText: "Aggiungi Server",
         invalidURLText: "Inserisci un URL valido come WMS endpoint (e.g. http://example.com/geoserver/wms)",
-        contactingServerText: "Si cerca di contattare il Server..."
+        contactingServerText: "Si cerca di contattare il Server...",
+		sourceTypeLabel: "Tipo",
+		advancedOptionsTitle: "Opzioni Avanzate",
+		generalTabTitle: "Generale",
+		titleLabel: "Titolo",
+		versionLabel: "Versione (*)",
+		authParamLabel: "Auth Param",
+		minXLabel: "MinX",
+		minYLabel: "MinY",
+		maxXLabel: "MaxX",
+		maxYLabel: "MaxY",
+		paramsTabTitle: "Parametri",
+		cacheTabTitle: "Cache",
+		addParamButtonText: "Aggiungi",
+		propNameLabel: "Nome",
+		propValueLabel: "Valore",
+		paramsWinTitle: "Opzioni Parametri",
+		okButtonText: "Conferma",
+		addPropDialogTitle: "Aggiungi Proprietà",
+		addPropDialogMsg: "Il nome della proprietà o il suo valore non sono validi",
+		cancelButtonText: "Cancella",
+		removeButtonText: "Rimuovi",
+		removePropDialogTitle: "Rimuovi Proprietà",
+		removePropDialogMsg: "questa proprietà non può essere rimossa: ",
+		newSourceDialogTitle: "Nuova Sorgente",
+		newSourceDialogMsg: "Alcune proprietà della sorgente selezionatasono invalide.",
+		mandatoryLabelText: "Tutti i campi contrassegnati con (*) sono obbligatori.",
     },
 
     "gxp.ScaleOverlay.prototype": { 
@@ -633,7 +659,8 @@ GeoExt.Lang.add("it", {
 		previewText: "Anteprima",				
 		embedCodeTitle: "Codice da Incorporare",
 		embedURL: "URL diretto",		
-		urlLabel: "URL",
+		embedUrlLabel: "EMBED",
+		composerUrlLabel: "FULL",
 		showMapTooltip: "Mostra in una nuova finestra",
         loadMapText: "Carica Mappa",
         downloadAppText: "Installa Applicazione Android",
@@ -829,7 +856,7 @@ GeoExt.Lang.add("it", {
         nextLabel: "Avanti",
         nextTooltip: "Avanza di uno step",
         resetLabel: "Reset",
-        resetTooltip: "Stazioni ultimo aggiornamento",
+        resetTooltip: "Tutto l'intervallo",
         loopLabel: "Loop",
         loopTooltip: "Animazione continua",
         normalTooltip: "Ritorno alla riproduzione normale",
@@ -860,5 +887,9 @@ GeoExt.Lang.add("it", {
         daysText: 'Giorni', 
         monthsText: 'Mesi', 
         yearsText: 'Anni'
-    }  
+    },
+	
+	"gxp.plugins.StaticPage.prototype": {
+        tabTitle: "Pagina Statica"
+    }
 });

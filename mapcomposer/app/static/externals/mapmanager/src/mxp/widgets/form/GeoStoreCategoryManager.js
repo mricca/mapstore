@@ -41,11 +41,16 @@ mxp.widgets.GeoStoreCategoryManager = Ext.extend(Ext.Panel, {
      *  The category to browse
      */
     category: "MAP",
-    /** api: config[leftPanelWidth]
+    /** api: config[leftPanelWidth] 
      *  ``String``
      *  Width of the category list
      */
     leftPanelWidth: 430,
+    /** api: config[generalPanelHeight] generalPanelHeight
+     *  ``integer``
+     *  size of the panel of general
+     */
+    
     /** api: config[iconCls]
      *  ``String``
      *  Icon for the tool
@@ -62,7 +67,8 @@ mxp.widgets.GeoStoreCategoryManager = Ext.extend(Ext.Panel, {
                 '</div>',
             '</div>',
         '</tpl>'],
-
+	titleConfirmDeleteMsg: "Confirm delete resource",
+    textConfirmDeleteMsg: "Are you sure you want to delete this resource?",
     initComponent: function() {
         var me = this;
 
@@ -155,7 +161,11 @@ mxp.widgets.GeoStoreCategoryManager = Ext.extend(Ext.Panel, {
                 scope: this,
                 //create a new editor
                 handler: function(b) {
-                    //insert category in the recordType
+        			Ext.Msg.confirm(
+                                        this.titleConfirmDeleteMsg,
+                                        this.textConfirmDeleteMsg,
+                                        function(btn) {
+                                            if(btn=='yes') {    //insert category in the recordType
                     var dataView = b.refOwner.dataView;
                     var selection = dataView.getSelectedNodes();
                     if(selection.length > 0) {
@@ -164,6 +174,8 @@ mxp.widgets.GeoStoreCategoryManager = Ext.extend(Ext.Panel, {
                             this.deleteResource(records[0].get('id'));
                         }
                     }
+                                            }									
+                                        },this);
 
                 }
             }],
@@ -213,6 +225,7 @@ mxp.widgets.GeoStoreCategoryManager = Ext.extend(Ext.Panel, {
             geoStoreBase: this.geoStoreBase,
             resourceEditor: this.resourceEditor,
             attributeFields: this.attributeFields,
+            generalPanelHeight: this.generalPanelHeight,
             hideId:this.hideId,
             auth: this.auth
         });

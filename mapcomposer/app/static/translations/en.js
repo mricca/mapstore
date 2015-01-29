@@ -221,11 +221,37 @@ GeoExt.Lang.add("en", {
     },
 
     "gxp.NewSourceWindow.prototype": {
-        title: "Add New Server...",
+        title: "Add Server",
         cancelText: "Cancel",
         addServerText: "Add Server",
         invalidURLText: "Enter a valid URL to a WMS endpoint (e.g. http://example.com/geoserver/wms)",
-        contactingServerText: "Contacting Server..."
+        contactingServerText: "Contacting Server...",
+		sourceTypeLabel: "Type",
+		advancedOptionsTitle: "Advanced Options",
+		generalTabTitle: "General",
+		titleLabel: "Title",
+		versionLabel: "Version (*)",
+		authParamLabel: "Auth Param",
+		minXLabel: "MinX",
+		minYLabel: "MinY",
+		maxXLabel: "MaxX",
+		maxYLabel: "MaxY",
+		paramsTabTitle: "Params",
+		cacheTabTitle: "Cache",
+		addParamButtonText: "Add",
+		propNameLabel: "Name",
+		propValueLabel: "Value",
+		paramsWinTitle: "Params Options",
+		okButtonText: "Ok",
+		addPropDialogTitle: "Add Property",
+		addPropDialogMsg: "Property name or his value are not valid",
+		cancelButtonText: "Cancel",
+		removeButtonText: "Remove",
+		removePropDialogTitle: "Remove Property",
+		removePropDialogMsg: "This property cannot be removed: ",
+		newSourceDialogTitle: "New Source",
+		newSourceDialogMsg: "Some source properties are invalid.",
+		mandatoryLabelText: "All fields marked with (*) are mandatory."
     },
 
     "gxp.ScaleOverlay.prototype": { 
@@ -608,7 +634,8 @@ GeoExt.Lang.add("en", {
 		previewText: "Preview",				
 		embedCodeTitle: "Embed Code",
 		embedURL: "Direct URL",		
-		urlLabel: "URL",
+		embedUrlLabel: "EMBED",
+		composerUrlLabel: "FULL",
 		showMapTooltip: "Show in a new Window",
         loadMapText: "Load this Map (install application first)",
         downloadAppText: "Install Application",
@@ -814,7 +841,7 @@ GeoExt.Lang.add("en", {
         nextLabel: "Next",
         nextTooltip: "Advance One Frame",
         resetLabel: "Reset",
-        resetTooltip: "Weather Stations last update",
+        resetTooltip: "Whole interval",
         loopLabel: "Loop",
         loopTooltip: "Continously loop the animation",
         normalTooltip: "Return to normal playback",
@@ -845,5 +872,9 @@ GeoExt.Lang.add("en", {
         daysText: 'Days', 
         monthsText: 'Months', 
         yearsText: 'Years'        
-    } 
+    },
+	
+	"gxp.plugins.StaticPage.prototype": {
+        tabTitle: "Static Page"
+    }
 });
