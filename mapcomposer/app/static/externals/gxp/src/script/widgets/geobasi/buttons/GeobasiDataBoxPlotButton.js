@@ -421,10 +421,8 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
                 endYear: this.form.output.getForm().getValues().endYear,
                 nullDate: this.form.output.getForm().getFieldValues().allownull,
                 vectorSelectionArea: this.vectorSelectionArea,
-                log: metodoElaborazione
-                /*
-                ,
-                bbox: outlierBbox*/
+                log: metodoElaborazione,
+                bbox: outlierBbox
             };
 
         }

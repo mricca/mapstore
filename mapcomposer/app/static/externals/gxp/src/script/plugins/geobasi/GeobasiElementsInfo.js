@@ -56,6 +56,8 @@ gxp.plugins.geobasi.GeobasiElementsInfo = Ext.extend(gxp.plugins.Tool, {
     siglaGridHeader: 'Sigla elemento',
     schedaGridHeader: 'Scheda',
     schedaGridHeaderTooltip: 'Visualizza scheda elemento',
+    schedaWaterGridHeader: 'Stream Water',
+    schedaWaterGridHeaderTooltip: 'Visualizza Scheda Stream Water',
     
     /** END i18n*/
     
@@ -91,7 +93,8 @@ gxp.plugins.geobasi.GeobasiElementsInfo = Ext.extend(gxp.plugins.Tool, {
 		var elementsInformationDataReader = new Ext.data.ArrayReader({}, [
 			   {name: 'elementsName', type: 'string'},
                {name: 'elementsSigla', type: 'string'},
-               {name: 'link', type: 'string'}			   
+               {name: 'link', type: 'string'},
+               {name: 'link_stream', type: 'string'}			   
 		]);
 
         this.elementsInformationStore = new Ext.data.Store({
@@ -112,10 +115,12 @@ gxp.plugins.geobasi.GeobasiElementsInfo = Ext.extend(gxp.plugins.Tool, {
                       {
                         header: this.elementGridHeader,
                         sortable : true,
+                        width: 50,
                         dataIndex: 'elementsName'
                       },{
                         header: this.siglaGridHeader,
                         sortable : true,
+                        width: 40,
                         dataIndex: 'elementsSigla'
                       },{
                         xtype: 'actioncolumn',
@@ -137,6 +142,28 @@ gxp.plugins.geobasi.GeobasiElementsInfo = Ext.extend(gxp.plugins.Tool, {
                                     var link = record.get("link");
                                     var title = record.get("elementsName");
                                     this.target.viewElementsInfo(link, this.schedaGridHeader + " - " + title);
+                                }
+                            }]
+                      },{
+                        xtype: 'actioncolumn',
+                        width: 50,
+                        header: this.schedaWaterGridHeader,
+						listeners: {
+							scope: this,
+							click: function(column, grd, row, e){
+								grd.getSelectionModel().selectRow(row);
+							}
+						},
+						items: [{
+                            tooltip: this.schedaWaterGridHeaderTooltip,
+                            icon: this.buttonLinkIconPath,
+                            scope: this,
+                            handler: function(gpanel, rowIndex, colIndex) {
+                                    var store = gpanel.getStore();		
+                                    var record = store.getAt(rowIndex);
+                                    var link = record.get("link_stream");
+                                    var title = record.get("elementsName");
+                                    this.target.viewElementsInfo(link, this.schedaWaterGridHeader + " - " + title);
                                 }
                             }]
                       }

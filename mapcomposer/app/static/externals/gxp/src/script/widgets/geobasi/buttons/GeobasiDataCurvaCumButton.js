@@ -206,10 +206,11 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
 
         var dataPoints = [];
 
-        var newNumEle = num_ele <= 1000 ? num_ele : 1000
+        var newNumEle = num_ele; //num_ele <= 1000 ? num_ele : 1000;
+        
         for (var i = 0; i < newNumEle; i++) {
             dataPoints[i] = {
-                uuidelemento: cumulata[i].cumX/*,
+                uuidelemento: cumulata[i].cumX,
                 totaleRiprova: num_ele,
                 sigla: json.features[i].properties.sigla_el,
                 matrice: json.features[i].properties.tygeomat,
@@ -221,7 +222,7 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
                 endYear: this.form.output.getForm().getValues().endYear,
                 nullDate: this.form.output.getForm().getFieldValues().allownull,
                 vectorSelectionArea: this.vectorSelectionArea,                
-                jsonData: json*/
+                jsonData: json
             };
         }
 
@@ -371,13 +372,13 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
 
                 var mainChart = Ext4.getCmp('geobasi_curvacum' + "_" + this.chartID);
 
-                var gridStore = Ext4.data.StoreManager.lookup("BarChartStore");
+                var gridStore = Ext4.data.StoreManager.lookup("MatrixStore");
 
                 if (!mainChart) {
                     var hcConfig = {
                         series: [{
-                            type: 'scatter',
-                            lineWidth: 1,
+                            type: 'line',
+                            lineWidth: 3,
                             //xField: 'uuidelemento',
                             turboThreshold: 10000, // to accept point object configuration        
                             yField: 'uuidelemento',
@@ -386,6 +387,8 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
                         height: 500,
                         width: 650,
                         initAnimAfterLoad: true,
+                        debug: false,
+                        lineShift: true,
                         chartConfig: {
                             chart: {
                                 marginRight: 130,
@@ -436,7 +439,7 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
                                         }
                                     }
                                 }]
-                            },
+                            },/*
                             tooltip: {
                                 formatter: function () {
                                     if (this.point.data) {
@@ -446,7 +449,7 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
                                     }
                                 }
 
-                            },
+                            },*/
                             legend: {
                                 layout: 'vertical',
                                 align: 'right',
@@ -542,7 +545,7 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
                 var records = gridStore.first();
 
                 //gridStore.each(function (records) {
-                    /*var selectionArea = records.get('vectorSelectionArea') != "false" ? " - Selezione: " + records.get('vectorSelectionArea') : "";
+                    var selectionArea = records.get('vectorSelectionArea') != "false" ? " - Selezione: " + records.get('vectorSelectionArea') : "";
                     mainChart.chartConfig.chart.backgroundColor = this.chartID == "added_curvaCum" ? '#F1F9C3' : '#FFFFFF';
                     mainChart.chartConfig.title.text = this.chartID == "added_curvaCum" ? 'Cumulata Nuovo Dataset' : 'Cumulata Geobasi';
                     mainChart.chartConfig.yAxis.plotLines[0].value = 0.95; //records.get('median');
@@ -553,7 +556,7 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
                     var unitaMisura = records.get('matrice').substr(0, 2) === "01" ? "(mg/L)" : "(ppm)"
                     mainChart.chartConfig.yAxis.title.text = 'Elemento: ' + records.get('sigla') + " " + unitaMisura;
                     var logText = records.get('log') === "1" ? "( scala logaritmica )" : "( valori reali )";
-                    mainChart.chartConfig.xAxis[0].title.text = logText;*/
+                    mainChart.chartConfig.xAxis[0].title.text = logText;
                 //},this);
                 mainChart.draw();
 

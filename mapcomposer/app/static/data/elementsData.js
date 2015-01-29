@@ -1,14 +1,51 @@
 
 var elementsData = {		
     "elements":[
-        ["Alluminio", "A", "http://www506.regione.toscana.it/schede_elementi/Alluminio.pdf"],
-        ["Arsenico", "As", "http://www506.regione.toscana.it/schede_elementi/Arsenico.pdf"],
-        ["Bario", "Ba", "http://www506.regione.toscana.it/schede_elementi/Bario.pdf"],
-        ["Boro", "B", "http://www506.regione.toscana.it/schede_elementi/Boro.pdf"],
-        ["Cobalto", "Co", "http://www506.regione.toscana.it/schede_elementi/Cobalto.pdf"],
-        ["Fluoro", "F", "http://www506.regione.toscana.it/schede_elementi/Fluoro.pdf"],
-        ["Iodio", "I", "http://www506.regione.toscana.it/schede_elementi/Iodio.pdf"],
-        ["Litio", "Li", "http://www506.regione.toscana.it/schede_elementi/Litio.pdf"],
-        ["Selenio", "Se", "http://www506.regione.toscana.it/schede_elementi/Selenio.pdf"]
+        [
+            "Alluminio",
+            "Al",
+            "http://www506.regione.toscana.it/schede_elementi/Alluminio.pdf",
+            "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_al_edit.pdf"
+        ],[
+            "Arsenico",
+            "As",
+            "http://www506.regione.toscana.it/schede_elementi/Arsenico.pdf",
+            "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_as_edit.pdf"
+        ],[
+            "Bario",
+            "Ba",
+            "http://www506.regione.toscana.it/schede_elementi/Bario.pdf",
+            "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_ba_edit.pdf"
+        ],[
+            "Boro",
+            "B",
+            "http://www506.regione.toscana.it/schede_elementi/Boro.pdf",
+            "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_b_edit.pdf"
+        ],[
+            "Cobalto",
+            "Co",
+            "http://www506.regione.toscana.it/schede_elementi/Cobalto.pdf",
+            "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_co_edit.pdf"
+        ],[
+            "Fluoro",
+            "F",
+            "http://www506.regione.toscana.it/schede_elementi/Fluoro.pdf",
+            "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_ic_f_edit.pdf"
+        ],[
+            "Iodio",
+            "I",
+            "http://www506.regione.toscana.it/schede_elementi/Iodio.pdf",
+            "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_i_edit.pdf"
+        ],[
+            "Litio",
+            "Li",
+            "http://www506.regione.toscana.it/schede_elementi/Litio.pdf",
+            "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_li_edit.pdf"
+        ],[
+            "Selenio",
+            "Se",
+            "http://www506.regione.toscana.it/schede_elementi/Selenio.pdf",
+            "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_se_edit.pdf"
+        ]
     ]
 };

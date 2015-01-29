@@ -1,20 +1,4 @@
 {
-	"header": {
-		"html": ["<div align='center' style='background-image:url(theme/app/img/banner/bgimg1.jpg);background-repeat: repeat;width:100%;height:100%;'><a target='_blank'><img src='theme/app/img/banner/geobasi_titolo.png' style='float:left;position:absolute;top:10px;left:20px;z-index: 10'/></a><img src='theme/app/img/banner/header_geobasi_Loghi_fin3.png' style='float:right;position:absolute;top:0px;right:0px;'/></div>"],
-		"container": {
-			"border": false,
-			"header": false,
-			"collapsible": true,
-			"collapseMode": "mini",
-			"hideCollapseTool": true,
-			"split": true,
-			"animCollapse": false,
-			"collapsed": false,
-			"minHeight": 100,
-			"maxHeight": 100,
-			"height": 100
-		}
-	},
     "actionToolScale": "medium",
 	"scaleOverlayMode": "advanced",
 	"tab": true,
@@ -157,11 +141,11 @@
 		"projection": "EPSG:3003",
 		"displayProjection": "EPSG:3003",
 		"units": "m",
-		"center": [1665000,
-		4807000],
-		"maxResolution": 1000,
-		"zoom": 1,
-		"numZoomLevels": 14,
+		"center": [1671579.00,
+		4803992.00],
+		"maxResolution": 10000,
+		"zoom": 5,
+		"numZoomLevels": 15,
 		"maxExtent": [708923.00,
 		4290035.00,
 		2631134.00,
@@ -412,7 +396,7 @@
 	},
 	"customPanels": [{
 		"xtype": "panel",
-		"title": "PANNELLO VISUALIZZAZIONE DATI GEOGRAFICI",
+		"title": "VISUALIZZAZIONE DATI GEOGRAFICI",
 		"border": false,
 		"split": true,
 		"id": "east",
@@ -452,7 +436,7 @@
 	},
 	{
 		"xtype": "panel",
-		"title": "PANNELLO SELEZIONE DATI GEOCHIMICI",
+		"title": "SELEZIONE DATI GEOCHIMICI",
 		"border": false,
 		"split": true,
 		"id": "west",
@@ -571,5 +555,16 @@
 			"itemId": "wfsrtsearchID"
 		},
 		"outputTarget": "eastTabPanel"
-	}]
+	}, {
+        "actions": ["->"], 
+        "actionTarget": "paneltbar"
+    }, {
+        "ptype": "gxp_help",
+        "actionTarget": "paneltbar",
+        "text": "Help",
+        "tooltip":"Guida GeoBasi",
+        "index": 24,
+        "showOnStartup": false,
+        "fileDocURL": "GeoBasi-Help.pdf"
+    }]
 }
