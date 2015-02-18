@@ -476,40 +476,31 @@
 			"target": "paneltbar",
 			"index": 13
 		}
-	},{
-        "ptype":"gxp_nominatimgeocoder",
-        "outputConfig":{
-            "emptyText":"Nominatim GeoCoder",
-             "vendorOptions":{
-                "bounded":1,
-                "countrycodes":"it",
-                "addressdetails":0
-            },
-            "boundOption":"max"
-        },
-        "outputTarget":"paneltbar",
-        "index":24
-    },{
+	}, {
+        "actions": ["-"], 
+        "actionTarget": "paneltbar"
+    }, {
+        "ptype": "gxp_geolocationmenu",
+        "actionTarget": {"target": "paneltbar", "index": 24},
+        "toggleGroup": "toolGroup"
+	}, {
 		"ptype": "gxp_layerproperties",
 		"id": "layerproperties_plugin",
 		"geobasiChart": true,
 		"actionTarget": ["tree.tbar",
 		"layertree.contextMenu"]
-	},
-	{
+	}, {
 		"ptype": "gxp_mouseposition",
 		"displayProjectionCode": "EPSG:3003",
 		"customCss": "font-weight: bold; text-shadow: 1px 0px 0px #FAFAFA, 1px 1px 0px #FAFAFA, 0px 1px 0px #FAFAFA,-1px 1px 0px #FAFAFA, -1px 0px 0px #FAFAFA, -1px -1px 0px #FAFAFA, 0px -1px 0px #FAFAFA, 1px -1px 0px #FAFAFA, 1px 4px 5px #aeaeae;color:#050505"
-	},
-	{
+	}, {
 		"ptype": "gxp_addlayer",
 		"showCapabilitiesGrid": true,
 		"useEvents": false,
 		"showReport": "never",
 		"directAddLayer": false,
 		"id": "addlayer"
-	},
-	{
+	}, {
 		"ptype": "gxp_maingeobasi",
 		"outputConfig": {
 			"id": "westTab",
@@ -517,8 +508,7 @@
 			"startTab": "geobasidata"
 		},
 		"outputTarget": "west"
-	},
-	{
+	}, {
 		"ptype": "gxp_geobasidata",
 		"id": "geobasidataToolId",
 		"dataUrl": "http://www506.regione.toscana.it/geoserver/ows",
@@ -537,18 +527,15 @@
 			}
 		},
 		"outputTarget": "westTab"
-	},
-	{
+	}, {
 		"ptype": "gxp_geobasielementsinfo",
 		"id": "geobasielementsinfoToolId",
 		"outputTarget": "westTab"
-	},
-	{
+	}, {
 		"ptype": "gxp_geobasiinfo",
 		"id": "geobasiinfoToolId",
 		"outputTarget": "westTab"
-	},
-	{
+	}, {
 		"ptype": "gxp_wfsrtsearch",
 		"id": "wfsrtsearch",
 		"outputConfig": {
