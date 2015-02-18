@@ -212,10 +212,10 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
         // Calcolo mediana per l'intero set di valori (per tutti i metodi analitici)
         switch (metodoElaborazione) {
         case "1":
-            medianaBoxPlot = (arrLength % 2 == 0) ? (Math.log(json.features[((arrLength) / 2) - 1].properties.valore) + Math.log(json.features[((arrLength + 2) / 2) - 1].properties.valore)) / 2 : Math.log(json.features[((arrLength + 1) / 2) - 1].properties.valore);
+            medianaBoxPlot = (arrLength % 2 == 0) ? (Math.log(json.features[((arrLength) / 2) - 1].properties.value) + Math.log(json.features[((arrLength + 2) / 2) - 1].properties.value)) / 2 : Math.log(json.features[((arrLength + 1) / 2) - 1].properties.value);
             break;
         case "2":
-            medianaBoxPlot = (arrLength % 2 == 0) ? (json.features[((arrLength) / 2) - 1].properties.valore + json.features[((arrLength + 2) / 2) - 1].properties.valore) / 2 : json.features[((arrLength + 1) / 2) - 1].properties.valore;
+            medianaBoxPlot = (arrLength % 2 == 0) ? (json.features[((arrLength) / 2) - 1].properties.value + json.features[((arrLength + 2) / 2) - 1].properties.value) / 2 : json.features[((arrLength + 1) / 2) - 1].properties.value;
             break;
         }
 
@@ -254,7 +254,7 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
 
         // usage
         var uniqueTipometa = uniqueBy(json.features, function (x) {
-            return x.properties.tipometa;
+            return x.properties.method;
         });
 
         for (var i = 0; i < uniqueTipometa.length; i++) {
@@ -267,11 +267,11 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
             var thirdPercentile;
 
             for (var c = 0; c < arrLength; c++) {
-                json.features[c].properties.tipometa = json.features[c].properties.tipometa === null ? '-999' : json.features[c].properties.tipometa;
-                if (metodoAnalitico === json.features[c].properties.tipometa) {
+                json.features[c].properties.method = json.features[c].properties.method === null ? '-999' : json.features[c].properties.method;
+                if (metodoAnalitico === json.features[c].properties.method) {
                     myValues[b] = {
-                        metodo: json.features[c].properties.tipometa,
-                        valore: metodoElaborazione == '1' ? Math.log(json.features[c].properties.valore) : json.features[c].properties.valore,
+                        metodo: json.features[c].properties.method,
+                        valore: metodoElaborazione == '1' ? Math.log(json.features[c].properties.value) : json.features[c].properties.value,
                         bbox: json.features[c].properties.bbox
                     };
                     b++;
@@ -413,9 +413,9 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
                 max: Math.round10(newMax, -5),
                 outlier: outlier,
                 median: Math.round10(medianaBoxPlot, -5),
-                sigla: json.features[0].properties.sigla_el,
+                sigla: json.features[0].properties.element,
                 totaleRiprova: arrLength,
-                matrice: json.features[0].properties.tygeomat,
+                matrice: json.features[0].properties.matrix_cod,
                 dmgeomattipo_descr: this.form.output.getForm().getValues().tipo_matrice,
                 startYear: this.form.output.getForm().getValues().startYear,
                 endYear: this.form.output.getForm().getValues().endYear,
@@ -513,8 +513,8 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
                 filter: this.xml,
                 typeName: this.layer,
                 outputFormat: "json",
-                propertyName: "fonte,codsito,data_aaaa,data_mm,data_gg,monitoraggio,dmgeomattipo_descr,tygeomat,toponimo,foglioigm50k,codcomune,sigla_el,valore,tipometa,geom",
-                sortBy: "valore"
+                propertyName: "source,site_id,year,month,day,monitoring,matrix,matrix_cod,toponym,municipal_id,element,value,method,geom",
+                sortBy: "value"
             } : {
                 service: "WFS",
                 version: "1.1.0",
@@ -523,8 +523,8 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
                 filter: this.xml,
                 typeName: this.layer,
                 outputFormat: "json",
-                propertyName: "fonte,codsito,data_aaaa,data_mm,data_gg,monitoraggio,dmgeomattipo_descr,tygeomat,toponimo,foglioigm50k,codcomune,sigla_el,valore,tipometa,geom",
-                sortBy: "valore",
+                propertyName: "source,site_id,year,month,day,monitoring,matrix,matrix_cod,toponym,municipal_id,element,value,method,geom",
+                sortBy: "value",
                 viewparams: viewparams2
             },
             success: function (result, request) {
@@ -875,7 +875,7 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
 
                         var allowNullFilter = new OpenLayers.Filter.Comparison({
                             type: OpenLayers.Filter.Comparison.IS_NULL,
-                            property: "data_aaaa",
+                            property: "year",
                             value: null
                         });
 
@@ -899,7 +899,7 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
                             filters: [
                                 new OpenLayers.Filter.Comparison({
                                     type: OpenLayers.Filter.Comparison.BETWEEN,
-                                    property: "data_aaaa",
+                                    property: "year",
                                     lowerBoundary: startDate,
                                     upperBoundary: endDate
                                 })
@@ -911,7 +911,7 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
                             filters: [
                                 new OpenLayers.Filter.Comparison({
                                     type: OpenLayers.Filter.Comparison.BETWEEN,
-                                    property: "data_aaaa",
+                                    property: "year",
                                     lowerBoundary: startDate,
                                     upperBoundary: endDate
                                 })
@@ -1015,7 +1015,7 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
         } else {
             var allowNullFilter = new OpenLayers.Filter.Comparison({
                 type: OpenLayers.Filter.Comparison.IS_NULL,
-                property: "data_aaaa",
+                property: "year",
                 value: null
             });
 
@@ -1024,7 +1024,7 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
                 filters: [
                     new OpenLayers.Filter.Comparison({
                         type: OpenLayers.Filter.Comparison.BETWEEN,
-                        property: "data_aaaa",
+                        property: "year",
                         lowerBoundary: startDate,
                         upperBoundary: endDate
                     })
@@ -1036,7 +1036,7 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
                 filters: [
                     new OpenLayers.Filter.Comparison({
                         type: OpenLayers.Filter.Comparison.BETWEEN,
-                        property: "data_aaaa",
+                        property: "year",
                         lowerBoundary: startDate,
                         upperBoundary: endDate
                     })

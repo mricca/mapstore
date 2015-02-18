@@ -484,8 +484,8 @@ gxp.widgets.button.GeobasiDataDownloadButton = Ext.extend(Ext.Button, {
         var typeName = this.tipometaStatQuery ? "&typeName=" + this.barchart_layer : "&typeName=" + this.boxplot_layer;
         var outputFormat = "&outputformat=CSV";
         var exception = "&exceptions=application/json";
-        var propertyName = "&propertyName=fonte,codsito,data_aaaa,data_mm,data_gg,monitoraggio,dmgeomattipo_descr,tygeomat,toponimo,foglioigm50k,codcomune,sigla_el,valore,tipometa,geom";
-        var sortBy = "&sortBy=valore";
+        var propertyName = "&propertyName=source,site_id,year,month,day,monitoring,matrix,matrix_cod,toponym,municipal_id,element,value,method,x_coord,y_coord";
+        var sortBy = "&sortBy=value";
         this.viewParams = "&viewparams="+viewparams2;
         
         //this.stringURLTot = url + service + version + geometryName + request + filter + typeName + outputFormat + propertyName + sortBy + viewParams;
@@ -590,7 +590,7 @@ gxp.widgets.button.GeobasiDataDownloadButton = Ext.extend(Ext.Button, {
 
                         var allowNullFilter = new OpenLayers.Filter.Comparison({
                             type: OpenLayers.Filter.Comparison.IS_NULL,
-                            property: "data_aaaa",
+                            property: "year",
                             value: null
                         });
 
@@ -614,7 +614,7 @@ gxp.widgets.button.GeobasiDataDownloadButton = Ext.extend(Ext.Button, {
                             filters: [
                                 new OpenLayers.Filter.Comparison({
                                     type: OpenLayers.Filter.Comparison.BETWEEN,
-                                    property: "data_aaaa",
+                                    property: "year",
                                     lowerBoundary: startDate,
                                     upperBoundary: endDate
                                 })
@@ -626,7 +626,7 @@ gxp.widgets.button.GeobasiDataDownloadButton = Ext.extend(Ext.Button, {
                             filters: [
                                 new OpenLayers.Filter.Comparison({
                                     type: OpenLayers.Filter.Comparison.BETWEEN,
-                                    property: "data_aaaa",
+                                    property: "year",
                                     lowerBoundary: startDate,
                                     upperBoundary: endDate
                                 })
@@ -730,7 +730,7 @@ gxp.widgets.button.GeobasiDataDownloadButton = Ext.extend(Ext.Button, {
         } else {
             var allowNullFilter = new OpenLayers.Filter.Comparison({
                 type: OpenLayers.Filter.Comparison.IS_NULL,
-                property: "data_aaaa",
+                property: "year",
                 value: null
             });
 
@@ -739,7 +739,7 @@ gxp.widgets.button.GeobasiDataDownloadButton = Ext.extend(Ext.Button, {
                 filters: [
                     new OpenLayers.Filter.Comparison({
                         type: OpenLayers.Filter.Comparison.BETWEEN,
-                        property: "data_aaaa",
+                        property: "year",
                         lowerBoundary: startDate,
                         upperBoundary: endDate
                     })
@@ -751,7 +751,7 @@ gxp.widgets.button.GeobasiDataDownloadButton = Ext.extend(Ext.Button, {
                 filters: [
                     new OpenLayers.Filter.Comparison({
                         type: OpenLayers.Filter.Comparison.BETWEEN,
-                        property: "data_aaaa",
+                        property: "year",
                         lowerBoundary: startDate,
                         upperBoundary: endDate
                     })

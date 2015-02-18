@@ -198,9 +198,9 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
 
         for (var c = 0; c < num_ele; c++) {
             cumulata[c] = {
-                cumX: metodoElaborazione == "1" ? [Math.round10(Math.log(json.features[c].properties.valore), -4), Math.round10(((c + 1) - 0.5) / num_ele, -4)] : [Math.round10(json.features[c].properties.valore, -4), Math.round10(((c + 1) - 0.5) / num_ele, -4)]
+                cumX: metodoElaborazione == "1" ? [Math.round10(Math.log(json.features[c].properties.value), -4), Math.round10(((c + 1) - 0.5) / num_ele, -4)] : [Math.round10(json.features[c].properties.value, -4), Math.round10(((c + 1) - 0.5) / num_ele, -4)]
                 //cumY: (((c+1)-0.5) / num_ele)
-                //metodoElaborazione == "1" ? Math.round10(Math.log(json.features[x].properties.valore), -4) : Math.round10(json.features[x].properties.valore, -4)
+                //metodoElaborazione == "1" ? Math.round10(Math.log(json.features[x].properties.value), -4) : Math.round10(json.features[x].properties.value, -4)
             }
         }
 
@@ -212,8 +212,8 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
             dataPoints[i] = {
                 uuidelemento: cumulata[i].cumX,
                 totaleRiprova: num_ele,
-                sigla: json.features[i].properties.sigla_el,
-                matrice: json.features[i].properties.tygeomat,
+                sigla: json.features[i].properties.element,
+                matrice: json.features[i].properties.matrix_cod,
                 log: metodoElaborazione,
                 bbox: json.bbox,
                 spatialFilter: this.xml ? this.xml : null,
@@ -311,8 +311,8 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
                 filter: this.xml,
                 typeName: this.layer,
                 outputFormat: "json",
-                propertyName: "fonte,codsito,data_aaaa,data_mm,data_gg,monitoraggio,dmgeomattipo_descr,tygeomat,toponimo,foglioigm50k,codcomune,sigla_el,valore,tipometa,geom",
-                sortBy: "valore"
+                propertyName: "source,site_id,year,month,day,monitoring,matrix,matrix_cod,toponym,municipal_id,element,value,method,geom",
+                sortBy: "value"
             } : {
                 service: "WFS",
                 version: "1.1.0",
@@ -321,8 +321,8 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
                 filter: this.xml,
                 typeName: this.layer,
                 outputFormat: "json",
-                propertyName: "fonte,codsito,data_aaaa,data_mm,data_gg,monitoraggio,dmgeomattipo_descr,tygeomat,toponimo,foglioigm50k,codcomune,sigla_el,valore,tipometa,geom",
-                sortBy: "valore",
+                propertyName: "source,site_id,year,month,day,monitoring,matrix,matrix_cod,toponym,municipal_id,element,value,method,geom",
+                sortBy: "value",
                 viewparams: viewparams2
             },
             success: function (result, request) {
@@ -652,7 +652,7 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
 
                         var allowNullFilter = new OpenLayers.Filter.Comparison({
                             type: OpenLayers.Filter.Comparison.IS_NULL,
-                            property: "data_aaaa",
+                            property: "year",
                             value: null
                         });
 
@@ -676,7 +676,7 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
                             filters: [
                                 new OpenLayers.Filter.Comparison({
                                     type: OpenLayers.Filter.Comparison.BETWEEN,
-                                    property: "data_aaaa",
+                                    property: "year",
                                     lowerBoundary: startDate,
                                     upperBoundary: endDate
                                 })
@@ -688,7 +688,7 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
                             filters: [
                                 new OpenLayers.Filter.Comparison({
                                     type: OpenLayers.Filter.Comparison.BETWEEN,
-                                    property: "data_aaaa",
+                                    property: "year",
                                     lowerBoundary: startDate,
                                     upperBoundary: endDate
                                 })
@@ -792,7 +792,7 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
         } else {
             var allowNullFilter = new OpenLayers.Filter.Comparison({
                 type: OpenLayers.Filter.Comparison.IS_NULL,
-                property: "data_aaaa",
+                property: "year",
                 value: null
             });
 
@@ -801,7 +801,7 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
                 filters: [
                     new OpenLayers.Filter.Comparison({
                         type: OpenLayers.Filter.Comparison.BETWEEN,
-                        property: "data_aaaa",
+                        property: "year",
                         lowerBoundary: startDate,
                         upperBoundary: endDate
                     })
@@ -813,7 +813,7 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
                 filters: [
                     new OpenLayers.Filter.Comparison({
                         type: OpenLayers.Filter.Comparison.BETWEEN,
-                        property: "data_aaaa",
+                        property: "year",
                         lowerBoundary: startDate,
                         upperBoundary: endDate
                     })

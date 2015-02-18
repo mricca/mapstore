@@ -336,8 +336,8 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
         var resultsLog = [];
         for (var x = 0; x < num_ele; x++) {
             resultsLog[x] = {
-                //valore: metodoElaborazione == "1" ? Math.round10(Math.log(json.features[x].properties.valore),-4) : Math.round10(json.features[x].properties.valore,-4)
-                valore: metodoElaborazione == "1" ? Math.round10(Math.log(json.features[x].properties.valore), -4) : Math.round10(json.features[x].properties.valore, -4)
+                //valore: metodoElaborazione == "1" ? Math.round10(Math.log(json.features[x].properties.value),-4) : Math.round10(json.features[x].properties.value,-4)
+                valore: metodoElaborazione == "1" ? Math.round10(Math.log(json.features[x].properties.value), -4) : Math.round10(json.features[x].properties.value, -4)
             };
             this.jsonData2.features[x].attributes = {
                 valore: resultsLog[x].valore,
@@ -440,12 +440,12 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
                 //totaleDaDB: $num_ele_stat,
                 totaleOriginale: numerositaClassi[i].num_ele,
                 totaleRiprova: countElem,
-                tipoMeta: !json.features[i].properties.tipometa ? 'non specificato' : json.features[i].properties.tipometa,
+                tipoMeta: !json.features[i].properties.method ? 'non specificato' : json.features[i].properties.method,
                 num_classi: numerositaClassi.length,
                 ampiezza_classi: metodoElaborazione == "1" ? Math.round10(Math.exp(ampClassi), -4) : ampClassi,
-                sigla: json.features[i].properties.sigla_el,
-                matrice: json.features[i].properties.tygeomat,
-                dmgeomattipo_descr: json.features[i].properties.dmgeomattipo_descr,
+                sigla: json.features[i].properties.element,
+                matrice: json.features[i].properties.matrix_cod,
+                dmgeomattipo_descr: json.features[i].properties.matrix,
                 log: metodoElaborazione,
                 viewparams: this.viewparams3,
                 bbox: json.bbox,
@@ -548,8 +548,8 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
                 //typeName: data2.matrixMethodType.inputValue == 3 ? "geobasi:geobasi_boxplot_view" : this.layer,
                 typeName: this.layer,
                 outputFormat: "json",
-                propertyName: "fonte,codsito,data_aaaa,data_mm,data_gg,monitoraggio,tygeomat,dmgeomattipo_descr,toponimo,foglioigm50k,codcomune,sigla_el,valore,tipometa,geom",
-                sortBy: "valore"
+                propertyName: "source,site_id,year,month,day,monitoring,matrix,matrix_cod,toponym,municipal_id,element,value,method,geom",
+                sortBy: "value"
             } : {
                 service: "WFS",
                 version: "1.1.0",
@@ -559,8 +559,8 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
                 //typeName: data2.matrixMethodType.inputValue == 3 ? "geobasi:geobasi_boxplot_view" : this.layer,
                 typeName: this.layer,
                 outputFormat: "json",
-                propertyName: "fonte,codsito,data_aaaa,data_mm,data_gg,monitoraggio,tygeomat,dmgeomattipo_descr,toponimo,foglioigm50k,codcomune,sigla_el,valore,tipometa,geom",
-                sortBy: "valore",
+                propertyName: "source,site_id,year,month,day,monitoring,matrix,matrix_cod,toponym,municipal_id,element,value,method,geom",
+                sortBy: "value",
                 viewparams: viewparams2
             },
             success: function (result, request) {
@@ -1080,7 +1080,7 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
 
                         var allowNullFilter = new OpenLayers.Filter.Comparison({
                             type: OpenLayers.Filter.Comparison.IS_NULL,
-                            property: "data_aaaa",
+                            property: "year",
                             value: null
                         });
 
@@ -1104,7 +1104,7 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
                             filters: [
                                 new OpenLayers.Filter.Comparison({
                                     type: OpenLayers.Filter.Comparison.BETWEEN,
-                                    property: "data_aaaa",
+                                    property: "year",
                                     lowerBoundary: startDate,
                                     upperBoundary: endDate
                                 })
@@ -1116,7 +1116,7 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
                             filters: [
                                 new OpenLayers.Filter.Comparison({
                                     type: OpenLayers.Filter.Comparison.BETWEEN,
-                                    property: "data_aaaa",
+                                    property: "year",
                                     lowerBoundary: startDate,
                                     upperBoundary: endDate
                                 })
@@ -1220,7 +1220,7 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
         } else {
             var allowNullFilter = new OpenLayers.Filter.Comparison({
                 type: OpenLayers.Filter.Comparison.IS_NULL,
-                property: "data_aaaa",
+                property: "year",
                 value: null
             });
 
@@ -1229,7 +1229,7 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
                 filters: [
                     new OpenLayers.Filter.Comparison({
                         type: OpenLayers.Filter.Comparison.BETWEEN,
-                        property: "data_aaaa",
+                        property: "year",
                         lowerBoundary: startDate,
                         upperBoundary: endDate
                     })
@@ -1241,7 +1241,7 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
                 filters: [
                     new OpenLayers.Filter.Comparison({
                         type: OpenLayers.Filter.Comparison.BETWEEN,
-                        property: "data_aaaa",
+                        property: "year",
                         lowerBoundary: startDate,
                         upperBoundary: endDate
                     })
