@@ -19,5 +19,6 @@ var localConfig = {
             "maxHeight": 100,
             "height": 100
         }
-    }
+    },
+    "footer": {}    
 };
