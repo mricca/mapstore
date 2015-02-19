@@ -933,7 +933,7 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
             /*var proxy = matrixStore.getProxy();
             proxy.setExtraParam("flag", flagSelMatrix.selmatrix);*/
             var newProtocol = this.getWFSStoreProxy('distinct_matrix', null, 'matrix', 'monitoraggio: = true');    
-            
+            matrixStore.proxy.protocol = newProtocol.protocol;
             matrixStore.reload();
             /*matrixStore.load({
                 params: {
