@@ -75,12 +75,13 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 		addOutput : function (config) {
             
             var me = this;
-            
+			
+            this._newMonitoringViewparams = ' IS NOT NULL';
+			this._newMatrixViewparams = '01';
+			this._newElementViewparams = 'Ca';
+			
 			Ext.Panel.prototype.buttonAlign = 'left';
 
-			var conf = {
-				//TODO year ranges (from available data)
-			}
 			this.areaDamage = new gxp.form.SelDamageArea(Ext.apply({
 						localeGeoserverUrl : this.localeGeoserverUrl, //"http://159.213.57.108/geoserver/ows?",
 						remoteGeoserverUrl : this.remoteGeoserverUrl, //"http://www502.regione.toscana.it:80/wfsvector/com.rt.wfs.RTmap/wfs",
@@ -89,7 +90,7 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 					}, this.outputConfig));
 
 
-            var matrixStore= new GeoExt.data.FeatureStore({ 
+            var matrixStore = new GeoExt.data.FeatureStore({ 
                  id: "matrixStore",
                  fields: [{
                     "name": "count",              
@@ -101,13 +102,47 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
                     "name": "matrix",              
                     "mapping": "matrix"
                   }],
-                 proxy: this.getWFSStoreProxy('distinct_matrix', null, 'matrix', 'monitoraggio: IS NOT NULL') , 
+                 proxy: this.getWFSStoreProxy('distinct_matrix', null, 'matrix', 'monitoraggio:'+this._newMonitoringViewparams), 
                  autoLoad: true 
            });
            
             matrixStore.on('load', function(store, records, options) {
                 this.output.matrixType.setValue(records[0].get('matrix_cod'));
             }, this);
+			
+            var elementsStore = new GeoExt.data.FeatureStore({ 
+                 id: "elementsStore",
+                 fields: [{
+                    "name": "count",              
+                    "mapping": "count"
+                  },{
+                    "name": "element",              
+                    "mapping": "element"
+                  }],
+                 proxy: this.getWFSStoreProxy('distinct_elements', null, 'element', 'monitoraggio:'+this._newMonitoringViewparams+';tygeomat:'+this._newMatrixViewparams), 
+                 autoLoad: true 
+           });
+           
+            elementsStore.on('load', function(store, records, options) {
+                //this.output.elemento.setValue(records[0].get('element'));
+            }, this);			
+			
+            var methodStore = new GeoExt.data.FeatureStore({ 
+                 id: "methodStore",
+                 fields: [{
+                    "name": "count",              
+                    "mapping": "count"
+                  },{
+                    "name": "method",              
+                    "mapping": "method"
+                  }],
+                 proxy: this.getWFSStoreProxy('distinct_method', null, 'method', 'monitoraggio:'+this._newMonitoringViewparams+';tygeomat:'+this._newMatrixViewparams+';sigla_el:'+this._newElementViewparams), 
+                 autoLoad: true 
+           });
+           
+            methodStore.on('load', function(store, records, options) {
+                //this.output.elemento.setValue(records[0].get('element'));
+            }, this);				
             
 			var geobasiData = new Ext.form.FormPanel({
 					xtype : 'form',
@@ -161,7 +196,7 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
                                     },
 									tpl : new Ext.XTemplate(
 										'<tpl for=\".\">',
-										'<div class=\"x-combo-list-item\">{matrix} - {matrix_cod} - {count}</div>',
+										'<div class=\"x-combo-list-item\">{matrix} -> {count}</div>',
 										'</tpl>')
 								}, {
 									xtype : 'combo',
@@ -171,400 +206,32 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 									typeAhead : true,
 									triggerAction : 'all',
 									lazyRender : true,
-									mode : 'local',
+									//mode : 'local',
 									autoLoad : true,
 									forceSelected : true,
 									allowBlank : false,
 									name : 'elemento',
-									displayField : 'label',
-									valueField : 'value',
+									displayField : 'element',
+									valueField : 'element',
+									lastQuery: '',
 									//value: 'Ca',
 									emptyText : "-- Seleziona Elemento --",
 									valueNotFoundText : "-- Seleziona Elemento --",
 									readOnly : false,
-									listeners : {
-										//scope:this,
-										select : function (combo, record, index) {
-											/*if(this.ownerCt.ownerCt.matrixMethodType.getValue().inputValue != 3){
-											this.ownerCt.ownerCt.metodoAnalitico.enable();
-											}*/
+									listeners: {
+										expand: {
+											fn: me.onComboboxElemExpand,
+											scope: me
+										},
+										select: {
+											fn: me.onComboboxElemSelect,
+											scope: me                            
 										}
 									},
-									store : new Ext.data.JsonStore({
-										fields : [{
-												name : 'name',
-												dataIndex : 'name'
-											}, {
-												name : 'label',
-												dataIndex : 'label'
-											}, {
-												name : 'coeff',
-												dataIndex : 'coeff'
-											}, {
-												name : 'value',
-												dataindex : 'value'
-											}
-										],
-										data : [{
-												label : "Afnio",
-												value : "Hf"
-											}, {
-												label : "Alluminio",
-												value : "Al"
-											}, {
-												label : "Americio",
-												value : "Am"
-											}, {
-												label : "Antimonio",
-												value : "Sb"
-											}, {
-												label : "Argento",
-												value : "Ag"
-											}, {
-												label : "Argon",
-												value : "Ar"
-											}, {
-												label : "Arsenico",
-												value : "As"
-											}, {
-												label : "Astato",
-												value : "At"
-											}, {
-												label : "Attinio",
-												value : "Ac"
-											}, {
-												label : "Azoto",
-												value : "N"
-											}, {
-												label : "Bario",
-												value : "Ba"
-											}, {
-												label : "Berchelio",
-												value : "Bk"
-											}, {
-												label : "Berillio",
-												value : "Be"
-											}, {
-												label : "Bismuto",
-												value : "Bi"
-											}, {
-												label : "Bohrio",
-												value : "Bh"
-											}, {
-												label : "Boro",
-												value : "B"
-											}, {
-												label : "Bromo",
-												value : "Br"
-											}, {
-												label : "Cadmio",
-												value : "Cd"
-											}, {
-												label : "Calcio",
-												value : "Ca"
-											}, {
-												label : "Californio",
-												value : "Cf"
-											}, {
-												label : "Carbonio",
-												value : "C"
-											}, {
-												label : "Cerio",
-												value : "Ce"
-											}, {
-												label : "Cesio",
-												value : "Cs"
-											}, {
-												label : "Cloro",
-												value : "Cl"
-											}, {
-												label : "Cobalto",
-												value : "Co"
-											}, {
-												label : "Cripto",
-												value : "Kr"
-											}, {
-												label : "Cromo",
-												value : "Cr"
-											}, {
-												label : "Curio",
-												value : "Cm"
-											}, {
-												label : "Darmstadtio",
-												value : "Ds"
-											}, {
-												label : "Disprosio",
-												value : "Dy"
-											}, {
-												label : "Dubnio",
-												value : "Db"
-											}, {
-												label : "Einsteinio",
-												value : "Es"
-											}, {
-												label : "Elio",
-												value : "He"
-											}, {
-												label : "Erbio",
-												value : "Er"
-											}, {
-												label : "Europio",
-												value : "Eu"
-											}, {
-												label : "Fermio",
-												value : "Fm"
-											}, {
-												label : "Fluoro",
-												value : "F"
-											}, {
-												label : "Fosforo",
-												value : "P"
-											}, {
-												label : "Francio",
-												value : "Fr"
-											}, {
-												label : "Gadolinio",
-												value : "Gd"
-											}, {
-												label : "Gallio",
-												value : "Ga"
-											}, {
-												label : "Germanio",
-												value : "Ge"
-											}, {
-												label : "Hassio",
-												value : "Hs"
-											}, {
-												label : "Ferro",
-												value : "Fe"
-											}, {
-												label : "Idrogeno",
-												value : "H"
-											}, {
-												label : "Indio",
-												value : "In"
-											}, {
-												label : "Iodio",
-												value : "I"
-											}, {
-												label : "Iridio",
-												value : "Ir"
-											}, {
-												label : "Lantanio",
-												value : "La"
-											}, {
-												label : "Laurenzio",
-												value : "Lr"
-											}, {
-												label : "Litio",
-												value : "Li"
-											}, {
-												label : "Lutezio",
-												value : "Lu"
-											}, {
-												label : "Magnesio",
-												value : "Mg"
-											}, {
-												label : "Manganese",
-												value : "Mn"
-											}, {
-												label : "Meitnerio",
-												value : "Mt"
-											}, {
-												label : "Mendelevio",
-												value : "Md"
-											}, {
-												label : "Mercurio",
-												value : "Hg"
-											}, {
-												label : "Molibdeno",
-												value : "Mo"
-											}, {
-												label : "Neodimio",
-												value : "Nd"
-											}, {
-												label : "Neon",
-												value : "Ne"
-											}, {
-												label : "Neptunio",
-												value : "Np"
-											}, {
-												label : "Nickel",
-												value : "Ni"
-											}, {
-												label : "Niobio",
-												value : "Nb"
-											}, {
-												label : "Nobelio",
-												value : "No"
-											}, {
-												label : "Olmio",
-												value : "Ho"
-											}, {
-												label : "Oro",
-												value : "Au"
-											}, {
-												label : "Osmio",
-												value : "Os"
-											}, {
-												label : "Ossigeno",
-												value : "O"
-											}, {
-												label : "Palladio",
-												value : "Pd"
-											}, {
-												label : "Piombo",
-												value : "Pb"
-											}, {
-												label : "Platino",
-												value : "Pt"
-											}, {
-												label : "Plutonio",
-												value : "Pu"
-											}, {
-												label : "Polonio",
-												value : "Po"
-											}, {
-												label : "Potassio",
-												value : "K"
-											}, {
-												label : "Praseodimio",
-												value : "Pr"
-											}, {
-												label : "Promezio",
-												value : "Pm"
-											}, {
-												label : "Protoattinio",
-												value : "Pa"
-											}, {
-												label : "Radio",
-												value : "Ra"
-											}, {
-												label : "Radon",
-												value : "Rn"
-											}, {
-												label : "Rame",
-												value : "Cu"
-											}, {
-												label : "Renio",
-												value : "Re"
-											}, {
-												label : "Rodio",
-												value : "Rh"
-											}, {
-												label : "Rubidio",
-												value : "Rb"
-											}, {
-												label : "Rutenio",
-												value : "Ru"
-											}, {
-												label : "Ruterfordio",
-												value : "Rf"
-											}, {
-												label : "Samario",
-												value : "Sm"
-											}, {
-												label : "Scandio",
-												value : "Sc"
-											}, {
-												label : "Seaborgio",
-												value : "Sg"
-											}, {
-												label : "Selenio",
-												value : "Se"
-											}, {
-												label : "Silicio",
-												value : "Si"
-											}, {
-												label : "Sodio",
-												value : "Na"
-											}, {
-												label : "Stagno",
-												value : "Sn"
-											}, {
-												label : "Stronzio",
-												value : "Sr"
-											}, {
-												label : "Tallio",
-												value : "Tl"
-											}, {
-												label : "Tantalo",
-												value : "Ta"
-											}, {
-												label : "Tecnezio",
-												value : "Tc"
-											}, {
-												label : "Tellurio",
-												value : "Te"
-											}, {
-												label : "Terbio",
-												value : "Tb"
-											}, {
-												label : "Titanio",
-												value : "Ti"
-											}, {
-												label : "Torio",
-												value : "Th"
-											}, {
-												label : "Tulio",
-												value : "Tm"
-											}, {
-												label : "Tungsteno",
-												value : "W"
-											}, {
-												label : "Ununbio",
-												value : "Uub"
-											}, {
-												label : "Ununexio",
-												value : "Uuh"
-											}, {
-												label : "Ununio",
-												value : "Uuu"
-											}, {
-												label : "Ununottio",
-												value : "Uuo"
-											}, {
-												label : "Ununpentio",
-												value : "Uup"
-											}, {
-												label : "Ununquadio",
-												value : "Uuq"
-											}, {
-												label : "Ununseptio",
-												value : "Uus"
-											}, {
-												label : "Ununtrio",
-												value : "Uut"
-											}, {
-												label : "Uranio",
-												value : "U"
-											}, {
-												label : "Vanadio",
-												value : "V"
-											}, {
-												label : "Xenon",
-												value : "Xe"
-											}, {
-												label : "Ytterbio",
-												value : "Yb"
-											}, {
-												label : "Yttrio",
-												value : "Y"
-											}, {
-												label : "Zinco",
-												value : "Zn"
-											}, {
-												label : "Zirconio",
-												value : "Zr"
-											}, {
-												label : "Zolfo",
-												value : "S"
-											}
-										]
-									}),
+									store: elementsStore,
 									tpl : new Ext.XTemplate(
 										'<tpl for=\".\">',
-										'<div class=\"x-combo-list-item\">{label} - {value}</div>',
+										'<div class=\"x-combo-list-item\">{element} -> {count}</div>',
 										'</tpl>')
 								}, {
 									xtype : 'combo',
@@ -573,78 +240,36 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 									fieldLabel : 'Metodo Analitico',
 									typeAhead : true,
 									triggerAction : 'all',
-									lazyRender : false,
-									mode : 'local',
+									lazyRender : true,
+									//mode : 'local',
 									autoLoad : true,
 									resizable : true,
 									forceSelected : true,
 									allowBlank : false,
 									name : 'Metodo_analitico',
-									displayField : 'label',
-									valueField : 'value',
+									displayField : 'method',
+									valueField : 'method',
 									//value: 'ICP-AES',
+									lastQuery: '',
 									emptyText : "-- Seleziona Metodo Analitico --",
 									valueNotFoundText : "-- Seleziona Metodo Analitico --",
 									disabled : false,
 									readOnly : false,
-									store : new Ext.data.JsonStore({
-										fields : [{
-												name : "name",
-												dataIndex : "name"
-											}, {
-												name : "label",
-												dataIndex : "label"
-											}, {
-												name : "value",
-												dataIndex : "value"
-											}, {
-												name : "shortName",
-												dataindex : "shortName"
-											}
-										],
-										data : [{
-												label : "AAS",
-												value : "AAS",
-												shortName : "AAS"
-											}, {
-												label : "COLORIMETRIA",
-												value : "colorimetria",
-												shortName : "colorimetria"
-											}, {
-												label : "COLORIMETRIA ALL'INDOFENOLO",
-												value : "colorimetria_all_indofenolo",
-												shortName : "colorimetria_all_indofenolo"
-											}, {
-												label : "COLORIMETRIA AL REATTIVO GRESS",
-												value : "colorimetria_al_reattivo_Gress",
-												shortName : "colorimetria_al_reattivo_Gress"
-											}, {
-												label : "CROMATOGRAFIA IONICA",
-												value : "cromatografia_ionica",
-												shortName : "cromatografia_ionica"
-											}, {
-												label : "GASCROMATOGRAFIA",
-												value : "Gascromatografia",
-												shortName : "Gascromatografia"
-											}, {
-												label : "ICP-AES",
-												value : "ICP-AES",
-												shortName : "ICP-AES"
-											}, {
-												label : "VOLUMETRIA",
-												value : "volumetria",
-												shortName : "volumetria"
-											}, {
-												label : "SPETTROFOTOMETRIA",
-												value : "spettrofotometria",
-												shortName : "spettrofotometria"
-											}, {
-												label : "METODO ANALITICO NON SPECIFICATO",
-												value : "-999",
-												shortName : "-999"
-											}
-										]
-									})
+									listeners: {
+										expand: {
+											fn: me.onComboboxMetAnExpand,
+											scope: me
+										},
+										select: {
+											fn: me.onComboboxMetAnSelect,
+											scope: me                            
+										}
+									},	
+									store: methodStore,
+									tpl : new Ext.XTemplate(
+										'<tpl for=\".\">',
+										'<div class=\"x-combo-list-item\">{method} -> {count}</div>',
+										'</tpl>')
 								}
 							]
 						},
@@ -890,60 +515,161 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 
 			this.output = gxp.plugins.geobasi.GeobasiData.superclass.addOutput.call(this, config);
 
-			//Enable Disable button when regions are selected
-			/*this.output.on('update',function(store){
-			var button = this.output.submitButton.getXType();
-
-			var values = this.output.getForm().getValues();
-			var gran_type = values.areatype;
-
-			if (button == "gxp_nrlCropDataButton" || button == 'gxp_nrlCropDataTabButton'){
-			this.output.submitButton.setDisabled(store.getCount()<=0 && gran_type != "pakistan");
-			}else{
-			//map button
-			this.output.submitButton.setDisabled(store.getCount()<=0 && gran_type == "province");
-			}
-
-			},this);
-
-			//hide selection layer on tab change
-			this.output.on('beforehide',function(){
-			var button = this.output.aoiFieldSet.AreaSelector.selectButton;
-			button.toggle(false);
-			var lyr = button.hilightLayer;
-			if(!lyr) return;
-			lyr.setVisibility(false);
-
-			},this);
-			this.output.on('show',function(){
-			var button = this.output.aoiFieldSet.AreaSelector.selectButton;
-
-			var lyr = button.hilightLayer;
-			if(!lyr) return;
-			lyr.setVisibility(true);
-
-			},this);
-
-			return this.output;*/
 		},
 
         onComboboxMatrixExpand: function (field, eOpts) {
-            var matrixStore = field.getStore();
-            var flagSelMatrix = this.output.monitoraggio.getValue();
-            /*var proxy = matrixStore.getProxy();
-            proxy.setExtraParam("flag", flagSelMatrix.selmatrix);*/
-            var newProtocol = this.getWFSStoreProxy('distinct_matrix', null, 'matrix', 'monitoraggio: = true');    
-            matrixStore.proxy.protocol = newProtocol.protocol;
-            matrixStore.reload();
-            /*matrixStore.load({
-                params: {
-                    viewparams: 'monitoraggio: = true' //flagSelMatrix.selmatrix
-                }
-            });*/
-            
+
+			var matrixStore, monitoringValue, newMonitoringViewparams, newProtocol;
+			
+            matrixStore = field.getStore();
+            monitoringValue = this.output.monitoraggio.getValue();
+			
+			switch (monitoringValue){
+				case "01":
+					newMonitoringViewparams = ' IS NOT NULL'
+					break;
+				case "02":
+					newMonitoringViewparams = ' = true'
+					break;
+				case "03":
+					newMonitoringViewparams = ' = false'
+					break;
+			}
+			
+			if(this._newMonitoringViewparams !== newMonitoringViewparams){
+				newProtocol = this.getWFSStoreProxy('distinct_matrix', null, 'matrix', 'monitoraggio:' + newMonitoringViewparams);    
+				matrixStore.proxy.protocol = newProtocol.protocol;
+				matrixStore.reload();
+				this._newMonitoringViewparams = newMonitoringViewparams;
+			}
 
         },
-    
+
+		onComboboxMatrixSelect: function (field, eOpts) {
+			/*var cmbelem = Ext.getCmp('cmbelem_id');
+			var cmbmetan = Ext.getCmp('cmbmetan_id');
+			cmbelem.enable();
+			cmbelem.reset();
+			cmbmetan.reset();
+			
+			var barChartButton = Ext.getCmp('barChartButton_id');
+			var boxPlotButton = Ext.getCmp('boxPlotButton_id');
+			
+			barChartButton.disable();
+			boxPlotButton.disable();*/			
+		},
+
+		onComboboxElemExpand: function (field, eOpts) {
+
+			var elementsStore, monitoringValue, matrixValue, newMonitoringViewparams, newMatrixViewparams, newProtocol;
+			
+            elementsStore = field.getStore();
+            monitoringValue = this.output.monitoraggio.getValue();
+			matrixValue = this.output.matrixType.getValue();
+			newMatrixViewparams = matrixValue;
+			
+			switch (monitoringValue){
+				case "01":
+					newMonitoringViewparams = ' IS NOT NULL'
+					break;
+				case "02":
+					newMonitoringViewparams = ' = true'
+					break;
+				case "03":
+					newMonitoringViewparams = ' = false'
+					break;
+			}
+			
+			if(this._newMonitoringViewparams !== newMonitoringViewparams || this._newMatrixViewparams !== newMatrixViewparams){
+				newProtocol = this.getWFSStoreProxy('distinct_elements', null, 'element', 'monitoraggio:'+newMonitoringViewparams+';tygeomat:'+newMatrixViewparams);    
+				elementsStore.proxy.protocol = newProtocol.protocol;
+				elementsStore.reload();
+				this._newMonitoringViewparams = newMonitoringViewparams;
+				this._newMatrixViewparams = newMatrixViewparams;
+			}
+			
+		},		
+
+		onComboboxElemSelect: function (field, eOpts) {
+			/*var cmbmetan = Ext.getCmp('cmbmetan_id');
+			//cmbmetan.enable();
+			cmbmetan.reset();
+			
+			var flagSelMatrix = this.items.items[0].getForm().getValues();        
+			var barChartButton = Ext.getCmp('barChartButton_id');
+			var boxPlotButton = Ext.getCmp('boxPlotButton_id');
+			
+			switch (flagSelMatrix.selmatrix) {
+			case '1':
+					boxPlotButton.enable();
+					barChartButton.disable();
+					cmbmetan.enable();
+				break;
+			case '2':
+					boxPlotButton.enable();
+					barChartButton.disable();
+					cmbmetan.enable();
+				break;
+			case '3':
+					boxPlotButton.disable();
+					barChartButton.enable();
+				break;
+			}*/
+		},
+		
+		onComboboxMetAnExpand: function (field, eOpts) {
+			
+			var methodStore, monitoringValue, matrixValue, elementValue, newMonitoringViewparams, newMatrixViewparams, newElementViewparams, newProtocol;
+			
+            methodStore = field.getStore();
+            monitoringValue = this.output.monitoraggio.getValue();
+			matrixValue = this.output.matrixType.getValue();
+			elementValue = this.output.elemento.getValue();
+			newMatrixViewparams = matrixValue;
+			newElementViewparams = elementValue;
+			
+			switch (monitoringValue){
+				case "01":
+					newMonitoringViewparams = ' IS NOT NULL'
+					break;
+				case "02":
+					newMonitoringViewparams = ' = true'
+					break;
+				case "03":
+					newMonitoringViewparams = ' = false'
+					break;
+			}
+			
+			if(this._newMonitoringViewparams !== newMonitoringViewparams || this._newMatrixViewparams !== newMatrixViewparams || this._newElementViewparams !== newElementViewparams){
+				newProtocol = this.getWFSStoreProxy('distinct_method', null, 'method', 'monitoraggio:'+newMonitoringViewparams+';tygeomat:'+newMatrixViewparams+';sigla_el:'+newElementViewparams);    
+				methodStore.proxy.protocol = newProtocol.protocol;
+				methodStore.reload();
+				this._newMonitoringViewparams = newMonitoringViewparams;
+				this._newMatrixViewparams = newMatrixViewparams;
+				this._newElementViewparams = newElementViewparams;
+			}
+			
+		},		
+
+		onComboboxMetAnSelect: function (field, eOpts) {
+			/*var flagSelMatrix = this.items.items[0].getForm().getValues();        
+			var barChartButton = Ext.getCmp('barChartButton_id');
+			var boxPlotButton = Ext.getCmp('boxPlotButton_id');
+			
+			switch (flagSelMatrix.selmatrix) {
+			case '1':
+					barChartButton.enable();
+				break;
+			case '2':
+					barChartButton.enable();
+				break;
+			case '3':
+					barChartButton.enable();
+					boxPlotButton.disable();
+				break;
+			}*/
+		},
+	
 		setMinMaxValues : function () {
 			this.appMask = new Ext.LoadMask(this.output.rangeyear.el, {
 					msg : this.mainLoadingMask
@@ -1012,7 +738,7 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
                     url: this.wfsURL, 
                     featureType: featureName, 
                     readFormat: new OpenLayers.Format.GeoJSON(),
-                    featureNS: 'http://geobasi', //this.destinationNS, 
+                    featureNS: 'http://geobasi',
                     filter: filterProtocol, 
                     outputFormat: "application/json",
                     version: '1.1.0', //this.wfsVersion,
