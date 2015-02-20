@@ -17,6 +17,11 @@ var elementsData = {
             "http://www506.regione.toscana.it/schede_elementi/Bario.pdf",
             "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_ba_edit.pdf"
         ],[
+            "Berillio",
+            "Be",
+            "http://www506.regione.toscana.it/schede_elementi/Berillio.pdf",
+            "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_be_edit.pdf"
+        ],[
             "Boro",
             "B",
             "http://www506.regione.toscana.it/schede_elementi/Boro.pdf",
@@ -31,6 +36,11 @@ var elementsData = {
             "Co",
             "http://www506.regione.toscana.it/schede_elementi/Cobalto.pdf",
             "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_co_edit.pdf"
+        ],[
+            "Cromo",
+            "Cr",
+            "http://www506.regione.toscana.it/schede_elementi/Cromo.pdf",
+            "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_cr_edit.pdf"
         ],[
             "Fluoro",
             "F",
@@ -47,10 +57,35 @@ var elementsData = {
             "http://www506.regione.toscana.it/schede_elementi/Litio.pdf",
             "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_li_edit.pdf"
         ],[
+            "Mercurio",
+            "Hg",
+            "http://www506.regione.toscana.it/schede_elementi/Mercurio.pdf",
+            "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_hg_edit.pdf"
+        ],[
+            "Nichel",
+            "Ni",
+            "http://www506.regione.toscana.it/schede_elementi/Nichel.pdf",
+            "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_ni_edit.pdf"
+        ],[
+            "Piombo",
+            "Pb",
+            "http://www506.regione.toscana.it/schede_elementi/Piombo.pdf",
+            "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_pb_edit.pdf"
+        ],[
+            "Rame",
+            "Cu",
+            "http://www506.regione.toscana.it/schede_elementi/Rame.pdf",
+            "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_cu_edit.pdf"
+        ],[
             "Selenio",
             "Se",
             "http://www506.regione.toscana.it/schede_elementi/Selenio.pdf",
             "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_se_edit.pdf"
+        ],[
+            "Tallio",
+            "Tl",
+            "http://www506.regione.toscana.it/schede_elementi/Tallio.pdf",
+            "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_tl_edit.pdf"
         ]
     ]
 };
