@@ -1,11 +1,11 @@
 {
    "scaleOverlayMode": "advanced",
-   "actionToolScale": "medium",   
-   "tab": false,
+   "actionToolScale": "medium",      
+   "tab": true,
    "gsSources":{
-   		"geoserver_ret": {
+   		"geoserver_ds": {
 			"ptype": "gxp_wmssource",
-			"url": "http://geoportale.lamma.rete.toscana.it/geoserver_ret/ows?",
+			"url": "http://geoportale.lamma.rete.toscana.it/geoserver_ds/RETICOLO/ows?",
 			"title": "Geoscopio Reticolo",
 			"SRS": "EPSG:3003",
 			"version":"1.1.1",
@@ -16,9 +16,9 @@
 			],			            
 			"layerBaseParams":{
 				"FORMAT":"image/png",
-				"TILED":true
+				"TILED":false
 			}
-		},   
+		},    
    		"geoscopio": {
 			"ptype": "gxp_wmssource",
 			"url": "http://www502.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmssfondo&map_resolution=91&language=ita",
@@ -66,7 +66,7 @@
 				"FORMAT": "image/png",
 				"TILED": false
 			}
-		},        
+		},         
    		"geoscopio_ortofoto": {
 			"ptype": "gxp_wmssource",
 			"url": "http://web.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmsofc",
@@ -132,11 +132,6 @@
 			}
 		}
 	},
-	"loadingPanel": {
-		"width": 100,
-		"height": 100,
-		"center": true
-	},
 	"map": {
 		"projection": "EPSG:3003",
 		"displayProjection": "EPSG:3003",
@@ -181,7 +176,7 @@
                 "displayInLayerSwitcher": true,
                 "visibility": false,
                 "tiled": false,
-                "expanded": false,
+                "expanded": true,
                 "checked": false,
                 "attribution": false
             },
@@ -193,7 +188,7 @@
                 "displayInLayerSwitcher": true,
                 "visibility": false,
                 "tiled": false,
-                "expanded": false,
+                "expanded": true,
                 "checked": false,            
                 "attribution": false
             },
@@ -205,7 +200,7 @@
                 "displayInLayerSwitcher": true,
                 "visibility": false,
                 "tiled": false,
-                "expanded": false,
+                "expanded": true,
                 "checked": false,            
                 "attribution": false
             },
@@ -217,7 +212,7 @@
                 "displayInLayerSwitcher": true,
                 "visibility": false,
                 "tiled": false,
-                "expanded": false,
+                "expanded": true,
                 "checked": false,            
                 "attribution": false
             },
@@ -229,7 +224,7 @@
                 "displayInLayerSwitcher": true,
                 "visibility": false,
                 "tiled": false,
-                "expanded": false,
+                "expanded": true,
                 "checked": false,            
                 "attribution": false
             },
@@ -241,7 +236,7 @@
                 "displayInLayerSwitcher": true,
                 "visibility": false,
                 "tiled": false,
-                "expanded": false,
+                "expanded": true,
                 "checked": false,            
                 "attribution": false
             },
@@ -253,7 +248,7 @@
                 "displayInLayerSwitcher": true,
                 "visibility": false,
                 "tiled": false,
-                "expanded": false,
+                "expanded": true,
                 "checked": false,            
                 "attribution": false
             },
@@ -289,8 +284,18 @@
                 "visibility": false,
                 "tiled": false,
                 "attribution": false
-            },
-            {
+            },{
+				"source": "geoserver_ds",
+				"group": "Comprensori",
+                "expanded": true,
+                "checked": true,
+				"title": "Comprensori ai sensi della L.R.79/2012",
+				"name": "proposta_comprensori_lr79_2012",
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": false,
+                "queryPanel": true
+			},{
                 "source": "geoscopio_ambcens",
                 "group": "Toponimi",
                 "title": "Toponimi - Centri e nuclei 2011",
@@ -300,12 +305,81 @@
                 "tiled": false,
                 "attribution": false
             },{
+				"source": "geoscopio_idrografia",
+				"group": "Idrografia",
+				"title": "Corsi d'acqua",
+				"name": "rt_idrogr.corsi.rt.line",
+				"displayInLayerSwitcher": true,
+				"visibility": true,
+				"tiled": false
+			},{
+				"source": "geoserver_ds",
+				"group": "Idrografia",
+                "expanded": true,
+                "checked": false,
+				"title": "Specchi d'acqua",
+				"name": "area_bagnata",                
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": false,
+                "queryPanel": true
+			},{
+				"source": "geoserver_ds",
+				"group": "Reticolo Idrografico RT",
+                "expanded": true,
+                "checked": false,
+				"title": "Reticolo idrografico LR 79/2012 aggiornato con DCRT 9/2015",
+				"name": "reticolo_lr79_2012",
+                "styles": ["reticolo_idrografico_dcrt9_2015"],
+                "style": ["reticolo_idrografico_dcrt9_2015"],                
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": false,
+                "queryPanel": true
+			},{
+				"source": "geoserver_ds",
+				"group": "Reticolo Idrografico RT",
+                "expanded": true,
+                "checked": false,
+				"title": "Reticolo idrografico LR 79/2012 aggiornato con DCRT 9/2015",
+				"name": "reticolo_lr79_2012",
+                "styles": ["reticolo_idrografico_dcrt9_2015"],
+                "style": ["reticolo_idrografico_dcrt9_2015"],                
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": false,
+                "queryPanel": true
+			},{
+				"source": "geoserver_ds",
+				"group": "Reticolo di Gestione RT",
+                "expanded": true,
+                "checked": false,
+				"title": "Reticolo di gestione LR 79/2012 approvato con DCRT 57/2013",
+				"name": "retgest_79_2012",
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": false,
+                "queryPanel": true
+			},{
+				"source": "geoserver_ds",
+				"group": "Reticolo di Gestione RT",
+                "expanded": true,
+                "checked": false,
+				"title": "Reticolo di gestione LR 79/2012 aggiornato con DCRT 9/2015",
+				"name": "reticolo_lr79_2012",
+                "styles": ["reticolo_gestione_dcrt9_2015"],
+                "style": ["reticolo_gestione_dcrt9_2015"],                  
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": false,
+                "queryPanel": true
+			},{
 				"source": "geoscopio_amb_ammin",
 				"group": "Ambiti amministrativi",
 				"title": "Province",
 				"name": "rt_ambamm.idprovince.rt.poly",
 				"displayInLayerSwitcher": true,
-				"visibility": true,
+				"visibility": false,
 				"tiled": false
 			},{
 				"source": "geoscopio_amb_ammin",
@@ -323,19 +397,22 @@
         "bottomInUnits":"nmi",    
         "topInUnits":"m",    
         "topOutUnits":"km"
-    },
+    },	
     "removeTools": [
         "wmsgetfeatureinfo_menu_plugin"
-    ], 	
+    ], 	    
 	"proj4jsDefs": {
 		"EPSG:3003": "+proj=tmerc +lat_0=0 +lon_0=9 +k=0.9996 +x_0=1500000 +y_0=0 +ellps=intl +units=m +no_defs +towgs84 = -104.1,-49.1,-9.9,0.971,-2.917,0.714,-11.68"
-	},   
+	},	     
 	"customTools": [
 		{
 			"ptype": "gxp_embedmapdialog",
 			"actionTarget": {"target": "paneltbar", "index": 2},
 			"embeddedTemplateName": "viewer",
 			"showDirectURL": true
+		}, {
+			"ptype": "gxp_categoryinitializer",
+            "silentErrors": true
 		},{
             "ptype":"gxp_wmsgetfeatureinfo",
             "id": "wmsgetfeatureinfo_plugin",

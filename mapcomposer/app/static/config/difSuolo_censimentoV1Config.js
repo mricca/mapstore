@@ -1,11 +1,11 @@
 {
    "scaleOverlayMode": "advanced",
-   "actionToolScale": "medium",   
-   "tab": false,
+   "actionToolScale": "medium",      
+   "tab": true,
    "gsSources":{
-   		"geoserver_ret": {
+   		"geoserver_ds": {
 			"ptype": "gxp_wmssource",
-			"url": "http://geoportale.lamma.rete.toscana.it/geoserver_ret/ows?",
+			"url": "http://geoportale.lamma.rete.toscana.it/geoserver_ds/CENS_OP_IDRO_V1/ows?",
 			"title": "Geoscopio Reticolo",
 			"SRS": "EPSG:3003",
 			"version":"1.1.1",
@@ -16,9 +16,9 @@
 			],			            
 			"layerBaseParams":{
 				"FORMAT":"image/png",
-				"TILED":true
+				"TILED":false
 			}
-		},   
+		},    
    		"geoscopio": {
 			"ptype": "gxp_wmssource",
 			"url": "http://www502.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmssfondo&map_resolution=91&language=ita",
@@ -66,7 +66,7 @@
 				"FORMAT": "image/png",
 				"TILED": false
 			}
-		},        
+		},         
    		"geoscopio_ortofoto": {
 			"ptype": "gxp_wmssource",
 			"url": "http://web.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmsofc",
@@ -130,12 +130,23 @@
 				"FORMAT":"image/png",
 				"TILED":false
 			}
+		},
+        "geoscopio_rischio_idrogeo": {
+			"ptype": "gxp_wmssource",
+			"url": "http://www502.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmsperidr&",
+			"title": "Geoscopio rischio idrogeologico",
+			"SRS": "EPSG:3003",
+			"version":"1.3.0",
+            "loadingProgress": true,
+			"layersCachedExtent": [
+				1547065, 4677785,
+				1803065, 4933785
+			],			
+			"layerBaseParams":{
+				"FORMAT":"image/png",
+				"TILED":false
+			}
 		}
-	},
-	"loadingPanel": {
-		"width": 100,
-		"height": 100,
-		"center": true
 	},
 	"map": {
 		"projection": "EPSG:3003",
@@ -300,12 +311,238 @@
                 "tiled": false,
                 "attribution": false
             },{
+				"source": "geoscopio_idrografia",
+				"group": "Idrografia",
+				"title": "Corsi d'acqua",
+				"name": "rt_idrogr.corsi.rt.line",
+				"displayInLayerSwitcher": true,
+				"visibility": true,
+				"tiled": false
+			},{
+				"source": "geoserver_ds",
+				"group": "Reticolo",
+				"title": "RD 523/1904",
+				"name": "ret_opere_v1",
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": true,
+                "queryPanel": true
+			},{
+				"source": "geoserver_ds",
+				"group": "Censimento Opere-feb2015 (AREALI)",
+                "expanded": true,
+                "checked": true,
+				"title": "Invaso",
+				"name": "invaso_v1",
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": false,
+                "queryPanel": true
+			},{
+				"source": "geoserver_ds",
+				"group": "Censimento Opere-feb2015 (AREALI)",
+                "expanded": true,
+                "checked": true,
+				"title": "Casse espansione",
+				"name": "cassa_espansione_v1",
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": false,
+                "queryPanel": true
+			},{
+				"source": "geoserver_ds",
+				"group": "Censimento Opere-feb2015 (LINEARI)",
+                "expanded": true,
+                "checked": true,
+				"title": "Argine",
+				"name": "argine_v1",
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": false,
+                "queryPanel": true
+			},{
+				"source": "geoserver_ds",
+				"group": "Censimento Opere-feb2015 (LINEARI)",
+                "expanded": true,
+                "checked": true,
+				"title": "Attraversamento",
+				"name": "attraversamento_v1",
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": false,
+                "queryPanel": true
+			},{
+				"source": "geoserver_ds",
+				"group": "Censimento Opere-feb2015 (LINEARI)",
+                "expanded": true,
+                "checked": true,
+				"title": "Canale artificiale",
+				"name": "canale_artificiale_v1",
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": false,
+                "queryPanel": true
+			},{
+				"source": "geoserver_ds",
+				"group": "Censimento Opere-feb2015 (LINEARI)",
+                "expanded": true,
+                "checked": true,
+				"title": "Difesa si sponda",
+				"name": "difesa_sponda_v1",
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": false,
+                "queryPanel": true
+			},{
+				"source": "geoserver_ds",
+				"group": "Censimento Opere-feb2015 (PUNTUALI)",
+                "expanded": true,
+                "checked": true,
+				"title": "Briglie",
+				"name": "briglie_v1",
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": false,
+                "queryPanel": true
+			},{
+				"source": "geoserver_ds",
+				"group": "Censimento Opere-feb2015 (PUNTUALI)",
+                "expanded": true,
+                "checked": true,
+				"title": "Casello idraulico",
+				"name": "casello_idraulico_v1",
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": false,
+                "queryPanel": true
+			},{
+				"source": "geoserver_ds",
+				"group": "Censimento Opere-feb2015 (PUNTUALI)",
+                "expanded": true,
+                "checked": true,
+				"title": "Cateratta",
+				"name": "cateratta_v1",
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": false,
+                "queryPanel": true
+			},{
+				"source": "geoserver_ds",
+				"group": "Censimento Opere-feb2015 (PUNTUALI)",
+                "expanded": true,
+                "checked": true,
+				"title": "Cunettone",
+				"name": "cunettone_v1",
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": false,
+                "queryPanel": true
+			},{
+				"source": "geoserver_ds",
+				"group": "Censimento Opere-feb2015 (PUNTUALI)",
+                "expanded": true,
+                "checked": true,
+				"title": "Difesa di sponda",
+				"name": "difesa_sponda_p_v1",
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": false,
+                "queryPanel": true
+			},{
+				"source": "geoserver_ds",
+				"group": "Censimento Opere-feb2015 (PUNTUALI)",
+                "expanded": true,
+                "checked": true,
+				"title": "Idrovoro",
+				"name": "idrovoro_v1",
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": false,
+                "queryPanel": true
+			},{
+				"source": "geoserver_ds",
+				"group": "Censimento Opere-feb2015 (PUNTUALI)",
+                "expanded": true,
+                "checked": true,
+				"title": "Opere di presa",
+				"name": "opera_presa_v1",
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": false,
+                "queryPanel": true
+			},{
+				"source": "geoserver_ds",
+				"group": "Censimento Opere-feb2015 (PUNTUALI)",
+                "expanded": true,
+                "checked": true,
+				"title": "Pennello",
+				"name": "pennello_v1",
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": false,
+                "queryPanel": true
+			},{
+				"source": "geoserver_ds",
+				"group": "Censimento Opere-feb2015 (PUNTUALI)",
+                "expanded": true,
+                "checked": true,
+				"title": "Rampa",
+				"name": "rampa_v1",
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": false,
+                "queryPanel": true
+			},{
+				"source": "geoserver_ds",
+				"group": "Censimento Opere-feb2015 (PUNTUALI)",
+                "expanded": true,
+                "checked": true,
+				"title": "Sfioratore",
+				"name": "sfioratore_v1",
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": false,
+                "queryPanel": true
+			},{
+				"source": "geoserver_ds",
+				"group": "Censimento Opere-feb2015 (PUNTUALI)",
+                "expanded": true,
+                "checked": true,
+				"title": "Sifone",
+				"name": "sifone_v1",
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": false,
+                "queryPanel": true
+			},{
+				"source": "geoserver_ds",
+				"group": "Censimento Opere-feb2015 (PUNTUALI)",
+                "expanded": true,
+                "checked": true,
+				"title": "Soglia",
+				"name": "soglia_v1",
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": false,
+                "queryPanel": true
+			},{
+				"source": "geoserver_ds",
+				"group": "Censimento Opere-feb2015 (PUNTUALI)",
+                "expanded": true,
+                "checked": true,
+				"title": "Traversa",
+				"name": "traversa_v1",
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": false,
+                "queryPanel": true
+			},{
 				"source": "geoscopio_amb_ammin",
 				"group": "Ambiti amministrativi",
 				"title": "Province",
 				"name": "rt_ambamm.idprovince.rt.poly",
 				"displayInLayerSwitcher": true,
-				"visibility": true,
+				"visibility": false,
 				"tiled": false
 			},{
 				"source": "geoscopio_amb_ammin",
@@ -323,19 +560,50 @@
         "bottomInUnits":"nmi",    
         "topInUnits":"m",    
         "topOutUnits":"km"
-    },
+    },	
     "removeTools": [
         "wmsgetfeatureinfo_menu_plugin"
-    ], 	
+    ], 	    
 	"proj4jsDefs": {
 		"EPSG:3003": "+proj=tmerc +lat_0=0 +lon_0=9 +k=0.9996 +x_0=1500000 +y_0=0 +ellps=intl +units=m +no_defs +towgs84 = -104.1,-49.1,-9.9,0.971,-2.917,0.714,-11.68"
-	},   
+	},
+    "customPanels":[
+	      {
+	          "xtype": "panel",
+	          "title": "Risultati Ricerche",      
+	          "border": false,
+              "collapsedonfull": true,
+	          "id": "south",
+	          "region": "south",
+	          "layout": "fit",
+	          "height": 330,
+	          "collapsed": true,
+	          "collapsible": true,
+	          "header": true
+	      },{
+	          "xtype": "panel",
+	          "title": "Pannello Ricerche",         
+	          "border": false,
+	          "id": "east",
+	          "width": 400,
+	          "height": 500,
+	          "region": "east",
+	          "layout": "fit",
+	          "collapsed": true,
+	          "collapsible": true,
+	          "header": true,
+              "collapsedonfull": true
+	      }
+    ],	     
 	"customTools": [
 		{
 			"ptype": "gxp_embedmapdialog",
 			"actionTarget": {"target": "paneltbar", "index": 2},
 			"embeddedTemplateName": "viewer",
 			"showDirectURL": true
+		}, {
+			"ptype": "gxp_categoryinitializer",
+            "silentErrors": true
 		},{
             "ptype":"gxp_wmsgetfeatureinfo",
             "id": "wmsgetfeatureinfo_plugin",
@@ -375,6 +643,71 @@
                 "target": "panelbbar",
                 "index": 1
             }
-        }
+        }, {
+		  "ptype": "gxp_featuremanager",
+		  "id": "featuremanager",
+          "paging": true,
+          "pagingType": 1,
+          "autoLoadFeatures": false,
+          "maxFeatures": 10
+	    }, {
+		  "ptype": "gxp_featuregrid",
+		  "featureManager": "featuremanager",
+          "layout": "form",
+		  "outputConfig": {
+			  "id": "featuregrid",
+			  "title": "Features",
+              "height": 240,
+              "loadMask": true
+		  },
+		  "outputTarget": "south",
+		  "showNumberOfRecords": true
+	    }, {
+		  "ptype": "gxp_spatialqueryform",
+		  "featureManager": "featuremanager",
+		  "featureGridContainer": "south",
+		  "outputTarget": "east",
+		  "showSelectionSummary": true,
+		  "actions": null,
+		  "id": "bboxquery",
+          "spatialSelectorFieldsetCollapsedFirst": true,    
+          "spatialSelectorFieldsetHidden": true,    
+          "spatialSelectorFieldsetCheckboxToggle": false,        
+          "attributeFieldsetCollapsedFirst": false,        
+          "attributeFieldsetHidden": false,      
+          "attributeFieldsetCheckboxToggle": false,    
+          "filterLayer": true,
+          "autoComplete": {
+            "sources": ["geoserver_ds"],
+            "url": "http://geoportale.lamma.rete.toscana.it/geoserver_ds/wps",
+            "pageSize": 10
+          },
+		  "outputConfig":{
+			  "outputSRS": "EPSG:900913",
+			  "selectStyle":{
+				  "strokeColor": "#ee9900",
+				  "fillColor": "#ee9900",
+				  "fillOpacity": 0.4,
+				  "strokeWidth": 1
+			  },
+			  "spatialFilterOptions": {	
+				  "lonMax": 20037508.34,   
+				  "lonMin": -20037508.34,
+				  "latMax": 20037508.34,   
+				  "latMin": -20037508.34  
+			  },
+			  "bufferOptions": {
+				"minValue": 1,
+				"maxValue": 1000,
+				"decimalPrecision": 2,
+				"distanceUnits": "m"
+			  }
+		  },          
+		  "spatialSelectorsConfig":{
+		        "bbox":{
+		            "xtype": "gxp_spatial_bbox_selector"
+		        }
+	      }
+    	}
 	]
 }
