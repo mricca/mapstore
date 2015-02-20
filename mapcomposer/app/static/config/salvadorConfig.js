@@ -1,20 +1,4 @@
 {
-   "header": {
-	   "html": ["<div align='center' style='background-color:#02004B;background-position:right center;background-image:url(theme/app/img/banner/Header_geoportale_solo_img.jpg);background-repeat: no-repeat;width:100%;height:100%'></div>"],
-	   "container": {
-			"border": false,
-			"header": false,
-			"collapsible": true,
-			"collapseMode": "mini",
-            "collapsed": true,
-			"hideCollapseTool": true,
-			"split": true,
-			"animCollapse": false,
-			"minHeight": 90,
-			"maxHeight": 90,
-			"height": 90
-	   }
-   },   
    "scaleOverlayMode": "advanced",
    "actionToolScale": "medium", 
    "tab": true,
