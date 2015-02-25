@@ -85,6 +85,11 @@ gxp.plugins.geobasi.MainGeobasi = Ext.extend(gxp.plugins.Tool, {
         
         return mainGeobasi;
     },
+	adjustLayout: function(){
+		var geobasiTab = this.output[0].items;
+		geobasiTab.items[0].syncSize();
+		geobasiTab.items[0].doLayout(false,true);
+	},
     enableData: function(){
         var geobasiTab = this.output[0].items;
         for (var i = 0; i<geobasiTab.items.length;i++){

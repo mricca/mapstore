@@ -639,9 +639,25 @@ gxp.form.SelDamageArea = Ext.extend(Ext.form.FieldSet, {
         ];
 
         this.listeners = {
-            'hide': function () {
+            'hide': function (fieldset) {
                 this.clearDrawFeature();
-            }
+            },
+			'expand': function(){
+				for(var tool in app.tools){            
+					if(app.tools[tool].ptype == "gxp_maingeobasi"){  
+						app.tools[tool].adjustLayout();
+					}                          
+				}
+				fieldset.doLayout(false,true);	
+			},
+			'collapse': function(fieldset){
+				for(var tool in app.tools){            
+					if(app.tools[tool].ptype == "gxp_maingeobasi"){  
+						app.tools[tool].adjustLayout();
+					}                          
+				}
+				fieldset.doLayout(false,true);	
+			}			
         };
 
         this.areaDamage = gxp.form.SelDamageArea.superclass.initComponent.call(this);

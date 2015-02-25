@@ -46,9 +46,13 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 		selMatrixMethod : 'Metodo selezione Matrice',
 		selElabMethod : 'Seleziona tipologia valori',
 		dataUrl : null,
-        wfsURL: "http://www506.regione.toscana.it/geoserver/wfs",
-
 		mainLoadingMask : "Caricamento date in corso...",
+		getWFSStoreProxyProp: {
+			wfsURL : "http://www506.regione.toscana.it/geoserver/wfs",
+			featureNS : 'http://geobasi',
+            outputFormat : "application/json",
+            wfsVersion : '1.1.0'
+		},
 
 		/** private: method[init]
 		 *  :arg target: ``Object``
@@ -82,7 +86,7 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 			
 			Ext.Panel.prototype.buttonAlign = 'left';
 
-			this.areaDamage = new gxp.form.SelDamageArea(Ext.apply({
+			this.areaSelection = new gxp.form.SelDamageArea(Ext.apply({
 						localeGeoserverUrl : this.localeGeoserverUrl, //"http://159.213.57.108/geoserver/ows?",
 						remoteGeoserverUrl : this.remoteGeoserverUrl, //"http://www502.regione.toscana.it:80/wfsvector/com.rt.wfs.RTmap/wfs",
 						map : app.mapPanel.map,
@@ -105,9 +109,9 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
                  proxy: this.getWFSStoreProxy('distinct_matrix', null, 'matrix', 'monitoraggio:'+this._newMonitoringViewparams), 
                  autoLoad: true 
            });
-           
+			
             matrixStore.on('load', function(store, records, options) {
-                this.output.matrixType.setValue(records[0].get('matrix_cod'));
+                //this.output.matrixType.setValue(records[0].get('matrix_cod'));
             }, this);
 			
             var elementsStore = new GeoExt.data.FeatureStore({ 
@@ -119,7 +123,9 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
                     "name": "element",              
                     "mapping": "element"
                   }],
-                 proxy: this.getWFSStoreProxy('distinct_elements', null, 'element', 'monitoraggio:'+this._newMonitoringViewparams+';tygeomat:'+this._newMatrixViewparams), 
+                 proxy: this.getWFSStoreProxy('distinct_elements', null, 'element',
+												'monitoraggio:' + this._newMonitoringViewparams + ';' +
+												'tygeomat:' + this._newMatrixViewparams), 
                  autoLoad: true 
            });
            
@@ -136,7 +142,10 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
                     "name": "method",              
                     "mapping": "method"
                   }],
-                 proxy: this.getWFSStoreProxy('distinct_method', null, 'method', 'monitoraggio:'+this._newMonitoringViewparams+';tygeomat:'+this._newMatrixViewparams+';sigla_el:'+this._newElementViewparams), 
+                 proxy: this.getWFSStoreProxy('distinct_method', null, 'method',
+												'monitoraggio:' + this._newMonitoringViewparams + ';' +
+												'tygeomat:' + this._newMatrixViewparams + ';' +
+												'sigla_el:' + this._newElementViewparams), 
                  autoLoad: true 
            });
            
@@ -152,15 +161,26 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 					layout : "form",
 					autoScroll : true,
 					frame : true,
+					forceLayout: true,
 					items : [{
 							xtype : 'fieldset',
 							title : '<span style="color:#C53430;">Selezione Matrice - Elemento - Metodo Analitico</span>',
 							anchor : '100%',
-							ref : 'comboView3',
+							ref : 'selectionAnalisysFieldset',
 							collapsible : false,
 							forceLayout : true, //needed to force to read values from this fieldset
 							collapsed : false,
 							iconCls : "gxp-icon-select-elem-geobasi",
+							buttonAlign: 'right',
+							buttons : [{
+								text : 'Reset',
+								iconCls : 'cancel',
+								tooltip : 'Reset',
+								handler: function () {
+									this.clearSelection();
+								},
+								scope: this
+							}],
 							items : [{
 									xtype : 'combo',
 									ref : '../matrixType',
@@ -170,7 +190,7 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 									typeAhead : true,
 									triggerAction : 'all',
 									lazyRender : false,
-									//mode : 'remote',
+									mode : 'remote',
 									name : 'tipo_matrice',
 									forceSelection : true,
 									allowBlank : false,
@@ -182,8 +202,8 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
                                     lastQuery: '',
                                     store: matrixStore,
                                     resizable: true,
-									//emptyText : "-- Seleziona Tipo Matrice --",
-									//valueNotFoundText : "-- Seleziona Tipo Matrice --",                                    
+									emptyText : '-- Seleziona Tipo Matrice --',
+									valueNotFoundText : '-- Seleziona Tipo Matrice --',
                                     listeners: {
                                         expand: {
                                             fn: me.onComboboxMatrixExpand,
@@ -206,7 +226,7 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 									typeAhead : true,
 									triggerAction : 'all',
 									lazyRender : true,
-									//mode : 'local',
+									mode : 'remote',
 									autoLoad : true,
 									forceSelected : true,
 									allowBlank : false,
@@ -214,10 +234,10 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 									displayField : 'element',
 									valueField : 'element',
 									lastQuery: '',
-									//value: 'Ca',
 									emptyText : "-- Seleziona Elemento --",
 									valueNotFoundText : "-- Seleziona Elemento --",
 									readOnly : false,
+									disabled: true,
 									listeners: {
 										expand: {
 											fn: me.onComboboxElemExpand,
@@ -241,7 +261,7 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 									typeAhead : true,
 									triggerAction : 'all',
 									lazyRender : true,
-									//mode : 'local',
+									mode : 'remote',
 									autoLoad : true,
 									resizable : true,
 									forceSelected : true,
@@ -249,11 +269,10 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 									name : 'Metodo_analitico',
 									displayField : 'method',
 									valueField : 'method',
-									//value: 'ICP-AES',
 									lastQuery: '',
 									emptyText : "-- Seleziona Metodo Analitico --",
 									valueNotFoundText : "-- Seleziona Metodo Analitico --",
-									disabled : false,
+									disabled : true,
 									readOnly : false,
 									listeners: {
 										expand: {
@@ -273,7 +292,10 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 								}
 							]
 						},
-						this.areaDamage, {
+						
+						this.areaSelection, 
+						
+						{
 							xtype : 'fieldset',
 							title : '<span style="color:#C53430;">Selezione presenza monitoraggio</span>',
 							anchor : '100%',
@@ -281,7 +303,23 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 							iconCls : 'gxp-icon-geobasi-monitoraggio',
 							collapsible : true,
 							forceLayout : true, //needed to force to read values from this fieldset
-							collapsed : true,
+							collapsed : false,
+							listeners: {
+								expand: function(){
+									for(var tool in app.tools){            
+										if(app.tools[tool].ptype == "gxp_maingeobasi"){  
+											app.tools[tool].adjustLayout();
+										}                          
+									}
+								},
+								'collapse': function(){
+									for(var tool in app.tools){            
+										if(app.tools[tool].ptype == "gxp_maingeobasi"){  
+											app.tools[tool].adjustLayout();
+										}                          
+									}
+								}									
+							},							
 							items : [{
 									xtype : 'combo',
 									ref : '../monitoraggio',
@@ -300,6 +338,10 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 									valueField : 'coeff',
 									value : "01",
 									readOnly : false,
+									listeners: {
+										select: this.clearSelection,
+										scope:this
+									},
 									store : new Ext.data.JsonStore({
 										fields : [{
 												name : 'name',
@@ -341,6 +383,26 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 							forceLayout : true, //needed to force to read values from this fieldset
 							collapsed : false,
 							iconCls : "gxp-icon-time-range",
+							listeners: {
+								expand: function(fieldset){
+									for(var tool in app.tools){            
+										if(app.tools[tool].ptype == "gxp_maingeobasi"){  
+											app.tools[tool].adjustLayout();
+										}                          
+									}
+									//fieldset.syncSize();
+									fieldset.doLayout(false,true);
+								},
+								'collapse': function(fieldset){
+									for(var tool in app.tools){            
+										if(app.tools[tool].ptype == "gxp_maingeobasi"){  
+											app.tools[tool].adjustLayout();
+										}                          
+									}
+									//fieldset.syncSize();
+									fieldset.doLayout(false,true);									
+								}																	
+							},								
 							items : [{
 									xtype : 'checkbox',
 									anchor : '100%',
@@ -382,6 +444,24 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 							forceLayout : true, //needed to force to read values from this fieldset
 							collapsed : true,
 							iconCls : "gxp-icon-select-log-geobasi",
+							listeners: {
+								expand: function(fieldset){
+									for(var tool in app.tools){            
+										if(app.tools[tool].ptype == "gxp_maingeobasi"){  
+											app.tools[tool].adjustLayout();
+										}                          
+									}
+									fieldset.doLayout(false,true);	
+								},
+								'collapse': function(fieldset){
+									for(var tool in app.tools){            
+										if(app.tools[tool].ptype == "gxp_maingeobasi"){  
+											app.tools[tool].adjustLayout();
+										}                          
+									}
+									fieldset.doLayout(false,true);	
+								}								
+							},								
 							items : [{
 									fieldLabel : this.selElabMethod,
 									xtype : 'radiogroup',
@@ -423,7 +503,7 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 									target : this,
 									form : this,
 									disabled : false,
-									filter : this.areaDamage,
+									filter : this.areaSelection,
 									addedLayer : false
 								}, {
 									text : 'Visualizza Selezione',
@@ -461,7 +541,7 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 									target : this,
 									form : this,
 									disabled : false,
-									filter : this.areaDamage,
+									filter : this.areaSelection,
 									addedLayer : false
 								}, {
 									text : 'Istogramma',
@@ -475,7 +555,7 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 									target : this,
 									form : this,
 									disabled : false,
-									filter : this.areaDamage,
+									filter : this.areaSelection,
 									addedLayer : false
 								}, {
 									text : 'Curva Cumul.',
@@ -489,7 +569,7 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 									target : this,
 									form : this,
 									disabled : false,
-									filter : this.areaDamage,
+									filter : this.areaSelection,
 									addedLayer : false
 									/*,
 									handler: function() {
@@ -546,17 +626,11 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
         },
 
 		onComboboxMatrixSelect: function (field, eOpts) {
-			/*var cmbelem = Ext.getCmp('cmbelem_id');
-			var cmbmetan = Ext.getCmp('cmbmetan_id');
-			cmbelem.enable();
-			cmbelem.reset();
-			cmbmetan.reset();
-			
-			var barChartButton = Ext.getCmp('barChartButton_id');
-			var boxPlotButton = Ext.getCmp('boxPlotButton_id');
-			
-			barChartButton.disable();
-			boxPlotButton.disable();*/			
+			var me = this;
+			me.output.elemento.enable();
+			me.output.elemento.reset();
+			me.output.metodoAnalitico.reset();
+			me.output.metodoAnalitico.disable();
 		},
 
 		onComboboxElemExpand: function (field, eOpts) {
@@ -591,30 +665,9 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 		},		
 
 		onComboboxElemSelect: function (field, eOpts) {
-			/*var cmbmetan = Ext.getCmp('cmbmetan_id');
-			//cmbmetan.enable();
-			cmbmetan.reset();
-			
-			var flagSelMatrix = this.items.items[0].getForm().getValues();        
-			var barChartButton = Ext.getCmp('barChartButton_id');
-			var boxPlotButton = Ext.getCmp('boxPlotButton_id');
-			
-			switch (flagSelMatrix.selmatrix) {
-			case '1':
-					boxPlotButton.enable();
-					barChartButton.disable();
-					cmbmetan.enable();
-				break;
-			case '2':
-					boxPlotButton.enable();
-					barChartButton.disable();
-					cmbmetan.enable();
-				break;
-			case '3':
-					boxPlotButton.disable();
-					barChartButton.enable();
-				break;
-			}*/
+			var me = this;
+			me.output.metodoAnalitico.enable();
+			me.output.metodoAnalitico.reset();
 		},
 		
 		onComboboxMetAnExpand: function (field, eOpts) {
@@ -652,22 +705,7 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 		},		
 
 		onComboboxMetAnSelect: function (field, eOpts) {
-			/*var flagSelMatrix = this.items.items[0].getForm().getValues();        
-			var barChartButton = Ext.getCmp('barChartButton_id');
-			var boxPlotButton = Ext.getCmp('boxPlotButton_id');
-			
-			switch (flagSelMatrix.selmatrix) {
-			case '1':
-					barChartButton.enable();
-				break;
-			case '2':
-					barChartButton.enable();
-				break;
-			case '3':
-					barChartButton.enable();
-					boxPlotButton.disable();
-				break;
-			}*/
+
 		},
 	
 		setMinMaxValues : function () {
@@ -704,14 +742,16 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 
 					var min = jsonData2.features[0].properties.min;
 					var max = jsonData2.features[0].properties.max;
+					
+					var yearRangeSelector = this.output.rangeyear.yearRangeSelector;
 
-					this.output.rangeyear.yearRangeSelector.slider.setMinValue(min);
-					this.output.rangeyear.yearRangeSelector.slider.setMaxValue(max);
-					this.output.rangeyear.yearRangeSelector.slider.setValue(0, min, true);
-					this.output.rangeyear.yearRangeSelector.slider.setValue(1, max, true);
+					yearRangeSelector.slider.setMinValue(min);
+					yearRangeSelector.slider.setMaxValue(max);
+					yearRangeSelector.slider.setValue(0, min, true);
+					yearRangeSelector.slider.setValue(1, max, true);
 
-					this.output.rangeyear.yearRangeSelector.startValue.setValue(min);
-					this.output.rangeyear.yearRangeSelector.endValue.setValue(max);
+					yearRangeSelector.startValue.setValue(min);
+					yearRangeSelector.endValue.setValue(max);
 					this.appMask.hide();
 
 				},
@@ -721,8 +761,17 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 				}
 			});
 		},
+		
+		clearSelection: function(){
+			this.output.matrixType.reset();
+			this.output.elemento.reset();
+			this.output.metodoAnalitico.reset();
+			this.output.elemento.disable();
+			this.output.metodoAnalitico.disable();			
+		},
         
         getWFSStoreProxy: function(featureName, filter, sortBy, viewparams){
+			
             var filterProtocol=new OpenLayers.Filter.Logical({
                 type: OpenLayers.Filter.Logical.AND,
                 filters: new Array()
@@ -735,17 +784,18 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
             }
             var proxy= new GeoExt.data.ProtocolProxy({ 
                 protocol: new OpenLayers.Protocol.WFS({ 
-                    url: this.wfsURL, 
+                    url: this.getWFSStoreProxyProp.wfsURL, 
                     featureType: featureName, 
                     readFormat: new OpenLayers.Format.GeoJSON(),
-                    featureNS: 'http://geobasi',
+                    featureNS: this.getWFSStoreProxyProp.featureNS,
                     filter: filterProtocol, 
-                    outputFormat: "application/json",
-                    version: '1.1.0', //this.wfsVersion,
+                    outputFormat: this.getWFSStoreProxyProp.outputFormat,
+                    version: this.getWFSStoreProxyProp.wfsVersion,
                     sortBy: sortBy || undefined,
-                    viewparams: viewparams || undefined
+                    viewparams: viewparams || undefined			
                 }) 
             });
+
             return proxy;         
             
         }        

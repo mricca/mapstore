@@ -559,7 +559,7 @@
         serverConfig = Ext.applyIf(serverConfig, localConfig);
 		serverConfig.geoStoreBaseURL = serverConfig.geoStoreBase || ('http://' + window.location.host + '/geostore/rest/');
 
-		var configuration = customConfigName ? customConfigName : "mapStoreConfig";
+		var configuration = customConfigName ? customConfigName : "geobasiConfig";
 		
 		// use GeoExplorerLoader to load configuration files
 		var loader = new GeoExplorerLoader(serverConfig, configuration, mapStoreDebug, mapIdentifier, 
