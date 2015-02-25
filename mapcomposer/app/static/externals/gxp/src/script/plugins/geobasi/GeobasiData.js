@@ -215,9 +215,10 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
                                         }
                                     },
 									tpl : new Ext.XTemplate(
-										'<tpl for=\".\">',
-										'<div class=\"x-combo-list-item\">{matrix} -> {count}</div>',
-										'</tpl>')
+										'<tpl for=\".\" >',
+                                            '<div class=\"x-combo-list-item\">{matrix} -> {count} -> {matrix_cod}</div>',
+										'</tpl>'
+                                    )
 								}, {
 									xtype : 'combo',
 									ref : '../elemento',
@@ -604,17 +605,7 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
             matrixStore = field.getStore();
             monitoringValue = this.output.monitoraggio.getValue();
 			
-			switch (monitoringValue){
-				case "01":
-					newMonitoringViewparams = ' IS NOT NULL'
-					break;
-				case "02":
-					newMonitoringViewparams = ' = true'
-					break;
-				case "03":
-					newMonitoringViewparams = ' = false'
-					break;
-			}
+            newMonitoringViewparams = this.setNewMonitoringViewparams(monitoringValue);
 			
 			if(this._newMonitoringViewparams !== newMonitoringViewparams){
 				newProtocol = this.getWFSStoreProxy('distinct_matrix', null, 'matrix', 'monitoraggio:' + newMonitoringViewparams);    
@@ -642,17 +633,7 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 			matrixValue = this.output.matrixType.getValue();
 			newMatrixViewparams = matrixValue;
 			
-			switch (monitoringValue){
-				case "01":
-					newMonitoringViewparams = ' IS NOT NULL'
-					break;
-				case "02":
-					newMonitoringViewparams = ' = true'
-					break;
-				case "03":
-					newMonitoringViewparams = ' = false'
-					break;
-			}
+			newMonitoringViewparams = this.setNewMonitoringViewparams(monitoringValue);
 			
 			if(this._newMonitoringViewparams !== newMonitoringViewparams || this._newMatrixViewparams !== newMatrixViewparams){
 				newProtocol = this.getWFSStoreProxy('distinct_elements', null, 'element', 'monitoraggio:'+newMonitoringViewparams+';tygeomat:'+newMatrixViewparams);    
@@ -681,17 +662,7 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 			newMatrixViewparams = matrixValue;
 			newElementViewparams = elementValue;
 			
-			switch (monitoringValue){
-				case "01":
-					newMonitoringViewparams = ' IS NOT NULL'
-					break;
-				case "02":
-					newMonitoringViewparams = ' = true'
-					break;
-				case "03":
-					newMonitoringViewparams = ' = false'
-					break;
-			}
+			newMonitoringViewparams = this.setNewMonitoringViewparams(monitoringValue);
 			
 			if(this._newMonitoringViewparams !== newMonitoringViewparams || this._newMatrixViewparams !== newMatrixViewparams || this._newElementViewparams !== newElementViewparams){
 				newProtocol = this.getWFSStoreProxy('distinct_method', null, 'method', 'monitoraggio:'+newMonitoringViewparams+';tygeomat:'+newMatrixViewparams+';sigla_el:'+newElementViewparams);    
@@ -797,6 +768,24 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
             });
 
             return proxy;         
+            
+        },
+
+        setNewMonitoringViewparams: function(monitoringValue){
+        
+            var newMonitoringViewparams;
+			switch (monitoringValue){
+				case "01":
+					newMonitoringViewparams = ' IS NOT NULL'
+					break;
+				case "02":
+					newMonitoringViewparams = ' = true'
+					break;
+				case "03":
+					newMonitoringViewparams = ' = false'
+					break;
+			}
+            return newMonitoringViewparams;
             
         }        
 
