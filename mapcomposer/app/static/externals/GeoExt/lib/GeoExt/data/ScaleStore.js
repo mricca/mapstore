@@ -45,7 +45,7 @@ GeoExt.data.ScaleStore = Ext.extend(Ext.data.Store, {
     constructor: function(config) {
         var map = (config.map instanceof GeoExt.MapPanel ? config.map.map : config.map);
         delete config.map;
-        config = Ext.applyIf(config, {reader: new Ext.data.JsonReader({}, [
+        config = Ext.applyIf(config, {sortInfo:{field: 'scale', direction: 'DESC'}, reader: new Ext.data.JsonReader({}, [
             "level",
             "resolution",
             "scale"
