@@ -20,5 +20,6 @@ var localConfig = {
             "height": 100
         }
     },
-    "footer": {}    
+    "footer": {},
+   skipCustomConfigs: true
 };
