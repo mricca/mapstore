@@ -48,31 +48,18 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
     pagePosition: null,
 
     mainLoadingMask: "Attendere prego, creazione grafico in corso...",
-
-    colors: [
-        '#00FFFF',
-        '#0000FF',
-        '#8A2BE2',
-        '#A52A2A',
-        '#DEB887',
-        '#5F9EA0',
-        '#7FFF00',
-        '#D2691E',
-        '#FF7F50',
-        '#6495ED',
-        '#DC143C',
-        '#006400',
-        '#FF00FF',
-        '#FFD700',
-        '#FF4500'
-    ],
-
+    
+    colorGradient : {
+        end: '#FFCDD6',
+        start: '#FF0000'
+    },
+    
     handler: function () {
 
         var me = this;
 
         var myFilter;
-
+     
         /*if(this.filter.bufferFieldset.hidden === false){
             var radius = this.filter.bufferFieldset.bufferField.getValue(); 
             
@@ -377,19 +364,22 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
                 ampiezzaMax: metodoElaborazione == "1" ? Math.round10(barMinimo + (ampClassi * (i + 1)), -4) : Math.round10(barMinimo + (ampClassi * (i + 1)), -4)                
             };
         }
-
+        
+        // Genera il gradiente di colori per le classi
+        this.columnChartColors = jsgradient.generateGradient(this.colorGradient.end, this.colorGradient.start, numerositaClassi.length);
+        
         // Conteggio gli elementi appartenenti alla prima e all'ultima classe
         for (var x = 0; x < num_ele; x++) {
             if (resultsLog[x].valore < barMinimo + ampClassi) {
                 numerositaClassi[0].conteggio++;
                 this.jsonData2.features[x].attributes.classe = numerositaClassi[0].classe + 1;
-                this.jsonData2.features[x].attributes.colore = this.colors[numerositaClassi[0].classe];
+                this.jsonData2.features[x].attributes.colore = this.columnChartColors[numerositaClassi[0].classe];
                 resultsLog[x].valore = "undefined";
 
             } else if (resultsLog[x].valore >= (barMinimo + (ampClassi * (Math.round(numClassi))))) {
                 numerositaClassi[Math.round(numClassi) - 1].conteggio++;
                 this.jsonData2.features[x].attributes.classe = numerositaClassi[Math.round(numClassi) - 1].classe + 1;
-                this.jsonData2.features[x].attributes.colore = this.colors[numerositaClassi[Math.round(numClassi) - 1].classe];
+                this.jsonData2.features[x].attributes.colore = this.columnChartColors[numerositaClassi[Math.round(numClassi) - 1].classe];
                 resultsLog[x].valore = "undefined";
             }
         }
@@ -403,7 +393,7 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
                 if (resultsLog[x].valore >= (barMinimo + (ampClassi * (y))) && resultsLog[x].valore < (barMinimo + (ampClassi * (y + 1)))) {
                     numerositaClassi[y].conteggio++;
                     this.jsonData2.features[x].attributes.classe = numerositaClassi[y].classe + 1;
-                    this.jsonData2.features[x].attributes.colore = this.colors[numerositaClassi[y].classe];
+                    this.jsonData2.features[x].attributes.colore = this.columnChartColors[numerositaClassi[y].classe];
                     resultsLog[x].valore = "undefined";
                 }
 
@@ -435,7 +425,7 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
             dataPoints[i] = {
                 uuidelemento: classe,
                 classe: classe_num,
-                color: this.colors[i],
+                color: this.columnChartColors[i],
                 valore: numerositaClassi[i].conteggio,
                 //totaleDaDB: $num_ele_stat,
                 totaleOriginale: numerositaClassi[i].num_ele,
@@ -634,20 +624,21 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
 
                 //var dataCharts = this.getData(this.jsonData2, metodoElaborazione, data1);
                 var dataCharts = this.getData(this.jsonData2, metodoElaborazione);
-
+                this.newColors = jsgradient.generateGradient('#FFCDD6', '#FF0000', dataCharts.length);
+                //this.newColors = this.randomColorsHEX(dataCharts.length);
                 //var charts  = this.makeChart(data, this.chartOpt, listVar, aggregatedDataOnly);
 
                 var mainChart = Ext4.getCmp('geobasi_barchart' + "_" + this.chartID);
 
                 var gridStore = Ext4.data.StoreManager.lookup("BarChartStore");
-
+                
                 if (!mainChart) {
                     var hcConfig = {
                         series: [{
                             type: 'column',
                             dataIndex: 'valore',
                             name: 'Istogramma',
-                            colors: this.colors,
+                            colors: this.columnChartColors,
                             turboThreshold: 100000,
                             listeners: {
                                 pointclick: function (serie, point, record, event) {
@@ -1261,8 +1252,133 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
             callback(totFilter);
         }
 
+    },
+    randomColorsRGB: function(total){
+        var i = 360 / (total - 1); // distribute the colors evenly on the hue range
+        var r = []; // hold the generated colors
+        var hsvToRgb = function(h,s,v){
+            var rgb= Ext.ux.ColorPicker.prototype.hsvToRgb(h,s,v);
+            return rgb;
+        }
+        for (var x=0; x<total; x++)
+        {
+            r.push(hsvToRgb(i * x, 0.57, 0.63)); // you can also alternate the saturation and value for even more contrast between the colors
+        }
+        return r;
+    },
+    randomColorsHEX: function(total){
+        var i = 360 / (total - 1); // distribute the colors evenly on the hue range
+        var r = []; // hold the generated colors
+        var hsvToRgb = function(h,s,v){
+            var rgb= Ext.ux.ColorPicker.prototype.hsvToRgb(h,s,v);
+            return "#" +  Ext.ux.ColorPicker.prototype.rgbToHex( rgb );
+        }
+        for (var x=0; x<total; x++)
+        {
+            r.push(hsvToRgb(i + x, 0.57, 0.63)); // you can also alternate the saturation and value for even more contrast between the colors
+        }
+        return r;
     }
 });
+
+(function () {
+
+    jsgradient = {
+        inputA : '',
+        inputB : '',
+        inputC : '',
+        gradientElement : '',
+        
+        // Convert a hex color to an RGB array e.g. [r,g,b]
+        // Accepts the following formats: FFF, FFFFFF, #FFF, #FFFFFF
+        hexToRgb : function(hex){
+            var r, g, b, parts;
+            // Remove the hash if given
+            hex = hex.replace('#', '');
+            // If invalid code given return white
+            if(hex.length !== 3 && hex.length !== 6){
+                return [255,255,255];
+            }
+            // Double up charaters if only three suplied
+            if(hex.length == 3){
+                hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+            }
+            // Convert to [r,g,b] array
+            r = parseInt(hex.substr(0, 2), 16);
+            g = parseInt(hex.substr(2, 2), 16);
+            b = parseInt(hex.substr(4, 2), 16);
+
+            return [r,g,b];
+        },
+        
+        // Converts an RGB color array e.g. [255,255,255] into a hexidecimal color value e.g. 'FFFFFF'
+        rgbToHex : function(color){
+            // Set boundries of upper 255 and lower 0
+            color[0] = (color[0] > 255) ? 255 : (color[0] < 0) ? 0 : color[0];
+            color[1] = (color[1] > 255) ? 255 : (color[1] < 0) ? 0 : color[1];
+            color[2] = (color[2] > 255) ? 255 : (color[2] < 0) ? 0 : color[2];
+            
+            return this.zeroFill(color[0].toString(16), 2) + this.zeroFill(color[1].toString(16), 2) + this.zeroFill(color[2].toString(16), 2);
+        },
+        
+        // Pads a number with specified number of leading zeroes
+        zeroFill : function( number, width ){
+            width -= number.toString().length;
+            if ( width > 0 ){
+                return new Array( width + (/\./.test( number ) ? 2 : 1) ).join( '0' ) + number;
+            }
+            return number;
+        },
+
+        // Generates an array of color values in sequence from 'colorA' to 'colorB' using the specified number of steps
+        generateGradient : function(colorA, colorB, steps){
+            var result = [], rInterval, gInterval, bInterval;
+            
+            colorA = this.hexToRgb(colorA); // [r,g,b]
+            colorB = this.hexToRgb(colorB); // [r,g,b]
+            steps -= 1; // Reduce the steps by one because we're including the first item manually
+            
+            // Calculate the intervals for each color
+            rStep = ( Math.max(colorA[0], colorB[0]) - Math.min(colorA[0], colorB[0]) ) / steps;
+            gStep = ( Math.max(colorA[1], colorB[1]) - Math.min(colorA[1], colorB[1]) ) / steps;
+            bStep = ( Math.max(colorA[2], colorB[2]) - Math.min(colorA[2], colorB[2]) ) / steps;
+        
+            result.push( '#'+this.rgbToHex(colorA) );
+            
+            // Set the starting value as the first color value
+            var rVal = colorA[0],
+                gVal = colorA[1],
+                bVal = colorA[2];
+        
+            // Loop over the steps-1 because we're includeing the last value manually to ensure it's accurate
+            for (var i = 0; i < (steps-1); i++) {
+                // If the first value is lower than the last - increment up otherwise increment down
+                rVal = (colorA[0] < colorB[0]) ? rVal + Math.round(rStep) : rVal - Math.round(rStep);
+                gVal = (colorA[1] < colorB[1]) ? gVal + Math.round(gStep) : gVal - Math.round(gStep);
+                bVal = (colorA[2] < colorB[2]) ? bVal + Math.round(bStep) : bVal - Math.round(bStep);
+                result.push( '#'+this.rgbToHex([rVal, gVal, bVal]) );
+            };
+            
+            result.push( '#'+this.rgbToHex(colorB) );
+            
+            return result;
+        },
+        
+        gradientList : function(colorA, colorB, list){
+            var list = (typeof list === 'object')? list : document.querySelector(list);
+            
+            var listItems = list.querySelectorAll('li'),
+                steps  = listItems.length,
+                colors = jsgradient.generateGradient(colorA, colorB, steps);
+
+            for (var i = 0; i < listItems.length; i++) {
+                var item = listItems[i];
+                item.style.backgroundColor = colors[i];
+            };
+        }
+    };   
+    
+})();
 
 // Closure
 (function () {
