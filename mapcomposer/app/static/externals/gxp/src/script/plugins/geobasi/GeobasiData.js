@@ -193,7 +193,7 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 									mode : 'remote',
 									name : 'tipo_matrice',
 									forceSelection : true,
-									allowBlank : false,
+									allowBlank : true,
 									autoLoad : true,
 									displayField : 'matrix',
 									valueField : 'matrix_cod',
@@ -216,14 +216,18 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
                                     },
 									tpl : new Ext.XTemplate(
 										'<tpl for=\".\" >',
-                                        //'<tpl  if="matrix_cod == \'01\'">',
-                                            '<div class=\"x-combo-list-item\">{matrix:this.formatName} -> {count} -> {matrix_cod}</div>',
-                                        //'</tpl>',
+                                            '<tpl  if="matrix_cod == \'01\' || matrix_cod == \'0201\'">',
+                                                '<div class=\"x-combo-list-item\"><h4 style="color:#C53430;">{matrix:this.formatName} - (generico) -> n°: {count}<h4></div>',
+                                            '</tpl>',
+                                        
+                                            '<tpl if="matrix_cod !== \'01\' && matrix_cod !== \'0201\'">',
+                                                '<div class=\"x-combo-list-item\"><li style="padding-left:1em;">{matrix:this.formatName} -> n°: {count}</li></div>',
+                                            '</tpl>',
 										'</tpl>',
                                         {
                                             formatName: function(name){
                                                 return name.toUpperCase();
-                                            }                                        
+                                            }
                                         }
                                     )
 								}, {
@@ -259,7 +263,7 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 									store: elementsStore,
 									tpl : new Ext.XTemplate(
 										'<tpl for=\".\">',
-										'<div class=\"x-combo-list-item\">{element} -> {count}</div>',
+										'<div class=\"x-combo-list-item\">{element} -> n°: {count}</div>',
 										'</tpl>')
 								}, {
 									xtype : 'combo',
@@ -295,7 +299,7 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 									store: methodStore,
 									tpl : new Ext.XTemplate(
 										'<tpl for=\".\">',
-										'<div class=\"x-combo-list-item\">{method} -> {count}</div>',
+										'<div class=\"x-combo-list-item\">{method} -> n°: {count}</div>',
 										'</tpl>')
 								}
 							]
