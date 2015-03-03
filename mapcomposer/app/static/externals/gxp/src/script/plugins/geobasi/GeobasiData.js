@@ -171,7 +171,7 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 							forceLayout : true, //needed to force to read values from this fieldset
 							collapsed : false,
 							iconCls : "gxp-icon-select-elem-geobasi",
-							buttonAlign: 'right',
+							buttonAlign: 'left',
 							buttons : [{
 								text : 'Reset',
 								iconCls : 'cancel',
@@ -217,11 +217,11 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 									tpl : new Ext.XTemplate(
 										'<tpl for=\".\" >',
                                             '<tpl  if="matrix_cod == \'01\' || matrix_cod == \'0201\'">',
-                                                '<div class=\"x-combo-list-item\"><h4 style="color:#C53430;">{matrix:this.formatName} - (generico) -> n°: {count}<h4></div>',
+                                                '<div class=\"x-combo-list-item\"><h4 style="color:#C53430;">{matrix} - (generico) -> n°: {count}<h4></div>',
                                             '</tpl>',
                                         
                                             '<tpl if="matrix_cod !== \'01\' && matrix_cod !== \'0201\'">',
-                                                '<div class=\"x-combo-list-item\"><li style="padding-left:1em;">{matrix:this.formatName} -> n°: {count}</li></div>',
+                                                '<div class=\"x-combo-list-item\"><li style="padding-left:1em;">{matrix} -> n°: {count}</li></div>',
                                             '</tpl>',
 										'</tpl>',
                                         {
@@ -611,15 +611,33 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 
         onComboboxMatrixExpand: function (field, eOpts) {
 
-			var matrixStore, monitoringValue, newMonitoringViewparams, newProtocol;
+			var matrixStore, monitoringValue, newMonitoringViewparams, newProtocol, myFilter;
 			
             matrixStore = field.getStore();
             monitoringValue = this.output.monitoraggio.getValue();
 			
             newMonitoringViewparams = this.setNewMonitoringViewparams(monitoringValue);
+
+			/*if (this.areaSelection.searchWFSComboAlluvioni && this.areaSelection.searchWFSComboAlluvioni.geometry){			
+				var geoJSON = new OpenLayers.Format.WKT();
+				var geoJSONgeometry = geoJSON.read(this.areaSelection.searchWFSComboAlluvioni.geometry);
+				myFilter = new OpenLayers.Filter.Spatial({
+					type: OpenLayers.Filter.Spatial.INTERSECTS,
+					property: "geom",
+					value: geoJSONgeometry.geometry
+				});
+				
+				var node = new OpenLayers.Format.Filter({
+					version: "1.1.0",
+					srsName: "EPSG:3003",
+					geometryName: "geom"
+				}).write(myFilter);
+
+				this.xml = new OpenLayers.Format.XML().write(node);
+			}*/
 			
 			if(this._newMonitoringViewparams !== newMonitoringViewparams){
-				newProtocol = this.getWFSStoreProxy('distinct_matrix', null, 'matrix', 'monitoraggio:' + newMonitoringViewparams);    
+				newProtocol = this.getWFSStoreProxy('distinct_matrix', myFilter ? myFilter : null, 'matrix', 'monitoraggio:' + newMonitoringViewparams);    
 				matrixStore.proxy.protocol = newProtocol.protocol;
 				matrixStore.reload();
 				this._newMonitoringViewparams = newMonitoringViewparams;
@@ -771,6 +789,7 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
                     readFormat: new OpenLayers.Format.GeoJSON(),
                     featureNS: this.getWFSStoreProxyProp.featureNS,
                     filter: filterProtocol, 
+					//srsName: "EPSG:3003",					
                     outputFormat: this.getWFSStoreProxyProp.outputFormat,
                     version: this.getWFSStoreProxyProp.wfsVersion,
                     sortBy: sortBy || undefined,
