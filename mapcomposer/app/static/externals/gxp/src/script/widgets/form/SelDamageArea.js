@@ -478,6 +478,7 @@ gxp.form.SelDamageArea = Ext.extend(Ext.form.FieldSet, {
                                         property: "geom",
                                         value: event.feature.geometry
                                     });
+                                    me.selectGeometry = event.feature;
                                     me.baciniintersect.enable();
                                 },
                                 "beforefeatureadded": function (event) {
@@ -641,7 +642,8 @@ gxp.form.SelDamageArea = Ext.extend(Ext.form.FieldSet, {
         this.listeners = {
             'hide': function (fieldset) {
                 this.clearDrawFeature();
-            },
+            }
+            /*,
 			'expand': function(){
 				for(var tool in app.tools){            
 					if(app.tools[tool].ptype == "gxp_maingeobasi"){  
@@ -657,7 +659,7 @@ gxp.form.SelDamageArea = Ext.extend(Ext.form.FieldSet, {
 					}                          
 				}
 				fieldset.doLayout(false,true);	
-			}			
+			}*/			
         };
 
         this.areaDamage = gxp.form.SelDamageArea.superclass.initComponent.call(this);
