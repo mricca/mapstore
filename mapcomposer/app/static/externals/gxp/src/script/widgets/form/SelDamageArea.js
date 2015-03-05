@@ -80,6 +80,36 @@ gxp.form.SelDamageArea = Ext.extend(Ext.form.FieldSet, {
     forceLayout:true, //needed to force to read values from this fieldset
 
     collapsed:true,
+
+	/** api: config[defaultStyle]
+	 *  ``Object``
+	 */
+	defaultStyle : {
+        "fillColor"   : "#FFFFFF",
+        "strokeColor" : "#FF0000",
+        "fillOpacity" : 0.5,
+        "strokeWidth" : 1
+	},
+
+	/** api: config[selectStyle]
+	 *  ``Object``
+	 */
+	selectStyle : {
+        "fillColor"   : "#FFFFFF",
+        "strokeColor" : "#FF0000",
+        "fillOpacity" : 0.5,
+        "strokeWidth" : 1
+	},
+
+	/** api: config[temporaryStyle]
+	 *  ``Object``
+	 */
+	temporaryStyle : {
+		"strokeColor": "#ee9900",
+		"fillColor": "#ee9900",
+		"fillOpacity": 0.4,
+		"strokeWidth": 1
+	},
     
     initComponent: function () {
 
@@ -302,7 +332,7 @@ gxp.form.SelDamageArea = Ext.extend(Ext.form.FieldSet, {
                         //this.bufferFieldSet.resetPointSelection();
                         //this.bufferFieldSet.coordinatePicker.toggleButton(false);
 
-                        var disabledItems = [];
+                        /*var disabledItems = [];
                         app.toolbar.items.each(function (item) {
                             if (!item.disabled) {
                                 disabledItems.push(item);
@@ -337,12 +367,12 @@ gxp.form.SelDamageArea = Ext.extend(Ext.form.FieldSet, {
                                     }
                                 }
                             }
-                        }
+                        }*/
 
                         var outputValue = c.getValue();
-                        if (me.draw) {
+                        /*if (me.draw) {
                             me.draw.deactivate()
-                        };
+                        };*/
                         if (me.drawings) {
                             me.drawings.destroyFeatures()
                         };
@@ -459,18 +489,27 @@ gxp.form.SelDamageArea = Ext.extend(Ext.form.FieldSet, {
                             //this.bufferFieldset.disable();
 
                             me.drawings = new OpenLayers.Layer.Vector({}, {
-                                displayInLayerSwitcher: false
+                                displayInLayerSwitcher: false,
+								styleMap : new OpenLayers.StyleMap({
+									"default" : this.defaultStyle,
+									"select" : this.selectStyle,
+									"temporary" : this.temporaryStyle
+								})								
                             });
-                            app.mapPanel.map.addLayer(me.drawings);
+
+							app.mapPanel.map.addLayer(me.drawings);
 
                             me.draw = new OpenLayers.Control.DrawFeature(
                                 me.drawings,
                                 OpenLayers.Handler.Polygon
                             );
-
-                            app.mapPanel.map.addControl(me.draw);
+							
+							me.draw.handler.stopDown = true;
+							me.draw.handler.stopUp = true;
+							
+							app.mapPanel.map.addControl(me.draw);
                             me.draw.activate();
-
+							
                             me.drawings.events.on({
                                 "featureadded": function (event) {
                                     me.filterPolygon = new OpenLayers.Filter.Spatial({
@@ -478,14 +517,22 @@ gxp.form.SelDamageArea = Ext.extend(Ext.form.FieldSet, {
                                         property: "geom",
                                         value: event.feature.geometry
                                     });
+									
+									if (me.draw) {
+										me.draw.deactivate();	
+									};
+									
                                     me.selectGeometry = event.feature;
                                     me.baciniintersect.enable();
                                 },
                                 "beforefeatureadded": function (event) {
                                     me.drawings.destroyFeatures();
-                                }
+                                },
+								scope:me
                             });
+							
 
+							
                         } else if (outputValue == 'buffer') {
                             this.searchWFSComboAlluvioni.disable();
                             this.searchWFSComboAlluvioni.hide();
