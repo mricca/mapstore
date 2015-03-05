@@ -157,6 +157,9 @@ gxp.form.SelDamageArea = Ext.extend(Ext.form.FieldSet, {
                 fillColor: "#FF00FF",
                 fillOpacity: 0.2
             },
+            defaultStyle : this.defaultStyle,
+            selectStyle : this.selectStyle,
+            temporaryStyle : this.temporaryStyle,            
             recordModel: [{
                 name: 'id',
                 mapping: 'id'
@@ -195,6 +198,9 @@ gxp.form.SelDamageArea = Ext.extend(Ext.form.FieldSet, {
                 fillColor: "#FF00FF",
                 fillOpacity: 0.2
             },
+            defaultStyle : this.defaultStyle,
+            selectStyle : this.selectStyle,
+            temporaryStyle : this.temporaryStyle,             
             recordModel: [{
                 name: 'id',
                 mapping: 'id'
@@ -232,6 +238,9 @@ gxp.form.SelDamageArea = Ext.extend(Ext.form.FieldSet, {
                 fillColor: "#0000FF",
                 fillOpacity: 0.8
             },
+            defaultStyle : this.defaultStyle,
+            selectStyle : this.selectStyle,
+            temporaryStyle : this.temporaryStyle,             
             recordModel: [{
                 name: 'id',
                 mapping: 'gid'

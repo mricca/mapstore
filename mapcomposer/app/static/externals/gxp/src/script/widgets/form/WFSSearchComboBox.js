@@ -365,7 +365,12 @@ gxp.form.WFSSearchComboBox = Ext.extend(Ext.form.ComboBox, {
 
                     this.newLayer = new OpenLayers.Layer.Vector(this.highlightLayer, {
                         displayInLayerSwitcher: true,
-                        style: layerStyle,
+                        styleMap : new OpenLayers.StyleMap({
+                            "default" : this.defaultStyle,
+                            "select" : this.selectStyle,
+                            "temporary" : this.temporaryStyle
+                        }),
+                        //style: layerStyle,
                         visibility: true,
                         renderers: renderer
                     });
