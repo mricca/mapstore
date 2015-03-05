@@ -108,14 +108,14 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
                     "name": "matrix",              
                     "mapping": "matrix"
                   }],
-                 proxy: this.getWFSStoreProxy('distinct_matrix', null, 'matrix',
+                 proxy: this.getWFSStoreProxyProva('distinct_matrix', null, 'matrix',
                                                 'monitoraggio:' + this._newMonitoringViewparams + 
                                                 ';geometria:' + this._newGeometryViewparams
-                                                ), 
+                                                ),
                  autoLoad: true 
            });
-			
-            matrixStore.on('load', function(store, records, options) {
+                                                
+            var matrixStore.on('load', function(store, records, options) {
                 //this.output.matrixType.setValue(records[0].get('matrix_cod'));
             }, this);
 			
@@ -773,7 +773,7 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 		},
         
         getWFSStoreProxy: function(featureName, filter, sortBy, viewparams){
-			
+
             var filterProtocol=new OpenLayers.Filter.Logical({
                 type: OpenLayers.Filter.Logical.AND,
                 filters: new Array()
@@ -795,14 +795,54 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
                     outputFormat: this.getWFSStoreProxyProp.outputFormat,
                     version: this.getWFSStoreProxyProp.wfsVersion,
                     sortBy: sortBy || undefined,
-                    viewparams: viewparams || undefined			
-                }) 
+                    viewparams: viewparams || undefined
+                })
             });
 
             return proxy;         
             
         },
 
+        getWFSStoreProxyProva: function(featureName, filter, sortBy, viewparams){
+
+            Ext.Ajax.request({
+                    scope: this,
+                    url: "http://www506.regione.toscana.it/geoserver/wfs",
+                    method: 'POST',
+                    params: {
+                        service: "WFS",
+                        version: "1.1.0",
+                        geometryName: "geom",
+                        request: "GetFeature",
+                        //filter: this.xml,
+                        //typeName: data2.matrixMethodType.inputValue == 3 ? "geobasi:geobasi_boxplot_view" : this.layer,
+                        typeName: featureName,
+                        outputFormat: "json",
+                        propertyName: "count,matrix_cod,matrix",
+                        sortBy: "matrix",
+                        viewparams: viewparams
+                    },
+                    success: function (result, request) {
+                        try {
+                            this.jsonData2 = Ext.util.JSON.decode(result.responseText);
+                            matrixStore.load(this.jsonData2);
+                            //var ccc = 0;
+                        } catch (e) {
+
+                        }
+                        //if (this.jsonData2.features.length <= 0) {
+
+                        //}
+
+
+                    },
+                    failure: function (result, request) {
+                        
+                    }
+            });
+            
+        },
+        
         setNewMonitoringViewparams: function(monitoringValue){
         
             var newMonitoringViewparams;
