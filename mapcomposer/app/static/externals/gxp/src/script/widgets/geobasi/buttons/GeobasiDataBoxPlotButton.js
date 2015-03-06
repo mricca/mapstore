@@ -155,7 +155,22 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
             Ext.MessageBox.getDialog().getEl().setStyle("zIndex", 100000);                    
             return;
         }else */
-        if(data2.elemento == ""){
+        
+        if(!data2.tipo_matrice){
+            Ext.MessageBox.show({
+                title: 'Campi obbligatori',
+                msg: 'Devi selezionare una Matrice!!!',
+                buttons: Ext.Msg.OK,
+                animEl: 'elId',
+                icon: Ext.MessageBox.INFO
+            });
+
+            //Ext.Msg.alert("Nessun dato", "Dati non disponibili per questo criterio di ricerca");
+            Ext.MessageBox.getDialog().getEl().setStyle("zIndex", 100000);                    
+            return;        
+        }
+        
+        if(!data2.elemento){
             Ext.MessageBox.show({
                 title: 'Campi obbligatori',
                 msg: 'Devi selezionare un Elemento!!!',
