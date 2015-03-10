@@ -346,6 +346,8 @@ gxp.form.WFSSearchComboBox = Ext.extend(Ext.form.ComboBox, {
             }
 
             if (this.zoomTo && this.geometry) {
+                if (app.tools.geobasidataToolId)
+                    app.tools.geobasidataToolId.clearSelection();            
 
                 var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
                 renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;

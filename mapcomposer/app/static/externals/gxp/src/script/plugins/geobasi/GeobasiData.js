@@ -83,7 +83,13 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
             this._newMonitoringViewparams = ' IS NOT NULL';
 			this._newMatrixViewparams = '01';
 			this._newElementViewparams = 'Ca';
-            this._newGeometryViewparams = 'POLYGON((965523.68377232947386801 5388020.56055717170238495\\,2315632.81207791296765208 5389637.45771681889891624\\,2317249.70923756016418338 5389637.45771681889891624\\,2317249.70923756016418338 4383927.4244161332026124\\,965523.68377232959028333 4383927.4244161332026124\\,965523.68377232947386801 5388020.56055717170238495))';
+            this._newGeometryViewparams = 'POLYGON((965523.68377232947386801 5388020.56055717170238495\\,'+
+                                            '2315632.81207791296765208 5389637.45771681889891624\\,'+
+                                            '2317249.70923756016418338 5389637.45771681889891624\\,'+
+                                            '2317249.70923756016418338 4383927.4244161332026124\\,'+
+                                            '965523.68377232959028333 4383927.4244161332026124\\,'+
+                                            '965523.68377232947386801 5388020.56055717170238495))';
+                                            
 			Ext.Panel.prototype.buttonAlign = 'left';
 
 			this.areaSelection = new gxp.form.SelDamageArea(Ext.apply({
@@ -175,12 +181,34 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 					xtype : 'form',
 					baseCls : 'x-plain',
 					id : "geobasiDataForm",
-					title : 'Geobasi Data',
+					title : 'Dati',
 					layout : "form",
 					autoScroll : true,
 					frame : true,
 					forceLayout: true,
 					items : [{
+                            xtype: "fieldset",
+                            id: "updateCountID",
+                            ref: "updateCount",
+                            title: '<span style="color:#C53430;">Numerosità analisi selezionate</span>',
+                            checkboxToggle: false,
+                            collapsed : false,
+                            hidden: false,
+                            forceLayout : true,
+                            cls: 'selected-query-layer',
+                            listeners: {
+                                scope: this,
+                                expand: function(panel){
+                                    panel.doLayout();
+                                },
+                                collapse: function(panel) {
+                                    //this.spatialSelector.reset();
+                                },
+                                afterlayout: function(panel){
+                                    panel.body.update('Totale: 0');
+                                }
+                            }
+                        }, {
 							xtype : 'fieldset',
 							title : '<span style="color:#C53430;">Selezione Matrice - Elemento - Metodo Analitico</span>',
 							anchor : '100%',
@@ -325,11 +353,9 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 										'</tpl>')
 								}
 							]
-						},
-						
-						this.areaSelection, 
-						
-						{
+						},						
+						this.areaSelection,
+                        {
 							xtype : 'fieldset',
 							title : '<span style="color:#C53430;">Selezione presenza monitoraggio</span>',
 							anchor : '100%',
@@ -443,7 +469,13 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 									fieldLabel : 'Includi valori nulli',
 									ref : 'allownull',
 									name : 'allownull',
-									checked : true
+									checked : true,
+                                    listeners: {
+                                        check: function(checkbox, checked){
+                                            this.clearSelection();
+                                        },
+                                        scope: this
+                                    }
 								}, {
 									ref : 'yearRangeSelector',
 									xtype : 'yearrangeselector',
@@ -628,9 +660,13 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 			config = Ext.apply(geobasiData, config || {});
 
 			this.output = gxp.plugins.geobasi.GeobasiData.superclass.addOutput.call(this, config);
+            
+            this.output.rangeyear.yearRangeSelector.slider.on('changecomplete',function(){
+                this.clearSelection();
+            },this);            
 
 		},
-
+        
         onComboboxMatrixExpand: function (field, eOpts) {
 
 			var matrixStore, monitoringValue, newMonitoringViewparams, newGeometryViewparams;
@@ -641,21 +677,30 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
             newMonitoringViewparams = this.setNewMonitoringViewparams(monitoringValue);
             
             newGeometryViewparams = this.getGeometryViewParams() || this._newGeometryViewparams;
-
-			if(this._newMonitoringViewparams !== newMonitoringViewparams || this._newGeometryViewparams !== newGeometryViewparams){
+            var years = this.output.rangeyear.yearRangeSelector.slider.getValues();
+            var allowNull = this.output.rangeyear.allownull.checked;
+            var ccc = (allowNull ? 'OR c.data_aaaa IS NULL' : 'OR c.data_aaaa = \'0000\'');            
+            var viewParams = newGeometryViewparams.indexOf('\\,') === -1 ? 
+                                                    'monitoraggio:' + newMonitoringViewparams + 
+                                                    ';geometria:' + newGeometryViewparams.replace(/,/g,'\\,') +
+                                                    ';startDate:' + years[0] +
+                                                    ';endDate:' + years[1] + 
+                                                    ';nullDate:' + ccc :
+                                                    'monitoraggio:' + newMonitoringViewparams + 
+                                                    ';geometria:' + newGeometryViewparams +
+                                                    ';startDate:' + years[0] +
+                                                    ';endDate:' + years[1] +  
+                                                    ';nullDate:' + ccc;            
+			//if(this._newMonitoringViewparams !== newMonitoringViewparams || this._newGeometryViewparams !== newGeometryViewparams){
                 matrixStore.load({
                     params: {
-                        viewparams: newGeometryViewparams.indexOf('\\,') === -1 ? 
-                                        'monitoraggio:' + newMonitoringViewparams + 
-                                        ';geometria:' + newGeometryViewparams.replace(/,/g,'\\,') :
-                                        'monitoraggio:' + newMonitoringViewparams + 
-                                        ';geometria:' + newGeometryViewparams
+                        viewparams: viewParams                                    
                     }
                 });
                 
 				this._newMonitoringViewparams = newMonitoringViewparams;
-                this._newGeometryViewparams = newGeometryViewparams;
-			}
+                //this._newGeometryViewparams = newGeometryViewparams;
+			//}
 
         },
 
@@ -665,6 +710,10 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 			me.output.elemento.reset();
 			me.output.metodoAnalitico.reset();
 			me.output.metodoAnalitico.disable();
+            
+            var combo = this.output.matrixType;
+            this.updateTotAnalisiFieldset(combo,'matrix_cod');
+                
 		},
 
 		onComboboxElemExpand: function (field, eOpts) {
@@ -679,24 +728,33 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 			newMonitoringViewparams = this.setNewMonitoringViewparams(monitoringValue);
             
             newGeometryViewparams = this.getGeometryViewParams() || this._newGeometryViewparams;
-            
-			if(this._newMonitoringViewparams !== newMonitoringViewparams || this._newMatrixViewparams !== newMatrixViewparams || this._newGeometryViewparams !== newGeometryViewparams){
+            var years = this.output.rangeyear.yearRangeSelector.slider.getValues();
+            var allowNull = this.output.rangeyear.allownull.checked;       
+            var ccc = (allowNull ? 'OR c.data_aaaa IS NULL' : 'OR c.data_aaaa = \'0000\'');
+            var viewParams = newGeometryViewparams.indexOf('\\,') === -1 ?
+                                                    'monitoraggio:' + newMonitoringViewparams +
+                                                    ';tygeomat:' + newMatrixViewparams +
+                                                    ';geometria:' + newGeometryViewparams.replace(/,/g,'\\,') +
+                                                    ';startDate:' + years[0] +
+                                                    ';endDate:' + years[1] + 
+                                                    ';nullDate:' + ccc :
+                                                    'monitoraggio:' + newMonitoringViewparams +
+                                                    ';tygeomat:'+newMatrixViewparams +
+                                                    ';geometria:' + newGeometryViewparams +
+                                                    ';startDate:' + years[0] +
+                                                    ';endDate:' + years[1] + 
+                                                    ';nullDate:' + ccc;            
+			//if(this._newMonitoringViewparams !== newMonitoringViewparams || this._newMatrixViewparams !== newMatrixViewparams || this._newGeometryViewparams !== newGeometryViewparams){
                 elementsStore.load({
                     params: {
-                        viewparams: newGeometryViewparams.indexOf('\\,') === -1 ?
-                                        'monitoraggio:' + newMonitoringViewparams +
-                                        ';tygeomat:' + newMatrixViewparams +
-                                        ';geometria:' + newGeometryViewparams.replace(/,/g,'\\,') :
-                                        'monitoraggio:' + newMonitoringViewparams +
-                                        ';tygeomat:'+newMatrixViewparams +
-                                        ';geometria:' + newGeometryViewparams
+                        viewparams: viewParams
                     }
                 });
                 
 				this._newMonitoringViewparams = newMonitoringViewparams;
 				this._newMatrixViewparams = newMatrixViewparams;
-                this._newGeometryViewparams = newGeometryViewparams;
-			}            
+                //this._newGeometryViewparams = newGeometryViewparams;
+			//}            
 			
 		},		
 
@@ -704,6 +762,9 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 			var me = this;
 			me.output.metodoAnalitico.enable();
 			me.output.metodoAnalitico.reset();
+            
+            var combo = this.output.elemento;
+            this.updateTotAnalisiFieldset(combo,'element');            
 		},
 		
 		onComboboxMetAnExpand: function (field, eOpts) {
@@ -720,32 +781,44 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 			newMonitoringViewparams = this.setNewMonitoringViewparams(monitoringValue);
             
             newGeometryViewparams = this.getGeometryViewParams() || this._newGeometryViewparams;
-            
-			if(this._newMonitoringViewparams !== newMonitoringViewparams || this._newMatrixViewparams !== newMatrixViewparams || this._newElementViewparams !== newElementViewparams || this._newGeometryViewparams !== newGeometryViewparams){
-                methodStore.load({
-                    params: {
-                        viewparams: newGeometryViewparams.indexOf('\\,') === -1 ?
+            var years = this.output.rangeyear.yearRangeSelector.slider.getValues();
+            var allowNull = this.output.rangeyear.allownull.checked;
+            var ccc = (allowNull ? 'OR c.data_aaaa IS NULL' : 'OR c.data_aaaa = \'0000\'');     
+            var viewParams = newGeometryViewparams.indexOf('\\,') === -1 ?
                                         'monitoraggio:' + newMonitoringViewparams +
                                         ';tygeomat:' + newMatrixViewparams +
                                         ';sigla_el:'+newElementViewparams +
-                                        ';geometria:' + newGeometryViewparams.replace(/,/g,'\\,') :
+                                        ';geometria:' + newGeometryViewparams.replace(/,/g,'\\,') +
+                                        ';startDate:' + years[0] +
+                                        ';endDate:' + years[1] + 
+                                        ';nullDate:' + ccc :
                                         'monitoraggio:' + newMonitoringViewparams +
                                         ';tygeomat:' + newMatrixViewparams +
                                         ';sigla_el:' + newElementViewparams +
-                                        ';geometria:' + newGeometryViewparams
+                                        ';geometria:' + newGeometryViewparams +
+                                        ';startDate:' + years[0] +
+                                        ';endDate:' + years[1] + 
+                                        ';nullDate:' + ccc;
+			//if(this._newMonitoringViewparams !== newMonitoringViewparams || this._newMatrixViewparams !== newMatrixViewparams || this._newElementViewparams !== newElementViewparams || this._newGeometryViewparams !== newGeometryViewparams){
+                methodStore.load({
+                    params: {
+                        viewparams: viewParams
                     }
                 });
                 
 				this._newMonitoringViewparams = newMonitoringViewparams;
 				this._newMatrixViewparams = newMatrixViewparams;
 				this._newElementViewparams = newElementViewparams;
-                this._newGeometryViewparams = newGeometryViewparams;
-			}            
+                //this._newGeometryViewparams = newGeometryViewparams;
+			//}            
 			
 		},		
 
 		onComboboxMetAnSelect: function (field, eOpts) {
 
+            var combo = this.output.metodoAnalitico;
+            this.updateTotAnalisiFieldset(combo,'method'); 
+            
 		},
 	
 		setMinMaxValues : function () {
@@ -807,7 +880,12 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
 			this.output.elemento.reset();
 			this.output.metodoAnalitico.reset();
 			this.output.elemento.disable();
-			this.output.metodoAnalitico.disable();			
+			this.output.metodoAnalitico.disable();
+
+            var totFieldset = this.output.updateCount;
+            
+            if(totFieldset.body)
+                totFieldset.body.update('Totale: 0');
 		},
         
         setNewMonitoringViewparams: function(monitoringValue){
@@ -860,6 +938,25 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
         
             return myFilter;
             
+        },
+        
+        updateTotAnalisiFieldset: function(combo,field){
+            
+            var value = combo.getValue();
+            var store = combo.getStore();
+            var text;
+            
+            store.findBy(function(record){
+                if (record.get(field) === value){
+                    text = record.get('count');
+                }
+            },this);
+            
+            var totFieldset = this.output.updateCount;
+            
+            if(totFieldset.body)
+                totFieldset.body.update('Totale: ' + text);          
+        
         }
 
 	});

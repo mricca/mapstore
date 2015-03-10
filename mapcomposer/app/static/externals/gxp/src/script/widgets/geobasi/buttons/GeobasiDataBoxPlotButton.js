@@ -159,7 +159,7 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
         if(!data2.tipo_matrice){
             Ext.MessageBox.show({
                 title: 'Campi obbligatori',
-                msg: 'Devi selezionare una Matrice!!!',
+                msg: 'Devi selezionare una Matrice e un Elemento!',
                 buttons: Ext.Msg.OK,
                 animEl: 'elId',
                 icon: Ext.MessageBox.INFO
@@ -173,7 +173,7 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
         if(!data2.elemento){
             Ext.MessageBox.show({
                 title: 'Campi obbligatori',
-                msg: 'Devi selezionare un Elemento!!!',
+                msg: 'Devi selezionare un Elemento!',
                 buttons: Ext.Msg.OK,
                 animEl: 'elId',
                 icon: Ext.MessageBox.INFO
@@ -1030,8 +1030,7 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
         } else {
             var allowNullFilter = new OpenLayers.Filter.Comparison({
                 type: OpenLayers.Filter.Comparison.IS_NULL,
-                property: "year",
-                value: null
+                property: "year"
             });
 
             var dateFilter = new OpenLayers.Filter.Logical({
@@ -1048,24 +1047,15 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
 
             var newFilter = new OpenLayers.Filter.Logical({
                 type: OpenLayers.Filter.Logical.AND,
-                filters: [
-                    new OpenLayers.Filter.Comparison({
-                        type: OpenLayers.Filter.Comparison.BETWEEN,
-                        property: "year",
-                        lowerBoundary: startDate,
-                        upperBoundary: endDate
-                    })
-                ]
+                filters: []
             });
 
-            if (checked)
-                dateFilter.filters.push(allowNullFilter)
-
-            if (filter) {
-                newFilter.filters.push(filter);
-                if (checked)
-                    newFilter.filters.push(dateFilter);
+            if (checked){
+                dateFilter.filters.push(allowNullFilter);
             }
+
+            newFilter.filters.push(filter);
+            newFilter.filters.push(dateFilter);
 
             var totFilter = filter ? newFilter : dateFilter;
             callback(totFilter);

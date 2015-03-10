@@ -46,7 +46,7 @@ gxp.plugins.geobasi.GeobasiElementsInfo = Ext.extend(gxp.plugins.Tool, {
     /** api: ptype = gxp_geobasielementsinfo */
     ptype: "gxp_geobasielementsinfo",
     
-    title: "Geobasi Elements Info",
+    title: "Info Elementi",
     
     buttonLinkIconPath: 'theme/app/img/silk/page_white_acrobat.png',      
     

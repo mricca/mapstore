@@ -123,7 +123,35 @@ gxp.widgets.button.GeobasiDataDownloadButton = Ext.extend(Ext.Button, {
         var data = this.form.output.getForm().getValues();
         var data2 = this.form.output.getForm().getFieldValues();
 
-        if(data2.elemento == ""){
+        if(!data2.tipo_matrice){
+            Ext.MessageBox.show({
+                title: 'Campi obbligatori',
+                msg: 'Devi selezionare una Matrice e un Elemento!',
+                buttons: Ext.Msg.OK,
+                animEl: 'elId',
+                icon: Ext.MessageBox.INFO
+            });
+
+            //Ext.Msg.alert("Nessun dato", "Dati non disponibili per questo criterio di ricerca");
+            Ext.MessageBox.getDialog().getEl().setStyle("zIndex", 100000);                    
+            return;        
+        }
+        
+        if(!data2.elemento){
+            Ext.MessageBox.show({
+                title: 'Campi obbligatori',
+                msg: 'Devi selezionare un Elemento!',
+                buttons: Ext.Msg.OK,
+                animEl: 'elId',
+                icon: Ext.MessageBox.INFO
+            });
+
+            //Ext.Msg.alert("Nessun dato", "Dati non disponibili per questo criterio di ricerca");
+            Ext.MessageBox.getDialog().getEl().setStyle("zIndex", 100000);                    
+            return;        
+        }        
+        
+        /*if(data2.elemento == ""){
             Ext.MessageBox.show({
                 title: 'Campi obbligatori',
                 msg: 'Devi selezionare un Elemento!!!',
@@ -135,7 +163,7 @@ gxp.widgets.button.GeobasiDataDownloadButton = Ext.extend(Ext.Button, {
             //Ext.Msg.alert("Nessun dato", "Dati non disponibili per questo criterio di ricerca");
             Ext.MessageBox.getDialog().getEl().setStyle("zIndex", 100000);                    
             return;        
-        }
+        }*/
         
         this.tipometaStatQuery = false;
 
@@ -748,24 +776,15 @@ gxp.widgets.button.GeobasiDataDownloadButton = Ext.extend(Ext.Button, {
 
             var newFilter = new OpenLayers.Filter.Logical({
                 type: OpenLayers.Filter.Logical.AND,
-                filters: [
-                    new OpenLayers.Filter.Comparison({
-                        type: OpenLayers.Filter.Comparison.BETWEEN,
-                        property: "year",
-                        lowerBoundary: startDate,
-                        upperBoundary: endDate
-                    })
-                ]
+                filters: []
             });
 
-            if (checked)
-                dateFilter.filters.push(allowNullFilter)
-
-            if (filter) {
-                newFilter.filters.push(filter);
-                if (checked)
-                    newFilter.filters.push(dateFilter);
+            if (checked){
+                dateFilter.filters.push(allowNullFilter);
             }
+
+            newFilter.filters.push(filter);
+            newFilter.filters.push(dateFilter);
 
             var totFilter = filter ? newFilter : dateFilter;
             callback(totFilter);

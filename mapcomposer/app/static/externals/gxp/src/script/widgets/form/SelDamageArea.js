@@ -379,9 +379,10 @@ gxp.form.SelDamageArea = Ext.extend(Ext.form.FieldSet, {
                         }*/
 
                         var outputValue = c.getValue();
-                        /*if (me.draw) {
+                        if (me.draw) {
                             me.draw.deactivate()
-                        };*/
+                        };
+                        me.enableAllFunc();    
                         if (me.drawings) {
                             me.drawings.destroyFeatures()
                         };
@@ -513,9 +514,9 @@ gxp.form.SelDamageArea = Ext.extend(Ext.form.FieldSet, {
                                 OpenLayers.Handler.Polygon
                             );
 							
-							me.draw.handler.stopDown = true;
-							me.draw.handler.stopUp = true;
-							
+							//me.draw.handler.stopDown = true;
+							//me.draw.handler.stopUp = true;
+							me.disableAllFunc();
 							app.mapPanel.map.addControl(me.draw);
                             me.draw.activate();
 							
@@ -528,11 +529,14 @@ gxp.form.SelDamageArea = Ext.extend(Ext.form.FieldSet, {
                                     });
 									
 									if (me.draw) {
-										me.draw.deactivate();	
+										me.draw.deactivate();
+                                        me.enableAllFunc();    
 									};
 									
                                     me.selectGeometry = event.feature;
                                     me.baciniintersect.enable();
+                                    if (app.tools.geobasidataToolId)
+                                        app.tools.geobasidataToolId.clearSelection();                                    
                                 },
                                 "beforefeatureadded": function (event) {
                                     me.drawings.destroyFeatures();
@@ -821,6 +825,117 @@ gxp.form.SelDamageArea = Ext.extend(Ext.form.FieldSet, {
             me.mapPanel.map.removeLayer(searchWFSComboComuniRTLayer);
         //}   
         me.items.items[0].setValue('Scegli tipologia selezione area');
+        
+        me.enableAllFunc();   
+        
+        if (app.tools.geobasidataToolId)
+            app.tools.geobasidataToolId.clearSelection();        
+    },
+    /*
+     * private: method[disableAllFunc]
+     */
+    disableAllFunc: function() {
+
+        var map = app.mapPanel.map;
+
+        var navigation = map.getControlsByClass('OpenLayers.Control.Navigation');
+        var panPanel = map.getControlsByClass('OpenLayers.Control.PanPanel');
+        var zoomPanel = map.getControlsByClass('OpenLayers.Control.ZoomPanel');
+
+        navigation[0].deactivate();
+        navigation[1].deactivate();
+        panPanel[0].deactivate();
+        zoomPanel[0].deactivate();
+
+        /*var south = Ext.getCmp('south');
+        if (south) {
+            south.disable();
+        }
+
+        var east = Ext.getCmp('east');
+        if (east) {
+            east.disable();
+        }
+
+        var tree = Ext.getCmp('tree');
+        if (tree) {
+            var panel = tree.findParentByType('panel');
+            if (panel) {
+                panel.disable();
+            }
+        }*/
+
+        for (var map in app.mapPanel.items.items) {
+            if (app.mapPanel.items.items[map].xtype == "gx_zoomslider") {
+                app.mapPanel.items.items[map].hide();
+            }
+            if (app.mapPanel.items.items[map].xtype == "gxp_scaleoverlay") {
+                app.mapPanel.items.items[map].hide();
+            }
+        }
+
+        for (var items in app.toolbar.items.items) {
+            if (app.toolbar.items.items[items].id == "full-screen-button") {
+                app.toolbar.items.items[items].disable();
+            }
+        }
+
+        app.toolbar.disable();
+
+        /*if (app.tools.synchronizer_plugin)
+            app.tools.synchronizer_plugin.actions[0].enable();*/
+
+    },
+    /*
+     * private: method[enableAllFunc]
+     */
+    enableAllFunc: function() {
+
+        var map = app.mapPanel.map;
+
+        var navigation = map.getControlsByClass('OpenLayers.Control.Navigation');
+        var panPanel = map.getControlsByClass('OpenLayers.Control.PanPanel');
+        var zoomPanel = map.getControlsByClass('OpenLayers.Control.ZoomPanel');
+
+        navigation[0].activate();
+        navigation[1].activate();
+        panPanel[0].activate();
+        zoomPanel[0].activate();
+
+        /*var south = Ext.getCmp('south');
+        if (south) {
+            south.enable();
+        }
+
+        var east = Ext.getCmp('east');
+        if (east) {
+            east.enable();
+        }
+
+        var tree = Ext.getCmp('tree');
+        if (tree) {
+            var panel = tree.findParentByType('panel');
+            if (panel) {
+                panel.enable();
+            }
+        }*/
+
+        for (var a = 0; a < app.mapPanel.items.items.length; a++) {
+            if (app.mapPanel.items.items[a].xtype == "gx_zoomslider") {
+                app.mapPanel.items.items[a].show();
+            }
+            if (app.mapPanel.items.items[a].xtype == "gxp_scaleoverlay") {
+                app.mapPanel.items.items[a].show();
+            }
+        }
+
+        for (var items in app.toolbar.items.items) {
+            if (app.toolbar.items.items[items].id == "full-screen-button") {
+                app.toolbar.items.items[items].enable();
+            }
+        }
+
+        app.toolbar.enable();
     }
 
 

@@ -109,7 +109,7 @@ gxp.plugins.geobasi.GeobasiInfo = Ext.extend(gxp.plugins.Tool, {
             xtype:'form',
             preventBodyReset: true,
             id: "geobasiInfoForm",
-            title: 'Geobasi Info',
+            title: 'Informazioni',
             layout: "form",
             minWidth:180,
             autoScroll:true,
