@@ -14,7 +14,7 @@ var localConfig = {
             "hideCollapseTool": true,
             "split": true,
             "animCollapse": false,
-            "collapsed": true,
+            "collapsed": false,
             "minHeight": 100,
             "maxHeight": 100,
             "height": 100
