@@ -464,6 +464,26 @@
                     if(app.mapPanel.map.restrictedExtent && app.mapPanel.map.fractionalZoom){
                         app.mapPanel.map.zoomToExtent(app.mapPanel.map.restrictedExtent);
                     }
+
+					/////////////////////
+					// Periodic Table //
+					/////////////////////                    
+					var periodicTablePanel = Ext.getCmp(app.renderToTab);
+					
+					var linkTab = new Ext.Panel({
+						title: 'Tavola Periodica degli Elementi',
+						id:"pariodicTable", 
+						layout:'fit', 
+						tabTip: 'Tavola Periodica degli Elementi',
+						closable: false,
+						items: [ 
+							new Ext.ux.IFrameComponent({ 
+								url: 'periodicTable.html'
+							}) 
+						]
+					});
+					
+					periodicTablePanel.add(linkTab); 
 					
                 }, 
                 'ready' : function(){
