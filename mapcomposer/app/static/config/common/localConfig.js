@@ -13,6 +13,7 @@ var localConfig = {
             "collapseMode": "mini",
             "hideCollapseTool": true,
             "split": true,
+            "id": "north",
             "animCollapse": false,
             "collapsed": false,
             "minHeight": 100,

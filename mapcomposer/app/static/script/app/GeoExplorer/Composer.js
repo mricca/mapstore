@@ -248,41 +248,40 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 				tools:{},
 				scale: this.actionToolScale,
                 handler: function(button, evt){
-                    if(button.pressed){
-                       var tree = Ext.getCmp('tree');
-					   
-						if(tree){
-							var panel = tree.findParentByType('panel');
-							if(panel){
-								button.saveState(panel);
-								panel.collapse(true);
-							}
-						}	
-						
-						var east = Ext.getCmp('east');
-						if(east){
-							button.saveState(east);
-							east.collapse(true);
-							
-						}
-						
-						var south = Ext.getCmp('south');
-						if(south){
-							button.saveState(south);
-							south.collapse(true);
-						}
-                       var tree = Ext.getCmp('tree');
-                        if(tree){
+                    if (button.pressed) {
+                        var tree = Ext.getCmp('tree');
+                        if (tree) {
                             var panel = tree.findParentByType('panel');
-                            if(panel && !panel.collapsed){
-                                panel.collapse();
-                            }							
+                            if (panel) {
+                                button.saveState(panel);
+                                panel.collapse(true);
+                            }
                         }
-
+                        var east = Ext.getCmp('east');
+                        if (east) {
+                            button.saveState(east);
+                            east.collapse(true);
+                        }
+                        var south = Ext.getCmp('south');
+                        if (south) {
+                            button.saveState(south);
+                            south.collapse(true);
+                        }
+                        var msheader = Ext.getCmp('msheader');
+                        if (msheader) {
+                            button.saveState(msheader);
+                            msheader.collapse(true);
+                        }
+                        var westTab = Ext.getCmp('westTab');
+                        if (westTab) {
+                            var panel = westTab.findParentByType('panel');
+                            button.saveState(panel);
+                            panel.collapse(true);
+                        }
                     } else {
-						for(var tool in button.tools){
-							button.restoreState(button.tools[tool]);
-						}                        
+                        for (var tool in button.tools) {
+                            button.restoreState(button.tools[tool]);
+                        }
                     }
                 },
 				//restore the previous state of the button
