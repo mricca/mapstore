@@ -144,7 +144,7 @@
 		"fractionalZoom": true,
 		"center": [1671579.00,
 		4803992.00],
-		"scales": [50, 1000, 2000, 5000, 8000, 10000, 15000, 25000.1, 50000.1, 100000.1, 250000, 500000, 1000000, 1500000.1, 2000000],
+		"scales": [50, 1000, 2000, 5000, 8000, 10000, 15000, 25000, 50000, 100000, 250000, 500000, 1000000, 1500000, 2000000],
 		"maxExtent": [1328298.3134386, 4554791.501599, 2014859.6865614, 5053192.498401],
 		"restrictedExtent": [1550750, 4674330, 1775720, 4929790],
 		"layers": [{
@@ -175,7 +175,7 @@
 			"displayInLayerSwitcher": true,
 			"visibility": false,
 			"tiled": false,
-            "expanded": false,
+            "expanded": true,
             "checked": false,
 			"attribution": false
 		},
@@ -187,7 +187,7 @@
 			"displayInLayerSwitcher": true,
 			"visibility": false,
 			"tiled": false,
-            "expanded": false,
+            "expanded": true,
             "checked": false,            
 			"attribution": false
 		},
@@ -199,7 +199,7 @@
 			"displayInLayerSwitcher": true,
 			"visibility": false,
 			"tiled": false,
-            "expanded": false,
+            "expanded": true,
             "checked": false,            
 			"attribution": false
 		},
@@ -211,7 +211,7 @@
 			"displayInLayerSwitcher": true,
 			"visibility": false,
 			"tiled": false,
-            "expanded": false,
+            "expanded": true,
             "checked": false,            
 			"attribution": false
 		},
@@ -223,7 +223,7 @@
 			"displayInLayerSwitcher": true,
 			"visibility": false,
 			"tiled": false,
-            "expanded": false,
+            "expanded": true,
             "checked": false,            
 			"attribution": false
 		},
@@ -235,7 +235,7 @@
 			"displayInLayerSwitcher": true,
 			"visibility": false,
 			"tiled": false,
-            "expanded": false,
+            "expanded": true,
             "checked": false,            
 			"attribution": false
 		},
@@ -247,7 +247,7 @@
 			"displayInLayerSwitcher": true,
 			"visibility": false,
 			"tiled": false,
-            "expanded": false,
+            "expanded": true,
             "checked": false,            
 			"attribution": false
 		},
@@ -255,7 +255,7 @@
 			"source": "geoscopio_topogr",
 			"group": "Basi cartografiche",
 			"title": "Carta Topografica 50k",
-            "maxscale": 15000, 
+            "maxscale": 25000.1, 
 			"name": "rt_topogr.topografica50k.grey.rt",
 			"displayInLayerSwitcher": true,
 			"visibility": true,
@@ -267,7 +267,7 @@
 			"group": "Basi cartografiche",
 			"title": "CTR 1:10.000 Raster BW",
 			"name": "rt_ctr.10k",
-            "minscale": 15000,             
+            "minscale": 25000.1,             
 			"displayInLayerSwitcher": true,
 			"visibility": true,
 			"tiled": false,
@@ -277,7 +277,7 @@
 			"source": "geoscopio_ctr",
 			"group": "Basi cartografiche",
 			"title": "CTR 1:10.000 Raster GL",
-            "minscale": 15000,            
+            "minscale": 25000.1,            
 			"name": "rt_ctr.ctr10kgreylight",
 			"displayInLayerSwitcher": true,
 			"visibility": false,
