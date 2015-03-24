@@ -255,7 +255,7 @@
 			"source": "geoscopio_topogr",
 			"group": "Basi cartografiche",
 			"title": "Carta Topografica 50k",
-            "maxscale": 25000.1, 
+            "maxScale": 25000.1, 
 			"name": "rt_topogr.topografica50k.grey.rt",
 			"displayInLayerSwitcher": true,
 			"visibility": true,
@@ -267,7 +267,7 @@
 			"group": "Basi cartografiche",
 			"title": "CTR 1:10.000 Raster BW",
 			"name": "rt_ctr.10k",
-            "minscale": 25000.1,             
+            "minScale": 25000.1,             
 			"displayInLayerSwitcher": true,
 			"visibility": true,
 			"tiled": false,
@@ -277,7 +277,7 @@
 			"source": "geoscopio_ctr",
 			"group": "Basi cartografiche",
 			"title": "CTR 1:10.000 Raster GL",
-            "minscale": 25000.1,            
+            "minScale": 25000.1,            
 			"name": "rt_ctr.ctr10kgreylight",
 			"displayInLayerSwitcher": true,
 			"visibility": false,
@@ -348,7 +348,8 @@
 			"name": "rt_idrogr.corsi.rt.line",
 			"displayInLayerSwitcher": true,
 			"visibility": true,
-			"tiled": false
+			"tiled": false,
+			"attribution": false
 		},
 		{
 			"source": "geoscopio_amb_ammin",
@@ -357,7 +358,8 @@
 			"name": "rt_ambamm.idprovince.rt.poly",
 			"displayInLayerSwitcher": true,
 			"visibility": false,
-			"tiled": false
+			"tiled": false,
+			"attribution": false
 		},
 		{
 			"source": "geoscopio_amb_ammin",
@@ -366,22 +368,68 @@
 			"name": "rt_ambamm.idcomuni.rt.poly",
 			"displayInLayerSwitcher": true,
 			"visibility": false,
-			"tiled": false
+			"tiled": false,
+			"attribution": false
 		},
 		{
 			"source": "geobasi",
-			"group": "Numerosita' campionaria totale del Geobasi",
+			"group": "terreni",
 			"title": "Stream Sediment",
-			"name": "geobasi_sedimenti",
+			"name": "geobasi_sedimenti_stream",
 			"displayInLayerSwitcher": true,
 			"visibility": false,
 			"tiled": false
 		},
 		{
 			"source": "geobasi",
-			"group": "Numerosita' campionaria totale del Geobasi",
-			"title": "Acque",
-			"name": "geobasi_acque",
+			"group": "acqua",
+			"title": "Pozzo Termale",
+			"name": "geobasi_acque_pozzo_termale",
+			"displayInLayerSwitcher": true,
+			"visibility": false,
+			"tiled": false
+		},
+		{
+			"source": "geobasi",
+			"group": "acqua",
+			"title": "Pozzo",
+			"name": "geobasi_acque_pozzo",
+			"displayInLayerSwitcher": true,
+			"visibility": false,
+			"tiled": false
+		},
+		{
+			"source": "geobasi",
+			"group": "acqua",
+			"title": "Sorgente",
+			"name": "geobasi_acque_sorgente",
+			"displayInLayerSwitcher": true,
+			"visibility": false,
+			"tiled": false
+		},
+		{
+			"source": "geobasi",
+			"group": "acqua",
+			"title": "Lago",
+			"name": "geobasi_acque_lago",
+			"displayInLayerSwitcher": true,
+			"visibility": false,
+			"tiled": false
+		},
+		{
+			"source": "geobasi",
+			"group": "acqua",
+			"title": "Fiume",
+			"name": "geobasi_acque_fiume",
+			"displayInLayerSwitcher": true,
+			"visibility": false,
+			"tiled": false
+		},
+		{
+			"source": "geobasi",
+			"group": "acqua",
+			"title": "Acqua generica",
+			"name": "geobasi_acque_generiche",
 			"displayInLayerSwitcher": true,
 			"visibility": false,
 			"tiled": false
@@ -446,7 +494,7 @@
 		"EPSG:3003": "+proj=tmerc +lat_0=0 +lon_0=9 +k=0.9996 +x_0=1500000 +y_0=0 +ellps=intl +units=m +no_defs +towgs84 = -104.1,-49.1,-9.9,0.971,-2.917,0.714,-11.68"
 	},
     "removeTools": [
-        "wmsgetfeatureinfo_menu_plugin"
+        "wmsgetfeatureinfo_menu_plugin","layertree_plugin"
     ], 	    
 	"customTools": [
 	{
@@ -540,5 +588,71 @@
         "index": 24,
         "showOnStartup": false,
         "fileDocURL": "GeoBasi-Help.pdf"
+    }, {
+        "ptype": "gxp_nestedlayertree",
+        "id": "nestedlayertree_plugin",
+        "unshift":true,
+        "groupConfig": [
+            {
+                "title": "Numerosita' campionaria totale del Geobasi",
+                "children": [
+                    {"name": "acqua", "title": "Acqua"},
+                    {"name": "terreni", "title": "Terreni"}
+                ],
+                "expanded": true,
+                "checked": false
+            },                     
+            {
+                "title": "Ambiti amministrativi",
+                "folder": [
+                    {"name": "Ambiti amministrativi", "title": "Ambiti amministrativi"}
+                ],
+                "expanded": true,
+                "checked": false
+            },                     
+            {
+                "title": "Idrografia",
+                "folder": [
+                    {"name": "Idrografia", "title": "Idrografia"}
+                ],
+                "expanded": true,
+                "checked": false
+            },                    
+            {
+                "title": "Corpi idrici sotterranei",
+                "folder": [
+                    {"name": "Corpi idrici sotterranei", "title": "Corpi idrici sotterranei"}
+                ],
+                "expanded": true,
+                "checked": false
+            },                    
+            {
+                "title": "Toponimi",
+                "folder": [
+                    {"name": "Toponimi", "title": "Toponimi"}
+                ],
+                "expanded": true,
+                "checked": false
+            },
+            {
+                "title": "Basi cartografiche",
+                "folder": [
+                    {"name": "Basi cartografiche", "title": "Basi cartografiche"}
+                ],
+                "expanded": true,
+                "checked": false
+            }, {
+                "title": "Ortofotocarte 1:10.000",
+                "folder": [
+                    {"name": "Ortofotocarte 1:10.000", "title": "Ortofotocarte 1:10.000"}
+                ],
+                "expanded": true,
+                "checked": null
+            }
+        ],					
+        "outputConfig": {
+            "id": "layertree"
+        },
+        "outputTarget": "tree"
     }]
 }
