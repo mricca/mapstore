@@ -1,8 +1,7 @@
 <% extends ./base.html %>
 <% subskin extrahead %>
 
-    <!-- HighStock resources -->
-    <script type="text/javascript" src="script/HighStockExt.js"></script> 
+
 
     <!-- OpenLayers resources -->
     <link rel="stylesheet" type="text/css" href="externals/openlayers/theme/default/style.css">
@@ -62,6 +61,15 @@
     <link rel="stylesheet" type="text/css" href="externals/csw/css/csw.css">
     <script type="text/javascript" src="auth/base64.js"></script>
     <script type="text/javascript" src="script/metadataexplorer.js"></script>
+    
+    <!-- jquery resources -->
+    <script type="text/javascript" src="script/jquery.min.js"></script>
+    
+    <!-- HighStock 2.x resources -->
+    <script type="text/javascript" src="script/HighStockExt.js"></script> 
+    
+    <!-- HighChartsAdapter34 resources -->
+    <!--script type="text/javascript" src="script/HighChartsAdapter34.js"></script-->
     
     <!-- geocoding data  -->
     <script type="text/javascript" src="data/georeferences.js"></script>
@@ -445,9 +453,7 @@
                 }, 
                 'ready' : function(){
                     app.modified = false;
-                    if(app.mapPanel.map.restrictedExtent && app.mapPanel.map.fractionalZoom){
-                        app.mapPanel.map.zoomToExtent(app.mapPanel.map.restrictedExtent);
-                    }
+
 					// ///////////////////////////////////////////////////
 					// Visualizing metadata tab and layers at startup 
 					// ///////////////////////////////////////////////////

@@ -317,27 +317,15 @@
 			},{
                 "toUpdate": false,        
                 "format": "image/png8",
-                "group": "<b>Stazioni Meteorologiche</b>",
-                "name": "temp15_web",
+                "group": "<b>Stazioni Meteo</b>",
+                "name": "stazioni_infomobilita",
                 "opacity": 1.0,
                 "selected": false,
                 "tiled": false,
-                "vendorParams":{
-                    "cql_filter": "data_ora <= '2015-03-23T15:54:48.468Z'"
-                },                
                 "source": "lamma_stazioni",
-                "styles": ["temperatura"],
-                "style": ["temperatura"],
-                "title": "Temperatura (°C)",
+                "title": "Stazioni infomobilita",
                 "transparent": true,
                 "visibility": true,
-                "ratio": 1,
-                "getGraph": true,
-                "graphTable": "temp15_web",
-                "graphAttribute": ["temp_c"],
-                "cumulative": false,
-                "tabCode": "id",
-                "elevation": "0.0",
                 "displayOutsideMaxExtent": true
             }
 		]
@@ -381,6 +369,11 @@
         }
     ],
 	"customTools": [{
+			"ptype": "gxp_embedmapdialog",
+			"actionTarget": {"target": "paneltbar", "index": 2},
+			"embeddedTemplateName": "viewer",
+			"showDirectURL": true
+		},{
             "ptype":"gxp_wmsgetfeatureinfo",
             "id": "wmsgetfeatureinfo_plugin",
             "toggleGroup":"toolGroup",
@@ -450,23 +443,23 @@
                         }]    
                     },
                     "CENTRALINE": {
-                        "featureType": "temp15_web",
+                        "featureType": "stazioni_infomobilita",
                         "fields": [
                             {
-                                "name": "fornitore",
-                                "mapping": "fornitore"
+                                "name": "SCODSTAZOR",
+                                "mapping": "SCODSTAZOR"
                             },{
-                                "name": "nome",
-                                "mapping": "nome"
+                                "name": "SDESCR",
+                                "mapping": "SDESCR"
                             }
                         ],
                         "columns": [
                             {
-                                "header": "fornitore",
-                                "dataIndex": "fornitore"
+                                "header": "SCODSTAZOR",
+                                "dataIndex": "SCODSTAZOR"
                             },{
-                                "header": "temp_c",
-                                "dataIndex": "temp_c"
+                                "header": "SDESCR",
+                                "dataIndex": "SDESCR"
                             }
                         ],
                         "actionColumns": [{
@@ -476,6 +469,10 @@
                         },
                         {
                             "type": "zoom",
+                            "sourceSRS": "EPSG:3003"
+                        },
+                        {
+                            "type": "charts",
                             "sourceSRS": "EPSG:3003"
                         }]    
                     }

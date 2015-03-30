@@ -140,6 +140,8 @@ gxp.plugins.WFSGrid = Ext.extend(gxp.plugins.Tool, {
     
     zoomToIconPath: "theme/app/img/silk/map_magnify.png",
     
+    chartIconPath: "theme/app/img/silk/chart_line.png",
+    
     /** private: countFeature
      *  ``Integer``
      */
@@ -176,6 +178,1171 @@ gxp.plugins.WFSGrid = Ext.extend(gxp.plugins.Tool, {
         
         if(config.autoRefresh){
             this.setAutoRefresh(config.autoRefresh);
+        }
+    },
+
+    /** private: method[getChartsAction]
+     */
+    getChartsAction: function(actionConf){
+        var sourceSRS=actionConf.sourceSRS;
+        var me= this;
+        return {
+            xtype: 'actioncolumn',
+            sortable : false, 
+            width: 30,
+            items: [{
+                icon   : this.chartIconPath,  
+                tooltip: 'View Charts',
+                scope: this,
+                handler: function(grid, rowIndex, colIndex) {
+                    var record = grid.store.getAt(rowIndex);
+                    var map = this.target.mapPanel.map;
+                    var codStaz = record.get('SCODSTAZOR');
+                    var sdescr = "Centralina - " + record.get('SDESCR');
+                    Ext.Ajax.request({
+                        scope:this,
+                        url : "http://172.16.1.53/cgi-bin/getdatamobilita.py",
+                        method: 'POST',
+                        params:{
+                            station: codStaz
+                        },
+                        success: function ( result, request ) {
+                            try{
+                                var jsonData = Ext.util.JSON.decode(result.responseText);
+                            }catch(e){
+                                Ext.Msg.alert("Error","Error parsing data from the server");
+                                return;
+                            }
+                            this.makeChart(this.makeData(jsonData),sdescr,codStaz);
+                        },
+                        failure: function ( result, request ) {
+                            Ext.Msg.alert("Error","Server response error");
+                        }
+                    }); 
+                }
+            }]  
+        };
+    },
+    
+    makeData: function(data){
+
+        /**CODIFICA SENSORI
+        * SENSOR_GROUP 17 (Sensori meteo):
+        *
+        *    2  : Pressione atmosferica - hPa
+        *    3  : Direzione vento - °
+        *    8  : Velocità vento - m/s
+        *    9  : Temperatura aria - °C
+        *    10 : Umidità aria - %
+        *    14 : Raffica vento - m/s
+        *    15 : Punto di rugiada - °C
+        *
+        * SENSOR_GROUP 18 (Sensori meteo 2):
+        *   
+        *    1: Tipo di precipitazione
+        *    3: Visibilità
+        *
+        * SENSOR_GROUP 19 (Road sensor):
+        *
+        *    0: Road temperature - °C
+        *    3: Freeze temperature - °C
+        *    4: Salt concentration - %
+        *    6: Water film - ùm
+        *    7: Road condition
+        *
+        **/
+        
+        var sensorGroupObj = {sensorGroupMeteo: [], sensorGroupMeteo2: [], sensorGroupRoad: []};
+        for (var i=0,c=data.length;i<c;i++){
+            
+            switch (data[i].sensor_group){
+                case 17:
+                    sensorGroupObj.sensorGroupMeteo.push({
+                        sensorType  : data[i].sensor_type,
+                        sensorTime  : data[i].time,
+                        sensorValue : data[i].value
+                    });
+                    break;
+                case 18:
+                    sensorGroupObj.sensorGroupMeteo2.push({
+                        sensorType  : data[i].sensor_type,
+                        sensorTime  : data[i].time,
+                        sensorValue : data[i].value
+                    });                
+                    break;
+                case 19:
+                    sensorGroupObj.sensorGroupRoad.push({
+                        sensorType  : data[i].sensor_type,
+                        sensorTime  : data[i].time,
+                        sensorValue : data[i].value
+                    });                   
+                    break;
+            }
+  
+        }
+        
+        var sensorMeteo = {pressioneAtmosferica:[],direzioneVento:[],velocitaVento:[],temperaturaAria:[],umiditaAria:[],rafficaVento:[],puntoRugiada:[]};
+        var sensorMete2 = {tipoPrecipitazione:[],visibilita:[]};
+        var sensorRoad = {roadTemperature:[],freezeTemperature:[],saltConcentration:[],waterFilm:[],roadCondition:[]};
+        
+        for (var key in sensorGroupObj) {
+            if (sensorGroupObj.hasOwnProperty(key)) {
+                var obj = sensorGroupObj[key];
+                for (var prop in obj) {
+                    // important check that this is objects own property 
+                    // not from prototype prop inherited
+                    if(obj.hasOwnProperty(prop)){
+                        if(key==="sensorGroupMeteo"){
+                            var sensorTime = obj[prop].sensorTime;
+                            var time = Date.parseDate(sensorTime, "Y-m-d H:i:s");
+                            switch (obj[prop].sensorType){
+                                case 2:
+                                    sensorMeteo.pressioneAtmosferica.push([time.getTime(),obj[prop].sensorValue]);
+                                    break;
+                                case 3:
+                                     sensorMeteo.direzioneVento.push([time.getTime(),obj[prop].sensorValue]);                
+                                    break;
+                                case 8:
+                                     sensorMeteo.velocitaVento.push([time.getTime(),obj[prop].sensorValue]);                
+                                    break;
+                                case 9:
+                                     sensorMeteo.temperaturaAria.push([time.getTime(),obj[prop].sensorValue]);                
+                                    break;
+                                case 10:
+                                     sensorMeteo.umiditaAria.push([time.getTime(),obj[prop].sensorValue]);                
+                                    break;
+                                case 14:
+                                     sensorMeteo.rafficaVento.push([time.getTime(),obj[prop].sensorValue]);                
+                                    break;
+                                case 15:
+                                     sensorMeteo.puntoRugiada.push([time.getTime(),obj[prop].sensorValue]);                
+                                    break;                                    
+                            }                        
+                        }
+                        if(key==="sensorGroupMeteo2"){
+                            switch (prop){
+                                case 1:
+                                    sensorMeteo2.tipoPrecipitazione.push([time.getTime(),obj[prop].sensorValue]);
+                                    break;
+                                case 3:
+                                    sensorMeteo2.visibilita.push([time.getTime(),obj[prop].sensorValue]);                
+                                    break;
+                            }                        
+                        }
+                        if(key==="sensorGroupRoad"){
+                            switch (prop){
+                                case 0:
+                                    sensorRoad.roadTemperature.push([time.getTime(),obj[prop].sensorValue]);
+                                    break;
+                                case 3:
+                                    sensorRoad.freezeTemperature.push([time.getTime(),obj[prop].sensorValue]);                
+                                    break;
+                                case 4:
+                                    sensorRoad.saltConcentration.push([time.getTime(),obj[prop].sensorValue]);                   
+                                    break;
+                                case 6:
+                                    sensorRoad.waterFilm.push([time.getTime(),obj[prop].sensorValue]);                   
+                                    break;
+                                case 7:
+                                    sensorRoad.roadCondition.push([time.getTime(),obj[prop].sensorValue]);                   
+                                    break;                                    
+                            }                        
+                        
+                        }
+                    }
+                }
+            }
+        }
+        var charts = [sensorMeteo, sensorMete2, sensorRoad];
+        return charts
+    },
+    makeChart: function(data,sdescr,codStaz){
+
+        var mainPanel = Ext.getCmp(app.renderToTab);
+
+		var elementTab = new Ext.TabPanel({
+			border: false,
+			activeTab: 0,
+            deferredRender: false,
+            layoutOnTabChange: true,
+			id: "newPanel_"+codStaz,
+            defaults:{layout: 'fit', bodyStyle: 'background-color: #DFE8F6;'},
+			region: "center",
+			width: 340,
+			split: true,
+			collapsible: false,
+			header: false,
+			enableTabScroll: true,
+            forceLayout: true,
+			items: []
+		});
+        
+        var tabs = mainPanel.find('title', sdescr);
+        if(tabs && tabs.length > 0){
+            mainPanel.setActiveTab(tabs[0]); 
+        }else{
+
+            var linkTab = new Ext.Panel({
+                title: sdescr,
+                id:sdescr + "_elementTab", 
+                layout:'fit', 
+                tabTip: sdescr,
+                closable: true,
+                items: [
+                    elementTab
+                ]
+            });        
+            
+            //SENSORI METEO
+            var sensoriMeteoTab = new Ext.Panel({
+                title: 'Sensori meteo',
+                id:'sensoriMeteoTab_'+codStaz,
+                border: true,
+                layout: 'fit',
+                autoScroll: true,
+                tabTip: 'Sensori meteo',
+                closable: false
+            });
+            
+            //SENSORI METEO 2
+            var sensoriMeteo2Tab = new Ext.Panel({
+                title: 'Sensori meteo 2',
+                id:'sensoriMeteo2Tab'+codStaz,
+                border: true,
+                layout: 'fit',
+                autoScroll: true,
+                tabTip: 'Sensori meteo 2',
+                closable: false
+            });
+            
+            //SENSORI STRADA
+            var sensoriStradaTab = new Ext.Panel({
+                title: 'Sensori strada',
+                id:'sensoriStradaTab'+codStaz,
+                border: true,
+                layout: 'fit',
+                autoScroll: true,
+                tabTip: 'Sensori strada',
+                closable: false
+            });
+            
+            mainPanel.add(linkTab);
+            elementTab.add(sensoriMeteoTab,sensoriMeteo2Tab,sensoriStradaTab);
+            //mainPanel.add(sensoriMeteoTab);
+            mainPanel.setActiveTab(linkTab.getId());
+
+            sensoriMeteoTab.add({
+                resizeTabs: true,
+                autoScroll: true,
+                html:    '<div style="max-width:900px; height:400px ; margin: 0 auto">'+
+                          '<div id="pressioneAtmosferica'+codStaz+'" style="width:446px; height:400px ; float:left; padding:4px 0px 4px 4px;">'+
+                          '</div>'+
+                          '<div id="direzioneVento'+codStaz+'" style="width:446px; height:400px ; float:left; padding:4px 0px 4px 4px;">'+
+                          '</div>'+
+                          '<div id="velocitaVento'+codStaz+'" style="width:446px; height:400px ; float:left; padding:4px 0px 4px 4px;">'+
+                          '</div>'+
+                          '<div id="temperaturaAria'+codStaz+'" style="width:446px; height:400px ; float:left; padding:4px 0px 4px 4px;">'+
+                            '<div ></div>'+
+                          '</div>'+
+                          '<div id="umiditaAria'+codStaz+'" style="width:446px; height:400px ; float:left; padding:4px 0px 4px 4px;">'+
+                          '</div>'+
+                          '<div id="rafficaVento'+codStaz+'" style="width:446px; height:400px ; float:left; padding:4px 0px 4px 4px;">'+
+                            '<div ></div>'+
+                          '</div>'+
+                          '<div id="puntoRugiada'+codStaz+'" style="width:446px; height:400px ; float:left; padding:4px 0px 4px 4px;">'+
+                          '</div>'+                      
+                        '</div>',
+                scope: this
+            });       
+            
+            sensoriMeteoTab.doLayout(false,true);
+            
+
+
+            //mainPanel.add(sensoriMeteo2Tab);
+            //mainPanel.setActiveTab(sensoriMeteo2Tab.getId());
+
+            sensoriMeteo2Tab.add({
+                resizeTabs: true,
+                deferredRender: false,
+                autoScroll: true,
+                html:    '<div style="max-width:900px; height:400px ; margin: 0 auto">'+
+                          '<div id="tipoPrecipitazione'+codStaz+'" style="width:446px; height:400px ; float:left; padding:4px 0px 4px 4px;">'+
+                          '</div>'+
+                          '<div id="visibilita'+codStaz+'" style="width:446px; height:400px ; float:left; padding:4px 0px 4px 4px;">'+
+                          '</div>'+
+                        '</div>',
+                scope: this
+            });       
+            
+            sensoriMeteo2Tab.doLayout(false,true);     
+
+           // mainPanel.add(sensoriStradaTab);
+            //mainPanel.setActiveTab(sensoriStradaTab.getId());
+
+            sensoriStradaTab.add({
+                resizeTabs: true,
+                deferredRender: false,
+                autoScroll: true,              
+                html:    '<div style="max-width:900px; height:400px ; margin: 0 auto">'+
+                          '<div id="roadTemperature'+codStaz+'" style="width:446px; height:400px ; float:left; padding:4px 0px 4px 4px;">'+
+                          '</div>'+
+                          '<div id="freezeTemperature'+codStaz+'" style="width:446px; height:400px ; float:left; padding:4px 0px 4px 4px;">'+
+                          '</div>'+
+                          '<div id="saltConcentration'+codStaz+'" style="width:446px; height:400px ; float:left; padding:4px 0px 4px 4px;">'+
+                          '</div>'+
+                          '<div id="waterFilm'+codStaz+'" style="width:446px; height:400px ; float:left; padding:4px 0px 4px 4px;">'+
+                          '</div>'+
+                          '<div id="roadCondition'+codStaz+'" style="width:446px; height:400px ; float:left; padding:4px 0px 4px 4px;">'+
+                          '</div>'+                      
+                        '</div>',
+                scope: this
+            });       
+            
+            sensoriStradaTab.doLayout(false,true);        
+            
+            if(data[0].pressioneAtmosferica.length > 0){
+                var pressioneAtmosferica = new Highcharts.StockChart({
+                    chart : {
+                        type: 'line',
+                        renderTo : "pressioneAtmosferica"+codStaz
+                    },
+                    rangeSelector : {                                
+                        buttons: [{
+                            type: 'day',
+                            count: 0.25,
+                            text: '6 h'
+                        },{
+                            type: 'day',
+                            count: 0.5,
+                            text: '12 h'
+                        },{
+                            type: 'day',
+                            count: 1,
+                            text: '1 d'
+                        }, {
+                            type: 'all',
+                            text: 'All'
+                        }],                                
+                        selected : 3,
+                        enabled: true
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    title : {
+                        text : "pressioneAtmosferica",
+                        style: {
+                            color: '#3E576F',
+                            fontSize: '12px'
+                        }        
+                    },
+                    subtitle : {
+                        //text : response.features[0].data.fornitore + " - " + response.features[0].data.nome + " - Quota: " + response.features[0].data.quota,
+                        text : "pressioneAtmosferica",//response.features[0].data.temp_med_acq ? "Average Sea Temperature" : "Quota: " + response.features[0].data.quota,
+                        style: {
+                            color: '#3E576F',
+                            fontSize: '10px'
+                        }        
+                    },                            
+                    series : [{
+                        name : "pressioneAtmosferica",
+                        data: data[0]['pressioneAtmosferica'],
+                        tooltip: {
+                            valueDecimals: 2
+                        }
+                    }]
+                });
+            }else{
+                var doc = document.getElementById("pressioneAtmosferica"+codStaz);
+                doc.style.backgroundImage = "url('../theme/app/img/silk/nograph.png')";
+                doc.style.backgroundPosition = "center";
+                doc.style.backgroundRepeat = "no-repeat";             
+                //mask.hide();        
+            }
+            
+            if(data[0].direzioneVento.length > 0){
+                var direzioneVento = new Highcharts.StockChart({
+                    chart : {
+                        type: 'line',
+                        renderTo : "direzioneVento"+codStaz
+                    },
+                    rangeSelector : {                                
+                        buttons: [{
+                            type: 'day',
+                            count: 0.25,
+                            text: '6 h'
+                        },{
+                            type: 'day',
+                            count: 0.5,
+                            text: '12 h'
+                        },{
+                            type: 'day',
+                            count: 1,
+                            text: '1 d'
+                        }, {
+                            type: 'all',
+                            text: 'All'
+                        }],                                
+                        selected : 3,
+                        enabled: true
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    title : {
+                        text : "direzioneVento",
+                        style: {
+                            color: '#3E576F',
+                            fontSize: '12px'
+                        }        
+                    },
+                    subtitle : {
+                        //text : response.features[0].data.fornitore + " - " + response.features[0].data.nome + " - Quota: " + response.features[0].data.quota,
+                        text : "direzioneVento",//response.features[0].data.temp_med_acq ? "Average Sea Temperature" : "Quota: " + response.features[0].data.quota,
+                        style: {
+                            color: '#3E576F',
+                            fontSize: '10px'
+                        }        
+                    },                            
+                    series : [{
+                        name : "direzioneVento",
+                        data: data[0].direzioneVento,
+                        tooltip: {
+                            valueDecimals: 2
+                        }
+                    }]
+                });
+            }else{
+                var doc = document.getElementById("direzioneVento"+codStaz);
+                doc.style.backgroundImage = "url('../theme/app/img/silk/nograph.png')";
+                doc.style.backgroundPosition = "center";
+                doc.style.backgroundRepeat = "no-repeat";       
+                doc.style.textAlign = "center";
+                doc.innerHTML = "direzioneVento";
+                doc.innerText = "direzioneVento" ;           
+                //mask.hide();        
+            }        
+            
+            if(data[0].velocitaVento.length > 0){
+                var velocitaVento = new Highcharts.StockChart({
+                    chart : {
+                        type: 'line',
+                        renderTo : "velocitaVento"+codStaz
+                    },
+                    rangeSelector : {                                
+                        buttons: [{
+                            type: 'day',
+                            count: 0.25,
+                            text: '6 h'
+                        },{
+                            type: 'day',
+                            count: 0.5,
+                            text: '12 h'
+                        },{
+                            type: 'day',
+                            count: 1,
+                            text: '1 d'
+                        }, {
+                            type: 'all',
+                            text: 'All'
+                        }],                                
+                        selected : 3,
+                        enabled: true
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    title : {
+                        text : "velocitaVento",
+                        style: {
+                            color: '#3E576F',
+                            fontSize: '12px'
+                        }        
+                    },
+                    subtitle : {
+                        //text : response.features[0].data.fornitore + " - " + response.features[0].data.nome + " - Quota: " + response.features[0].data.quota,
+                        text : "velocitaVento",//response.features[0].data.temp_med_acq ? "Average Sea Temperature" : "Quota: " + response.features[0].data.quota,
+                        style: {
+                            color: '#3E576F',
+                            fontSize: '10px'
+                        }        
+                    },                            
+                    series : [{
+                        name : "velocitaVento",
+                        data: data[0].velocitaVento,
+                        tooltip: {
+                            valueDecimals: 2
+                        }
+                    }]
+                });
+            }else{
+                var doc = document.getElementById("velocitaVento"+codStaz);
+                doc.style.backgroundImage = "url('../theme/app/img/silk/nograph.png')";
+                doc.style.backgroundPosition = "center";
+                doc.style.backgroundRepeat = "no-repeat";             
+                //mask.hide();        
+            }          
+            
+            if(data[0].temperaturaAria.length > 0){
+                var temperaturaAria = new Highcharts.StockChart({
+                    chart : {
+                        type: 'line',
+                        renderTo : "temperaturaAria"+codStaz
+                    },
+                    rangeSelector : {                                
+                        buttons: [{
+                            type: 'day',
+                            count: 0.25,
+                            text: '6 h'
+                        },{
+                            type: 'day',
+                            count: 0.5,
+                            text: '12 h'
+                        },{
+                            type: 'day',
+                            count: 1,
+                            text: '1 d'
+                        }, {
+                            type: 'all',
+                            text: 'All'
+                        }],                                
+                        selected : 3,
+                        enabled: true
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    title : {
+                        text : "temperaturaAria",
+                        style: {
+                            color: '#3E576F',
+                            fontSize: '12px'
+                        }        
+                    },
+                    subtitle : {
+                        //text : response.features[0].data.fornitore + " - " + response.features[0].data.nome + " - Quota: " + response.features[0].data.quota,
+                        text : "temperaturaAria",//response.features[0].data.temp_med_acq ? "Average Sea Temperature" : "Quota: " + response.features[0].data.quota,
+                        style: {
+                            color: '#3E576F',
+                            fontSize: '10px'
+                        }        
+                    },                            
+                    series : [{
+                        name : "temperaturaAria",
+                        data: data[0].temperaturaAria,
+                        tooltip: {
+                            valueDecimals: 2
+                        }
+                    }]
+                });
+            }else{
+                var doc = document.getElementById("temperaturaAria"+codStaz);
+                doc.style.backgroundImage = "url('../theme/app/img/silk/nograph.png')";
+                doc.style.backgroundPosition = "center";
+                doc.style.backgroundRepeat = "no-repeat";             
+                //mask.hide();        
+            }         
+            
+            if(data[0].umiditaAria.length > 0){
+                var umiditaAria = new Highcharts.StockChart({
+                    chart : {
+                        type: 'line',
+                        renderTo : "umiditaAria"+codStaz
+                    },
+                    rangeSelector : {                                
+                        buttons: [{
+                            type: 'day',
+                            count: 0.25,
+                            text: '6 h'
+                        },{
+                            type: 'day',
+                            count: 0.5,
+                            text: '12 h'
+                        },{
+                            type: 'day',
+                            count: 1,
+                            text: '1 d'
+                        }, {
+                            type: 'all',
+                            text: 'All'
+                        }],                                
+                        selected : 3,
+                        enabled: true
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    title : {
+                        text : "umiditaAria",
+                        style: {
+                            color: '#3E576F',
+                            fontSize: '12px'
+                        }        
+                    },
+                    subtitle : {
+                        //text : response.features[0].data.fornitore + " - " + response.features[0].data.nome + " - Quota: " + response.features[0].data.quota,
+                        text : "umiditaAria",//response.features[0].data.temp_med_acq ? "Average Sea Temperature" : "Quota: " + response.features[0].data.quota,
+                        style: {
+                            color: '#3E576F',
+                            fontSize: '10px'
+                        }        
+                    },                            
+                    series : [{
+                        name : "umiditaAria",
+                        data: data[0].umiditaAria,
+                        tooltip: {
+                            valueDecimals: 2
+                        }
+                    }]
+                });
+            }else{
+                var doc = document.getElementById("umiditaAria"+codStaz);
+                doc.style.backgroundImage = "url('../theme/app/img/silk/nograph.png')";
+                doc.style.backgroundPosition = "center";
+                doc.style.backgroundRepeat = "no-repeat";             
+                //mask.hide();        
+            }         
+            
+            if(data[0].rafficaVento.length > 0){
+                var rafficaVento = new Highcharts.StockChart({
+                    chart : {
+                        type: 'line',
+                        renderTo : "rafficaVento"+codStaz
+                    },
+                    rangeSelector : {                                
+                        buttons: [{
+                            type: 'day',
+                            count: 0.25,
+                            text: '6 h'
+                        },{
+                            type: 'day',
+                            count: 0.5,
+                            text: '12 h'
+                        },{
+                            type: 'day',
+                            count: 1,
+                            text: '1 d'
+                        }, {
+                            type: 'all',
+                            text: 'All'
+                        }],                                
+                        selected : 3,
+                        enabled: true
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    title : {
+                        text : "rafficaVento",
+                        style: {
+                            color: '#3E576F',
+                            fontSize: '12px'
+                        }        
+                    },
+                    subtitle : {
+                        //text : response.features[0].data.fornitore + " - " + response.features[0].data.nome + " - Quota: " + response.features[0].data.quota,
+                        text : "rafficaVento",//response.features[0].data.temp_med_acq ? "Average Sea Temperature" : "Quota: " + response.features[0].data.quota,
+                        style: {
+                            color: '#3E576F',
+                            fontSize: '10px'
+                        }        
+                    },                            
+                    series : [{
+                        name : "rafficaVento",
+                        data: data[0].rafficaVento,
+                        tooltip: {
+                            valueDecimals: 2
+                        }
+                    }]
+                });
+            }else{
+                var doc = document.getElementById("rafficaVento"+codStaz);
+                doc.style.backgroundImage = "url('../theme/app/img/silk/nograph.png')";
+                doc.style.backgroundPosition = "center";
+                doc.style.backgroundRepeat = "no-repeat";             
+                //mask.hide();        
+            }        
+
+            if(data[0].puntoRugiada.length > 0){
+                var puntoRugiada = new Highcharts.StockChart({
+                    chart : {
+                        type: 'line',
+                        renderTo : "puntoRugiada"+codStaz
+                    },
+                    rangeSelector : {                                
+                        buttons: [{
+                            type: 'day',
+                            count: 0.25,
+                            text: '6 h'
+                        },{
+                            type: 'day',
+                            count: 0.5,
+                            text: '12 h'
+                        },{
+                            type: 'day',
+                            count: 1,
+                            text: '1 d'
+                        }, {
+                            type: 'all',
+                            text: 'All'
+                        }],                                
+                        selected : 3,
+                        enabled: true
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    title : {
+                        text : "puntoRugiada",
+                        style: {
+                            color: '#3E576F',
+                            fontSize: '12px'
+                        }        
+                    },
+                    subtitle : {
+                        //text : response.features[0].data.fornitore + " - " + response.features[0].data.nome + " - Quota: " + response.features[0].data.quota,
+                        text : "puntoRugiada",//response.features[0].data.temp_med_acq ? "Average Sea Temperature" : "Quota: " + response.features[0].data.quota,
+                        style: {
+                            color: '#3E576F',
+                            fontSize: '10px'
+                        }        
+                    },                            
+                    series : [{
+                        name : "puntoRugiada",
+                        data: data[0].puntoRugiada,
+                        tooltip: {
+                            valueDecimals: 2
+                        }
+                    }]
+                });
+            }else{
+                var doc = document.getElementById("puntoRugiada"+codStaz);
+                doc.style.backgroundImage = "url('../theme/app/img/silk/nograph.png')";
+                doc.style.backgroundPosition = "center";
+                doc.style.backgroundRepeat = "no-repeat";             
+                //mask.hide();        
+            }
+
+            if(data[1].tipoPrecipitazione.length > 0){
+                var tipoPrecipitazione = new Highcharts.StockChart({
+                    chart : {
+                        type: 'line',
+                        renderTo : "tipoPrecipitazione"+codStaz
+                    },
+                    rangeSelector : {                                
+                        buttons: [{
+                            type: 'day',
+                            count: 0.25,
+                            text: '6 h'
+                        },{
+                            type: 'day',
+                            count: 0.5,
+                            text: '12 h'
+                        },{
+                            type: 'day',
+                            count: 1,
+                            text: '1 d'
+                        }, {
+                            type: 'all',
+                            text: 'All'
+                        }],                                
+                        selected : 3,
+                        enabled: true
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    title : {
+                        text : "tipoPrecipitazione",
+                        style: {
+                            color: '#3E576F',
+                            fontSize: '12px'
+                        }        
+                    },
+                    subtitle : {
+                        //text : response.features[0].data.fornitore + " - " + response.features[0].data.nome + " - Quota: " + response.features[0].data.quota,
+                        text : "tipoPrecipitazione",//response.features[0].data.temp_med_acq ? "Average Sea Temperature" : "Quota: " + response.features[0].data.quota,
+                        style: {
+                            color: '#3E576F',
+                            fontSize: '10px'
+                        }        
+                    },                            
+                    series : [{
+                        name : "tipoPrecipitazione",
+                        data: data[0].tipoPrecipitazione,
+                        tooltip: {
+                            valueDecimals: 2
+                        }
+                    }]
+                });
+            }else{
+                var doc = document.getElementById("tipoPrecipitazione"+codStaz);
+                doc.style.backgroundImage = "url('../theme/app/img/silk/nograph.png')";
+                doc.style.backgroundPosition = "center";
+                doc.style.backgroundRepeat = "no-repeat";             
+                //mask.hide();        
+            }
+
+            if(data[1].visibilita.length > 0){
+                var visibilita = new Highcharts.StockChart({
+                    chart : {
+                        type: 'line',
+                        renderTo : "visibilita"+codStaz
+                    },
+                    rangeSelector : {                                
+                        buttons: [{
+                            type: 'day',
+                            count: 0.25,
+                            text: '6 h'
+                        },{
+                            type: 'day',
+                            count: 0.5,
+                            text: '12 h'
+                        },{
+                            type: 'day',
+                            count: 1,
+                            text: '1 d'
+                        }, {
+                            type: 'all',
+                            text: 'All'
+                        }],                                
+                        selected : 3,
+                        enabled: true
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    title : {
+                        text : "visibilita",
+                        style: {
+                            color: '#3E576F',
+                            fontSize: '12px'
+                        }        
+                    },
+                    subtitle : {
+                        //text : response.features[0].data.fornitore + " - " + response.features[0].data.nome + " - Quota: " + response.features[0].data.quota,
+                        text : "visibilita",//response.features[0].data.temp_med_acq ? "Average Sea Temperature" : "Quota: " + response.features[0].data.quota,
+                        style: {
+                            color: '#3E576F',
+                            fontSize: '10px'
+                        }        
+                    },                            
+                    series : [{
+                        name : "visibilita",
+                        data: data[0].visibilita,
+                        tooltip: {
+                            valueDecimals: 2
+                        }
+                    }]
+                });
+            }else{
+                var doc = document.getElementById("visibilita"+codStaz);
+                doc.style.backgroundImage = "url('../theme/app/img/silk/nograph.png')";
+                doc.style.backgroundPosition = "center";
+                doc.style.backgroundRepeat = "no-repeat";                       
+                //mask.hide();        
+            }
+
+            if(data[2].roadTemperature.length > 0){
+                var roadTemperature = new Highcharts.StockChart({
+                    chart : {
+                        type: 'line',
+                        renderTo : "roadTemperature"+codStaz
+                    },
+                    rangeSelector : {                                
+                        buttons: [{
+                            type: 'day',
+                            count: 0.25,
+                            text: '6 h'
+                        },{
+                            type: 'day',
+                            count: 0.5,
+                            text: '12 h'
+                        },{
+                            type: 'day',
+                            count: 1,
+                            text: '1 d'
+                        }, {
+                            type: 'all',
+                            text: 'All'
+                        }],                                
+                        selected : 3,
+                        enabled: true
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    title : {
+                        text : "roadTemperature",
+                        style: {
+                            color: '#3E576F',
+                            fontSize: '12px'
+                        }        
+                    },
+                    subtitle : {
+                        //text : response.features[0].data.fornitore + " - " + response.features[0].data.nome + " - Quota: " + response.features[0].data.quota,
+                        text : "roadTemperature",//response.features[0].data.temp_med_acq ? "Average Sea Temperature" : "Quota: " + response.features[0].data.quota,
+                        style: {
+                            color: '#3E576F',
+                            fontSize: '10px'
+                        }        
+                    },                            
+                    series : [{
+                        name : "roadTemperature",
+                        data: data[0].roadTemperature,
+                        tooltip: {
+                            valueDecimals: 2
+                        }
+                    }]
+                });
+            }else{
+                var doc = document.getElementById("roadTemperature"+codStaz);
+                doc.style.backgroundImage = "url('../theme/app/img/silk/nograph.png')";
+                doc.style.backgroundPosition = "center";
+                doc.style.backgroundRepeat = "no-repeat";                        
+                //mask.hide();        
+            }
+
+            if(data[2].freezeTemperature.length > 0){
+                var freezeTemperature = new Highcharts.StockChart({
+                    chart : {
+                        type: 'line',
+                        renderTo : "freezeTemperature"+codStaz
+                    },
+                    rangeSelector : {                                
+                        buttons: [{
+                            type: 'day',
+                            count: 0.25,
+                            text: '6 h'
+                        },{
+                            type: 'day',
+                            count: 0.5,
+                            text: '12 h'
+                        },{
+                            type: 'day',
+                            count: 1,
+                            text: '1 d'
+                        }, {
+                            type: 'all',
+                            text: 'All'
+                        }],                                
+                        selected : 3,
+                        enabled: true
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    title : {
+                        text : "freezeTemperature",
+                        style: {
+                            color: '#3E576F',
+                            fontSize: '12px'
+                        }        
+                    },
+                    subtitle : {
+                        //text : response.features[0].data.fornitore + " - " + response.features[0].data.nome + " - Quota: " + response.features[0].data.quota,
+                        text : "freezeTemperature",//response.features[0].data.temp_med_acq ? "Average Sea Temperature" : "Quota: " + response.features[0].data.quota,
+                        style: {
+                            color: '#3E576F',
+                            fontSize: '10px'
+                        }        
+                    },                            
+                    series : [{
+                        name : "freezeTemperature",
+                        data: data[0].freezeTemperature,
+                        tooltip: {
+                            valueDecimals: 2
+                        }
+                    }]
+                });
+            }else{
+                var doc = document.getElementById("freezeTemperature"+codStaz);
+                doc.style.backgroundImage = "url('../theme/app/img/silk/nograph.png')";
+                doc.style.backgroundPosition = "center";
+                doc.style.backgroundRepeat = "no-repeat";                         
+                //mask.hide();        
+            }
+
+            if(data[2].saltConcentration.length > 0){
+                var saltConcentration = new Highcharts.StockChart({
+                    chart : {
+                        type: 'line',
+                        renderTo : "saltConcentration"+codStaz
+                    },
+                    rangeSelector : {                                
+                        buttons: [{
+                            type: 'day',
+                            count: 0.25,
+                            text: '6 h'
+                        },{
+                            type: 'day',
+                            count: 0.5,
+                            text: '12 h'
+                        },{
+                            type: 'day',
+                            count: 1,
+                            text: '1 d'
+                        }, {
+                            type: 'all',
+                            text: 'All'
+                        }],                                
+                        selected : 3,
+                        enabled: true
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    title : {
+                        text : "saltConcentration",
+                        style: {
+                            color: '#3E576F',
+                            fontSize: '12px'
+                        }        
+                    },
+                    subtitle : {
+                        //text : response.features[0].data.fornitore + " - " + response.features[0].data.nome + " - Quota: " + response.features[0].data.quota,
+                        text : "saltConcentration",//response.features[0].data.temp_med_acq ? "Average Sea Temperature" : "Quota: " + response.features[0].data.quota,
+                        style: {
+                            color: '#3E576F',
+                            fontSize: '10px'
+                        }        
+                    },                            
+                    series : [{
+                        name : "saltConcentration",
+                        data: data[0].saltConcentration,
+                        tooltip: {
+                            valueDecimals: 2
+                        }
+                    }]
+                });
+            }else{
+                var doc = document.getElementById("saltConcentration"+codStaz);
+                doc.style.backgroundImage = "url('../theme/app/img/silk/nograph.png')";
+                doc.style.backgroundPosition = "center";
+                doc.style.backgroundRepeat = "no-repeat";                         
+                //mask.hide();        
+            }
+
+            if(data[2].waterFilm.length > 0){
+                var waterFilm = new Highcharts.StockChart({
+                    chart : {
+                        type: 'line',
+                        renderTo : "waterFilm"+codStaz
+                    },
+                    rangeSelector : {                                
+                        buttons: [{
+                            type: 'day',
+                            count: 0.25,
+                            text: '6 h'
+                        },{
+                            type: 'day',
+                            count: 0.5,
+                            text: '12 h'
+                        },{
+                            type: 'day',
+                            count: 1,
+                            text: '1 d'
+                        }, {
+                            type: 'all',
+                            text: 'All'
+                        }],                                
+                        selected : 3,
+                        enabled: true
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    title : {
+                        text : "waterFilm",
+                        style: {
+                            color: '#3E576F',
+                            fontSize: '12px'
+                        }        
+                    },
+                    subtitle : {
+                        //text : response.features[0].data.fornitore + " - " + response.features[0].data.nome + " - Quota: " + response.features[0].data.quota,
+                        text : "waterFilm",//response.features[0].data.temp_med_acq ? "Average Sea Temperature" : "Quota: " + response.features[0].data.quota,
+                        style: {
+                            color: '#3E576F',
+                            fontSize: '10px'
+                        }        
+                    },                            
+                    series : [{
+                        name : "waterFilm",
+                        data: data[0].waterFilm,
+                        tooltip: {
+                            valueDecimals: 2
+                        }
+                    }]
+                });
+            }else{
+                var doc = document.getElementById("waterFilm"+codStaz);
+                doc.style.backgroundImage = "url('../theme/app/img/silk/nograph.png')";
+                doc.style.backgroundPosition = "center";
+                doc.style.backgroundRepeat = "no-repeat";                          
+                //mask.hide();        
+            }
+
+            if(data[2].roadCondition.length > 0){
+                var roadCondition = new Highcharts.StockChart({
+                    chart : {
+                        type: 'line',
+                        renderTo : "roadCondition"+codStaz
+                    },
+                    rangeSelector : {                                
+                        buttons: [{
+                            type: 'day',
+                            count: 0.25,
+                            text: '6 h'
+                        },{
+                            type: 'day',
+                            count: 0.5,
+                            text: '12 h'
+                        },{
+                            type: 'day',
+                            count: 1,
+                            text: '1 d'
+                        }, {
+                            type: 'all',
+                            text: 'All'
+                        }],                                
+                        selected : 3,
+                        enabled: true
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    title : {
+                        text : "roadCondition",
+                        style: {
+                            color: '#3E576F',
+                            fontSize: '12px'
+                        }        
+                    },
+                    subtitle : {
+                        //text : response.features[0].data.fornitore + " - " + response.features[0].data.nome + " - Quota: " + response.features[0].data.quota,
+                        text : "roadCondition",//response.features[0].data.temp_med_acq ? "Average Sea Temperature" : "Quota: " + response.features[0].data.quota,
+                        style: {
+                            color: '#3E576F',
+                            fontSize: '10px'
+                        }        
+                    },                            
+                    series : [{
+                        name : "roadCondition",
+                        data: data[0].roadCondition,
+                        tooltip: {
+                            valueDecimals: 2
+                        }
+                    }]
+                });
+            }else{
+                var doc = document.getElementById("roadCondition"+codStaz);
+                doc.style.backgroundImage = "url('../theme/app/img/silk/nograph.png')";
+                doc.style.backgroundPosition = "center";
+                doc.style.backgroundRepeat = "no-repeat";                         
+                //mask.hide();        
+            }     
         }
     },
     
@@ -296,6 +1463,9 @@ gxp.plugins.WFSGrid = Ext.extend(gxp.plugins.Tool, {
         if(me.actionColumns){
             for( var kk=0; kk<me.actionColumns.length; kk++){
                 switch (me.actionColumns[kk].type){
+                    case "charts":
+                        me.wfsColumns.push(me.getChartsAction(me.actionColumns[kk]));
+                        break;                
                     case "zoom":
                         me.wfsColumns.push(me.getZoomAction(me.actionColumns[kk]));
                         break;

@@ -5,44 +5,48 @@
 		<title>Highstock Example</title>
 
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<style type="text/css">
+${demo.css}
+		</style>
 		<script type="text/javascript">
-$(function() {
-	$.getJSON('http://www.highcharts.com/samples/data/jsonp.php?filename=aapl-c.json&callback=?', function(data) {
+$(function () {
+    $.getJSON('http://www.highcharts.com/samples/data/jsonp.php?filename=aapl-c.json&callback=?', function (data) {
 
-		// Create the chart
-		window.chart = new Highcharts.StockChart({
-			chart : {
-				renderTo : 'container'
-			},
+        // Create the chart
+        $('#container').highcharts('StockChart', {
 
-			rangeSelector : {
-				selected : 1
-			},
 
-			title : {
-				text : 'AAPL Stock Price'
-			},
+            rangeSelector : {
+                selected : 1
+            },
 
-			series : [{
-				name : 'AAPL Stock Price',
-				data : data,
-				type : 'area',
-				threshold : null,
-				tooltip : {
-					valueDecimals : 2
-				},
-				fillColor : {
-					linearGradient : {
-						x1: 0, 
-						y1: 0, 
-						x2: 0, 
-						y2: 1
-					},
-					stops : [[0, Highcharts.getOptions().colors[0]], [1, 'rgba(0,0,0,0)']]
-				}
-			}]
-		});
-	});
+            title : {
+                text : 'AAPL Stock Price'
+            },
+
+            series : [{
+                name : 'AAPL Stock Price',
+                data : data,
+                type : 'area',
+                threshold : null,
+                tooltip : {
+                    valueDecimals : 2
+                },
+                fillColor : {
+                    linearGradient : {
+                        x1: 0,
+                        y1: 0,
+                        x2: 0,
+                        y2: 1
+                    },
+                    stops : [
+                        [0, Highcharts.getOptions().colors[0]],
+                        [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                    ]
+                }
+            }]
+        });
+    });
 });
 
 		</script>
@@ -51,6 +55,7 @@ $(function() {
 <script src="../../js/highstock.js"></script>
 <script src="../../js/modules/exporting.js"></script>
 
-<div id="container" style="height: 500px; min-width: 500px"></div>
+
+<div id="container" style="height: 400px; min-width: 310px"></div>
 	</body>
 </html>
