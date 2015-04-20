@@ -1,0 +1,71 @@
+    table.featureInfo, table.featureInfo td, table.featureInfo th {
+        border: 1px solid #ddd;
+        border-collapse: collapse;
+        margin: 0;
+        padding: 0;
+        font-size: 90%;
+        padding: .2em .1em;
+    }
+    table.featureInfo th {
+        padding: .2em .2em;
+        font-weight: bold;
+        background: #eee;
+        text-align:center;
+    }
+    table.featureInfo td{
+        background: #fff;
+        text-align:center;
+        vertical-align:middle;            
+    }
+    table.featureInfo tr.odd td{
+        background: #eee;
+        text-align:center;
+        vertical-align:middle;
+    }
+    table.featureInfo caption{
+        text-align: left;
+        font-size: 100%;
+        font-weight: bold;
+        text-transform: uppercase;
+        padding: .2em .2em;
+    }
+    
+    a.tooltip {outline:none; }
+    a.tooltip strong {line-height:30px;}
+    a.tooltip:hover {text-decoration:none;} 
+    a.tooltip span {
+        z-index:10;display:none; padding:7px 10px;
+        margin-top:-15px; margin-left:-175px;
+        width:100px; line-height:16px;
+    }
+    a.tooltip:hover span{
+        display:inline; position:absolute; color:#111;
+        border:1px solid #DCA; background:#fffAF0;}
+    .callout {z-index:20;position:absolute;top:15px;border:0;left:120px;}
+        
+    /*CSS3 extras*/
+    a.tooltip span
+        {
+        border-radius:4px;
+        box-shadow: 5px 5px 8px #CCC;
+    }    
+    
+    a.tooltip_left {outline:none; }
+    a.tooltip_left strong {line-height:30px;}
+    a.tooltip_left:hover {text-decoration:none;} 
+    a.tooltip_left span {
+        z-index:10;display:none; padding:7px 10px;
+        margin-top:-90px; margin-left:90px;
+        width:100px; line-height:16px;
+    }
+    a.tooltip_left:hover span{
+        display:inline; position:absolute; color:#111;
+        border:1px solid #DCA; background:#fffAF0;}
+    .callout_left {z-index:20;position:absolute;top:15px;border:0;left:-12px;}
+        
+    /*CSS3 extras*/
+    a.tooltip_left span
+    {
+        border-radius:4px;
+        box-shadow: 5px 5px 8px #CCC;
+    }    
