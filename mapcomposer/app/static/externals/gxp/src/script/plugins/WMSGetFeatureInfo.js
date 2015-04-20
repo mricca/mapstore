@@ -153,7 +153,7 @@ gxp.plugins.WMSGetFeatureInfo = Ext.extend(gxp.plugins.Tool, {
      
      pressed: false,
      
-     infoText: "WebCam Info",     
+     infoText: "",     
      
     /** api: method[addActions]
      */

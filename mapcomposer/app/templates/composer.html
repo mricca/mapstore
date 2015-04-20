@@ -66,11 +66,11 @@
     <!-- jquery resources -->
     <script type="text/javascript" src="script/jquery.min.js"></script>
     
-    <!-- HighStock 2.x resources -->
-    <script type="text/javascript" src="script/HighStockExt.js"></script> 
+    <!-- HighStock 2.x resources >
+    <script type="text/javascript" src="script/HighStockExt.js"></script--> 
     
     <!-- HighChartsAdapter34 resources -->
-    <!--script type="text/javascript" src="script/HighChartsAdapter34.js"></script-->
+    <script type="text/javascript" src="script/HighChartsAdapter34.js"></script>
     
     <!-- geocoding data  -->
     <script type="text/javascript" src="data/georeferences.js"></script>
@@ -468,16 +468,16 @@
                         westPanel.setActiveTab('legend');
                         westPanel.hideTabStripItem('tree');
                     }
+
+                }, 
+                'ready' : function(){
+                    app.modified = false;
 					/////////////////////
 					// Fractional Zoom //
 					/////////////////////
                     if(app.mapPanel.map.restrictedExtent && app.mapPanel.map.fractionalZoom){
                         app.mapPanel.map.zoomToExtent(app.mapPanel.map.restrictedExtent);
                     }
-                }, 
-                'ready' : function(){
-                    app.modified = false;
-
 					// ///////////////////////////////////////////////////
 					// Visualizing metadata tab and layers at startup 
 					// ///////////////////////////////////////////////////
