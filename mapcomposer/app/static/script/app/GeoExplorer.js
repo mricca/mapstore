@@ -179,9 +179,8 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 		//     be ported on a new plugin.
 		// ////////////////////////////////////////////////////////////////////////
         //if used in an iframe from mapmanager, get auth from the parent
-        
         //see Tool.js
-		this.authToken= this.getAuth();
+		this.authHeader= this.getAuth();
 			
         // Save template key
         if(templateId){
@@ -393,7 +392,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                scope: this,
                headers:{
                   'Accept': "application/json",
-                  'Authorization': this.authToken
+                  'Authorization': this.authHeader
                },
                success: function(response, opts){  
                     var addConfig;
@@ -1365,7 +1364,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
     setAuthHeaders: function(auth) {
         for(var tool in this.tools){
             if(this.tools[tool].ptype == "gxp_saveDefaultContext"){
-                this.tools[tool].auth = auth;
+                this.tools[tool].authHeader = auth;
             }
         }
     },
@@ -1417,20 +1416,21 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 		
         return currentState;
     },
+        
     /**
      * Retrieves auth from (in this order)
      * * the session storage (if enabled userDetails, see ManagerViewPort.js class of mapmanager)
      * * the parent window (For usage in manager)
      * We should imagine to get the auth from other contexts.
      */
-    getAuth: function(){
+    getAuth: function(existingUserDetails, returnToken){
         var auth;
         
         //get from the session storage
-        var existingUserDetails = sessionStorage["userDetails"];
+        var existingUserDetails = existingUserDetails || sessionStorage["userDetails"];
         if(existingUserDetails){
-            this.userDetails = Ext.util.JSON.decode(sessionStorage["userDetails"]);
-            auth = this.userDetails.token;
+            this.userDetails = Ext.util.JSON.decode(existingUserDetails);
+            auth = returnToken ? this.userDetails.token : this.userDetails.authHeader;
         } else if(window.parent && window.parent.window && window.parent.window.manager && window.parent.window.manager.auth){
           //get from the parent
           auth = window.parent.window.manager.auth;
