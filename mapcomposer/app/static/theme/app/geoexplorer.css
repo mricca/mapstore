@@ -256,7 +256,7 @@ div.geosolutions_logo {
     background: url('img/GeoSolutions_logo.png') center  no-repeat;
 }
 
-/* TODO: Remove this if GetFeatureInfo is changed from text/html 
+/* TODO: Remove this if GetFeatureInfo is changed from text/html */
 
 table.featureInfo, table.featureInfo td, table.featureInfo th {
     border: 1px solid #ddd;
@@ -284,7 +284,6 @@ table.featureInfo caption{
     text-transform: uppercase;
     padding: .2em .2em;
 }
-*/
 
 .loading-iframe {
 	width: 100%;

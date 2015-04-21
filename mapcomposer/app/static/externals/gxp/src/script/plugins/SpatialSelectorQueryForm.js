@@ -294,13 +294,21 @@ gxp.plugins.SpatialSelectorQueryForm = Ext.extend(gxp.plugins.QueryForm, {
                     var layer = this.featureManagerTool.layerRecord.getLayer(); 
                      delete layer.params.CQL_FILTER;
                      delete layer.vendorParams.cql_filter;
+                     
                     
                      if(this.target.tools.layertree_plugin){
                          var selmodel = this.target.tools.layertree_plugin.output[0].selModel;
                          var node =selmodel.getSelectedNode();
                          node.setIconCls('gx-tree-layer-icon');
                      }
-                    
+
+                     if(this.target.tools.wmsgetfeatureinfo_plugin){
+                        var wmsgetfeatureinfo_control = this.target.mapPanel.map.getControlsByClass('OpenLayers.Control.WMSGetFeatureInfo');
+                        for (var i = 0;i<wmsgetfeatureinfo_control.length;i++){
+                            wmsgetfeatureinfo_control[i].vendorParams.CQL_FILTER = undefined;
+                        }
+                     }
+                     
                      layer.redraw();
                  }
                 
