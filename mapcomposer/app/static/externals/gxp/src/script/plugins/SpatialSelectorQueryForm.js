@@ -657,22 +657,24 @@ gxp.plugins.SpatialSelectorQueryForm = Ext.extend(gxp.plugins.QueryForm, {
         
         this.featureManagerTool.on({
             "layerchange": function() {
-                this.featureManagerTool.featureStore.on({
-                    "exception": function(proxy, params, response) {
-                        if (response && response instanceof OpenLayers.Protocol.Response) {
-                            me.exceptionCallback(response.error);
+                if(this.featureManagerTool.featureStore){
+                    this.featureManagerTool.featureStore.on({
+                        "exception": function(proxy, params, response) {
+                            if (response && response instanceof OpenLayers.Protocol.Response) {
+                                me.exceptionCallback(response.error);
+                            }
+                        },
+                        "loadexception": function() {
+                            // convert deprecated "loadexception" event in "exception" event,
+                            // which is necessary to unmask the query panel in case of error
+                            var relayedArguments = ["exception"];
+                            for (var i=0; i<arguments.length; i++) {
+                                relayedArguments.push(arguments[i]);
+                            }
+                            this.fireEvent.apply(this, relayedArguments);
                         }
-                    },
-                    "loadexception": function() {
-                        // convert deprecated "loadexception" event in "exception" event,
-                        // which is necessary to unmask the query panel in case of error
-                        var relayedArguments = ["exception"];
-                        for (var i=0; i<arguments.length; i++) {
-                            relayedArguments.push(arguments[i]);
-                        }
-                        this.fireEvent.apply(this, relayedArguments);
-                    }
-                });
+                    });
+                }
             },
             scope: this
         });
