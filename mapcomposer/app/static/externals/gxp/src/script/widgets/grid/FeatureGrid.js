@@ -187,7 +187,10 @@ gxp.grid.FeatureGrid = Ext.extend(Ext.grid.GridPanel, {
 						var bounds = feature.geometry.getBounds();
 						if(bounds){
 							this.map.zoomToExtent(bounds);
-							
+                            
+                            //TODO make it configurable
+							this.map.zoomTo(6);
+                            
 							var showButton = Ext.getCmp("showButton");
 							if(!showButton.pressed){
 								showButton.toggle(true);								
