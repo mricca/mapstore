@@ -1346,6 +1346,6 @@
                 "id": "layertree"
             },
             "outputTarget": "tree"
-            }
+        }
 	]
 }

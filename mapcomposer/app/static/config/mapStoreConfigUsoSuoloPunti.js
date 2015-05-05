@@ -316,7 +316,7 @@
                 "source": "geoserver_ds",
                 "group": "USO PUNTI",
                 "title": "TOS 250M",
-                "name": "tos_250m",
+                "name": "grigliato_punti",
                 "displayInLayerSwitcher": true,
                 "visibility": false,
                 "tiled": true,
@@ -446,9 +446,9 @@
 		  "showSelectionSummary": true,
 		  "actions": null,
 		  "id": "bboxquery",
-          "spatialSelectorFieldsetCollapsedFirst": true,    
-          "spatialSelectorFieldsetHidden": true,    
-          "spatialSelectorFieldsetCheckboxToggle": false,        
+          "spatialSelectorFieldsetCollapsedFirst": false,    
+          "spatialSelectorFieldsetHidden": false,    
+          "spatialSelectorFieldsetCheckboxToggle": true,
           "attributeFieldsetCollapsedFirst": false,        
           "attributeFieldsetHidden": false,      
           "attributeFieldsetCheckboxToggle": false,    
@@ -480,9 +480,16 @@
 			  }
 		  },          
 		  "spatialSelectorsConfig":{
-		        "bbox":{
-		            "xtype": "gxp_spatial_bbox_selector"
-		        }
+                "buffer":{
+                    "xtype": "gxp_spatial_buffer_selector"
+                },
+                "circle":{
+                    "xtype": "gxp_spatial_circle_selector",
+                    "zoomToCurrentExtent": true
+                },
+                "polygon":{
+                    "xtype": "gxp_spatial_polygon_selector"
+                }
 	      }
     	}
 	]
