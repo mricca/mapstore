@@ -477,13 +477,6 @@
                     "xtype": "gxp_spatial_buffer_selector"
                 }
 	      }
-    	}, {
-            "ptype": "gxp_wfsrtsearch",
-            "id": "wfsrtsearch",
-            "outputConfig": {
-                "itemId": "wfsrtsearchID"
-            },
-            "outputTarget": "eastTabPanel"
-        }
+    	}
 	]
 }
