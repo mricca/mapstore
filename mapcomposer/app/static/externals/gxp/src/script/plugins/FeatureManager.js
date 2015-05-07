@@ -460,7 +460,7 @@ gxp.plugins.FeatureManager = Ext.extend(gxp.plugins.Tool, {
                     //expand query panel
                     var east = Ext.getCmp('east');
                     if(east && east.collapsed){
-                        east.expand();                             
+                        east.expand();
                     }                   
                     
                     if(selectedLayerToQueryId){

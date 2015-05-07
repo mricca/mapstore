@@ -115,7 +115,10 @@ gxp.plugins.SpatialSelectorQueryForm = Ext.extend(gxp.plugins.QueryForm, {
     
     attributeFieldsetHidden: false,  
     
-    attributeFieldsetCheckboxToggle: true,        
+    attributeFieldsetCheckboxToggle: true,
+
+    changedVisibility: false,
+    restoredVisibility: false,
     
     init: function(target) {
         
@@ -237,7 +240,11 @@ gxp.plugins.SpatialSelectorQueryForm = Ext.extend(gxp.plugins.QueryForm, {
                             if(!this.featureManagerTool.layerRecord.getLayer().vendorParams){
                                 this.featureManagerTool.layerRecord.getLayer().vendorParams = {};
                             }
-                            this.featureManagerTool.layerRecord.getLayer().mergeNewParams({cql_filter:filter.toString()}); 
+                            
+                            if(this.changedVisibility)
+                                this.featureManagerTool.layerRecord.getLayer().addOptions({minScale: this.changedVisibility});
+                            
+                            this.featureManagerTool.layerRecord.getLayer().mergeNewParams({cql_filter:filter.toString()});
                             this.featureManagerTool.layerRecord.getLayer().vendorParams.cql_filter = filter.toString();
                     }else{
                         var layer = this.featureManagerTool.layerRecord.getLayer(); 
@@ -301,14 +308,21 @@ gxp.plugins.SpatialSelectorQueryForm = Ext.extend(gxp.plugins.QueryForm, {
                          var node =selmodel.getSelectedNode();
                          node.setIconCls('gx-tree-layer-icon');
                      }
-
+                     
+                     //reset CQL_FILTER on WMSGetFeatureInfo
                      if(this.target.tools.wmsgetfeatureinfo_plugin){
                         var wmsgetfeatureinfo_control = this.target.mapPanel.map.getControlsByClass('OpenLayers.Control.WMSGetFeatureInfo');
                         for (var i = 0;i<wmsgetfeatureinfo_control.length;i++){
                             wmsgetfeatureinfo_control[i].vendorParams.CQL_FILTER = undefined;
                         }
                      }
-                     
+                     if(this.restoredVisibility){
+                        //delete layer.minScale;
+                        layer.addOptions({minScale: this.restoredVisibility});
+                        app.mapPanel.map.zoomIn();
+                        app.mapPanel.map.zoomOut();
+                     }   
+                                          
                      layer.redraw();
                  }
                 
