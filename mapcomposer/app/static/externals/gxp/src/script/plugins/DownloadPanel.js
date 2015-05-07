@@ -112,7 +112,7 @@ gxp.plugins.DownloadPanel = Ext.extend(gxp.plugins.Tool, {
      */
 	targetCSR: [
 		["Native", "", "", ""],
-		["EPSG:4326", "EPSG:4326", "epsg", "4326"],
+		["EPSG:4326", "EPSG:4326", "epsg", "4326"]
 	],
 	
 	/** api: config[layerStore]
