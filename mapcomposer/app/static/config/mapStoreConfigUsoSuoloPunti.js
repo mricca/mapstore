@@ -1,7 +1,7 @@
 {
    "scaleOverlayMode": "advanced",
    "actionToolScale": "medium",   
-   "tab": false,
+   "tab": true,
    "gsSources":{
    		"geoserver_ds": {
 			"ptype": "gxp_wmssource",
@@ -175,7 +175,7 @@
                 "displayInLayerSwitcher": true,
                 "visibility": false,
                 "tiled": false,
-                "expanded": false,
+                "expanded": true,
                 "checked": false,
                 "attribution": false
             },
@@ -187,7 +187,7 @@
                 "displayInLayerSwitcher": true,
                 "visibility": false,
                 "tiled": false,
-                "expanded": false,
+                "expanded": true,
                 "checked": false,            
                 "attribution": false
             },
@@ -199,7 +199,7 @@
                 "displayInLayerSwitcher": true,
                 "visibility": false,
                 "tiled": false,
-                "expanded": false,
+                "expanded": true,
                 "checked": false,            
                 "attribution": false
             },
@@ -211,7 +211,7 @@
                 "displayInLayerSwitcher": true,
                 "visibility": false,
                 "tiled": false,
-                "expanded": false,
+                "expanded": true,
                 "checked": false,            
                 "attribution": false
             },
@@ -223,7 +223,7 @@
                 "displayInLayerSwitcher": true,
                 "visibility": false,
                 "tiled": false,
-                "expanded": false,
+                "expanded": true,
                 "checked": false,            
                 "attribution": false
             },
@@ -235,7 +235,7 @@
                 "displayInLayerSwitcher": true,
                 "visibility": false,
                 "tiled": false,
-                "expanded": false,
+                "expanded": true,
                 "checked": false,            
                 "attribution": false
             },
@@ -247,7 +247,7 @@
                 "displayInLayerSwitcher": true,
                 "visibility": false,
                 "tiled": false,
-                "expanded": false,
+                "expanded": true,
                 "checked": false,            
                 "attribution": false
             },
@@ -299,7 +299,7 @@
 				"title": "Province",
 				"name": "rt_ambamm.idprovince.rt.poly",
 				"displayInLayerSwitcher": true,
-				"visibility": true,
+				"visibility": false,
 				"tiled": false,
                 "attribution": false
 			},{
@@ -308,28 +308,19 @@
 				"title": "Comuni",
 				"name": "rt_ambamm.idcomuni.rt.poly",
 				"displayInLayerSwitcher": true,
-				"visibility": false,
+				"visibility": true,
 				"tiled": false,
                 "attribution": false
 			},
             {
                 "source": "geoserver_ds",
-                "group": "USO PUNTI",
-                "title": "TOS 250M",
-                "name": "grigliato_punti",
-                "displayInLayerSwitcher": true,
-                "visibility": false,
-                "tiled": true,
-                "queryPanel": true
-            },
-            {
-                "source": "geoserver_ds",
-                "group": "USO PUNTI",
-                "title": "LOTTI 2013 FINALE",
-                "name": "lotti_2013_finale",
+                "group": "USO PUNTI - (Visibile dalla scala 1:500.000)",
+                "title": "Punti MUST 2013",
+                "name": "lotti_07_10_13",
                 "displayInLayerSwitcher": true,
                 "visibility": true,
-                "tiled": true,
+                "tiled": false,
+                "minScale": 500000.1,
                 "queryPanel": true
             }
 		]
@@ -446,17 +437,19 @@
 		  "showSelectionSummary": true,
 		  "actions": null,
 		  "id": "bboxquery",
-          "spatialSelectorFieldsetCollapsedFirst": false,    
-          "spatialSelectorFieldsetHidden": false,    
+          "spatialSelectorFieldsetCollapsedFirst": true,    
+          "spatialSelectorFieldsetHidden": true,    
           "spatialSelectorFieldsetCheckboxToggle": true,
           "attributeFieldsetCollapsedFirst": false,        
           "attributeFieldsetHidden": false,      
           "attributeFieldsetCheckboxToggle": false,    
           "filterLayer": true,
+          "changedVisibility": 2000000,
+          "restoredVisibility": 500000.1,
           "autoComplete": {
             "sources": ["geoserver_ds"],
             "url": "http://geoportale.lamma.rete.toscana.it/geoserver_ds/wps",
-            "pageSize": 10
+            "pageSize": 20
           },
 		  "outputConfig":{
 			  "outputSRS": "EPSG:3003",
@@ -482,15 +475,15 @@
 		  "spatialSelectorsConfig":{
                 "buffer":{
                     "xtype": "gxp_spatial_buffer_selector"
-                },
-                "circle":{
-                    "xtype": "gxp_spatial_circle_selector",
-                    "zoomToCurrentExtent": true
-                },
-                "polygon":{
-                    "xtype": "gxp_spatial_polygon_selector"
                 }
 	      }
-    	}
+    	}, {
+            "ptype": "gxp_wfsrtsearch",
+            "id": "wfsrtsearch",
+            "outputConfig": {
+                "itemId": "wfsrtsearchID"
+            },
+            "outputTarget": "eastTabPanel"
+        }
 	]
 }
