@@ -204,54 +204,6 @@
                 "attribution": false
             },
             {
-                "source": "geoscopio_ortofoto",
-                "group": "Ortofotocarte 1:10.000",
-                "title": "Anno 1996 bn - AIMA",
-                "name": "rt_ofc.10k96",
-                "displayInLayerSwitcher": true,
-                "visibility": false,
-                "tiled": false,
-                "expanded": true,
-                "checked": false,            
-                "attribution": false
-            },
-            {
-                "source": "geoscopio_ortofoto",
-                "group": "Ortofotocarte 1:10.000",
-                "title": "Anno 1988 bn - RT",
-                "name": "rt_ofc.10k88",
-                "displayInLayerSwitcher": true,
-                "visibility": false,
-                "tiled": false,
-                "expanded": true,
-                "checked": false,            
-                "attribution": false
-            },
-            {
-                "source": "geoscopio_ortofoto",
-                "group": "Ortofotocarte 1:10.000",
-                "title": "Anno 1978 bn - RT",
-                "name": "rt_ofc.10k78",
-                "displayInLayerSwitcher": true,
-                "visibility": false,
-                "tiled": false,
-                "expanded": true,
-                "checked": false,            
-                "attribution": false
-            },
-            {
-                "source": "geoscopio_ortofoto",
-                "group": "Ortofotocarte 1:10.000",
-                "title": "Anno 1954 bn - RT-IGM",
-                "name": "rt_ofc.10k54",
-                "displayInLayerSwitcher": true,
-                "visibility": false,
-                "tiled": false,
-                "expanded": true,
-                "checked": false,            
-                "attribution": false
-            },
-            {
                 "source": "geoscopio_topogr",
                 "group": "Basi cartografiche",
                 "title": "Carta Topografica 50k",
@@ -314,9 +266,22 @@
 			},
             {
                 "source": "geoserver_ds",
-                "group": "USO PUNTI - (Visibile dalla scala 1:500.000)",
-                "title": "Punti MUST 2013",
-                "name": "lotti_07_10_13",
+                "group": "USO PUNTI (2007 - 2010 - 2013)",
+                "title": "Grigliato 250m (Scala massima 1:100000)",
+                "name": "tos_250m",
+                "displayInLayerSwitcher": true,
+                "visibility": false,
+                "tiled": false,
+				"opacity": 1,
+                "minScale": 100000.1,
+                "queryPanel": false,
+				"queryable":false
+            },
+            {
+                "source": "geoserver_ds",
+                "group": "USO PUNTI (2007 - 2010 - 2013)",
+                "title": "Punti MUST (Scala massima 1:500000)",
+                "name": "must_2013",
                 "displayInLayerSwitcher": true,
                 "visibility": true,
                 "tiled": false,
@@ -338,6 +303,70 @@
 		"EPSG:3003": "+proj=tmerc +lat_0=0 +lon_0=9 +k=0.9996 +x_0=1500000 +y_0=0 +ellps=intl +units=m +no_defs +towgs84 = -104.1,-49.1,-9.9,0.971,-2.917,0.714,-11.68"
 	},
     "customPanels":[
+		{
+		"xtype": "panel",
+		"title": "PANNELLO RICERCHE",
+		"border": false,
+		"split": true,
+		"id": "east",
+		"border": false,
+		"region": "east",
+		"layout": "fit",
+		"collapsible": true,
+		"header": true,
+		"width": 340,
+        "minWidth": 340,
+		"items": [{
+			"border": false,
+			"xtype": "tabpanel",
+			"activeTab": 0,
+			"activeItem":0,
+			"id": "eastTabPanel",
+			"region": "center",
+			"width": 340,
+			"split": true,
+			"collapsible": false,
+			"header": false,
+            "enableTabScroll": true,
+			"items": [{
+	          "title": "Statistiche",         
+	          "border": false,
+	          "id": "stat",
+	          "width": 400,
+	          "height": 500,
+	          "region": "center",
+	          "layout": "fit",
+	          "collapsed": false,
+	          "collapsible": false,
+	          "header": false
+	      },{
+	          "xtype": "panel",
+	          "title": "Ricerche per Attributo",
+			  "tabTip": "Seleziona il Layer 'Punti MUST 2013' per abilitare la ricerca",
+	          "border": false,
+	          "id": "eastQueryPanel",
+	          "width": 400,
+	          "height": 500,
+	          "region": "center",
+	          "layout": "fit",
+	          "collapsed": false,
+	          "collapsible": false,
+	          "header": false,
+			  "forceLayout": true
+	      },{
+	          "title": "Legenda Uso Suolo",         
+	          "border": false,
+	          "id": "usopuntilegenda",
+	          "width": 400,
+	          "height": 500,
+	          "region": "center",
+	          "layout": "fit",
+	          "collapsed": false,
+	          "collapsible": false,
+	          "header": false
+	      }]
+		}]
+	},
 	      {
 	          "xtype": "panel",
 	          "title": "Risultati Ricerche",      
@@ -350,19 +379,6 @@
 	          "collapsed": true,
 	          "collapsible": true,
 	          "header": true
-	      },{
-	          "xtype": "panel",
-	          "title": "Pannello Ricerche",         
-	          "border": false,
-	          "id": "east",
-	          "width": 400,
-	          "height": 500,
-	          "region": "east",
-	          "layout": "fit",
-	          "collapsed": true,
-	          "collapsible": true,
-	          "header": true,
-              "collapsedonfull": true
 	      }
     ],    
 	"customTools": [
@@ -404,13 +420,9 @@
 			"actionTarget": {"target": "paneltbar", "index": 23},
 			"toggleGroup": "toolGroup"
 		}, {
-            "ptype": "gxp_about",
-            "poweredbyURL": "http://www.geo-solutions.it/about/contacts/",
-            "actionTarget": {
-                "target": "panelbbar",
-                "index": 1
-            }
-        }, {
+			"actions": ["-"], 
+			"actionTarget": "paneltbar"
+		}, {
 		  "ptype": "gxp_featuremanager",
 		  "id": "featuremanager",
           "paging": true,
@@ -433,7 +445,7 @@
 		  "ptype": "gxp_spatialqueryform",
 		  "featureManager": "featuremanager",
 		  "featureGridContainer": "south",
-		  "outputTarget": "east",
+		  "outputTarget": "eastQueryPanel",
 		  "showSelectionSummary": true,
 		  "actions": null,
 		  "id": "bboxquery",
@@ -477,6 +489,45 @@
                     "xtype": "gxp_spatial_buffer_selector"
                 }
 	      }
-    	}
+    	}, {
+			"ptype": "gxp_usopuntistat",
+			"id": "geobasidataToolId",
+			"dataUrl": "http://www506.regione.toscana.it/geoserver/ows",
+			"rangesUrl": "http://www506.regione.toscana.it/geoserver/geobasi/ows?service=WFS&version=1.1.0&request=GetFeature&typeName=geobasi:geobasi_data_analisi&proprtyName='min,max'outputFormat=json",
+			"highChartExportUrl": "http://84.33.2.75/highcharts-export/",
+			"localeGeoserverUrl": "http://www506.regione.toscana.it/geoserver/ows?",
+			"remoteGeoserverUrl": "http://www502.regione.toscana.it:80/wfsvector/com.rt.wfs.RTmap/wfs",
+			"outputConfig": {
+				"outputSRS": "EPSG:3003",
+				"itemId": "geobasidata",
+				"geodesic": false,
+				"bufferOptions": {
+					"minValue": 0,
+					"maxValue": 100000,
+					"decimalPrecision": 2
+				}
+			},
+			"outputTarget": "stat"
+		}, {
+			"ptype": "gxp_usopuntilegenda",
+			"id": "gxp_usopuntilegendaToolId",
+			"outputTarget": "usopuntilegenda"
+		}, {
+			"ptype": "gxp_staticpage",
+			"url": "http://geoportale.lamma.rete.toscana.it/aggiorna_punti/index.php/user/login",
+			"tabPosition": 0,
+			"tabTitle": "Accesso Fotointerpretazione"
+		}, {
+			"actions": ["->"], 
+			"actionTarget": "paneltbar"
+		}, {
+			"ptype": "gxp_help",
+			"actionTarget": "paneltbar",
+			"text": "Relazione Tecnica",
+			"tooltip":"Relazione Tecnica",
+			"index": 24,
+			"showOnStartup": false,
+			"fileDocURL": "metodologia_mustv20.pdf"
+		}
 	]
 }

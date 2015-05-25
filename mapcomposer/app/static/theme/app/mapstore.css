@@ -294,8 +294,9 @@ div#homelogos ul li a:hover {
 }
 
 .selected-query-layer {
-    color:#C53430;
+    color:#0F26BE;
     font-weight: bold;
+	font-size: 12px; 
 }
 
 /* gxp_downloadpanel */

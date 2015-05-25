@@ -102,7 +102,7 @@
     background-image: url(img/pencil.png);
 }
 
-.x-btn .process, .x-menu-item .process {
+.x-btn .process, .x-menu-item .process, .process {
     background-image: url(img/silk/cog.png);
 }
 
@@ -522,6 +522,10 @@ div.olMap div.gx-overlay-playback {
 /* gxp_wfsgetgraphs */
 .x-btn .gxp-icon-graph-wfs, .x-menu-item .gxp-icon-graph-wfs, .x-tree-node .gxp-icon-graph-wfs {
     background-image: url(img/silk/chart_curve.png);
+}
+
+.x-btn .gxp-icon-barchart, .x-menu-item .gxp-icon-barchart {
+    background-image: url(img/silk/chart_bar.png) !important;
 }
 
 /*gxp_downloadpanel*/

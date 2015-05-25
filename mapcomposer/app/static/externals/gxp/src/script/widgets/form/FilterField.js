@@ -414,7 +414,7 @@ gxp.form.FilterField = Ext.extend(Ext.form.CompositeField, {
                 mode = "local";
                 this.attributes.each(function(r) {
                     var match = /gml:((Multi)?(Point|Line|Polygon|Curve|Surface|Geometry)).*/.exec(r.get("type"));
-                    match || attributes.add([r]);
+                    match || (r.get('name') !== 'gid' ? attributes.add([r]) : null); //custom to remove gid from dropdown
                 });
             } else {
                 attributes = this.attributes;
