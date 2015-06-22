@@ -39,8 +39,8 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
     pagePosition: null,
     mainLoadingMask: "Attendere prego, creazione grafico in corso...",
     colorGradient: {
-        end: '#FFCDD6',
-        start: '#FF0000'
+        start: '#FFFF00',    
+        end: '#FF0000'
     },
     handler: function() {
         var me = this;
@@ -173,7 +173,7 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
                 ampiezzaMax: metodoElaborazione == "1" ? Math.round10(barMinimo + (ampClassi * (i + 1)), -4) : Math.round10(barMinimo + (ampClassi * (i + 1)), -4)
             };
         }
-        this.columnChartColors = jsgradient.generateGradient(this.colorGradient.end, this.colorGradient.start, numerositaClassi.length);
+        this.columnChartColors = jsgradient.generateGradient(this.colorGradient.start, this.colorGradient.end, numerositaClassi.length);
         for (var x = 0; x < num_ele; x++) {
             if (resultsLog[x].valore < barMinimo + ampClassi) {
                 numerositaClassi[0].conteggio++;
@@ -220,7 +220,7 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
                 totaleRiprova: countElem,
                 tipoMeta: !json.features[i].properties.method ? 'non specificato' : json.features[i].properties.method,
                 num_classi: numerositaClassi.length,
-                ampiezza_classi: metodoElaborazione == "1" ? Math.round10(Math.exp(ampClassi), -4) : ampClassi,
+                ampiezza_classi: metodoElaborazione == "1" ? Math.round10(ampClassi, -4) : ampClassi,
                 sigla: json.features[i].properties.element,
                 matrice: json.features[i].properties.matrix_cod,
                 dmgeomattipo_descr: json.features[i].properties.matrix,
@@ -375,7 +375,7 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
                             type: 'column',
                             dataIndex: 'valore',
                             name: 'Istogramma',
-                            colors: this.columnChartColors,
+                            //colors: this.columnChartColors,
                             turboThreshold: 100000,
                             listeners: {
                                 pointclick: function(serie, point, record, event) {
@@ -592,6 +592,7 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
                 mainChart.chartConfig.yAxis.title.text = 'Frequenza';
                 var logText = records.get('log') === "1" ? "( scala logaritmica )" : "( valori reali )";
                 mainChart.chartConfig.xAxis[0].title.text = 'Elemento: ' + records.get('sigla') + " " + unitaMisura + ' - ' + logText;
+                mainChart.chartConfig.series[0].colors = this.columnChartColors;
                 mainChart.draw();
                 this.appMask.hide();
             },
