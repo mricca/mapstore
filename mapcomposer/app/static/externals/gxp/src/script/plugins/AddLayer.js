@@ -373,23 +373,34 @@ gxp.plugins.AddLayer = Ext.extend(gxp.plugins.Tool, {
 			combo.onSelect(record, 0);
 		}	
 	},
-
-    /**  
+	
+	/**  
 	 * api: method[checkLayerSource]
+	 * 
+	 * wmsURL - The WMS service URL of the source.
+	 * source (optional) - The given source identifier.  
      */
-	checkLayerSource: function(wmsURL){
+	checkLayerSource: function(wmsURL, source){
 	    var s;
 		for (var id in this.target.layerSources) {
-			  var src = this.target.layerSources[id];    
-			  var url  = src.initialConfig.url; 
+			var src = this.target.layerSources[id];    
+			var url  = src.initialConfig.url; 
 			  
-			  // //////////////////////////////////////////
-			  // Checking if source URL aldready exists
-			  // //////////////////////////////////////////
-			  if(url != undefined && url.indexOf(wmsURL) != -1){
-				  s = src;
-				  break;
-			  }
+			// ////////////////////////////////////////////////////
+			// Checking if the provided source ID aldready exists
+			// ////////////////////////////////////////////////////
+			if(source && id == source){
+				s = src;
+				break;
+			}
+			  
+			// //////////////////////////////////////////
+			// Checking if source URL aldready exists
+			// //////////////////////////////////////////
+			if(url != undefined && url.indexOf(wmsURL) != -1){
+				s = src;
+				break;
+			}
 		} 
 
 		return s;
@@ -402,9 +413,9 @@ gxp.plugins.AddLayer = Ext.extend(gxp.plugins.Tool, {
 		//
 		// We check the type of the argument for retrocompatibility
 		//
+		this.records = [];
 		if(resources instanceof Array){
-			this.resourcesSize = resources.length;
-			this.records = [];
+			this.resourcesSize = resources.length;			
 			
 			for(var i=0; i<resources.length; i++){
 				var resource = resources[i];
@@ -440,7 +451,7 @@ gxp.plugins.AddLayer = Ext.extend(gxp.plugins.Tool, {
 			var gnLangStr = options.gnLangStr;
 			var customParams = options.customParams;*/
 					
-			var source = this.checkLayerSource(resource.wmsURL);
+			var source = this.checkLayerSource(resource.wmsURL, resource.source);
 
 			if(source){
 			

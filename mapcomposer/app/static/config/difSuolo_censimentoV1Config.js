@@ -1287,7 +1287,9 @@
                         {"name": "Opere Classificate II cat.P", "title": "Opere Puntuali"},
                         {"name": "Opere Classificate II cat.L", "title": "Opere Lineari"},
                         {"name": "Opere Classificate II cat.A", "title": "Opere Areali"}
-                    ]
+                    ],
+                    "expanded": false,
+                    "checked": false
                 },           
                 {
                     "title": "<span style=\"color:#008000;font-weight: bold;\">Opere Classificate III cat. - Censimento Febbraio 2015</span>",
@@ -1295,14 +1297,18 @@
                         {"name": "Opere Classificate III cat.P", "title": "Opere Puntuali"},
                         {"name": "Opere Classificate III cat.L", "title": "Opere Lineari"},
                         {"name": "Opere Classificate III cat.A", "title": "Opere Areali"}
-                    ]
+                    ],
+                    "expanded": false,
+                    "checked": false
                 },                        
                 {
                     "title": "<span style=\"color:#FF00FF;font-weight: bold;\">Opere Classificate IV / V cat. - Censimento Febbraio 2015</span>",
                     "children": [
                         {"name": "Opere Classificate IV / V cat.P", "title": "Opere Puntuali"},
                         {"name": "Opere Classificate IV / V cat.L", "title": "Opere Lineari"}
-                    ]
+                    ],
+                    "expanded": false,
+                    "checked": false
                 },                      
                 {
                     "title": "<span style=\"color:#969696;font-weight: bold;\">Opere Non Classificate - Censimento Febbraio 2015</span>",
@@ -1310,42 +1316,54 @@
                         {"name": "Opere Non Classificate.P", "title": "Opere Puntuali"},
                         {"name": "Opere Non Classificate.L", "title": "Opere Lineari"},
                         {"name": "Opere Non Classificate.A", "title": "Opere Areali"}
-                    ]
+                    ],
+                    "expanded": false,
+                    "checked": false
                 },                         
                 {
                     "title": "Reticolo",
                     "folder": [
                         {"name": "Reticolo", "title": "Reticolo"}
-                    ]
+                    ],
+                    "expanded": true,
+                    "checked": false
                 },                     
                 {
                     "title": "Idrografia",
                     "folder": [
                         {"name": "Idrografia", "title": "Idrografia"}
-                    ]
+                    ],
+                    "expanded": true,
+                    "checked": false
                 },                    
                 {
                     "title": "Toponimi",
                     "folder": [
                         {"name": "Toponimi", "title": "Toponimi"}
-                    ]
+                    ],
+                    "expanded": true,
+                    "checked": false
                 },
                 {
                     "title": "Basi cartografiche",
                     "folder": [
                         {"name": "Basi cartografiche", "title": "Basi cartografiche"}
-                    ]
+                    ],
+                    "expanded": true,
+                    "checked": false
                 }, {
                     "title": "Ortofotocarte 1:10.000",
                     "folder": [
                         {"name": "Ortofotocarte 1:10.000", "title": "Ortofotocarte 1:10.000"}
-                    ]
+                    ],
+                    "expanded": true,
+                    "checked": false
                 }
             ],					
             "outputConfig": {
                 "id": "layertree"
             },
             "outputTarget": "tree"
-            }
+        }
 	]
 }

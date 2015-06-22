@@ -144,7 +144,7 @@ gxp.plugins.WMSGetFeatureInfoMenu = Ext.extend(gxp.plugins.Tool, {
 
     /** api: config[format]
      *  ``String``
-     *  Format to show feature info ('grid' | 'html'). Default it's 'html'.
+     *  Format to show feature info ('grid' | 'html' | 'text'). Default it's 'html'.
      */
     format: "html",
      /** api: config[maxFeatures]
@@ -247,50 +247,49 @@ if(this.infoAction=='click'){
            this.infoAction='All';
            var items = [new Ext.menu.CheckItem({
             tooltip: this.infoActionTip,
-			text: this.infoActionTip,
+            text: this.infoActionTip,
             iconCls: "gxp-icon-getfeatureinfo",
             toggleGroup: this.toggleGroup,
             group: this.toggleGroup,
-			listeners: {
-				checkchange: function(item, checked) {
-					this.activeIndex = 0;
-					this.button.toggle(checked);
-					if (checked) {
-						this.button.setIconClass(item.iconCls);
-					}
-					for (var i = 0, len = info.controls.length; i < len; i++){
+            listeners: {
+            checkchange: function(item, checked) {
+                this.activeIndex = 0;
+                this.button.toggle(checked);
+                if (checked) {
+                    this.button.setIconClass(item.iconCls);
+                }
+                for (var i = 0, len = info.controls.length; i < len; i++){
                     if (checked) {
-							info.controls[i].activate();
-						} else {
-							info.controls[i].deactivate();
-							
-						}
-					}
-				},
-				scope: this
-			}
-		}),new Ext.menu.CheckItem({
+                        info.controls[i].activate();
+                    } else {
+                        info.controls[i].deactivate();
+                    }
+                }
+           },
+           scope: this
+    }
+    }),new Ext.menu.CheckItem({
             tooltip: this.activeActionTip,
-			text: this.activeActionTip,
+            text: this.activeActionTip,
             iconCls: "gxp-icon-mouse-map",
 			
             toggleGroup: this.toggleGroup,
             group: this.toggleGroup,
-			allowDepress:false,
-			listeners: {
-				checkchange: function(item, checked) {
-					this.activeIndex = 1;
-					this.button.toggle(checked);
-					if (checked) {
-						this.button.setIconClass(item.iconCls);
-					}
-					this.toggleActiveControl(checked);
-				},
-				scope: this
-			}
-		})];
-		
-		this.button = new Ext.SplitButton({
+            allowDepress:false,
+            listeners:{
+                checkchange: function(item, checked) {
+                    this.activeIndex = 1;
+                    this.button.toggle(checked);
+                    if (checked) {
+                        this.button.setIconClass(item.iconCls);
+                    }
+                    this.toggleActiveControl(checked);
+                },
+                scope: this
+           }
+    })];
+
+        this.button = new Ext.SplitButton({
             iconCls: "gxp-icon-getfeatureinfo",
             tooltip: this.measureTooltip,
             toggleGroup: this.toggleGroup,
@@ -319,16 +318,14 @@ if(this.infoAction=='click'){
                 items: items
             })
         });
-		}
-		
-		
-		
-		var actions = gxp.plugins.WMSGetFeatureInfoMenu.superclass.addActions.call(this, [this.button]);
+    }
+
+        var actions = gxp.plugins.WMSGetFeatureInfoMenu.superclass.addActions.call(this, [this.button]);
         var infoButton = (items)? items[0]: this.button;
 
         var info = {controls: []};
-		var layersToQuery = 0;
-		
+        var layersToQuery = 0;
+
         var updateInfo = function() {
             if(this.infoAction=='hover')return;
             var queryableLayers = this.target.mapPanel.layers.queryBy(function(x){
@@ -342,26 +339,26 @@ if(this.infoAction=='click'){
                 control.deactivate();  // TODO: remove when http://trac.openlayers.org/ticket/2130 is closed
                 control.destroy();
             }
-			
+
             info.controls = [];
             var started = false;
             var atLeastOneResponse = false;
             // click position, in lat/lon coordinates (issue #422)
             var startLatLon = null;
-			this.masking = false;
-			
+            this.masking = false;
+
             queryableLayers.each(function(x){                
                 var l = x.getLayer();
-				
-				var vendorParams = {};
-		    	Ext.apply(vendorParams, x.getLayer().vendorParams || this.vendorParams || {});
-				if(!vendorParams.env || vendorParams.env.indexOf('locale:') == -1) {
-					vendorParams.env = vendorParams.env ? vendorParams.env + ';locale:' + GeoExt.Lang.locale : 'locale:' + GeoExt.Lang.locale;
-				}
+			
+            var vendorParams = {};
+            Ext.apply(vendorParams, x.getLayer().vendorParams || this.vendorParams || {});
+                if(!vendorParams.env || vendorParams.env.indexOf('locale:') == -1) {
+                    vendorParams.env = vendorParams.env ? vendorParams.env + ';locale:' + GeoExt.Lang.locale : 'locale:' + GeoExt.Lang.locale;
+                }
 
-				// Obtain info format
+                // Obtain info format
             	var infoFormat = this.getInfoFormat(x);
-				
+
                 var control = new OpenLayers.Control.WMSGetFeatureInfo({
                     url: l.url,
                     queryVisible: true,
@@ -379,6 +376,7 @@ if(this.infoAction=='click'){
 								startLatLon = this.target.mapPanel.map.getLonLatFromPixel(new OpenLayers.Pixel(evt.xy.x, evt.xy.y));
 								atLeastOneResponse=false;
 								layersToQuery=queryableLayers.length;
+								panIn=false;//Issue #623
 							}
                             
 							if(this.loadingMask && !this.masking) {
@@ -402,7 +400,7 @@ if(this.infoAction=='click'){
                                     if (popup) {
                                     	// not too pretty, I'm calling a private method... any better idea?
                                     	popup.panIntoView();
-                                    }
+                                    }else panIn=true; //issue #623
                                 }                                
 							}
 
@@ -410,14 +408,14 @@ if(this.infoAction=='click'){
                             if (infoFormat == "text/html") {
                                 var match = evt.text.match(/<body[^>]*>([\s\S]*)<\/body>/);
                                 if (match && match[1].match(this.regex)) {
-                                    !this.infoPanelId ? this.displayPopup(evt, title, match[1]) : this.displayInfoInPanel(evt, title, match[1], this.infoPanelId);
+                                    !this.infoPanelId ? this.displayPopup(evt, title, match[1],null,null,null,panIn) : this.displayInfoInPanel(evt, title, match[1], this.infoPanelId);
                                     atLeastOneResponse = true;
                                 }
                             } else if (infoFormat == "text/plain") {
-                                !this.infoPanelId ? this.displayPopup(evt, title, '<pre>' + evt.text + '</pre>') : this.displayInfoInPanel(evt, title, '<pre>' + evt.text + '</pre>', this.infoPanelId);
+                                !this.infoPanelId ? this.displayPopup(evt, title, '<pre>' + evt.text + '</pre>',null,null,null,panIn) : this.displayInfoInPanel(evt, title, '<pre>' + evt.text + '</pre>', this.infoPanelId);
                                 atLeastOneResponse = true;
                             } else if (evt.features && evt.features.length > 0) {
-                                !this.infoPanelId ? this.displayPopup(evt, title, null, null, null, evt.features) : this.displayInfoInPanel(evt, title, null, this.infoPanelId, evt.features);
+                                !this.infoPanelId ? this.displayPopup(evt, title, null, null, null, evt.features,panIn) : this.displayInfoInPanel(evt, title, null, this.infoPanelId, evt.features);
                                 atLeastOneResponse = true;
                             // no response at all
                             } else if(layersToQuery === 0 && !atLeastOneResponse) {
@@ -432,12 +430,35 @@ if(this.infoAction=='click'){
                             
                         },
 						nogetfeatureinfo: function(evt) {
-							layersToQuery--;							
+							layersToQuery--;	
 							this.unmask();							
 						},
                         scope: this
                     }
                 });
+                //Override control function to add check for inRangeLayer
+                control.findLayers= function() {
+                    var candidates = this.layers || this.map.layers;
+                    var layers = [];
+                    var layer, url;
+                    for(var i = candidates.length - 1; i >= 0; --i) {
+                        layer = candidates[i];
+                        if(layer instanceof OpenLayers.Layer.WMS &&
+                        (!this.queryVisible || (layer.getVisibility() && layer.calculateInRange())) ) {
+                            url = OpenLayers.Util.isArray(layer.url) ? layer.url[0] : layer.url;
+                            // if the control was not configured with a url, set it
+                            // to the first layer url
+                            if(this.drillDown === false && !this.url) {
+                                this.url = url;
+                            }
+                            if(this.drillDown === true || this.urlMatches(url)) {
+                                layers.push(layer);
+                            }
+                        }
+                    }
+                return layers;
+               };
+                
                 map.addControl(control);
                 info.controls.push(control);
                 if(infoButton.checked || infoButton.pressed ) {
@@ -517,7 +538,7 @@ if(this.infoAction=='click'){
      * :arg text: ``String`` Body text.
      * :arg features: ``Array`` With features.
      */
-    displayPopup: function(evt, title, text, onClose, scope, features) {
+    displayPopup: function(evt, title, text, onClose, scope, features,panIn) {
         var popup;
         // Issue #91: Change pupupKey to lat/lon
         var pixel = new OpenLayers.Pixel(evt.xy.x, evt.xy.y);
@@ -537,7 +558,7 @@ if(this.infoAction=='click'){
 				items: [item]
 			}] : [item];
 
-            popup = this.cachePopup(latLon, items, popupKey, onClose);
+            popup = this.cachePopup(latLon, items, popupKey, onClose,panIn);
 			
         } else {
             popup = this.popupCache[popupKey];
@@ -608,7 +629,7 @@ if(this.infoAction=='click'){
      * :arg popupKey: ``String`` Key to save the popup on popup cache.
      * :arg onClose: ``Function`` Callback to be called on popup close.
      */
-    cachePopup: function(latLon, items, popupKey, onClose){
+    cachePopup: function(latLon, items, popupKey, onClose,panIn){
         var popup = this.addOutput({
             xtype: "gx_popup",
             title: this.popupTitle,
@@ -621,7 +642,7 @@ if(this.infoAction=='click'){
             unpinnable : true,*/
             items: items,
             draggable: true,
-            panIn: false, // Issue #422
+            panIn: panIn, // Issue #422 #623
             listeners: {
                 close: (function(key) {
                     return function(panel){
@@ -840,22 +861,74 @@ if(this.infoAction=='click'){
                     },deactivate: cleanup
                 }
             });
+            
+            //Override control function to add check for inRangeLayer
+                control.findLayers= function() {
+                    var candidates = this.layers || this.map.layers;
+                    var layers = [];
+                    var layer, url;
+                    for(var i = candidates.length - 1; i >= 0; --i) {
+                        layer = candidates[i];
+                        if(layer instanceof OpenLayers.Layer.WMS &&
+                        (!this.queryVisible || (layer.getVisibility() && layer.calculateInRange())) ) {
+                            url = OpenLayers.Util.isArray(layer.url) ? layer.url[0] : layer.url;
+                            // if the control was not configured with a url, set it
+                            // to the first layer url
+                            if(this.drillDown === false && !this.url) {
+                                this.url = url;
+                            }
+                            if(this.drillDown === true || this.urlMatches(url)) {
+                                layers.push(layer);
+                            }
+                        }
+                    }
+                return layers;
+               };
+            
             this.target.mapPanel.map.addControl(control);
             this.activeControl=control;
             control.activate();
+            
         }, this);
+         
         
     },   
 
     getInfoFormat: function(layer){
 
-    	var infoFormat;
-    	if(layer){
-    		infoFormat = layer.get("infoFormat");
-    	}
-        if (infoFormat === undefined) {
-            infoFormat = (this.format == "grid") ? "application/vnd.ogc.gml" : "text/html";
+        var infoFormat;
+        var tempInfoFormat;
+        if(layer){
+            infoFormat = layer.get("infoFormat");
         }
+        if (infoFormat === undefined) {
+            switch(this.format){
+                case 'grid' : 
+                    tempInfoFormat = "application/vnd.ogc.gml";
+                    break;
+                case 'html' :
+                    tempInfoFormat = "text/html"
+                    break;
+                case 'text':
+                    tempInfoFormat = "text/plain";
+                    break;
+            }
+            var formats = layer.get('infoFormats');
+            if(formats){//check info format present
+                for(var i = 0 ; i < formats.length; i++){
+                    var f = formats[i];
+                    if(f == tempInfoFormat){
+                        return tempInfoFormat;
+                    }
+                }
+                //infoFormat not supported, autoreconfigure to proper format
+                if(formats.length>0){
+                    infoFormat = formats[0];
+                    
+                }
+            }
+        }
+
         return infoFormat;
     },
     /** private: method[clearPopups]
@@ -900,17 +973,32 @@ if(this.infoAction=='click'){
     obtainFeatureGrid: function(feature, title){
 
         var fields = [];
-
+        var lname=(feature.gml.featureNSPrefix)?feature.gml.featureNSPrefix+":"+feature.gml.featureType:feature.gml.featureType;
+        var ignoreFields=(this.outputGridConfig && this.outputGridConfig[lname] &&  this.outputGridConfig[lname].ignoreFields)?this.outputGridConfig[lname].ignoreFields:[];
+        var propertyNames=(this.outputGridConfig && this.outputGridConfig[lname] &&  this.outputGridConfig[lname].propertyNames)?this.outputGridConfig[lname].propertyNames:null;
+        var extraFields=(this.outputGridConfig && this.outputGridConfig[lname] &&  this.outputGridConfig[lname].extraFields)?this.outputGridConfig[lname].extraFields:null;
         Ext.iterate(feature.data,function(fieldName,fieldValue) {
             // We add the field.
             fields.push(fieldName);
         });
-
+             var  customRenderers={};
+             for(var f in extraFields){
+                 fields.push({"name":f});
+                 customRenderers[f] = (function() {
+                                return function(d) {
+                                    var tpl=new Ext.XTemplate(extraFields[f]);
+                                     return tpl.apply(d);
+                                };
+                            })();
+                            }
         var featureGridConfig = {
             xtype: 'gxp_editorgrid',
             readOnly: true,
             title: title,
             fields: fields,
+            propertyNames :propertyNames ||{},
+            excludeFields :ignoreFields||[],
+            customRenderers:customRenderers,
             feature: feature,
             layout: {
                 type: 'vbox',

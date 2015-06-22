@@ -306,38 +306,17 @@
 				"tiled": false,
 				"attribution": false
 			},{
-				"source": "lamma_stazioni",
-				"group": "WEB CAM",
-				"title": "Consorzio LaMMA",
-				"name": "lamma_webcam_3003",
-				"displayInLayerSwitcher": true,
-				"visibility": true,
-				"tiled": false,
-                "ratio": 1
-			},{
                 "toUpdate": false,        
                 "format": "image/png8",
-                "group": "<b>Stazioni Meteorologiche</b>",
-                "name": "temp15_web",
+                "group": "<b>Stazioni Meteo</b>",
+                "name": "stazioni_lamma",
                 "opacity": 1.0,
                 "selected": false,
                 "tiled": false,
-                "vendorParams":{
-                    "cql_filter": "data_ora <= '2015-03-23T15:54:48.468Z'"
-                },                
                 "source": "lamma_stazioni",
-                "styles": ["temperatura"],
-                "style": ["temperatura"],
-                "title": "Temperatura (°C)",
+                "title": "Stazioni infomobilita",
                 "transparent": true,
                 "visibility": true,
-                "ratio": 1,
-                "getGraph": true,
-                "graphTable": "temp15_web",
-                "graphAttribute": ["temp_c"],
-                "cumulative": false,
-                "tabCode": "id",
-                "elevation": "0.0",
                 "displayOutsideMaxExtent": true
             }
 		]
@@ -381,6 +360,11 @@
         }
     ],
 	"customTools": [{
+			"ptype": "gxp_embedmapdialog",
+			"actionTarget": {"target": "paneltbar", "index": 2},
+			"embeddedTemplateName": "viewer",
+			"showDirectURL": true
+		},{
             "ptype":"gxp_wmsgetfeatureinfo",
             "id": "wmsgetfeatureinfo_plugin",
             "toggleGroup":"toolGroup",
@@ -390,6 +374,10 @@
             "disableAfterClick": false,
             "loadingMask": true,
 			"maxFeatures": 100,
+            "popupHeight": 350,
+            "popupWidth": 450,
+            "pressed": true,            
+            "infoText": "Centraline Info",                
             "actionTarget":{
                 "target":"paneltbar",
                 "index":14
@@ -425,19 +413,59 @@
             "pageSize": 10,
             "panels": {
                 "states_poi": {
-                    "WEB-CAM": {
-                        "featureType": "lamma_webcam_3003",
+                    "STAZIONI": {
+                        "featureType": "stazioni_lamma",
                         "fields": [
+                            {
+                                "name": "nquotaslm",
+                                "mapping": "nquotaslm"
+                            },
+                            {
+                                "name": "scodstazor",
+                                "mapping": "scodstazor"
+                            },
+                            {
+                                "name": "sdescr",
+                                "mapping": "sdescr"
+                            },
                             {
                                 "name": "localita",
                                 "mapping": "localita"
-                            }
+                            },
+                            {
+                                "name": "link",
+                                "mapping": "link"
+                            },
+                            {
+                                "name": "descr",
+                                "mapping": "descr"
+                            }                            
                         ],
                         "columns": [
                             {
-                                "header": "LOCALITA'",
+                                "header": "nquotaslm",
+                                "dataIndex": "nquotaslm"
+                            },
+                            {
+                                "header": "scodstazor",
+                                "dataIndex": "scodstazor"
+                            },
+                            {
+                                "header": "sdescr",
+                                "dataIndex": "sdescr"
+                            },
+                            {
+                                "header": "localita",
                                 "dataIndex": "localita"
-                            }
+                            },
+                            {
+                                "header": "link",
+                                "dataIndex": "link"
+                            },
+                            {
+                                "header": "descr",
+                                "dataIndex": "descr"
+                            }                            
                         ],
                         "actionColumns": [{
                             "type": "checkDisplay",
@@ -447,35 +475,9 @@
                         {
                             "type": "zoom",
                             "sourceSRS": "EPSG:3003"
-                        }]    
-                    },
-                    "CENTRALINE": {
-                        "featureType": "temp15_web",
-                        "fields": [
-                            {
-                                "name": "fornitore",
-                                "mapping": "fornitore"
-                            },{
-                                "name": "nome",
-                                "mapping": "nome"
-                            }
-                        ],
-                        "columns": [
-                            {
-                                "header": "fornitore",
-                                "dataIndex": "fornitore"
-                            },{
-                                "header": "temp_c",
-                                "dataIndex": "temp_c"
-                            }
-                        ],
-                        "actionColumns": [{
-                            "type": "checkDisplay",
-                            "layerName": "Highlight Layer",
-                            "sourceSRS": "EPSG:3003"
                         },
                         {
-                            "type": "zoom",
+                            "type": "charts",
                             "sourceSRS": "EPSG:3003"
                         }]    
                     }

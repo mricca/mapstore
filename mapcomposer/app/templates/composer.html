@@ -61,9 +61,11 @@
     <!-- GeoExplorer resources -->
     <link rel="stylesheet" type="text/css" href="theme/app/geoexplorer.css" />
     <link rel="stylesheet" type="text/css" href="theme/app/mapstore.css" />
-	
+    
+    <!-- Centraline FeatureInfo resources>    
+	<link rel="stylesheet" type="text/css" href="theme/app/centraline.css" / -->
+    
 	<!-- Advanced Scalebar CSS -->
-
 	<!--link rel="stylesheet" type="text/css" href="theme/app/scalebar-fat.css"-->
     <link rel="stylesheet" type="text/css" href="theme/app/scalebar-thin.css">
 	
@@ -77,10 +79,15 @@
     <script type="text/javascript" src="auth/base64.js"></script>
     <script type="text/javascript" src="script/metadataexplorer.js"></script>
     
-    <!-- highcharts resources -->
-    <!-- script type="text/javascript" src="script/jquery.min.js"></script -->
-    <!-- script type="text/javascript" src="script/highcharts.js"></script -->
-	
+    <!-- jquery resources >
+    <script type="text/javascript" src="script/jquery.min.js"></script-->
+    
+    <!-- HighStock 2.x resources >
+    <script type="text/javascript" src="script/HighStockExt.js"></script--> 
+    
+    <!-- HighChartsAdapter34 resources >
+    <script type="text/javascript" src="script/HighChartsAdapter34.js"></script-->
+    
     <!-- geocoding data  -->
     <script type="text/javascript" src="data/georeferences.js"></script>
     <!-- elements data  -->
@@ -127,7 +134,7 @@
 		}*/   
 		
 		var app;        
-        var modified = false; var mapIdentifier = -1; var authorization = false; var fullScreen = false; var bbox; var useCookies; var templateId;
+        var modified = false, mapIdentifier = -1, authorization = false, fullScreen = false, bbox, useCookies, templateId, markersurl;
 		
 		// /////////////////////////////////////////////////////
 		// Extra parameters to add layers at startup
@@ -179,6 +186,10 @@
 					case "wmsurl" : 
 									wmsurl = param[1]; 
 									wmsurl = decodeURIComponent(wmsurl);
+									break;
+					case "markersurl" : 
+									markersurl = param[1]; 
+									markersurl = decodeURIComponent(markersurl);
 									break;
 					case "gsturl" : 
 									gsturl = param[1]; 
@@ -278,7 +289,29 @@
 				region: 'center',
 				border : false,
 				id : 'appTabs',
-				enableTabScroll: true
+				enableTabScroll: true,
+                listeners:{
+                    tabchange: function(){
+                        if (app){
+                            for(var tool in app.tools){            
+                                if(app.tools[tool].ptype == "gxp_wmsgetfeatureinfo"){
+                                      if (app.tools[tool].popupCache){
+                                          for (var popupKey in app.tools[tool].popupCache){
+                                              app.tools[tool].popupCache[popupKey].close();
+                                          }
+                                    }
+                                }   
+                                if(app.tools[tool].ptype == "gxp_wfsgetgraphs"){
+                                      if (app.tools[tool].popupCache){
+                                          for (var popupKey in app.tools[tool].popupCache){
+                                              app.tools[tool].popupCache[popupKey].close();
+                                          }
+                                    }
+                                }                                  
+                            }                           
+                        }                
+                    }
+                }
             };
             
             //check if MetadataExplorer plugin is defined in customTools configuration
@@ -424,6 +457,8 @@
 			}
 			
             app = new GeoExplorer.Composer({
+				markers: serverConfig.markers,
+				markersURL: markersurl || serverConfig.markersURL,
                 scaleOverlayMode : serverConfig.scaleOverlayMode || (serverConfig.advancedScaleOverlay ? 'advanced' : 'basic'),
 				defaultLanguage: serverConfig.defaultLanguage,	
 				actionToolScale: serverConfig.actionToolScale || "small",
@@ -433,6 +468,7 @@
 				tools: serverConfig.tools,
 				removeTools: serverConfig.removeTools,
 				geoStoreBaseURL: serverConfig.geoStoreBase || ('http://' + window.location.host + '/geostore/rest/'),
+				adminUrl: serverConfig.adminUrl || ('http://' + window.location.host + '/admin/'),
                 portalConfig: serverConfig.portalConfig,
 				loadingPanel: serverConfig.loadingPanel || {},
                 defaultSourceType: "gxp_wmssource",
@@ -456,13 +492,6 @@
                         var westPanel = Ext.getCmp('west');
                         westPanel.setActiveTab('legend');
                         westPanel.hideTabStripItem('tree');
-                    }
-                    
-					/////////////////////
-					// Fractional Zoom //
-					/////////////////////
-                    if(app.mapPanel.map.restrictedExtent && app.mapPanel.map.fractionalZoom){
-                        app.mapPanel.map.zoomToExtent(app.mapPanel.map.restrictedExtent);
                     }
 
 					/////////////////////
@@ -488,6 +517,12 @@
                 }, 
                 'ready' : function(){
                     app.modified = false;
+					/////////////////////
+					// Fractional Zoom //
+					/////////////////////
+                    if(app.mapPanel.map.restrictedExtent && app.mapPanel.map.fractionalZoom){
+                        app.mapPanel.map.zoomToExtent(app.mapPanel.map.restrictedExtent);
+                    }
 
 					// ///////////////////////////////////////////////////
 					// Visualizing metadata tab and layers at startup 
@@ -586,6 +621,7 @@
 		
         serverConfig = Ext.applyIf(serverConfig, localConfig);
 		serverConfig.geoStoreBaseURL = serverConfig.geoStoreBase || ('http://' + window.location.host + '/geostore/rest/');
+        serverConfig.adminUrl = serverConfig.adminUrl || ('http://' + window.location.host + '/admin/');
 
 		var configuration = customConfigName ? customConfigName : "geobasiConfig";
 		

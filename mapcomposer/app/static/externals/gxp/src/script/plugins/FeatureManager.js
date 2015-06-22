@@ -95,6 +95,17 @@ gxp.plugins.FeatureManager = Ext.extend(gxp.plugins.Tool, {
      *  each with a valid symbolizer object for OpenLayers. Will be used to
      *  render features.
      */
+     /** api: config[selectedSymbolizer]
+     *  ``Object`` An object with "Point", "Line" and "Polygon" properties,
+     *  each with a valid symbolizer object for OpenLayers. Will be used to
+     *  render selected features.
+     */
+    /** api: config[vecLayerOptions]
+     *  ``Object`` Optional object with non-default properties to set on the
+     *  OpenLayers.Layer.Vector used to render features
+     *  i.e. to have zindex use  "vecLayerOptions": {"rendererOptions":{"zIndexing": true}}
+     *  in composer configuration
+     */
     
     /** api: config[format]
      *  ``String`` Optional response format to use for WFS GetFeature requests.
@@ -346,20 +357,20 @@ gxp.plugins.FeatureManager = Ext.extend(gxp.plugins.Tool, {
                     }
                 })]
             }),
-            "selected": new OpenLayers.Style(null, {
-                rules: [new OpenLayers.Rule({symbolizer: {display: "none"}})]
+             "selected": new OpenLayers.Style(null, {
+              rules: [new OpenLayers.Rule({symbolizer: this.initialConfig.selectedSymbolizer || {display: "none"}})]
             })
         };
         
-        this.featureLayer = new OpenLayers.Layer.Vector(this.id, {
+        this.featureLayer = new OpenLayers.Layer.Vector(this.id, Ext.apply({
             displayInLayerSwitcher: false,
             visibility: false,
             styleMap: new OpenLayers.StyleMap({
-                "select": OpenLayers.Util.extend({display: ""},
+                 "select": this.initialConfig.selectedSymbolizer ? this.style["selected"] :  OpenLayers.Util.extend({display: ""},
                     OpenLayers.Feature.Vector.style["select"]),
                 "vertex": this.style["all"]
             }, {extendDefault: false})    
-        });
+        },this.vecLayerOptions||{}));
         
         this.target.on({
             ready: function() {
@@ -447,10 +458,16 @@ gxp.plugins.FeatureManager = Ext.extend(gxp.plugins.Tool, {
                 if (layerRecord && queryPanel) {
                     
                     //expand query panel
-                    var east = Ext.getCmp('east');
+                    /*var east = Ext.getCmp('east');
                     if(east && east.collapsed){
-                        east.expand();                             
-                    }                   
+                        east.expand();
+                    }*/                   
+
+                    //expand query panel if in TabPanel
+                    var east = Ext.getCmp('eastTabPanel');
+					if(east){
+                        east.setActiveTab(1);
+                    }
                     
                     if(selectedLayerToQueryId){
                         var layerTitle = layerRecord.data.title;
@@ -647,19 +664,21 @@ gxp.plugins.FeatureManager = Ext.extend(gxp.plugins.Tool, {
         var record = this.layerRecord;
         var source = this.target.getSource(record);
         if (source && source instanceof gxp.plugins.WMSSource) {
-            source.getSchema(record, function(schema) {
+            source.getSchema(record, function(schema, owsType) {
                 if (schema === false) {
-                
-                    //information about why selected layers are not queriable.                
-                    var layer = record.get("layer");
-                    var wmsVersion = layer.params.VERSION;
-                    Ext.MessageBox.show({
-                        title: this.noValidWmsVersionMsgTitle,
-                        msg: this.noValidWmsVersionMsgText + wmsVersion,
-                        buttons: Ext.Msg.OK,
-                        animEl: 'elId',
-                        icon: Ext.MessageBox.INFO
-                    });
+					
+					if(owsType == "WFS"){
+						//information about why selected layers are not queriable.                
+						var layer = record.get("layer");
+						var wmsVersion = layer.params.VERSION;
+						Ext.MessageBox.show({
+							title: this.noValidWmsVersionMsgTitle,
+							msg: this.noValidWmsVersionMsgText + wmsVersion,
+							buttons: Ext.Msg.OK,
+							animEl: 'elId',
+							icon: Ext.MessageBox.INFO
+						});
+					}
                     
                     this.clearFeatureStore();
                 } else {

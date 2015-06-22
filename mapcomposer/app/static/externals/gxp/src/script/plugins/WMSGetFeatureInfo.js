@@ -146,6 +146,14 @@ gxp.plugins.WMSGetFeatureInfo = Ext.extend(gxp.plugins.Tool, {
      *  added to the GetFeatureInfo request (e.g. ["CQL_FILTER"]).
      */
      layerParams: ["CQL_FILTER","TIME","ELEVATION"],
+
+     popupHeight: 320,
+     
+     popupWidth: 490,
+     
+     pressed: false,
+     
+     infoText: "",     
      
     /** api: method[addActions]
      */
@@ -158,6 +166,8 @@ gxp.plugins.WMSGetFeatureInfo = Ext.extend(gxp.plugins.Tool, {
             toggleGroup: this.toggleGroup,
             enableToggle: true,
             allowDepress: true,
+            pressed: this.pressed,
+            text: this.infoText,            
             toggleHandler: function(button, pressed) {
                 for (var i = 0, len = info.controls.length; i < len; i++){
                     if (pressed) {
@@ -384,6 +394,7 @@ gxp.plugins.WMSGetFeatureInfo = Ext.extend(gxp.plugins.Tool, {
                 //fill: false,
                 /*anchored: true,
                 unpinnable : true,*/
+                constrain: true,
                 items: items,
                 draggable: false,
                 listeners: {

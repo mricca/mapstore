@@ -67,10 +67,10 @@ gxp.plugins.SaveDefaultContext = Ext.extend(gxp.plugins.Tool, {
      */
     addResourceButtonText: "Add Map",
     
-    /** api: config[auth]
+    /** api: config[authHeader]
      *  ``String``
      */
-    auth: null,
+    authHeader: null,
 	
     /**
     * Property: contextMsg
@@ -128,6 +128,18 @@ gxp.plugins.SaveDefaultContext = Ext.extend(gxp.plugins.Tool, {
     */
 	mapDescriptionLabel: "Description",
 	
+    getUser: function() {
+        if(this.target.userDetails && this.target.userDetails.user) {
+            return this.target.userDetails.user.name;
+        } else {
+            var auth = this.getAuth();
+            if(auth) {
+                return Base64.decode(auth.split(' ')[1]);
+            }
+        }
+        return '';
+    },
+    
 	/**
 	 * Property: conflictErrMsg
 	 * {string}
@@ -148,8 +160,8 @@ gxp.plugins.SaveDefaultContext = Ext.extend(gxp.plugins.Tool, {
             disabled: false,
             tooltip: this.saveDefaultContextActionTip,
             handler: function() {	
-                    
-				  if(this.target.auth){
+			
+				  if(this.target.authHeader || this.authHeader){
                       
 					  var configStr = Ext.util.JSON.encode(this.target.getState()); 
 					  
@@ -157,6 +169,7 @@ gxp.plugins.SaveDefaultContext = Ext.extend(gxp.plugins.Tool, {
 						  //
 						  // SAVE MAP
 						  //
+						  //console.log(configStr);
 						  this.metadataDialog(configStr); 
 					  }else{
 						  //
@@ -183,7 +196,7 @@ gxp.plugins.SaveDefaultContext = Ext.extend(gxp.plugins.Tool, {
 									  
 						  loginWin.destroy();
 						  
-						  thisObj.auth = 'Basic ' + Base64.encode(user + ':' + pass);           
+						  thisObj.authHeader = 'Basic ' + Base64.encode(user + ':' + pass);           
 						  var configStr = Ext.util.JSON.encode(thisObj.target.getState()); 
 						  
 						  if(thisObj.target.mapId == -1){
@@ -200,7 +213,7 @@ gxp.plugins.SaveDefaultContext = Ext.extend(gxp.plugins.Tool, {
 							  var method = 'PUT';
 							  var contentType = 'application/json';
 							  
-							  thisObj.save(url, method, contentType, configStr, thisObj.auth);
+							  thisObj.save(url, method, contentType, configStr, thisObj.authHeader);
 						  }
 					  };
 					  
@@ -270,10 +283,10 @@ gxp.plugins.SaveDefaultContext = Ext.extend(gxp.plugins.Tool, {
               this.target.modified = false;
               
 			  //
-			  // if the user change language the page is reloaded and this.auth is cleared
+			  // if the user change language the page is reloaded and this.authHeader is cleared
 			  //
-			  if(!this.auth)
-				this.auth = auth;
+			  if(!this.authHeader)
+				this.authHeader = auth;
 				
               this.target.mapId = response.responseText;
               
@@ -301,9 +314,8 @@ gxp.plugins.SaveDefaultContext = Ext.extend(gxp.plugins.Tool, {
            },
            failure:  function(response, opts){
               mask.hide();
-			  this.auth = null;
 			  
-			  
+			  this.authHeader = null;
 			  
               Ext.Msg.show({
                  title: this.contextSaveFailString,
@@ -396,7 +408,8 @@ gxp.plugins.SaveDefaultContext = Ext.extend(gxp.plugins.Tool, {
                             var mapName = Ext.getCmp("diag-text-field").getValue();        
                             var mapDescription = Ext.getCmp("diag-text-description").getValue(); 
                             var auth = plugin.getAuth();
-							var owner = Base64.decode(auth.split(' ')[1]);
+                            var owner = plugin.getUser();
+							//var owner = Base64.decode(auth.split(' ')[1]);
 							owner = owner.split(':')[0];
                             var resourceXML = 
 								'<Resource>' +
@@ -442,8 +455,18 @@ gxp.plugins.SaveDefaultContext = Ext.extend(gxp.plugins.Tool, {
         });
         
         win.show();
-    }
-        
+    },
+	
+	/**
+     * Retrieves auth from (in this order)
+     * * the parent window (For usage in manager)
+     * * the session storage (if enabled userDetails, see ManagerViewPort.js class of mapmanager)
+     * We should imagine to get the auth from other contexts.
+     */
+    getAuth: function(){
+		var authorization = this.target.getAuth();
+        return (authorization ? authorization : this.authHeader);
+    }        
 });
 
 Ext.preg(gxp.plugins.SaveDefaultContext.prototype.ptype, gxp.plugins.SaveDefaultContext);

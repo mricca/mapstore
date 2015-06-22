@@ -347,19 +347,16 @@ gxp.form.SelDamageArea = Ext.extend(Ext.form.FieldSet, {
                                 disabledItems.push(item);
                             }
                         });
-
                         for (var i = 0; i < disabledItems.length; i++) {
                             if (disabledItems[i].toggleGroup) {
                                 if (disabledItems[i].scope && disabledItems[i].scope.actions) {
                                     for (var a = 0; a < disabledItems[i].scope.actions.length; a++) {
                                         disabledItems[i].scope.actions[a].toggle(false);
-
                                         if (disabledItems[i].scope.actions[a].menu) {
                                             for (var b = 0; b < disabledItems[i].scope.actions[a].menu.items.items.length; b++) {
                                                 disabledItems[i].scope.actions[a].menu.items.items[b].disable();
                                             }
                                         }
-
                                         disabledItems[i].scope.actions[a].on({
                                             "click": function (evt) {
                                                 this.clearDrawFeature();
@@ -851,12 +848,10 @@ gxp.form.SelDamageArea = Ext.extend(Ext.form.FieldSet, {
         if (south) {
             south.disable();
         }
-
         var east = Ext.getCmp('east');
         if (east) {
             east.disable();
         }
-
         var tree = Ext.getCmp('tree');
         if (tree) {
             var panel = tree.findParentByType('panel');
@@ -906,12 +901,10 @@ gxp.form.SelDamageArea = Ext.extend(Ext.form.FieldSet, {
         if (south) {
             south.enable();
         }
-
         var east = Ext.getCmp('east');
         if (east) {
             east.enable();
         }
-
         var tree = Ext.getCmp('tree');
         if (tree) {
             var panel = tree.findParentByType('panel');

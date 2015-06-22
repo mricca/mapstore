@@ -172,24 +172,13 @@ gxp.plugins.WMSSource = Ext.extend(gxp.plugins.LayerSource, {
 	getAuthParam: function(){
 		var userInfo = this.target.userDetails;
 		var authkey;
-		
-		if(userInfo.user.attribute instanceof Array){
-			for(var i = 0 ; i < userInfo.user.attribute.length ; i++ ){
-				if( userInfo.user.attribute[i].name == "UUID" ){
-					authkey = userInfo.user.attribute[i].value;
-				}
-			}
-		}else{
-			if(userInfo.user.attribute && userInfo.user.attribute.name == "UUID"){
-			   authkey = userInfo.user.attribute.value;
-			}
+        
+        if(userInfo.token) {
+            authkey = userInfo.token;
+        }
+        if(authkey){
+			this.authParam = userInfo.user.authParam || this.authParam;
 		}
-
-		if(authkey){
-			var authParam = userInfo.user.authParam;
-			this.authParam = authParam ? authParam : this.authParam;
-		}
-		
 		return authkey;
 	},
 	
@@ -478,6 +467,7 @@ gxp.plugins.WMSSource = Ext.extend(gxp.plugins.LayerSource, {
             tiled: config.tiled,
             displayInLayerSwitcher: config.displayInLayerSwitcher,
             uuid: config.uuid,
+            wcs: config.wcs, // boolean to know if is a raster layer
             gnURL: config.gnURL,
             source: config.source,
             properties: "gxp_wmslayerpanel",
@@ -506,6 +496,7 @@ gxp.plugins.WMSSource = Ext.extend(gxp.plugins.LayerSource, {
             {name: "tiled", type: "boolean"},
             {name: "displayInLayerSwitcher", type: "boolean"},
             {name: "uuid", type: "string"},
+            {name: "wcs", type: "boolean"},
             {name: "gnURL", type: "string"},
             {name: "title", type: "string"},
             {name: "properties", type: "string"},
@@ -525,7 +516,6 @@ gxp.plugins.WMSSource = Ext.extend(gxp.plugins.LayerSource, {
 		original.fields.each(function(field) {
 			fields.push(field);
 		});
-
 
 		var Record = GeoExt.data.LayerRecord.create(fields);
 		return new Record(data, layer.id);
@@ -796,7 +786,7 @@ gxp.plugins.WMSSource = Ext.extend(gxp.plugins.LayerSource, {
                     this.schemaCache[typeName] = schema;
                 }
             } else {
-                callback.call(scope, false);
+                callback.call(scope, false, (r && r.get("owsType") ? r.get("owsType") : false));
             }
         }, this);
     },
@@ -973,7 +963,9 @@ gxp.plugins.WMSSource = Ext.extend(gxp.plugins.LayerSource, {
                 if(keyword.indexOf("uuid") != -1){
                     props.uuid = keyword.substring(keyword.indexOf("uuid="));
                     props.uuid = keyword.split("=")[1];
-                }  
+                } else if(keyword.indexOf("WCS") != -1){
+					props.wcs = true;
+				}   
                 
 				// ///////////////////////////////////////////////////////////////
 				// Use 'enableLang' set to 'true' in order to not enable i18n 

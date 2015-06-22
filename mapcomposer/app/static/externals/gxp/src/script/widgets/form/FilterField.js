@@ -115,7 +115,8 @@ gxp.form.FilterField = Ext.extend(Ext.form.CompositeField, {
     
     addAutocompleteStore: function(config) {
         var uniqueValuesStore = new gxp.data.WPSUniqueValuesStore({
-            pageSize: this.autoCompleteCfg.pageSize || this.pageSize
+            pageSize: this.autoCompleteCfg.pageSize || this.pageSize,
+            listeners: this.autoCompleteCfg.listeners || {}
         });
         
         this.initUniqueValuesStore(uniqueValuesStore, this.autoCompleteCfg.url || this.attributes.url, this.attributes.baseParams.TYPENAME, this.attributes.format.namespaces, this.filter.property);
@@ -413,7 +414,7 @@ gxp.form.FilterField = Ext.extend(Ext.form.CompositeField, {
                 mode = "local";
                 this.attributes.each(function(r) {
                     var match = /gml:((Multi)?(Point|Line|Polygon|Curve|Surface|Geometry)).*/.exec(r.get("type"));
-                    match || attributes.add([r]);
+                    match || (r.get('name') !== 'gid' ? attributes.add([r]) : null); //custom to remove gid from dropdown
                 });
             } else {
                 attributes = this.attributes;
@@ -533,7 +534,10 @@ gxp.form.FilterField = Ext.extend(Ext.form.CompositeField, {
             xtype: 'container',
             isFormField: true,
             isValid: function() { return true; },
-            reset: function() {
+            layout  : 'hbox',            
+            defaultMargins: '0 3 0 0',
+            width: 100,
+		    reset: function() {
                  this.eachItem(function(a) {
                     a.reset()
                 });
@@ -542,10 +546,7 @@ gxp.form.FilterField = Ext.extend(Ext.form.CompositeField, {
                 if (this.items && this.items.each) {
                     this.items.each(b, a || this)
                 }
-            },
-            layout  : 'hbox',            
-            defaultMargins: '0 3 0 0',
-            width: 100
+            }
         }];
         
         
