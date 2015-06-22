@@ -497,6 +497,20 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
                                         }
                                     }
                                 }]
+                            },
+                            plotOptions: {
+                                boxplot: {
+                                    fillColor: '#F0F0E0',
+                                    lineWidth: 2,
+                                    medianColor: '#0C5DA5',
+                                    medianWidth: 4,
+                                    stemColor: '#A63400',
+                                    stemDashStyle: 'dot',
+                                    stemWidth: 1,
+                                    whiskerColor: '#3D9200',
+                                    whiskerLength: '20%',
+                                    whiskerWidth: 3
+                                }
                             }
                         }
                     };
