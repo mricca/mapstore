@@ -374,7 +374,7 @@
 		{
 			"source": "geobasi",
 			"group": "terreni",
-			"title": "Stream Sediment",
+			"title": "Sedimenti Fluviali",
 			"name": "geobasi_sedimenti_stream",
 			"displayInLayerSwitcher": true,
 			"visibility": false,
@@ -561,14 +561,6 @@
 				"decimalPrecision": 2
 			}
 		},
-		"outputTarget": "westTab"
-	}, {
-		"ptype": "gxp_geobasielementsinfo",
-		"id": "geobasielementsinfoToolId",
-		"outputTarget": "westTab"
-	}, {
-		"ptype": "gxp_geobasiinfo",
-		"id": "geobasiinfoToolId",
 		"outputTarget": "westTab"
 	}, {
 		"ptype": "gxp_wfsrtsearch",
