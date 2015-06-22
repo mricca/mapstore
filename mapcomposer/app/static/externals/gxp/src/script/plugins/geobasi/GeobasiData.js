@@ -378,9 +378,24 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
                             scope: me
                         }
                     },
-                    tpl: new Ext.XTemplate('<tpl for=\".\" >', '<tpl  if="matrix_cod == \'01\' || matrix_cod == \'0201\'">', '<div class=\"x-combo-list-item\"><h4 style="color:#C53430;">{matrix} - (generico) -> n°: {count}<h4></div>', '</tpl>', '<tpl if="matrix_cod !== \'01\' && matrix_cod !== \'0201\'">', '<div class=\"x-combo-list-item\"><li style="padding-left:1em;">{matrix} -> n°: {count}</li></div>', '</tpl>', '</tpl>', {
+                    tpl: new Ext.XTemplate(
+                        '<tpl for=\".\" >'+
+                            '<tpl  if="matrix_cod == \'01\'">'+
+                            '<div class=\"x-combo-list-item\"><h4 style="color:#C53430;">{matrix} - (generico) -> n°: {[this.getCount(values)]}</h4></div>'+
+                            '</tpl>'+
+                            '<tpl  if="matrix_cod == \'0201\'">'+
+                            '<div class=\"x-combo-list-item\"><h4 style="color:#C53430;">Terreni - (generico) -> n°: {[this.getCount(values)]}</h4><div style="height:5px"></div><div><li style="padding-left:1em;">Sedimenti fluviali -> n°: {count}</li></div></div>'+
+                            '</tpl>'+                            
+                            '<tpl if="matrix_cod !== \'01\' && matrix_cod !== \'0201\'">'+
+                                '<div class=\"x-combo-list-item\"><li style="padding-left:1em;">{matrix} -> n°: {count}</li></div>'+
+                            '</tpl>'+                            
+                        '</tpl>', {
                         formatName: function(name) {
                             return name.toUpperCase();
+                        },
+                        getCount: function(values){
+                            var count = values.count;
+                            return count;
                         }
                     })
                 }, {
@@ -532,6 +547,33 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
                     iconCls: "gxp-icon-map-filter-geobasi",
                     tooltip: 'Visualizza Selezione',
                     handler: function() {
+
+                        /*var addLayer = app.tools["addlayer"];
+
+                        var resources = [];
+
+                        resources.push({
+                            msLayerTitle: 'Analisi Filter',
+                            msLayerName: 'geobasi_analisi',
+                            //msGroupName: "<b>Stazioni Meteorologiche</b>",
+                            wmsURL: "http://www506.regione.toscana.it/geoserver/geobasi/ows",
+                            format: "image/png8",
+                            customParams: {
+                                //style: [lyr.params.STYLES],
+                                //styles: [lyr.params.STYLES],                                                
+                                tiled: false,
+                                zoomToExtent: true,
+                                visibility: true,
+                                vendorParams: {
+                                    filter: '(<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc"><ogc:And><ogc:Intersects><ogc:PropertyName>geom</ogc:PropertyName><gml:Polygon xmlns:gml="http://www.opengis.net/gml" srsName="EPSG:3003"><gml:exterior><gml:LinearRing><gml:posList>1604105.5696203 4826635.8987342 1615423.4177215 4797209.4936709 1638059.1139241 4796239.3924051 1628681.4683544 4864793.2151899 1604105.5696203 4826635.8987342</gml:posList></gml:LinearRing></gml:exterior></gml:Polygon></ogc:Intersects><ogc:Or><ogc:PropertyIsBetween><ogc:PropertyName>year</ogc:PropertyName><ogc:LowerBoundary><ogc:Literal>1950</ogc:Literal></ogc:LowerBoundary><ogc:UpperBoundary><ogc:Literal>2011</ogc:Literal></ogc:UpperBoundary></ogc:PropertyIsBetween><ogc:PropertyIsNull><ogc:PropertyName>year</ogc:PropertyName></ogc:PropertyIsNull></ogc:Or></ogc:And></ogc:Filter>)'
+                                }
+                            }
+                        });
+
+                        addLayer.addLayer(
+                            resources
+                        );*/
+                    
                         Ext.MessageBox.show({
                             title: 'Informazione',
                             msg: 'Funzionalità in fase di implementazione!',
