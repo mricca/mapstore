@@ -86,6 +86,31 @@ var elementsData = {
             "Tl",
             "http://www506.regione.toscana.it/schede_elementi/Tallio.pdf",
             "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_tl_edit.pdf"
+        ],[
+            "Antimonio",
+            "Sb",
+            "http://www506.regione.toscana.it/schede_elementi/Antimonio.pdf",
+            "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_sb_edit.pdf"
+        ],[
+            "Attinio",
+            "Ac-Lr",
+            "http://www506.regione.toscana.it/schede_elementi/Attinio.pdf",
+            "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_ac-lr_edit.pdf"
+        ],[
+            "Osmio",
+            "Os",
+            "http://www506.regione.toscana.it/schede_elementi/Osmio.pdf",
+            "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_os_edit.pdf"
+        ],[
+            "Polonio",
+            "Po",
+            "http://www506.regione.toscana.it/schede_elementi/Polonio.pdf",
+            "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_po_edit.pdf"
+        ],[
+            "Radio",
+            "Ra",
+            "http://www506.regione.toscana.it/schede_elementi/Radio.pdf",
+            "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_ra_edit.pdf"
         ]
     ]
 };
