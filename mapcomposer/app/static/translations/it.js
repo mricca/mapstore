@@ -102,7 +102,7 @@ GeoExt.Lang.add("it", {
     
     "gxp.plugins.LayerTree.prototype": {
         rootNodeText: "Livelli",
-        overlayNodeText: "Predefinito",
+        overlayNodeText: "Filtri ed elaborazioni",
         baseNodeText: "Sfondo"
     },
 
