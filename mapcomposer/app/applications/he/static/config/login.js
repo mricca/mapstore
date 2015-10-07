@@ -290,7 +290,7 @@
              "geodetic": true,
              "restrictLayout": {
                  "restrictToGroups" : ["Advanced_Users"],
-                 "layoutName" : "A3"                 
+                 "layoutName" : "11x17"                 
              }
 		  },
           "includeLegend": false,
