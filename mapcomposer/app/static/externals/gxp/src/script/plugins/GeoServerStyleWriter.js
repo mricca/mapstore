@@ -108,7 +108,8 @@ gxp.plugins.GeoServerStyleWriter = Ext.extend(gxp.plugins.StyleWriter, {
                 url: this.baseUrl + "/styles" + (styleRec.phantom === true ?
                     "" : "/" + styleName + ".xml"),
                 headers: {
-                    "Content-Type": "application/vnd.ogc.sld+xml; charset=UTF-8"
+                    "Content-Type": "application/vnd.ogc.sld+xml; charset=UTF-8",
+                    "Authorization": app.tools["styler"].getBasicAuthentication()
                 },
                 xmlData: this.target.createSLD({
                     userStyles: [styleName]
@@ -116,6 +117,9 @@ gxp.plugins.GeoServerStyleWriter = Ext.extend(gxp.plugins.StyleWriter, {
                 success: styleRec.phantom === true ? function(){
                     Ext.Ajax.request({
                         method: "POST",
+                        headers: {
+                            "Authorization": app.tools["styler"].getBasicAuthentication()
+                        },                        
                         url: this.baseUrl + "/layers/" +
                             this.target.layerRecord.get("name") + "/styles.json",
                         jsonData: {
@@ -150,6 +154,9 @@ gxp.plugins.GeoServerStyleWriter = Ext.extend(gxp.plugins.StyleWriter, {
         }, this);
         Ext.Ajax.request({
             method: "PUT",
+            headers: {
+                "Authorization": app.tools["styler"].getBasicAuthentication()
+            },            
             url: this.baseUrl + "/layers/" +
                 this.target.layerRecord.get("name") + ".json",
             jsonData: {
@@ -175,6 +182,9 @@ gxp.plugins.GeoServerStyleWriter = Ext.extend(gxp.plugins.StyleWriter, {
         for (var i=0, len=this.deletedStyles.length; i<len; ++i) {
             Ext.Ajax.request({
                 method: "DELETE",
+                headers: {
+                    "Authorization": app.tools["styler"].getBasicAuthentication()
+                },                                        
                 url: this.baseUrl + "/styles/" + this.deletedStyles[i] +
                     // cannot use params for DELETE requests without jsonData
                     "?purge=true"
