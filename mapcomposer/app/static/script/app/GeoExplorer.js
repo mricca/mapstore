@@ -1438,6 +1438,136 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
         }
         
         return auth;
-    }
+    },
+	
+	zoomToCodInt: function(codint){
+
+		var getWFSStoreProxy = function(featureName, filter, sortBy, target){
+			var filterProtocol=new OpenLayers.Filter.Logical({
+				type: OpenLayers.Filter.Logical.AND,
+				filters: new Array()
+			});
+			if(filter) {
+				filterProtocol.filters.push(filter);
+			}
+			var proxy= new GeoExt.data.ProtocolProxy({ 
+				protocol: new OpenLayers.Protocol.WFS({ 
+					url: "http://159.213.57.81/geoserver/wfs",
+					featureType: featureName, 
+					readFormat: new OpenLayers.Format.GeoJSON(),
+					featureNS: "db_segnalazioni", 
+					filter: filterProtocol, 
+					outputFormat: "application/json",
+					version: "1.1.0"
+				}) 
+			});
+			return proxy;						
+		}		
+		
+		var sigla = codint.slice(6,8);
+		
+		var featureName;
+		
+		switch (sigla){
+			case "AR":
+				featureName = "genio_civile_arezzo_view"
+				break;
+			case "FI":
+				featureName = "genio_civile_firenze_view"
+				break;
+			case "GR":
+				featureName = "genio_civile_grosseto_view"
+				break;
+			case "LI":
+				featureName = "genio_civile_livorno_view"
+				break;
+			case "LU":
+				featureName = "genio_civile_lucca_view"
+				break;
+			case "MS":
+				featureName = "genio_civile_massa_carrara_view"
+				break;
+			case "PI":
+				featureName = "genio_civile_pisa_view"
+				break;
+			case "PO":
+				featureName = "genio_civile_prato_view"
+				break;
+			case "PT":
+				featureName = "genio_civile_pistoia_view"
+				break;
+			case "SI":
+				featureName = "genio_civile_siena_view"
+				break;							
+			default:
+				featureName = false
+				break;								
+			
+		}
+		
+		if(!featureName){
+			Ext.MessageBox.show({
+				title: 'Attenzione',
+				msg: 'Codice Intervento errato!',
+				buttons: Ext.Msg.OK,
+				animEl: 'elId',
+				icon: Ext.MessageBox.INFO
+			});
+
+			/////////////////////
+			// Fractional Zoom //
+			/////////////////////
+			if(this.mapPanel.map.restrictedExtent && this.mapPanel.map.fractionalZoom){
+				this.mapPanel.map.zoomToExtent(this.mapPanel.map.restrictedExtent);
+			}	
+				
+			Ext.MessageBox.getDialog().getEl().setStyle("zIndex", 100000);                    
+			return; 						
+		}
+		
+		var myFilter = new OpenLayers.Filter.Comparison({
+				type: OpenLayers.Filter.Comparison.EQUAL_TO,
+				property: "codint",
+				value: codint
+			});					
+			
+		var elaborazioneStore = new GeoExt.data.FeatureStore({ 
+			 id: "genio_civile_Store",
+			 fields: [{
+						"name": "codint",              
+						"mapping": "codint"
+			  }],
+			 proxy: getWFSStoreProxy(featureName,myFilter)
+		});
+		elaborazioneStore.load(); 					
+		
+		elaborazioneStore.on('load', function(store, records) {
+			if(records.length > 0){
+				var geographic = new OpenLayers.Projection("EPSG:4326");
+				var mercator = new OpenLayers.Projection("EPSG:3003");					
+				var bounds = records[0].data.feature.geometry.getBounds().clone().transform(geographic,mercator);
+				this.mapPanel.map.zoomToExtent(bounds);
+				this.mapPanel.map.zoomTo(9);						
+			}else{
+				Ext.MessageBox.show({
+					title: 'Attenzione',
+					msg: 'Codice Intervento non trovato!',
+					buttons: Ext.Msg.OK,
+					animEl: 'elId',
+					icon: Ext.MessageBox.INFO
+				});
+				
+				/////////////////////
+				// Fractional Zoom //
+				/////////////////////
+				if(this.mapPanel.map.restrictedExtent && this.mapPanel.map.fractionalZoom){
+					this.mapPanel.map.zoomToExtent(this.mapPanel.map.restrictedExtent);
+				}	
+				
+				Ext.MessageBox.getDialog().getEl().setStyle("zIndex", 100000);                    
+				return;  								
+			}
+		}, this);					
+	}
 });
 

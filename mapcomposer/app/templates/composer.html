@@ -121,7 +121,7 @@
 		// /////////////////////////////////////////////////////
 		// Extra parameters to add layers at startup
 		// /////////////////////////////////////////////////////
-		var layName; var layTitle; var wmsurl; var gsturl; var urlformat;
+		var layName; var layTitle; var wmsurl; var gsturl; var urlformat; var codint = false;
 		
         // ///////////////////////////////////////////////////////////////
         // Custom variables from the mapStoreConfig user configuration file 
@@ -196,6 +196,9 @@
 					case "format":
 									urlformat = param[1];
 									break;
+					case "codint":
+									codint = param[1];
+									break;									
 					default :       
 									//mapIdentifier = -1;
 									//authorization = false;
@@ -472,12 +475,21 @@
                 }, 
                 'ready' : function(){
                     app.modified = false;
-					/////////////////////
-					// Fractional Zoom //
-					/////////////////////
-                    if(app.mapPanel.map.restrictedExtent && app.mapPanel.map.fractionalZoom){
-                        app.mapPanel.map.zoomToExtent(app.mapPanel.map.restrictedExtent);
-                    }
+					
+					///////////////////////////////////////
+					// Perform Zoom To Codice Intervento //
+					///////////////////////////////////////					
+					if(codint){
+						app.zoomToCodInt(codint);
+					}else{
+						/////////////////////
+						// Fractional Zoom //
+						/////////////////////
+						if(app.mapPanel.map.restrictedExtent && app.mapPanel.map.fractionalZoom){
+							app.mapPanel.map.zoomToExtent(app.mapPanel.map.restrictedExtent);
+						}					
+					}
+
 					// ///////////////////////////////////////////////////
 					// Visualizing metadata tab and layers at startup 
 					// ///////////////////////////////////////////////////
@@ -577,7 +589,7 @@
 		serverConfig.geoStoreBaseURL = serverConfig.geoStoreBase || ('http://' + window.location.host + '/geostore/rest/');
         serverConfig.adminUrl = serverConfig.adminUrl || ('http://' + window.location.host + '/admin/');
 
-		var configuration = customConfigName ? customConfigName : "mapStoreConfig";
+		var configuration = customConfigName ? customConfigName : "difSuolo_segnalazioniConfig";
 		
 		// use GeoExplorerLoader to load configuration files
 		var loader = new GeoExplorerLoader(serverConfig, configuration, mapStoreDebug, mapIdentifier, 

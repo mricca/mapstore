@@ -458,16 +458,16 @@ gxp.plugins.FeatureManager = Ext.extend(gxp.plugins.Tool, {
                 if (layerRecord && queryPanel) {
                     
                     //expand query panel
-                    /*var east = Ext.getCmp('east');
+                    var east = Ext.getCmp('east');
                     if(east && east.collapsed){
                         east.expand();
-                    }*/                   
+                    }                   
 
                     //expand query panel if in TabPanel
-                    var east = Ext.getCmp('eastTabPanel');
+                    /*var east = Ext.getCmp('eastTabPanel');
 					if(east){
                         east.setActiveTab(1);
-                    }
+                    }*/
                     
                     if(selectedLayerToQueryId){
                         var layerTitle = layerRecord.data.title;
