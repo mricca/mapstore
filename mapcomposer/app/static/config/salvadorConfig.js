@@ -367,6 +367,46 @@
                 "queryPanel": true
 			},{
 				"source": "salvador",
+                "format":"image/jpeg",            
+                "tiled": false,                
+                "group": "INUNDACIONES",
+				"title": "Inundaciones Zona Material",
+				"name": "inundaciones_zona_material",
+				"displayInLayerSwitcher":false,
+				"visibility": true,
+                "opacity": 0.0
+			},{
+				"source": "salvador",
+                "format":"image/jpeg",            
+                "tiled": false,                
+                "group": "INUNDACIONES",
+				"title": "Inundaciones Fichas",
+				"name": "inundaciones_fichas",
+				"displayInLayerSwitcher":false,
+				"visibility": true,
+                "opacity": 0.0
+			},{
+				"source": "salvador",
+                "format":"image/jpeg",            
+                "tiled": false,                
+                "group": "INUNDACIONES",
+				"title": "Inundaciones Afectados",
+				"name": "inundaciones_afectados",
+				"displayInLayerSwitcher":false,
+				"visibility": true,
+                "opacity": 0.0
+			},{
+				"source": "salvador",
+                "format":"image/jpeg",            
+                "tiled": false,                
+                "group": "INUNDACIONES",
+				"title": "Inundaciones Acciones Sugeridas",
+				"name": "inundaciones_acciones_sugeridas",
+				"displayInLayerSwitcher":false,
+				"visibility": true,
+                "opacity": 0.0
+			},{
+				"source": "salvador",
                 "tiled": false,
                 "group": "INUNDACIONES",
 				"title": "Inundaciones Danos Ocasionados Poly",
