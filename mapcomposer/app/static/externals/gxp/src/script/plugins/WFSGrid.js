@@ -140,6 +140,8 @@ gxp.plugins.WFSGrid = Ext.extend(gxp.plugins.Tool, {
     
     zoomToIconPath: "theme/app/img/silk/map_magnify.png",
     
+    chartIconPath: "theme/app/img/silk/chart_line.png",
+    
     /** private: countFeature
      *  ``Integer``
      */
@@ -178,6 +180,43 @@ gxp.plugins.WFSGrid = Ext.extend(gxp.plugins.Tool, {
             this.setAutoRefresh(config.autoRefresh);
         }
     },
+
+    /** private: method[getChartsAction]
+     */
+    getChartsAction: function(actionConf){
+        var sourceSRS=actionConf.sourceSRS;
+        var me= this;
+        return {
+            xtype: 'actioncolumn',
+            sortable : false, 
+            width: 30,
+            items: [{
+                icon   : this.chartIconPath,  
+                tooltip: 'View Charts',
+                scope: this,
+                handler: function(grid, rowIndex, colIndex) {
+                    var record = grid.store.getAt(rowIndex);
+                    var map = this.target.mapPanel.map;
+                    var codStaz = record.get('scodstazor');
+                    var sdescr = "Centralina - " + record.get('sdescr');
+                    
+                    if(codStaz === ""){
+                        Ext.MessageBox.show({
+                            title: 'Informazione',
+                            msg: 'Per la stazione selezionata non ci sono i grafici',
+                            buttons: Ext.Msg.OK,
+                            animEl: 'elId',
+                            icon: Ext.MessageBox.INFO
+                        });
+                        Ext.MessageBox.getDialog().getEl().setStyle("zIndex", 100000);
+                        return;
+                    }
+
+                    mobility.chartsbuilder.postRequest(codStaz,sdescr);
+                }
+            }]  
+        };
+    },
     
     /** private: method[getZoomAction]
      */
@@ -198,6 +237,7 @@ gxp.plugins.WFSGrid = Ext.extend(gxp.plugins.Tool, {
                     var geometry = me.getGeometry(record,sourceSRS);
                     var ppp = geometry.getBounds();
                     map.zoomToExtent(geometry.getBounds(),true);
+                    map.getLayersByName("Anno 2013 col - AGEA")[0].setVisibility(true);                    
                 }
             }]  
         };
@@ -296,6 +336,9 @@ gxp.plugins.WFSGrid = Ext.extend(gxp.plugins.Tool, {
         if(me.actionColumns){
             for( var kk=0; kk<me.actionColumns.length; kk++){
                 switch (me.actionColumns[kk].type){
+                    case "charts":
+                        me.wfsColumns.push(me.getChartsAction(me.actionColumns[kk]));
+                        break;                
                     case "zoom":
                         me.wfsColumns.push(me.getZoomAction(me.actionColumns[kk]));
                         break;

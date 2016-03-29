@@ -21,9 +21,9 @@ Ext.namespace("gxp.plugins");
  *    there, the viewer will create layers from it by looking at objects in
  *    the ``layers`` array of its ``map`` config option, calling the source's
  *    ``createLayerRecord`` method.
- */   
+ */
 gxp.plugins.LayerSource = Ext.extend(Ext.util.Observable, {
-    
+
     /** api: property[store]
      *  ``GeoExt.data.LayerStore``
      */
@@ -33,19 +33,19 @@ gxp.plugins.LayerSource = Ext.extend(Ext.util.Observable, {
      *  ``Object``
      *  The object that this plugin is plugged into.
      */
-     
+
     /** api: property[title]
      *  ``String``
      *  A descriptive title for this layer source.
      */
     title: "",
-    
+
     /** private: method[constructor]
      */
     constructor: function(config) {
         this.initialConfig = config;
         Ext.apply(this, config);
-        
+
         this.addEvents(
             /** api: event[ready]
              *  Fires when the layer source is ready for action.
@@ -58,7 +58,7 @@ gxp.plugins.LayerSource = Ext.extend(Ext.util.Observable, {
         );
         gxp.plugins.LayerSource.superclass.constructor.apply(this, arguments);
     },
-    
+
     /** api: method[init]
      *  :arg target: ``Object`` The object initializing this plugin.
      *
@@ -68,7 +68,7 @@ gxp.plugins.LayerSource = Ext.extend(Ext.util.Observable, {
         this.target = target;
         this.createStore();
     },
-    
+
     /** private: method[getMapProjection]
      *  :returns: ``OpenLayers.Projection``
      */
@@ -78,7 +78,7 @@ gxp.plugins.LayerSource = Ext.extend(Ext.util.Observable, {
             (projConfig && new OpenLayers.Projection(projConfig)) ||
             new OpenLayers.Projection("EPSG:4326");
     },
-    
+
     /** api: method[getProjection]
      *  :arg layerRecord: ``GeoExt.data.LayerRecord`` a record from this
      *      source's store
@@ -102,7 +102,7 @@ gxp.plugins.LayerSource = Ext.extend(Ext.util.Observable, {
             mapProj;
         return proj.equals(mapProj) ? mapProj : null;
     },
-    
+
     /** api: method[createStore]
      *
      *  Creates a store of layer records.  Fires "ready" when store is loaded.
@@ -137,13 +137,14 @@ gxp.plugins.LayerSource = Ext.extend(Ext.util.Observable, {
             group: record.get("group"),
 			uuid : record.get("uuid"),
 			gnURL: record.get("gnURL"),
+			wcs: record.get("wcs"),
             fixed: record.get("fixed"),
             selected: record.get("selected"),
             expanded: record.get("expanded"),
             checked: record.get("checked"),
-            tiled: layer.singleTile,
-            displayInLayerSwitcher: record.get("displayInLayerSwitcher")
+            displayInLayerSwitcher: record.get("displayInLayerSwitcher"),
+            tiled: !layer.getOptions().singleTile
         };
     }
-    
+
 });

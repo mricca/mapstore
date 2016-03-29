@@ -1,7 +1,7 @@
 {
    "scaleOverlayMode": "advanced",
    "actionToolScale": "medium",   
-   "tab": false,
+   "tab": true,
    "gsSources":{
    		"db_segnalazioni": {
 			"ptype": "gxp_wmssource",
@@ -15,13 +15,13 @@
 				1803065, 4933785
 			],			            
 			"layerBaseParams":{
-				"FORMAT":"image/png",
+				"FORMAT":"image/png8",
 				"TILED":true
 			}
 		},     
-   		"geoserver_ret": {
+   		"geoserver_ds": {
 			"ptype": "gxp_wmssource",
-			"url": "http://geoportale.lamma.rete.toscana.it/geoserver_ret/ows?",
+			"url": "http://geoportale.lamma.rete.toscana.it/geoserver_ds/RETICOLO/ows?",
 			"title": "Geoscopio Reticolo",
 			"SRS": "EPSG:3003",
 			"version":"1.1.1",
@@ -32,9 +32,9 @@
 			],			            
 			"layerBaseParams":{
 				"FORMAT":"image/png",
-				"TILED":true
+				"TILED":false
 			}
-		},   
+		},    
    		"geoscopio": {
 			"ptype": "gxp_wmssource",
 			"url": "http://www502.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmssfondo&map_resolution=91&language=ita",
@@ -157,18 +157,11 @@
 		"projection": "EPSG:3003",
 		"displayProjection": "EPSG:3003",
 		"units": "m",
-		"center": [1665000,4807000],
-		"maxResolution": 1000,
-		"zoom": 1,
-		"numZoomLevels": 14,
-		"maxExtent": [
-				708923.00, 4290035.00,
-				2631134.00, 5369149.00
-		],
-		"restrictedExtent": [
-				708923.00, 4290035.00,
-				2631134.00, 5369149.00
-		],        
+		"fractionalZoom": true,
+		"center": [1671579.00, 4803992.00],
+		"scales": [50, 1000, 2000, 5000, 8000, 10000, 15000, 25000, 50000, 100000, 250000, 500000, 1000000, 1500000, 2000000],
+		"maxExtent": [1328298.3134386, 4554791.501599, 2014859.6865614, 5053192.498401],
+		"restrictedExtent": [1550750, 4674330, 1775720, 4929790],           
 		"layers": [{
                 "source": "geoscopio",
                 "group": "background",
@@ -177,7 +170,8 @@
                 "displayInLayerSwitcher": true,
                 "visibility": true,
                 "tiled": false,
-                "attribution": false
+                "attribution": false,
+                "queryPanel": false
             },
             {
                 "source": "geoscopio",
@@ -187,7 +181,8 @@
                 "displayInLayerSwitcher": false,
                 "visibility": true,
                 "tiled": false,
-                "attribution": false
+                "attribution": false,
+                "queryPanel": false
             },
             {
                 "source": "geoscopio_ortofoto",
@@ -199,7 +194,8 @@
                 "tiled": false,
                 "expanded": false,
                 "checked": false,
-                "attribution": false
+                "attribution": false,
+                "queryPanel": false
             },
             {
                 "source": "geoscopio_ortofoto",
@@ -211,7 +207,8 @@
                 "tiled": false,
                 "expanded": false,
                 "checked": false,            
-                "attribution": false
+                "attribution": false,
+                "queryPanel": false
             },
             {
                 "source": "geoscopio_ortofoto",
@@ -223,7 +220,8 @@
                 "tiled": false,
                 "expanded": false,
                 "checked": false,            
-                "attribution": false
+                "attribution": false,
+                "queryPanel": false
             },
             {
                 "source": "geoscopio_ortofoto",
@@ -235,7 +233,8 @@
                 "tiled": false,
                 "expanded": false,
                 "checked": false,            
-                "attribution": false
+                "attribution": false,
+                "queryPanel": false
             },
             {
                 "source": "geoscopio_ortofoto",
@@ -247,7 +246,8 @@
                 "tiled": false,
                 "expanded": false,
                 "checked": false,            
-                "attribution": false
+                "attribution": false,
+                "queryPanel": false
             },
             {
                 "source": "geoscopio_ortofoto",
@@ -259,7 +259,8 @@
                 "tiled": false,
                 "expanded": false,
                 "checked": false,            
-                "attribution": false
+                "attribution": false,
+                "queryPanel": false
             },
             {
                 "source": "geoscopio_ortofoto",
@@ -271,41 +272,56 @@
                 "tiled": false,
                 "expanded": false,
                 "checked": false,            
-                "attribution": false
+                "attribution": false,
+                "queryPanel": false
             },
             {
                 "source": "geoscopio_topogr",
                 "group": "Basi cartografiche",
                 "title": "Carta Topografica 50k",
-                "maxscale": 15000, 
+                "maxScale": 25000.1, 
                 "name": "rt_topogr.topografica50k.grey.rt",
                 "displayInLayerSwitcher": true,
                 "visibility": true,
                 "tiled": false,
-                "attribution": false
+                "attribution": false,
+                "queryPanel": false
             },
             {
                 "source": "geoscopio_ctr",
                 "group": "Basi cartografiche",
                 "title": "CTR 1:10.000 Raster BW",
                 "name": "rt_ctr.10k",
-                "minscale": 15000,             
+                "minScale": 25000.1,             
                 "displayInLayerSwitcher": true,
                 "visibility": true,
                 "tiled": false,
-                "attribution": false
+                "attribution": false,
+                "queryPanel": false
             },
             {
                 "source": "geoscopio_ctr",
                 "group": "Basi cartografiche",
                 "title": "CTR 1:10.000 Raster GL",
-                "minscale": 15000,            
+                "minScale": 25000.1,            
                 "name": "rt_ctr.ctr10kgreylight",
                 "displayInLayerSwitcher": true,
                 "visibility": false,
                 "tiled": false,
-                "attribution": false
-            },
+                "attribution": false,
+                "queryPanel": false
+            },{
+				"source": "geoserver_ds",
+				"group": "Comprensori",
+                "expanded": true,
+                "checked": true,
+				"title": "Comprensori ai sensi della L.R.79/2012",
+				"name": "proposta_comprensori_lr79_2012",
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": false,
+                "queryPanel": false
+			},
             {
                 "source": "geoscopio_ambcens",
                 "group": "Toponimi",
@@ -314,31 +330,60 @@
                 "displayInLayerSwitcher": true,
                 "visibility": true,
                 "tiled": false,
-                "attribution": false
+                "attribution": false,
+                "queryPanel": false
             },{
-				"source": "geoserver_ret",
+				"source": "geoserver_ds",
 				"group": "Reticolo Idrografico RT",
-				"title": "Comprensori ai sensi della L.R.79/2012",
-				"name": "RETICOLO_GESTIONE:proposta_comprensori_lr79_2012",
+                "expanded": true,
+                "checked": false,
+				"title": "Reticolo idrografico LR 79/2012 approvato con DCRT 57/2013",
+				"name": "reticolo_idrografico",
+                "styles": ["reticolo_idrografico_dcrt57_2013"],
+                "style": ["reticolo_idrografico_dcrt57_2013"],                
 				"displayInLayerSwitcher": true,
 				"visibility": false,
-				"tiled": true
+				"tiled": false,
+                "queryPanel": false
 			},{
-				"source": "geoserver_ret",
+				"source": "geoserver_ds",
 				"group": "Reticolo Idrografico RT",
-				"title": "Reticolo idrografico ai sensi del D.Lgs.152/2006 (DCR 57/2013)",
-				"name": "lamma:reticolo_idrografico",
+                "expanded": true,
+                "checked": false,
+				"title": "Reticolo idrografico LR 79/2012 aggiornato con DCRT 9/2015",
+				"name": "reticolo_lr79_2012",
+                "styles": ["reticolo_idrografico_dcrt9_2015"],
+                "style": ["reticolo_idrografico_dcrt9_2015"],                
 				"displayInLayerSwitcher": true,
 				"visibility": false,
-				"tiled": true
+				"tiled": false,
+                "queryPanel": false
 			},{
-				"source": "geoserver_ret",
-				"group": "Reticolo Idrografico RT",
-				"title": "Reticolo di gestione ai sensi della L.R.79/2012 (57/2013)",
-				"name": "lamma:retgest_79_2012",
+				"source": "geoserver_ds",
+				"group": "Reticolo di Gestione RT",
+                "expanded": true,
+                "checked": false,
+				"title": "Reticolo di gestione LR 79/2012 approvato con DCRT 57/2013",
+				"name": "retgest_79_2012",
+                "styles": ["reticolo_gestione_dcrt57_2013"],
+                "style": ["reticolo_gestione_dcrt57_2013"],                  
 				"displayInLayerSwitcher": true,
 				"visibility": false,
-				"tiled": true
+				"tiled": false,
+                "queryPanel": false
+			},{
+				"source": "geoserver_ds",
+				"group": "Reticolo di Gestione RT",
+                "expanded": true,
+                "checked": false,
+				"title": "Reticolo di gestione LR 79/2012 aggiornato con DCRT 9/2015",
+				"name": "reticolo_lr79_2012",
+                "styles": ["reticolo_gestione_dcrt9_2015"],
+                "style": ["reticolo_gestione_dcrt9_2015"],                  
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": false,
+                "queryPanel": false
 			},{
 				"source": "geoscopio_amb_ammin",
 				"group": "Ambiti amministrativi",
@@ -346,7 +391,9 @@
 				"name": "rt_ambamm.idprovince.rt.poly",
 				"displayInLayerSwitcher": true,
 				"visibility": true,
-				"tiled": false
+				"tiled": false,
+                "queryPanel": false,            
+                "attribution": false
 			},{
 				"source": "geoscopio_amb_ammin",
 				"group": "Ambiti amministrativi",
@@ -354,7 +401,9 @@
 				"name": "rt_ambamm.idcomuni.rt.poly",
 				"displayInLayerSwitcher": true,
 				"visibility": false,
-				"tiled": false
+				"tiled": false,
+                "queryPanel": false,            
+                "attribution": false
 			},{
 				"source": "geoserver_ret",
 				"group": "Ambiti amministrativi",
@@ -362,117 +411,338 @@
 				"name": "pericolosita:bacini",
 				"displayInLayerSwitcher": true,
 				"visibility": false,
-				"tiled": true
+				"tiled": true,
+                "queryPanel": false
 			},{
 				"source": "db_segnalazioni",
 				"group": "Proposta per DADS 2015",
 				"title": "Genio Civile Arezzo",
 				"name": "db_segnalazioni:genio_civile_arezzo_view",
-                "cql_filter": "istruttoria = TRUE",                
+                "vendorParams":{
+                    "cql_filter": "istruttoria = 'true'"            
+                },             
+                "styles": ["PointStacker"],
+                "style": ["PointStacker"],                
 				"displayInLayerSwitcher": true,
-				"visibility": false,
+				"visibility": true,
 				"tiled": false,
 				"attribution": false,
-                "queryPanel": true
+                "queryPanel": true,
+                "queryable": false
+			},{
+				"source": "db_segnalazioni",
+				"group": "Proposta per DADS 2015",
+				"title": "Genio Civile Arezzo - info",
+				"name": "db_segnalazioni:genio_civile_arezzo_view",
+                "vendorParams":{
+                    "cql_filter": "istruttoria = 'true'"            
+                },                    
+				"displayInLayerSwitcher": false,
+                "format":"image/gif",   
+				"visibility": true,
+                "ratio": 4,
+                "opacity": 0.0,
+				"tiled": false,
+				"attribution": false,
+                "queryPanel": false,
+                "queryable": true
 			},{
 				"source": "db_segnalazioni",
 				"group": "Proposta per DADS 2015",
 				"title": "Genio Civile Firenze",
 				"name": "db_segnalazioni:genio_civile_firenze_view",
-                "cql_filter": "istruttoria = TRUE",                  
+                "vendorParams":{
+                    "cql_filter": "istruttoria = 'true'"            
+                },               
+                "styles": ["PointStacker"],
+                "style": ["PointStacker"],                
 				"displayInLayerSwitcher": true,
-				"visibility": false,
+				"visibility": true,
 				"tiled": false,
 				"attribution": false,
-                "queryPanel": true
+                "queryPanel": true,
+                "queryable": false
+			},{
+				"source": "db_segnalazioni",
+				"group": "Proposta per DADS 2015",
+				"title": "Genio Civile Firenze - info",
+				"name": "db_segnalazioni:genio_civile_firenze_view",
+                "vendorParams":{
+                    "cql_filter": "istruttoria = 'true'"            
+                },                    
+				"displayInLayerSwitcher": false,
+                "format":"image/gif",   
+				"visibility": true,
+                "ratio": 4,
+                "opacity": 0.0,
+				"tiled": false,
+				"attribution": false,
+                "queryPanel": false,
+                "queryable": true
 			},{
 				"source": "db_segnalazioni",
 				"group": "Proposta per DADS 2015",
 				"title": "Genio Civile Grosseto",
 				"name": "db_segnalazioni:genio_civile_grosseto_view",
-                "cql_filter": "istruttoria = TRUE",                   
+                "vendorParams":{
+                    "cql_filter": "istruttoria = 'true'"            
+                },                   
+                "styles": ["PointStacker"],
+                "style": ["PointStacker"],                
 				"displayInLayerSwitcher": true,
-				"visibility": false,
+				"visibility": true,
 				"tiled": false,
 				"attribution": false,
-                "queryPanel": true
+                "queryPanel": true,
+                "queryable": false
+			},{
+				"source": "db_segnalazioni",
+				"group": "Proposta per DADS 2015",
+				"title": "Genio Civile Grosseto - info",
+				"name": "db_segnalazioni:genio_civile_grosseto_view",
+                "vendorParams":{
+                    "cql_filter": "istruttoria = 'true'"            
+                },                    
+				"displayInLayerSwitcher": false,
+                "format":"image/gif",   
+				"visibility": true,
+                "ratio": 4,
+                "opacity": 0.0,
+				"tiled": false,
+				"attribution": false,
+                "queryPanel": false,
+                "queryable": true
 			},{
 				"source": "db_segnalazioni",
 				"group": "Proposta per DADS 2015",
 				"title": "Genio Civile Livorno",
 				"name": "db_segnalazioni:genio_civile_livorno_view",
-                "cql_filter": "istruttoria = TRUE",                   
+                "vendorParams":{
+                    "cql_filter": "istruttoria = 'true'"            
+                },                    
+                "styles": ["PointStacker"],
+                "style": ["PointStacker"],                
 				"displayInLayerSwitcher": true,
-				"visibility": false,
+				"visibility": true,
 				"tiled": false,
 				"attribution": false,
-                "queryPanel": true
+                "queryPanel": true,
+                "queryable": false
+			},{
+				"source": "db_segnalazioni",
+				"group": "Proposta per DADS 2015",
+				"title": "Genio Civile Livorno - info",
+				"name": "db_segnalazioni:genio_civile_livorno_view",
+                "vendorParams":{
+                    "cql_filter": "istruttoria = 'true'"            
+                },                    
+				"displayInLayerSwitcher": false,
+                "format":"image/gif",   
+				"visibility": true,
+                "ratio": 4,
+                "opacity": 0.0,
+				"tiled": false,
+				"attribution": false,
+                "queryPanel": false,
+                "queryable": true
 			},{
 				"source": "db_segnalazioni",
 				"group": "Proposta per DADS 2015",
 				"title": "Genio Civile Lucca",
 				"name": "db_segnalazioni:genio_civile_lucca_view",
-                "cql_filter": "istruttoria = TRUE",                   
+                "vendorParams":{
+                    "cql_filter": "istruttoria = 'true'"            
+                },                    
+                "styles": ["PointStacker"],
+                "style": ["PointStacker"],                
 				"displayInLayerSwitcher": true,
-				"visibility": false,
+				"visibility": true,
 				"tiled": false,
 				"attribution": false,
-                "queryPanel": true
+                "queryPanel": true,
+                "queryable": false
+			},{
+				"source": "db_segnalazioni",
+				"group": "Proposta per DADS 2015",
+				"title": "Genio Civile Lucca - info",
+				"name": "db_segnalazioni:genio_civile_lucca_view",
+                "vendorParams":{
+                    "cql_filter": "istruttoria = 'true'"            
+                },                    
+				"displayInLayerSwitcher": false,
+                "format":"image/gif",   
+				"visibility": true,
+                "ratio": 4,
+                "opacity": 0.0,
+				"tiled": false,
+				"attribution": false,
+                "queryPanel": false,
+                "queryable": true
 			},{
 				"source": "db_segnalazioni",
 				"group": "Proposta per DADS 2015",
 				"title": "Genio Civile Massa-Carrara",
 				"name": "db_segnalazioni:genio_civile_massa_carrara_view",
-                "cql_filter": "istruttoria = TRUE",                   
+                "vendorParams":{
+                    "cql_filter": "istruttoria = 'true'"            
+                },                    
+                "styles": ["PointStacker"],
+                "style": ["PointStacker"],                
 				"displayInLayerSwitcher": true,
-				"visibility": false,
+				"visibility": true,
 				"tiled": false,
 				"attribution": false,
-                "queryPanel": true
+                "queryPanel": true,
+                "queryable": false
+			},{
+				"source": "db_segnalazioni",
+				"group": "Proposta per DADS 2015",
+				"title": "Genio Civile Massa Carrara - info",
+				"name": "db_segnalazioni:genio_civile_massa_carrara_view",
+                "vendorParams":{
+                    "cql_filter": "istruttoria = 'true'"            
+                },                    
+				"displayInLayerSwitcher": false,
+                "format":"image/gif",   
+				"visibility": true,
+                "ratio": 4,
+                "opacity": 0.0,
+				"tiled": false,
+				"attribution": false,
+                "queryPanel": false,
+                "queryable": true
 			},{
 				"source": "db_segnalazioni",
 				"group": "Proposta per DADS 2015",
 				"title": "Genio Civile Pisa",
 				"name": "db_segnalazioni:genio_civile_pisa_view",
-                "cql_filter": "istruttoria = TRUE",                   
+                "vendorParams":{
+                    "cql_filter": "istruttoria = 'true'"            
+                },                    
+                "styles": ["PointStacker"],
+                "style": ["PointStacker"],                
 				"displayInLayerSwitcher": true,
-				"visibility": false,
+				"visibility": true,
 				"tiled": false,
 				"attribution": false,
-                "queryPanel": true
+                "queryPanel": true,
+                "queryable": false
+			},{
+				"source": "db_segnalazioni",
+				"group": "Proposta per DADS 2015",
+				"title": "Genio Civile Pisa - info",
+				"name": "db_segnalazioni:genio_civile_pisa_view",
+                "vendorParams":{
+                    "cql_filter": "istruttoria = 'true'"            
+                },                    
+				"displayInLayerSwitcher": false,
+                "format":"image/gif",   
+				"visibility": true,
+                "ratio": 4,
+                "opacity": 0.0,
+				"tiled": false,
+				"attribution": false,
+                "queryPanel": false,
+                "queryable": true
 			},{
 				"source": "db_segnalazioni",
 				"group": "Proposta per DADS 2015",
 				"title": "Genio Civile Pistoia",
 				"name": "db_segnalazioni:genio_civile_pistoia_view",
-                "cql_filter": "istruttoria = TRUE",                   
+                "vendorParams":{
+                    "cql_filter": "istruttoria = 'true'"            
+                },                    
+                "styles": ["PointStacker"],
+                "style": ["PointStacker"],                
 				"displayInLayerSwitcher": true,
-				"visibility": false,
+				"visibility": true,
 				"tiled": false,
 				"attribution": false,
-                "queryPanel": true
+                "queryPanel": true,
+                "queryable": false
+			},{
+				"source": "db_segnalazioni",
+				"group": "Proposta per DADS 2015",
+				"title": "Genio Civile Pistoia - info",
+				"name": "db_segnalazioni:genio_civile_pistoia_view",
+                "vendorParams":{
+                    "cql_filter": "istruttoria = 'true'"            
+                },                    
+				"displayInLayerSwitcher": false,
+                "format":"image/gif",   
+				"visibility": true,
+                "ratio": 4,
+                "opacity": 0.0,
+				"tiled": false,
+				"attribution": false,
+                "queryPanel": false,
+                "queryable": true
 			},{
 				"source": "db_segnalazioni",
 				"group": "Proposta per DADS 2015",
 				"title": "Genio Civile Prato",
 				"name": "db_segnalazioni:genio_civile_prato_view",
-                "cql_filter": "istruttoria = TRUE",                   
+                "vendorParams":{
+                    "cql_filter": "istruttoria = 'true'"            
+                },                  
+                "styles": ["PointStacker"],
+                "style": ["PointStacker"],                  
 				"displayInLayerSwitcher": true,
-				"visibility": false,
+				"visibility": true,
 				"tiled": false,
 				"attribution": false,
-                "queryPanel": true
+                "queryPanel": true,
+                "queryable": false
+			},{
+				"source": "db_segnalazioni",
+				"group": "Proposta per DADS 2015",
+				"title": "Genio Civile Prato - info",
+				"name": "db_segnalazioni:genio_civile_prato_view",
+                "vendorParams":{
+                    "cql_filter": "istruttoria = 'true'"            
+                },                                  
+				"displayInLayerSwitcher": false,
+                "format":"image/gif",   
+				"visibility": true,
+                "ratio": 4,
+                "opacity": 0.0,
+				"tiled": false,
+				"attribution": false,
+                "queryPanel": false,
+                "queryable": true
 			},{
 				"source": "db_segnalazioni",
 				"group": "Proposta per DADS 2015",
 				"title": "Genio Civile Siena",
 				"name": "db_segnalazioni:genio_civile_siena_view",
-                "cql_filter": "istruttoria = TRUE",                   
+                "vendorParams":{
+                    "cql_filter": "istruttoria = 'true'"            
+                },                    
+                "styles": ["PointStacker"],
+                "style": ["PointStacker"],                
 				"displayInLayerSwitcher": true,
-				"visibility": false,
+				"visibility": true,
 				"tiled": false,
 				"attribution": false,
-                "queryPanel": true
+                "queryPanel": true,
+                "queryable": false
+			},{
+				"source": "db_segnalazioni",
+				"group": "Proposta per DADS 2015",
+				"title": "Genio Civile Siena - info",
+				"name": "db_segnalazioni:genio_civile_siena_view",
+                "vendorParams":{
+                    "cql_filter": "istruttoria = 'true'"            
+                },                    
+				"displayInLayerSwitcher": false,
+                "format":"image/gif",   
+				"visibility": true,
+                "ratio": 4,
+                "opacity": 0.0,
+				"tiled": false,
+				"attribution": false,
+                "queryPanel": false,
+                "queryable": true
 			},{
 				"source": "db_segnalazioni",
 				"group": "DADS 2014 finanziati con DGRT 1194 2013",
@@ -480,7 +750,7 @@
 				"name": "db_segnalazioni:dads_2014_finanziati_dgrt_1194_2013",
 				"displayInLayerSwitcher": true,
 				"visibility": false,
-				"tiled": false,
+				"tiled": true,
 				"attribution": false,
                 "queryPanel": true
 			}
@@ -557,20 +827,14 @@
 			"showReport": false,
 			"directAddLayer": false,
 			"id": "addlayer"
-		},{
-            "ptype":"gxp_nominatimgeocoder",
-            "outputConfig":{
-                "emptyText":"Nominatim GeoCoder",
-                 "vendorOptions":{
-                    "bounded":1,
-                    "countrycodes":"it",
-                    "addressdetails":0
-                },
-                "boundOption":"max"
-            },
-            "outputTarget":"paneltbar",
-            "index":26
-        }, {
+		}, {
+			"actions": ["-"], 
+			"actionTarget": "paneltbar"
+		}, {
+			"ptype": "gxp_geolocationmenu",
+			"actionTarget": {"target": "paneltbar", "index": 23},
+			"toggleGroup": "toolGroup"
+		}, {
 		  "ptype": "gxp_featuremanager",
 		  "id": "featuremanager",
           "paging": true,
@@ -635,6 +899,12 @@
 		            "xtype": "gxp_spatial_bbox_selector"
 		        }
 	      }
-    	}
+    	}, {
+			"ptype": "gxp_staticpage",
+			"id": "staticId",
+			"url": "http://159.213.57.81/dbsegnalazioni",
+			"tabPosition": 0,
+			"tabTitle": "Inserimento Segnalazione"
+		}
 	]
 }

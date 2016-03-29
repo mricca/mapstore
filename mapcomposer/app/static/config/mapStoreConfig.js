@@ -1,6 +1,6 @@
 {
    "scaleOverlayMode": "basic",
-   "gsSources":{ 
+   "gsSources":{ 		
 		"mapquest": {
 			"ptype": "gxp_mapquestsource"
 		}, 
@@ -22,6 +22,7 @@
 		"height": 100,
 		"center": true
 	},
+	"cookieConsent":true,
 	"map": {
 		"projection": "EPSG:900913",
 		"units": "m",
@@ -48,14 +49,9 @@
 				"name": "HYBRID",
 				"group": "background"
 			},{
-				"source": "mapquest",
-				"title": "MapQuest OpenStreetMap",
-				"name": "osm",
-				"group": "background"
-			},{
-				"source": "osm",
-				"title": "Open Street Map",
-				"name": "mapnik",
+				"source": "bing",
+				"title": "Bing Aerial With Labels",
+				"name": "AerialWithLabels",
 				"group": "background"
 			},{
 				"source": "bing",
@@ -63,9 +59,14 @@
 				"name": "Aerial",
 				"group": "background"
 			},{
-				"source": "bing",
-				"title": "Bing Aerial With Labels",
-				"name": "AerialWithLabels",
+				"source": "osm",
+				"title": "Open Street Map",
+				"name": "mapnik",
+				"group": "background"
+			},{
+				"source": "mapquest",
+				"title": "MapQuest OpenStreetMap",
+				"name": "osm",
 				"group": "background"
 			},{
 				"source": "ol",
@@ -131,8 +132,8 @@
                         {"name": "EauFrance", "url": "http://sandre.eaufrance.fr/geonetwork/srv/fr/csw", "description" : "EauFrance"},
                         {"name": "SOPAC", "url": "http://geonetwork.sopac.org/geonetwork/srv/en/csw", "description" : "SOPAC"},
                         {"name": "SADC", "url": "http://www.sadc.int/geonetwork/srv/en/csw", "description" : "SADC"},
-                        {"name": "MAPAS", "url": "http://mapas.mma.gov.br/geonetwork/srv/en/csw", "description" : "MAPAS"}
-                ],
+                        {"name": "MAPAS", "url": "http://mapas.mma.gov.br/geonetwork/srv/en/csw", "description" : "MAPAS"}						
+				],
                 "dcProperty": "title",
                 "cswVersion": "2.0.2",
                 "filterVersion": "1.1.0",
@@ -172,6 +173,12 @@
 		}, {
 			"ptype": "gxp_languageselector",
 			"actionTarget": {"target": "panelbbar", "index": 3}
+		}, {
+			"ptype": "gxp_wmsgetfeatureinfo_menu", 
+			"regex": "[\\s\\S]*[\\w]+[\\s\\S]*",
+			"useTabPanel": true,
+			"toggleGroup": "toolGroup",
+			"actionTarget": {"target": "paneltbar", "index": 20}
 		}
 	]
 }

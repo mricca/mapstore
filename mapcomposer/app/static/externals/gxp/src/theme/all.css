@@ -102,7 +102,7 @@
     background-image: url(img/pencil.png);
 }
 
-.x-btn .process, .x-menu-item .process {
+.x-btn .process, .x-menu-item .process, .process {
     background-image: url(img/silk/cog.png);
 }
 
@@ -191,6 +191,15 @@
 .x-btn .gxp-icon-mouse-map, .x-menu-item .gxp-icon-mouse-map, .x-tree-node .gxp-icon-mouse-map {
     background-image: url(img/map_cursor.png) !important;
 }
+
+.x-btn .gx-map-link, .x-menu-item .gx-map-link, .x-tree-node .gx-map-link {
+    background-image: url(img/link.png)  !important;
+}
+
+.x-btn .gx-map-edit, .x-menu-item .gx-map-edit, .x-tree-node .gx-map-edit {
+    background-image: url(img/silk/map_edit.png)  !important;
+}
+
 
 /* gxp_featureeditor */
 .x-btn .gxp-icon-addfeature, .x-menu-item .gxp-icon-addfeature {
@@ -522,4 +531,37 @@ div.olMap div.gx-overlay-playback {
 /* gxp_wfsgetgraphs */
 .x-btn .gxp-icon-graph-wfs, .x-menu-item .gxp-icon-graph-wfs, .x-tree-node .gxp-icon-graph-wfs {
     background-image: url(img/silk/chart_curve.png);
+}
+
+.x-btn .gxp-icon-barchart, .x-menu-item .gxp-icon-barchart {
+    background-image: url(img/silk/chart_bar.png) !important;
+}
+
+/*gxp_downloadpanel*/
+.labelField{
+	font-style: normal; 
+	color: #918E8F; 
+	font-variant: normal; 
+	font-weight: normal; 
+	font-size: 11px; 
+	line-height: normal; 
+	font-family: tahoma, arial, helvetica, sans-serif;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.crsInfoButton {
+   background-image: url(img/silk/information.png) !important;
+}
+/* Background for items selected in multiselect */
+.ux-mselect-selected{
+    background-color: rgb(204, 204, 204);
+}
+/** NEEDED TO MAKE MULTISELECT SCROLL **/
+.ux-mselect{
+    overflow:auto;
+    background:white;
+    position:relative; /* for calculating scroll offsets */
+    zoom:1;
+    overflow:auto;  
 }

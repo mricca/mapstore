@@ -33,7 +33,7 @@ GeoExt.Lang.add("es", {
 		markerPopupTitle: "Detalles",
 		mainLoadingMask: "Por favor, espere..."
     },
-    
+
     "GeoExplorer.Composer.prototype": {
 		uploadText: "Subir",
         backText: "Atrás",
@@ -65,16 +65,16 @@ GeoExt.Lang.add("es", {
         panelTitleText: "Título",
         layerSelectionText: "Visualizar datos disponibles de:",
         doneText: "Hecho",
-        removeFilterText: "Limpiar filtro", 
+        removeFilterText: "Limpiar filtro",
         filterEmptyText: "Filtro",
         uploadText: "Subir datos"
     },
-    
+
 	 "gxp.plugins.RemoveOverlays.prototype": {
 	    removeOverlaysMenuText: "Borrar capas superpuestas",
 	    removeOverlaysActionTip: "Borrar todas las capas superpuestas del mapa",
 	    removeOverlaysConfirmationText: "¿Está seguro de que quiere borrar todas las capas superpuestas del mapa?"
-    }, 
+    },
 
     "gxp.plugins.BingSource.prototype": {
         title: "Capas de Bing",
@@ -88,7 +88,7 @@ GeoExt.Lang.add("es", {
         menuText: "Vista 3D",
         tooltip: "Cambiar a la vista 3D"
     },
-    
+
     "gxp.plugins.GoogleSource.prototype": {
         title: "Capas Google",
         roadmapAbstract: "Mostrar callejero",
@@ -101,7 +101,7 @@ GeoExt.Lang.add("es", {
         menuText: "Propiedades de la capa",
         toolTip: "Mostrar las propiedades de la capa"
     },
-    
+
     "gxp.plugins.LayerTree.prototype": {
         rootNodeText: "Capas",
         overlayNodeText: "Por defecto",
@@ -111,8 +111,8 @@ GeoExt.Lang.add("es", {
     "gxp.plugins.Legend.prototype": {
         menuText: "Mostrar leyenda",
         tooltip: "Mostrar leyenda"
-    },    
-    
+    },
+
     "gxp.plugins.Measure.prototype": {
         lengthMenuText: "Longitud",
         areaMenuText: "Área",
@@ -133,7 +133,7 @@ GeoExt.Lang.add("es", {
         nextMenuText: "Zoom a la siguiente extensión",
         previousTooltip: "Zoom a la extensión Anterior",
         nextTooltip: "Zoom a la siguiente extensión"
-		
+
     },
 
     "gxp.plugins.OSMSource.prototype": {
@@ -168,15 +168,27 @@ GeoExt.Lang.add("es", {
         infoActionTip: "Obtener Feature Info",
         popupTitle: "Feature Info",
 		noDataMsg: "El servidor no devolvió datos",
-		maskMessage: "Recuperando el Feature Info..."
+		maskMessage: "Recuperando el Feature Info...",
+		firstFtTip: "Primera Feature",
+        previousPageTip: "Feature Anterior",
+        nextPageTip: "Siguiente Feature",
+        lastPageTip: "Ultima Feature",
+        ftLabel: "Feature",
+        ftOfLabel: "de"
     },
-	
+
 	"gxp.plugins.WMSGetFeatureInfoMenu.prototype": {
         infoActionTip: "Get Feature Info",
         popupTitle: "Feature Info",
 		noDataMsg: "El servidor no devolvió datos",
 		maskMessage: "Recuperando Feature Info...",
-		activeActionTip:"Activar información de la capa seleccionada"
+		activeActionTip:"Activar información de la capa seleccionada",
+		firstFtTip: "Primera Feature",
+        previousPageTip: "Feature Anterior",
+        nextPageTip: "Siguiente Feature",
+        lastPageTip: "Ultima Feature",
+        ftLabel: "Feature",
+        ftOfLabel: "de",
     },
 
     "gxp.plugins.Zoom.prototype": {
@@ -185,12 +197,12 @@ GeoExt.Lang.add("es", {
         zoomInTooltip: "Incrementar Zoom",
         zoomOutTooltip: "Decrementar Zoom"
     },
-    
+
     "gxp.plugins.ZoomToExtent.prototype": {
         menuText: "Zoom a la máxima extensión",
         tooltip: "Zoom a la máxima extensión"
     },
-    
+
     "gxp.plugins.ZoomToDataExtent.prototype": {
         menuText: "Zoom a la extensión de la capa",
         tooltip: "Zoom a la extensión de la capa"
@@ -200,7 +212,7 @@ GeoExt.Lang.add("es", {
         menuText: "Zoom a la extensión de la capa",
         tooltip: "Zoom a la extensión de la capa"
     },
-    
+
     "gxp.WMSLayerPanel.prototype": {
         aboutText: "Información",
         titleText: "Título",
@@ -254,62 +266,67 @@ GeoExt.Lang.add("es", {
 		mandatoryLabelText: "All fields marked with (*) are mandatory."
     },
 
-    "gxp.ScaleOverlay.prototype": { 
+    "gxp.ScaleOverlay.prototype": {
         zoomLevelText: "Nivel de Zoom"
     },
-    
-    "gxp.plugins.AddGroup.prototype": { 
+
+    "gxp.plugins.AddGroup.prototype": {
 	    addGroupMenuText: "Añadir Grupo",
 	    addGroupActionTip: "Añadir un nuevo grupo en el árbol de capas",
-	    addGroupDialogTitle: "Nuevo grupo", 
+	    addGroupDialogTitle: "Nuevo grupo",
 	    addGroupFieldSetText: "Nombre del grupo",
 	    addGroupFieldLabel: "Nuevo grupo",
 	    addGroupButtonText: "Añadir grupo",
-	    addGroupMsg: "Por favor, introduzca el nombre del grupo"	
+	    addGroupMsg: "Por favor, introduzca el nombre del grupo"
     },
-    
-    "gxp.plugins.RemoveGroup.prototype": { 
+
+    "gxp.plugins.RemoveGroup.prototype": {
 	    removeGroupMenuText: "Borrar Grupo",
 	    removeGroupActionTip: "Borrar un grupo del árbol de capas",
 	    removeGroupActionTip: "Borrar el grupo y sus capas del mapa",
 	    removeGroupConfirmationText: "¿Está seguro de que quiere borrar el grupo seleccionado? Todas las capas contenidas en el mismo se borrarán del mapa."
     },
-    
-    "gxp.plugins.SaveDefaultContext.prototype": { 
+
+    "gxp.plugins.SaveMapPlugin.prototype": {
 	    saveDefaultContextMenuText: "Guardar contexto por defecto",
 	    saveDefaultContextActionTip: "Guardar contexto del mapa",
 	    contextSaveSuccessString: "Contexto salvado correctamente",
 	    contextSaveFailString: "El contexto no se ha guardado satisfactoriamente",
 	    contextMsg: "Cargando...",
-		userLabel: "Usuario",	
-		ContraseñaLabel: "Contraseña", 	
-		loginLabel: "Login",	
-		mapMetadataTitle: "Insertar Metadatos del Mapa",	
-		mapMedatataSetTitle: "Metadatos del Mapa",	
-		mapNombreLabel: "Nombre",	
-		mapDescripciónLabel: "Descripción",
+		userLabel: "Usuario",
+		ContraseñaLabel: "Contraseña",
+		loginLabel: "Login",
+		mapMetadataTitle: "Insertar Metadatos del Mapa",
+		mapMedatataSetTitle: "Metadatos del Mapa",
+		mapNameLabel: "Nombre",
+		mapDescriptionLabel: "Descripción",
 		addResourceButtonText: "Añadir Mapa",
-		conflictErrMsg: "Un mapa con el mismo nombre ya existe"
+		conflictErrMsg: "Un mapa con el mismo nombre ya existe",
+        selectionErrorTitle:"Error",
+        groupSelectionError:"Seleccione al menos un grupo",
+        permissionsLabel:"Permisos",
+        groupsLabel:"Grupos"
     },
-	
+
     "gxp.plugins.GeoReferences.prototype": {
         initialText: "Seleccionar un área",
         menuText: "GeoReferencias",
         tooltip: "GeoReferencias"
     },
-	
+
     "gxp.plugins.ZoomBox.prototype":{
         zoomInMenuText: "Zoom Box Siguiente",
         zoomOutMenuText: "Zoom Box Anterior",
         zoomInTooltip: "Zoom Box Siguiente",
         zoomOutTooltip: "Zoom Box Anterior"
     },
-	
+
 	"gxp.plugins.WMSSource.prototype": {
 		noCompatibleProjectionError: "Capa no está disponible en la proyección cartográfica",
+		wfsDescribeFeatureTypeError: "Error al obtener los atributos de tipo de entidad",
 		errorTitle: "Error"
 	},
-	
+
     "GeoExt.ux.PrintPreview.prototype":{
         paperSizeText: "Tamaño del folio:",
         resolutionText: "Resolución:",
@@ -317,14 +334,14 @@ GeoExt.Lang.add("es", {
         emptyTitleText: "Introduzca el título del mapa aquí.",
         includeLegendText: "¿Incluir leyenda?",
         legendOnSeparatePageText: "¿Leyenda en una página separada?",
-        compactLegendText: "¿Leyenda compacta?",	
+        compactLegendText: "¿Leyenda compacta?",
         emptyCommentText: "Introduzca comentarios aquí.",
         creatingPdfText: "Creando PDF...",
 		graticuleFieldLabelText: 'Activar gratícula',
 		defaultTabText: "Por defecto",
 		legendTabText: "Leyenda"
     },
-	
+
     "GeoExt.ux.LegendStylePanel.prototype":{
 		iconsSizeText: "Tamaño de los iconos",
 		fontSizeText: "Tamaño de la fuente",
@@ -335,7 +352,7 @@ GeoExt.Lang.add("es", {
 		fontEditorText: "Configuración de la etiqueta",
 		sizeText: "Tamaño"
     },
-    
+
     "GeoExt.ux.GraticuleStylePanel.prototype":{
         graticuleFieldLabelText: 'Activar gratícula',
         sizeText: "Tamaño de la fuente",
@@ -344,7 +361,7 @@ GeoExt.Lang.add("es", {
         fontStyleText: "Estilo de la fuente",
         fontEditorText: "Configuración de la etiqueta"
     },
-	
+
     "gxp.plugins.GeonetworkSearch.prototype":{
         geonetworkSearchText: "Ver metadatos",
         geonetworkSearchActionTip: "Ver metadatos"
@@ -365,7 +382,7 @@ GeoExt.Lang.add("es", {
         ContraseñaFieldText: "Contraseña"
     },
     "gxp.plugins.FeatureGrid.prototype": {
-        displayFeatureText: "Ver en el mapa",
+        displayFeatureText: "Ver",
         firstPageTip: "Primera página",
         previousPageTip: "Siguiente página",
         zoomPageExtentTip: "Zoom a la extensión de la página",
@@ -375,7 +392,7 @@ GeoExt.Lang.add("es", {
         totalMsg: "Total: {0} entidades",
         displayExportCSVText: "Exportar a CSV",
         exportCSVSingleText: "Página actual",
-        exportCSVMultipleText: "Toda la página",
+        exportCSVMultipleText: "Todas las páginas",
         failedExportCSV: "Error al encontrar una respuesta para la exportación a CSV",
         invalidParameterValueErrorText: "Valor de los parámetros inválido",
 		zoomToFeature: "Zoom a Entidad",
@@ -405,7 +422,7 @@ GeoExt.Lang.add("es", {
         searchType: "Configuración básica",
         typeLabel: "Tipo",
         featureLabel: "Máximas Features"
-    },   
+    },
 
     "gxp.plugins.BBOXQueryForm.prototype": {
         selectionMethodFieldSetComboTitle: "Establecer selección de método",
@@ -416,24 +433,24 @@ GeoExt.Lang.add("es", {
         comboBBOXSelection: 'Bounding Box',
 		errorBBOXText: "¡El BBox es inválido!",
         errorDrawPolygonText: "Debe dibujar un polígono",
-        errorDrawCircleText: "Debe dibujar un círculo",     
+        errorDrawCircleText: "Debe dibujar un círculo",
         errorDrawTitle: "Error en la consulta",
 	    errorBufferTitle: "Error en el Buffer",
 		errorBufferText: "¡El buffer seleccionado es inválido!",
-		areaLabel: "Área",	
-		perimeterLabel: "Perímetro",	
-		radiusLabel: "Radio",	
-		centroidLabel: "Centroide",	
+		areaLabel: "Área",
+		perimeterLabel: "Perímetro",
+		radiusLabel: "Radio",
+		centroidLabel: "Centroide",
 		selectionSummary: "Sumario de la Selección"
 	},
-	
+
     "gxp.widgets.form.BufferFieldset.prototype": {
 		bufferFieldLabel: "Rango del Buffer",
 		bufferFieldSetTitle: "Buffer",
 		coordinatePickerLabel: "Coordenadas",
 		draweBufferTooltip: "Dibuje el Buffer"
 	},
-    
+
     "gxp.form.BBOXFieldset.prototype":{
         northLabel:"Norte",
         westLabel:"Oeste",
@@ -444,7 +461,7 @@ GeoExt.Lang.add("es", {
         setAoiTooltip: "Habilita el el control SetBox para dibujar una ROI (BBox) en el mapa",
         title: "Región de interés (ROI)"
     },
-    
+
     "gxp.FilterBuilder.prototype":{
         preComboText: "Resultado",
         postComboText: "de lo siguiente:",
@@ -452,7 +469,7 @@ GeoExt.Lang.add("es", {
         addGroupText: "añadir grupo",
         removeConditionText: "borrar condición"
     },
-    
+
     "gxp.EmbedMapDialog.prototype": {
         publishMessage: "¡Su mapa está ya publicado en la web! Copie el siguiente código HTML para embeberlo en su página web:",
         heightLabel: "Altura",
@@ -491,7 +508,7 @@ GeoExt.Lang.add("es", {
 		switchActionTip : "Cambiar idioma",
 		switchConfirmationText : "¿Está seguro de cambiar el idioma?"//Are you sure to change Language? All unsaved data will be lost
 	},
-	
+
 	"gxp.plugins.MarkerEditor.prototype":{
 		markerNombre:'Marcadores',
 		copyText:'Copie el texto siguiente para pegarlo en la ventana "Importar Marcadores" posteriormente...',
@@ -508,7 +525,7 @@ GeoExt.Lang.add("es", {
 		gridColLabel: 'Etiqueta',
 		gridColLat: 'Lat',
 		gridColLon: 'Lon',
-		gridColContent: 'Contenido',	
+		gridColContent: 'Contenido',
 		exportBtn:  'Exportar Marcadores',
 		importBtn: 'Importar Marcadores',
 		removeAllBnt: 'Borrar todo',
@@ -521,19 +538,19 @@ GeoExt.Lang.add("es", {
 		errorText:"Error",
 		notWellFormedText:"El texto que ha añadido no está bien formado. Por favor, compruébelo"
 	},
-	
+
 	"gxp.widgets.form.CoordinatePicker.prototype":{
 	    fieldLabel: 'Coordenadas',
 		pointSelectionButtionTip: 'Pulse aquí para habilitar la selección por punto',
 		latitudeEmptyText: 'Latitud',
 		longitudeEmptyText: 'Longitud'
 	},
-	
+
 	"gxp.plugins.AddLayer.prototype":{
 		waitMsg: "Por favor, espere ...",
 		capabilitiesFailureMsg: " La capa no se puede añadir al mapa"
     },
-    
+
     "gxp.plugins.Geolocate.prototype":{
         geolocateMenuText: "Geolocaliza",
         geolocateTooltip: "Localiza mi posición",
@@ -542,15 +559,14 @@ GeoExt.Lang.add("es", {
         waitMsg: "Localización en curso...",
         errorMsg: "Geolocalización no está soportada por su navegador"
     },
-	
+
 	"gxp.plugins.GeoLocationMenu.prototype": {
 	    initialText: "Seleccione un área",
         menuText: "GeoReferencias",
         tooltip: "GeoReferencias",
         addMarkerTooltip: "Reinicia Marcador",
-        emptyText: "Geocoder...",
         buttonText: "Dirección",
-        emptyText: "Dirección...",
+        geoCoderEmptyText: "Dirección...",
 		errorMsg: "No se encontró la dirección",
 		waitMsg: "Por favor, espere...",
 		addressTitle: "Direcciñon encontrada",
@@ -564,7 +580,7 @@ GeoExt.Lang.add("es", {
 		},
 		actionText: "Geolocalizaciones"
     },
-    
+
     "gxp.plugins.ImportExport.prototype":{
         importexportLabel: "Importar / Exportar",
 		labels: {
@@ -583,10 +599,10 @@ GeoExt.Lang.add("es", {
 				"layerEmptyText": "La capa seleccionada está vacía",
 				"notVectorlayerText": "Por favor, seleccione únicamente una capa vectorial",
 				"notLayerSelectedText": "Por favor, seleccione una capa vectorial"
-			} 
+			}
         }
     },
-   
+
     "gxp.MapFileUploadPanel" :{
 		fileLabel: "Fichero del mapa",
 		fieldEmptyText: "Seleccione un fichero de contexto del mapa...",
@@ -595,7 +611,7 @@ GeoExt.Lang.add("es", {
 		resetText: "Reiniciar",
 		failedUploadingTitle: "Error al subir el fichero"
     },
-   
+
     "gxp.MapFileDownloadPanel" :{
 		buttonText: "Exportar Mapa",
 		fileNombreLabel: "Nombre del fichero del mapa",
@@ -605,7 +621,7 @@ GeoExt.Lang.add("es", {
 		failedUploadingTitle: "Imposible generar el fichero de contexto del mapa",
 		saveErrorText: "Errores encontrados: "
     },
-   
+
     "gxp.KMLFileDownloadPanel" :{
 		buttonText: "Exportar",
 		fileNombreLabel: "Nombre del fichero KML",
@@ -615,7 +631,7 @@ GeoExt.Lang.add("es", {
 		resetText: "Reiniciar",
 		failedUploadingTitle: "Imposible generar el fichero KML"
     },
-   
+
     "gxp.KMLFileUploadPanel" :{
 		fileLabel: "Fichero KML",
 		fieldEmptyText: "Seleccione un fichero KNL o KMZ...",
@@ -635,20 +651,20 @@ GeoExt.Lang.add("es", {
 		menuText: "Captura",
 		tooltip: "Captura"
 	},
-	
+
 	"gxp.plugins.EmbedMapDialog.prototype" :{
-		exportMapText: "Enlazar el map",		
+		exportMapText: "Enlazar el map",
 		toolsTitle: "Elija las herramientas a incluir en la barra de herramientas:",
-		alertEmbedTitle: "Atención",		
+		alertEmbedTitle: "Atención",
 		alertEmbedText: "Salve el mapa antes de usar la herramienta de publicación del mapa",
-		previewText: "Vista previa",				
+		previewText: "Vista previa",
 		embedCodeTitle: "Código embebido",
-		embedURL: "URL directa",		
+		embedURL: "URL directa",
 		embedUrlLabel: "EMBED",
 		composerUrlLabel: "FULL",
 		showMapTooltip: "Mostar en una nueva ventana",
-        loadMapText: "Cargar el mapa", 
-        downloadAppText: "Cargar este mapa (instalar la aplicación primero)", 
+        loadMapText: "Cargar el mapa",
+        downloadAppText: "Cargar este mapa (instalar la aplicación primero)",
         loadInMapStoreMobileText: "Mobile",
         openImageInANewTab: "Abrir imagen en una nueva pestaña"
 	},
@@ -679,8 +695,8 @@ GeoExt.Lang.add("es", {
         geocodingPanelLocationHeader: "Localidad",
         geocodingPanelCustomHeader: "Pariente",
         geocodingPanelGeometryHeader: "WKT de la Geometría",
-        geocodingPanelBtnSelectAllTxt : "Selecciona Todo", 
-        geocodingPanelBtnDeSelectAllTxt : "Deseleziona Todo", 
+        geocodingPanelBtnSelectAllTxt : "Selecciona Todo",
+        geocodingPanelBtnDeSelectAllTxt : "Deseleziona Todo",
         geocodingPanelMsgRemRunningTitle : "Remueves Localidad",
         geocodingPanelMsgRemRunningMsg : "¿Quieres remover las Localidades seleccionadas por la lista?",
         geocodingFieldLabel : "Busca una Localidad",
@@ -691,34 +707,34 @@ GeoExt.Lang.add("es", {
         geocoderSelectorsLabels: ['Unión de las geometrías', 'Lista de los Área Administrativa', 'Área Administrativa y sottoaree'],
         selectionReturnTypeLabel: "Tipo de selección"
     },
-    
+
     "gxp.plugins.WFSGrid.prototype":{
         displayMsgPaging: "Elementos {0} - {1} of {2}",
         emptyMsg: "No se han encontrado elementos",
         loadMsg: "Loading ...",
-        zoomToTooltip: "Zoom al bersaglio"       
+        zoomToTooltip: "Zoom al bersaglio"
     },
-    
+
     "gxp.plugins.TabPanelWFSGrids.prototype":{
         displayMsgPaging: "Elementos {0} - {1} of {2}",
         emptyMsg: "No se han encontrado elementos",
         noRecordFoundLabel: "No se han encontrado elementos",
         loadMsg: "Loading ..."
     },
-    
+
     "gxp.plugins.spatialselector.SpatialSelector.prototype" :{
         titleText : "Región de interés",
         selectionMethodLabel : "Método de selección",
         comboEmptyText : "Seleccione un Método..",
         comboSelectionMethodLabel : "Seleccione"
     },
-    
+
     "gxp.widgets.form.spatialselector.SpatialSelectorMethod.prototype" :{
-        areaLabel: "Área",  
-        perimeterLabel: "Perímetro", 
-        lengthLabel: "Longitud",   
-        radiusLabel: "Radio",   
-        centroidLabel: "Centroide", 
+        areaLabel: "Área",
+        perimeterLabel: "Perímetro",
+        lengthLabel: "Longitud",
+        radiusLabel: "Radio",
+        centroidLabel: "Centroide",
         selectionSummary: "Sumario de la Selección",
         geometryOperationText: "Operación espacial",
         geometryOperationEmptyText: "Seleccion una operación",
@@ -728,7 +744,7 @@ GeoExt.Lang.add("es", {
         noOperationMsgText: "Por favor, seleccione una operación para realizar la consulta",
         noCompleteMsgText: "Por favor, complete el formulario para realizar la consulta"
     },
-    
+
     "gxp.widgets.form.spatialselector.BBOXSpatialSelectorMethod.prototype" :{
         name  : 'BBOX',
         label : 'Extensión',
@@ -740,19 +756,19 @@ GeoExt.Lang.add("es", {
         setAoiText : "Dibujar",
         setAoiTooltip : "Habilita el control que permite dibujar una ROI (Extensión) en el mapa"
     },
-    
+
     "gxp.widgets.form.spatialselector.BufferSpatialSelectorMethod.prototype" :{
         name  : 'Buffer',
         label : 'Buffer',
         latitudeEmptyText : 'Y',
         longitudeEmptyText : 'X'
     },
-    
+
     "gxp.widgets.form.spatialselector.CircleSpatialSelectorMethod.prototype" :{
         name  : 'Círculo',
         label : 'Círculo'
     },
-    
+
     "gxp.widgets.form.spatialselector.GeocoderSpatialSelectorMethod.prototype" :{
         name  : 'Geocoding',
         label : 'Geocoding',
@@ -764,8 +780,8 @@ GeoExt.Lang.add("es", {
         geocodingPanelLocationHeader: "Localización",
         geocodingPanelCustomHeader: "Padre",
         geocodingPanelGeometryHeader: "Geometría WKT",
-        geocodingPanelBtnSelectAllTxt : "Seleccionar todo", 
-        geocodingPanelBtnDeSelectAllTxt : "Deseleccionar todo", 
+        geocodingPanelBtnSelectAllTxt : "Seleccionar todo",
+        geocodingPanelBtnDeSelectAllTxt : "Deseleccionar todo",
         geocodingPanelMsgRemRunningTitle : "Borrar Localizaciones",
         geocodingPanelMsgRemRunningMsg : "¿Está seguro de borrar las localizaciones de la lista?",
         geocodingFieldLabel : "Buscar una Locaclización",
@@ -774,12 +790,12 @@ GeoExt.Lang.add("es", {
         geocodingFieldBtnDelTooltip : "Limpiar campo",
         selectionSummary : "Sumario de la selección"
     },
-    
+
     "gxp.widgets.form.spatialselector.PolygonSpatialSelectorMethod.prototype" :{
         name  : 'Polígono',
         label : 'Polígono'
     },
-    
+
     "gxp.plugins.spatialselector.Geocoder.prototype" :{
         titleText: "Callejero",
         searchText: "Buscar",
@@ -791,7 +807,7 @@ GeoExt.Lang.add("es", {
             "number": "Número"
         }
     },
-	
+
 	"gxp.plugins.ResourceStatus.prototype":{
 		rootNodeText: "Recursos Import",
 		serviceErrorTitle: "Error de Servicio",
@@ -801,17 +817,21 @@ GeoExt.Lang.add("es", {
 		expandAllText: "Expandir Todos Los Nodos",
 		collapseAllText: "Contraer Todos Los Nodos"
     },
-	
+
 	"gxp.plugins.SpatialSelectorQueryForm.prototype":{
-        noFilterSelectedMsgTitle: "No hay filtros seleccionados",    
-        noFilterSelectedMsgText: "Debe seleccionar al menos un filtro",    
-        invalidRegexFieldMsgTitle: "Dominios no válidoss",    
+        noFilterSelectedMsgTitle: "No hay filtros seleccionados",
+        noFilterSelectedMsgText: "Debe seleccionar al menos un filtro",
+        invalidRegexFieldMsgTitle: "Dominios no válidoss",
         invalidRegexFieldMsgText: "Uno o más dominios están rellenados correctamente!",
-        selectedLayerFielsetText: "Capa seleccionada"
+        selectedLayerFielsetText: "Capa seleccionada",
+        unknownErrorMsgTitle: 'Error',
+        unknownErrorMsgText: 'Error desconocido',
+        errorCode: 'Código de error',
+        errorText: 'Texto de error'
     },
-	
+
 	"gxp.plugins.FeatureManager.prototype":{
-        noValidWmsVersionMsgTitle: 'WMS versión no válida',    
+        noValidWmsVersionMsgTitle: 'WMS versión no válida',
         noValidWmsVersionMsgText: "El plugin QueryForm no funciona con una versión origen WMS: "
     },
 
@@ -825,22 +845,29 @@ GeoExt.Lang.add("es", {
         cancelText: "Cancelar",
         notInitializedCategoriesWithCredentials: "<div class='initCategoriesMessage'>Si es administrador introduzca sus credenciales para crear las categorías: '{0}'</div>"
     },
-	
+
     "gxp.data.WMTSCapabilitiesReader.prototype" : {
         noLayerInProjectionError: "No layer in the current map projection is available on this server",
         warningTitle: "advertencia"
     },
-	
+
     "gxp.data.TMSCapabilitiesReader.prototype" : {
         noLayerInProjectionError: "No layer in the current map projection is available on this server",
         warningTitle: "advertencia"
     },
-	
+
 	"gxp.plugins.AdvancedSnappingAgent.prototype":{
         tooltipText: "Activar/Desactivar Snapping"
     },
-	
+
 	"gxp.plugins.StaticPage.prototype": {
         tabTitle: "Página estática"
-    }  
+    },
+    "cookieChoices": {
+        "cookieText": "Las cookies nos ayudan a ofrecer nuestros servicios. Al utilizarlos, usted acepta el uso de cookies.",
+        "dismissText": "Entendido",
+        "linkText":"Más información",
+        "linkHref":"cookies-policy-en.html"
+
+  }
 });

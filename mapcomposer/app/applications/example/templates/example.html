@@ -263,6 +263,7 @@
                     portalConfig: serverConfig.portalConfig,
 					loadingPanel: serverConfig.loadingPanel || {},
 					geoStoreBaseURL: serverConfig.geoStoreBase || ('http://' + window.location.host + '/geostore/rest/'),	 
+                    adminUrl: serverConfig.adminUrl || ('http://' + window.location.host + '/admin/'),
                     about: {
                         title: "Custom Map",
                         'abstract': "Custom Map",
@@ -417,6 +418,6 @@
     </head>
     <body>
         <% render content %>
-		<div style="visibility:hidden"><canvas id="printcanvas" /></div>
+		<div style="position:absolute; top:-10000px; left:-10000px; visibility:hidden"><canvas id="printcanvas" /></div>
     </body>
 </html>
