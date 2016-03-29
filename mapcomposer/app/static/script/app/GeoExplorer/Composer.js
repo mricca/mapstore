@@ -208,7 +208,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 		// ////////////////////////////////////////////////////////////
 		var savePlugin = false;
 		for(i=0; i<config.tools.length; i++){
-			if(config.tools[i]["ptype"] == "gxp_saveDefaultContext"){
+			if(config.tools[i]["ptype"] == "gxp_saveMapPlugin"){
 				var savePlugin = true;
 				break;
 			}
@@ -216,7 +216,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 		
 		if(!savePlugin){
 			config.tools.push({
-				ptype: "gxp_saveDefaultContext",
+				ptype: "gxp_saveMapPlugin",
                 id: "saveDefaultContext_plugin",
 				actionTarget: {target: "paneltbar", index: 21},
 				needsAuthorization: true

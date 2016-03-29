@@ -1,8 +1,13 @@
-/** This file contains the common configuration options 
- *  that can be overridden by the serverConfig objects in templates */
+/**
+ * This file contains the common configuration options that can
+ * be overridden by the serverConfig objects in templates.
+ */
 var localConfig = {
    geoStoreBase: "",
    proxy:"/http_proxy/proxy/?url=",
    defaultLanguage: "it",
-   skipCustomConfigs: true
+   skipCustomConfigs: true,
+   apikeys:{
+       "Bing" : "insert-your-Bing-API-key"
+   }
 };
