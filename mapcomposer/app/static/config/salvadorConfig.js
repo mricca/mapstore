@@ -1,39 +1,39 @@
 {
    "scaleOverlayMode": "advanced",
-   "actionToolScale": "medium", 
+   "actionToolScale": "medium",
    "tab": true,
    "gsSources":{
 		"salvador":{
 			"ptype": "gxp_wmssource",
 			"title": "Salvador GeoServer",
 			"projection":"EPSG:900913",
-			"url": "http://159.213.57.108/geoserver_salvador/SALVADOR/ows",
+			"url": "http://localhost:8080/geoserver_salvador/SALVADOR/ows",
             "version":"1.1.1",
             "loadingProgress": true,
             "layersCachedExtent": [
                 -20037508.34, -20037508.34,
                 20037508.34, 20037508.34
-            ],            
+            ],
 			"layerBaseParams": {
 			   "FORMAT":"image/png8",
 			   "TILED": false,
                "TILESORIGIN": [-180,-90]
 			}
-		},    
+		},
 		"mapquest": {
 			"ptype": "gxp_mapquestsource"
-		}, 
-		"osm": { 
+		},
+		"osm": {
 			"ptype": "gxp_osmsource"
 		},
 		"google": {
-			"ptype": "gxp_googlesource" 
+			"ptype": "gxp_googlesource"
 		},
 		"bing": {
-			"ptype": "gxp_bingsource" 
-		}, 
-		"ol": { 
-			"ptype": "gxp_olsource" 
+			"ptype": "gxp_bingsource"
+		},
+		"ol": {
+			"ptype": "gxp_olsource"
 		}
 	},
 	"loadingPanel": {
@@ -60,7 +60,7 @@
 				"args": [
 					"None", {"visibility": false}
 				]
-                
+
             },{
 				"source": "mapquest",
 				"title": "MapQuest OpenStreetMap",
@@ -173,7 +173,7 @@
                 "opacity": 0.0
 			},{
 				"source": "salvador",
-                "format":"image/jpeg",            
+                "format":"image/jpeg",
                 "tiled": false,
                 "group": "COMUNIDAD",
 				"title": "Comunidad Proyecto Gestion",
@@ -184,7 +184,7 @@
 			},{
 				"source": "salvador",
                 "format":"image/jpeg",
-                "tiled": false,                
+                "tiled": false,
                 "group": "COMUNIDAD",
 				"title": "Comunidad Proyecto Ejecution",
 				"name": "comunidad_proyecto_ejecution",
@@ -193,8 +193,8 @@
                 "opacity": 0.0
 			},{
 				"source": "salvador",
-                "format":"image/jpeg",                
-                "tiled": false,                
+                "format":"image/jpeg",
+                "tiled": false,
                 "group": "COMUNIDAD",
 				"title": "Comunidad Campanas Salud",
 				"name": "comunidad_campanas_salud",
@@ -204,7 +204,7 @@
 			},{
 				"source": "salvador",
                 "format":"image/jpeg",
-                "tiled": false,                
+                "tiled": false,
                 "group": "COMUNIDAD",
 				"title": "Comunidad Fichas",
 				"name": "comunidad_fichas",
@@ -259,8 +259,8 @@
                 "queryPanel": true
 			},{
 				"source": "salvador",
-                "format":"image/jpeg",            
-                "tiled": false,                
+                "format":"image/jpeg",
+                "tiled": false,
                 "group": "ALERTA",
 				"title": "Alerta Tipo Botadero Basura",
 				"name": "alerta_tipo_botadero_basura",
@@ -269,8 +269,8 @@
                 "opacity": 0.0
 			},{
 				"source": "salvador",
-                "format":"image/jpeg", 
-                "tiled": false,                
+                "format":"image/jpeg",
+                "tiled": false,
                 "group": "ALERTA",
 				"title": "Alerta Temprana Fichas",
 				"name": "alerta_temprana_fichas",
@@ -289,8 +289,8 @@
                 "queryPanel": true
 			},{
 				"source": "salvador",
-                "format":"image/jpeg",    
-                "tiled": false,                
+                "format":"image/jpeg",
+                "tiled": false,
                 "group": "RIESGO",
 				"title": "Riesgo Posibles Afectados",
 				"name": "riesgo_posibles_afectados",
@@ -299,8 +299,8 @@
                 "opacity": 0.0
 			},{
 				"source": "salvador",
-                "format":"image/jpeg",    
-                "tiled": false,                
+                "format":"image/jpeg",
+                "tiled": false,
                 "group": "RIESGO",
 				"title": "Riesgo Frecuencia",
 				"name": "riesgo_frecuencia",
@@ -309,8 +309,8 @@
                 "opacity": 0.0
 			},{
 				"source": "salvador",
-                "format":"image/jpeg",                
-                "tiled": false,                
+                "format":"image/jpeg",
+                "tiled": false,
                 "group": "RIESGO",
 				"title": "Riesgo Obras",
 				"name": "riesgo_obras",
@@ -319,8 +319,8 @@
                 "opacity": 0.0
 			},{
 				"source": "salvador",
-                "format":"image/jpeg",      
-                "tiled": false,                
+                "format":"image/jpeg",
+                "tiled": false,
                 "group": "RIESGO",
 				"title": "Riesgo Otras Amenaza",
 				"name": "riesgo_otras_amenaza",
@@ -330,7 +330,7 @@
 			},{
 				"source": "salvador",
                 "format":"image/jpeg",
-                "tiled": false,                
+                "tiled": false,
                 "group": "RIESGO",
 				"title": "Riesgo Acciones Sugeridas",
 				"name": "riesgo_acciones_sugeridas",
@@ -339,8 +339,8 @@
                 "opacity": 0.0
 			},{
 				"source": "salvador",
-                "format":"image/jpeg",            
-                "tiled": false,                
+                "format":"image/jpeg",
+                "tiled": false,
                 "group": "RIESGO",
 				"title": "Riesgo Fichas",
 				"name": "riesgo_fichas",
@@ -367,8 +367,8 @@
                 "queryPanel": true
 			},{
 				"source": "salvador",
-                "format":"image/jpeg",            
-                "tiled": false,                
+                "format":"image/jpeg",
+                "tiled": false,
                 "group": "INUNDACIONES",
 				"title": "Inundaciones Zona Material",
 				"name": "inundaciones_zona_material",
@@ -377,8 +377,8 @@
                 "opacity": 0.0
 			},{
 				"source": "salvador",
-                "format":"image/jpeg",            
-                "tiled": false,                
+                "format":"image/jpeg",
+                "tiled": false,
                 "group": "INUNDACIONES",
 				"title": "Inundaciones Fichas",
 				"name": "inundaciones_fichas",
@@ -387,8 +387,8 @@
                 "opacity": 0.0
 			},{
 				"source": "salvador",
-                "format":"image/jpeg",            
-                "tiled": false,                
+                "format":"image/jpeg",
+                "tiled": false,
                 "group": "INUNDACIONES",
 				"title": "Inundaciones Afectados",
 				"name": "inundaciones_afectados",
@@ -397,8 +397,8 @@
                 "opacity": 0.0
 			},{
 				"source": "salvador",
-                "format":"image/jpeg",            
-                "tiled": false,                
+                "format":"image/jpeg",
+                "tiled": false,
                 "group": "INUNDACIONES",
 				"title": "Inundaciones Acciones Sugeridas",
 				"name": "inundaciones_acciones_sugeridas",
@@ -429,7 +429,7 @@
     "customPanels":[
 	      {
 	          "xtype": "panel",
-	          "title": "Feature Grid",      
+	          "title": "Feature Grid",
 	          "border": false,
               "collapsedonfull": true,
 	          "id": "south",
@@ -441,7 +441,7 @@
 	          "header": true
 	      },{
 	          "xtype": "panel",
-	          "title": "Query Panel",         
+	          "title": "Query Panel",
 	          "border": false,
 	          "id": "east",
 	          "width": 400,
@@ -453,16 +453,16 @@
 	          "header": true,
               "collapsedonfull": true
 	      }
-    ],	
+    ],
 	"scaleOverlayUnits":{
-        "bottomOutUnits":"nmi",    
-        "bottomInUnits":"nmi",    
-        "topInUnits":"m",    
+        "bottomOutUnits":"nmi",
+        "bottomInUnits":"nmi",
+        "topInUnits":"m",
         "topOutUnits":"km"
     },
     "removeTools": [
         "wmsgetfeatureinfo_menu_plugin"
-    ],    
+    ],
 	"customTools":[{
 			"ptype": "gxp_embedmapdialog",
 			"actionTarget": {"target": "paneltbar", "index": 2},
@@ -483,7 +483,7 @@
                 "index": 14
             }
         }, {
-			"actions": ["-"], 
+			"actions": ["-"],
 			"actionTarget": "paneltbar"
 		},{
             "ptype":"gxp_print",
@@ -491,7 +491,7 @@
                 "outputFilename":"mapstore-print"
             },
             "ignoreLayers": "Google Hybrid,Bing Aerial,Google Terrain,Google Roadmap,Marker,GeoRefMarker",
-            "printService":"http://159.213.57.108/geoserver_salvador/pdf",
+            "printService":"http://localhost:8080/geoserver_salvador/pdf",
             "legendPanelId":"legendPanel",
             "actionTarget":{
                 "target":"paneltbar",
@@ -512,14 +512,14 @@
 			"directAddLayer": false,
 			"id": "addlayer"
 		}, {
-			"actions": ["-"], 
+			"actions": ["-"],
 			"actionTarget": "paneltbar"
 		}, {
 			"ptype": "gxp_geolocationmenu",
 			"actionTarget": {"target": "paneltbar", "index": 23},
 			"toggleGroup": "toolGroup"
 		}, {
-			"actions": ["->"], 
+			"actions": ["->"],
 			"actionTarget": "paneltbar"
 		}, {
 			"ptype": "gxp_help",
@@ -561,16 +561,16 @@
 		  "showSelectionSummary": true,
 		  "actions": null,
 		  "id": "bboxquery",
-          "spatialSelectorFieldsetCollapsedFirst": true,    
-          "spatialSelectorFieldsetHidden": true,    
-          "spatialSelectorFieldsetCheckboxToggle": false,        
-          "attributeFieldsetCollapsedFirst": false,        
-          "attributeFieldsetHidden": false,      
-          "attributeFieldsetCheckboxToggle": false,    
+          "spatialSelectorFieldsetCollapsedFirst": true,
+          "spatialSelectorFieldsetHidden": true,
+          "spatialSelectorFieldsetCheckboxToggle": false,
+          "attributeFieldsetCollapsedFirst": false,
+          "attributeFieldsetHidden": false,
+          "attributeFieldsetCheckboxToggle": false,
           "filterLayer": false,
           "autoComplete": {
             "sources": ["salvador"],
-            "url": "http://159.213.57.108/geoserver_salvador/wps",
+            "url": "http://localhost:8080/geoserver_salvador/wps",
             "pageSize": 10
           },
 		  "outputConfig":{
@@ -581,11 +581,11 @@
 				  "fillOpacity": 0.4,
 				  "strokeWidth": 1
 			  },
-			  "spatialFilterOptions": {	
-				  "lonMax": 20037508.34,   
+			  "spatialFilterOptions": {
+				  "lonMax": 20037508.34,
 				  "lonMin": -20037508.34,
-				  "latMax": 20037508.34,   
-				  "latMin": -20037508.34  
+				  "latMax": 20037508.34,
+				  "latMin": -20037508.34
 			  },
 			  "bufferOptions": {
 				"minValue": 1,
@@ -593,7 +593,7 @@
 				"decimalPrecision": 2,
 				"distanceUnits": "m"
 			  }
-		  },          
+		  },
 		  "spatialSelectorsConfig":{
 		        "bbox":{
 		            "xtype": "gxp_spatial_bbox_selector"
