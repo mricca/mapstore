@@ -54,26 +54,26 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 	legendText: "Legend",
     titleText: "Title",
     saveErrorText: "Trouble saving: ",
-    
+
     bookmarkText: "XML Map Context",
     permakinkText: 'XML',
-    
+
     appInfoText: "GeoExplorer",
     aboutText: "About GeoExplorer",
     mapInfoText: "Map Info",
     descriptionText: "Description",
     contactText: "Contact",
     aboutThisMapText: "About this Map",
-    
+
     userConfigLoadTitle: "Loading User Context",
     userConfigLoadMsg: "Error reading user map context",
-    
-    viewTabTitle : "View",	
+
+    viewTabTitle : "View",
 	markerPopupTitle: "Details",
 	mainLoadingMask: "Please wait, loading...",
 	urlMarkersTitle: "Load Markers from URL",
     // End i18n.
-    
+
     //properties for style markers
 	markerTemplateDefault: {
 		label: "${label}",
@@ -81,7 +81,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 		fontSize: "10px",
 		fontColor: "#FFFFFF",
         labelSelect: true,
-		
+
 		// Set the z-indexes of both graphics to make sure the background
         // graphics stay in the background
         graphicZIndex: 11,
@@ -93,22 +93,22 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 		fontWeight: "bold",
 		fontSize: "10px",
 		fontColor: "#FFFFFF",
-		
+
 		// Set the z-indexes of both graphics to make sure the background
         // graphics stay in the background
         graphicZIndex: 11,
         backgroundGraphicZIndex: 10
 	},
-    
+
 	externalGraphicMarkers: 'theme/app/img/markers/default_information.png',
     externalGraphicMarkersHighlights: 'theme/app/img/markers/default_information_highlights.png',
-	
+
 	externalGraphicClusterMarkers: 'theme/app/img/markers/marker-r.png',
 	externalGraphicClusterHighlights: 'theme/app/img/markers/marker-b.png',
-		
+
 	markerSelectionIcon: 'theme/app/img/markers/default_information_select.png',
 	markerSelectionClusterIcon: 'theme/app/img/markers/marker-y.png',
-	
+
     markerClusterShadow: 'theme/app/img/markers/marker-c-shadow.png',
 	markerShadow: 'theme/app/img/markers/markers_shadow.png',
 
@@ -131,26 +131,26 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
      * the :class:`GeoExt.MapPanel` instance for the main viewport
      */
     mapPanel: null,
-    
+
     /** api: config[stateWhiteList]
-     *  ``Array`` with list of elements to be saved on this.getState. 
+     *  ``Array`` with list of elements to be saved on this.getState.
      *   If this property is null, old method is used (blackList) to get the state.
      *   Default is `["sources", "map", "CSWCatalogues"]`.
      */
-    stateWhiteList: ["sources", "map", "CSWCatalogues", "markers"], 
-    
+    stateWhiteList: ["sources", "map", "CSWCatalogues", "markers"],
+
     toggleGroup: "toolGroup",
-    
+
     mapId: -1,
-    
+
     auth: false,
-    
+
     fScreen: false,
 
-    templateId: null,   
-   
+    templateId: null,
+
     constructor: function(config, mapId, authV, fScreen, templateId) {
-	
+
 		if(mapId)
             this.mapId = mapId;
         if(authV)
@@ -161,37 +161,37 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
         }
 
 		// /////////////////////////////////////////////////////////////////////
-		// Get from the session storage the user's 
-		// details (only provided by the MapManager and the login template 
+		// Get from the session storage the user's
+		// details (only provided by the MapManager and the login template
 		// currently)
-		//  
+		//
 		// TODO: The advice is to provide some missing refactor:
 		//
-		//	1- The MapManager should have only one Login class in 
+		//	1- The MapManager should have only one Login class in
 		//     order to avoid fragmentation of the code.
-		//	2- Using the code fragment below the GeoExplorer.setAuthHeaders 
+		//	2- Using the code fragment below the GeoExplorer.setAuthHeaders
 		//     in this class is unnecessary.
-		//	3- Each Viewer plugins should use the app.userDetails in order 
+		//	3- Each Viewer plugins should use the app.userDetails in order
 		//     to perform operations that require auth.
-		//	4- The GeoStoreLogin tool should be improved in order to check 
-		//     if the sessionStorage["userDetails"] is 
-		//     present and create the app.userDetails if needed. 
-		//	5- The Login procedure provided inside the Login Template should 
+		//	4- The GeoStoreLogin tool should be improved in order to check
+		//     if the sessionStorage["userDetails"] is
+		//     present and create the app.userDetails if needed.
+		//	5- The Login procedure provided inside the Login Template should
 		//     be ported on a new plugin.
 		// ////////////////////////////////////////////////////////////////////////
         //if used in an iframe from mapmanager, get auth from the parent
         //see Tool.js
 		this.authHeader= this.getAuth();
-			
+
         // Save template key
         if(templateId){
             this.templateId = templateId;
         }
-		
+
 		this.mapItems = [];
-		
+
         var scaleOverlayMode = config.scaleOverlayMode || 'basic';
-        
+
 		if(scaleOverlayMode === 'advanced'){
 			this.mapItems.push({
                 xtype: "gxp_advancedscaleoverlay",
@@ -216,8 +216,8 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                 bottomOutUnits: config.scaleOverlayUnits ? config.bottomOutUnits : null,
                 enableSetScaleUnits: config.scaleOverlayUnits ? true : false
             });
-		}		
-		
+		}
+
 		this.mapItems.push({
 			xtype: "gx_zoomslider",
 			vertical: true,
@@ -229,7 +229,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 	            xtype: "gxp_timevisualization",
 				position: "position:relative;left:120px;top:10px;background-color:#0055BB;color:#FFFFFF;font-size: 25px;font-weight: bold;"
         });
-        
+
 		// ///////////////////////////////////////////////////////////////////////////////////
         // both the Composer and the Viewer need to know about the viewerTools
         // First row in each object is needed to correctly render a tool in the treeview
@@ -238,9 +238,9 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 		if(!config.viewerTools){
 			config.viewerTools = [
 				{
-					leaf: true, 
-					text: gxp.plugins.AddLayers.prototype.addActionTip, 
-					checked: true, 
+					leaf: true,
+					text: gxp.plugins.AddLayers.prototype.addActionTip,
+					checked: true,
 					iconCls: gxp.plugins.AddLayers.prototype.iconCls,
 					ptype: "gxp_addlayers"
 				},
@@ -248,52 +248,52 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 					actions: ["-"], checked: true
 				},
 				{
-					leaf: true, 
-					text: gxp.plugins.ZoomToExtent.prototype.tooltip, 
-					checked: true, 
+					leaf: true,
+					text: gxp.plugins.ZoomToExtent.prototype.tooltip,
+					checked: true,
 					iconCls: gxp.plugins.ZoomToExtent.prototype.iconCls,
 					ptype: "gxp_zoomtoextent"
 				}, {
-					leaf: true, 
-					text: gxp.plugins.Navigation.prototype.tooltip, 
-					checked: true, 
+					leaf: true,
+					text: gxp.plugins.Navigation.prototype.tooltip,
+					checked: true,
 					iconCls: "gxp-icon-pan",
-					ptype: "gxp_navigation", 
+					ptype: "gxp_navigation",
 					toggleGroup: this.toggleGroup
 				}, {
 					actions: ["-"], checked: true
 				}, {
-					leaf: true, 
-					text: gxp.plugins.ZoomBox.prototype.zoomInTooltip + " / " + gxp.plugins.ZoomBox.prototype.zoomOutTooltip, 
-					checked: true, 
+					leaf: true,
+					text: gxp.plugins.ZoomBox.prototype.zoomInTooltip + " / " + gxp.plugins.ZoomBox.prototype.zoomOutTooltip,
+					checked: true,
 					iconCls: "gxp-icon-zoombox-in",
 					numberOfButtons: 2,
-					ptype: "gxp_zoombox", 
+					ptype: "gxp_zoombox",
 					toggleGroup: this.toggleGroup
 				}, {
-					leaf: true, 
-					text: gxp.plugins.Zoom.prototype.zoomInTooltip + " / " + gxp.plugins.Zoom.prototype.zoomOutTooltip, 
-					checked: true, 
+					leaf: true,
+					text: gxp.plugins.Zoom.prototype.zoomInTooltip + " / " + gxp.plugins.Zoom.prototype.zoomOutTooltip,
+					checked: true,
 					iconCls: "gxp-icon-zoom-in",
 					numberOfButtons: 2,
 					ptype: "gxp_zoom"
 				}, {
 					actions: ["-"], checked: true
 				}, {
-					leaf: true, 
-					text: gxp.plugins.NavigationHistory.prototype.previousTooltip + " / " + gxp.plugins.NavigationHistory.prototype.nextTooltip, 
-					checked: true, 
+					leaf: true,
+					text: gxp.plugins.NavigationHistory.prototype.previousTooltip + " / " + gxp.plugins.NavigationHistory.prototype.nextTooltip,
+					checked: true,
 					iconCls: "gxp-icon-zoom-previous",
 					numberOfButtons: 2,
 					ptype: "gxp_navigationhistory"
 				}, {
 					actions: ["-"], checked: true
 				}, {
-					leaf: true, 
-					text: gxp.plugins.Measure.prototype.measureTooltip, 
-					checked: true, 
+					leaf: true,
+					text: gxp.plugins.Measure.prototype.measureTooltip,
+					checked: true,
 					iconCls: "gxp-icon-measure-length",
-					ptype: "gxp_measure", 
+					ptype: "gxp_measure",
 					controlOptions: {immediate: true},
 					toggleGroup: this.toggleGroup
 				}, {
@@ -301,13 +301,13 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 				}
 			];
 		}
-        
+
         if(config.removeTools) {
             for(var r=0; r < config.removeTools.length; r++) {
                 config.tools = this.removeTool(config.tools, config.removeTools[r]);
             }
         }
-        
+
 		if(config.customTools)
 		{
 			for(var c=0; c < config.customTools.length; c++)
@@ -325,13 +325,13 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 						break;
 					}
 				}
-			
+
 				if(!toolIsDefined){
                     config.viewerTools.push(config.customTools[c])
                 }
 			}
-		} 
-        
+		}
+
         if (config.showGraticule == true){
             config.viewerTools.push({
                 leaf: true,
@@ -341,9 +341,9 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                 ptype: "gxp_graticule"
             })
         }
-            
+
         GeoExplorer.superclass.constructor.apply(this, arguments);
-    }, 
+    },
 
     /**
      * api: method[removeTool]
@@ -365,23 +365,23 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                 }
             }
         }
-        
+
         return collection.getRange();
     },
-    
+
     loadConfig: function(config) {
 
         if(config.isLoadedFromConfigFile){
           this.applyConfig(config);
         } else {
-            
+
 		    // /////////////////////////////////////////////////////////////////////////
 		    // At this point we cannot use the override-ext-ajax defined by GeoExt APIs
-			// becose the OpenLayers.ProxyHost is called before the loadConfig method 
+			// becose the OpenLayers.ProxyHost is called before the loadConfig method
 			// (see gxp/widgets/Viewer.js at row 324) and we cannot change this beavior.
 		    // So we have to define a proper proxy usage if needed
 		    // /////////////////////////////////////////////////////////////////////////
-								  
+
             var pattern = /(.+:\/\/)?([^\/]+)(\/.*)*/i;
             var mHost = pattern.exec(config.geoStoreBaseURL);
 
@@ -395,28 +395,28 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                   'Accept': "application/json",
                   'Authorization': this.authHeader
                },
-               success: function(response, opts){  
+               success: function(response, opts){
                     var addConfig;
-                    
+
                     try {
                       addConfig = Ext.util.JSON.decode(response.responseText);
                     } catch (err) {
                     }
                     /*the proxy is related to the local config.
                      * so if it is present in the configuration
-                     * must be removed 
+                     * must be removed
                      */
                      if(addConfig && addConfig.proxy){
                         delete addConfig.proxy;
                      }
-                    
+
                     if(addConfig){
                         if(addConfig.data){
-                            
-                            addConfig = Ext.util.JSON.decode(addConfig.data);   
+
+                            addConfig = Ext.util.JSON.decode(addConfig.data);
                         if(addConfig.proxy){
                             delete addConfig.proxy;
-                        }                            
+                        }
                         }
 						this.applyConfig(Ext.applyIf(addConfig, config));
                     } else {
@@ -427,31 +427,31 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                failure: function(response, opts){
                   this.applyConfig(config);
                }
-            });        
+            });
         }
     },
-    
+
     loadUserConfig: function(json){
         var uploadWin = Ext.getCmp('upload-win');
         if(uploadWin != null){
             uploadWin.destroy();
         }
-          
+
         var layerTree = Ext.getCmp('tree');
         if(layerTree)layerTree.destroy();
-        
+
 		var isViewer = false;
 		if(app instanceof GeoExplorer.Viewer){
 			isViewer = true;
 		}
-					
+
         app.destroy();
-        
-        var config = Ext.util.JSON.decode(json);    
+
+        var config = Ext.util.JSON.decode(json);
         if(config && config.map){
             config.isLoadedFromConfigFile = true;
 			config = Ext.applyIf(config, this.initialConfig);
-			
+
 			if(isViewer){
 				app = new GeoExplorer.Viewer(config, this.mapId, this.auth, this.fScreen);
 			}else{
@@ -465,22 +465,22 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
             });
         }
     },
-    
-    displayXHRTrouble: function(msg, status) {        
+
+    displayXHRTrouble: function(msg, status) {
         Ext.Msg.show({
             title: this.xhrTroubleText + status,
             msg: msg,
             icon: Ext.MessageBox.WARNING
-        });        
+        });
     },
-    
+
     /** private: method[initPortal]
      * Create the various parts that compose the layout.
      */
     initPortal: function() {
         this.appMask = new Ext.LoadMask(Ext.getBody(), {msg: this.mainLoadingMask});
 		this.appMask.show();
-		
+
         var westPanel = new Ext.TabPanel({
             border: false,
             activeTab:0,
@@ -492,57 +492,57 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
             collapseMode: "mini",
             header: false,
             items: [
-                { 
-					autoScroll: true, 
-					tbar: [], 
-					border: false, 
-					id: 'tree', 
+                {
+					autoScroll: true,
+					tbar: [],
+					border: false,
+					id: 'tree',
 					title: this.layersText
 				}, {
-                    xtype: "panel", 
-					layout: "fit", 
-                    border: false, 
-					id: 'legend', 
+                    xtype: "panel",
+					layout: "fit",
+                    border: false,
+					id: 'legend',
 					title: this.legendText
                 }
             ]
         });
-        
+
         this.toolbar = new Ext.Toolbar({
             disabled: true,
             id: 'paneltbar',
 			enableOverflow: true,
             items: this.createTools()
         });
-        
+
         this.on("ready", function() {
 			// /////////////////////////////////////
-            // Enable only those items that were not 
+            // Enable only those items that were not
 			// specifically disabled
             // /////////////////////////////////////
-			
+
 			// Top Toolbar
 			var disabled = this.toolbar.items.filterBy(function(item) {
                 return item.initialConfig && item.initialConfig.disabled;
             });
-            
+
             this.toolbar.enable();
-            
+
             disabled.each(function(item) {
                 item.disable();
             });
-			
+
 			// Bottom Toolbar
 			disabled = this.toolbar.items.filterBy(function(item) {
                 return item.initialConfig && item.initialConfig.disabled;
             });
-            
+
             this.bottom_toolbar.enable();
-            
+
             disabled.each(function(item) {
                 item.disable();
-            });		
-			
+            });
+
 			// //////////////////////////////////////////////////////////////////
 			// Automatically inject markers if present in loaded configuration
 			// //////////////////////////////////////////////////////////////////
@@ -561,13 +561,13 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 				   headers:{
 					  'Accept': "application/json"
 				   },
-				   success: function(response, opts){  						
+				   success: function(response, opts){
 						var markersConfig = response.responseText;
-						
+
 						if(markersConfig){
 							this.markers = markersConfig;
 							this.showMarkerGeoJSON("Markers", this.markers, true);
-							
+
 							this.fireEvent("markersloadend", this.markers);
 						}
 				   },
@@ -579,23 +579,23 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 							 icon: Ext.MessageBox.ERROR
 					  });
 				   }
-				}); 
+				});
 			}
-			
+
 			this.appMask.hide();
 		});
 
        var googleEarthPanel = new gxp.GoogleEarthPanel({
             mapPanel: this.mapPanel,
             listeners: {
-                beforeadd: function(record) {	                
+                beforeadd: function(record) {
                     return record.get("group") !== "background";
                 },
                 pluginready: function(istance) {
                 }
             }
         });
-       
+
 	    // ///////////////////////////////////////////////////////////////////
         // TODO: continue making this Google Earth Panel more independent
         // Currently, it's too tightly tied into the viewer.
@@ -603,10 +603,10 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
         // disabled when the panel is shown.
 		// ///////////////////////////////////////////////////////////////////
         var preGoogleDisabled = [];
- 
+
         googleEarthPanel.on("show", function() {
             preGoogleDisabled.length = 0;
-			
+
 			// Top Toolbar
             this.toolbar.items.each(function(item) {
                 if (item.disabled) {
@@ -614,7 +614,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                 }
             });
             this.toolbar.disable();
-			
+
 			// Bottom Toolbar
 			this.bottom_toolbar.items.each(function(item) {
                 if (item.disabled) {
@@ -622,7 +622,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                 }
             });
             this.bottom_toolbar.disable();
-			
+
 			// ////////////////////////////////////////////////////
             // Loop over all the tools and remove their output
 			// ////////////////////////////////////////////////////
@@ -643,12 +643,12 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                 layersToolbar.disable();
             }
         }, this);
- 
+
         googleEarthPanel.on("hide", function() {
             // re-enable all tools
-            this.toolbar.enable();           
+            this.toolbar.enable();
 		    this.bottom_toolbar.enable();
-		   
+
             var layersContainer = Ext.getCmp("tree");
             var layersToolbar = layersContainer && layersContainer.getTopToolbar();
             if (layersToolbar) {
@@ -658,9 +658,9 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
             for (var i=0, ii=preGoogleDisabled.length; i<ii; ++i) {
                 preGoogleDisabled[i].disable();
             }
- 
+
         }, this);
-        
+
         this.mapPanelContainer = new Ext.Panel({
             layout: "card",
             region: "center",
@@ -674,49 +674,49 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
             activeItem: 0,
             tbar: this.toolbar
         });
-		
+
         var portalPanels = [this.mapPanelContainer, westPanel];
-		
+
 		//collect additional panels to add them after init portal
 		var additionalPanels = [];
-		
+
         if(this.customPanels){
 			var toPortal = [];
 			var pans = this.customPanels;
 			for (var i = 0; i < pans.length; i++){
 				if(pans[i].target){
-					additionalPanels.push(pans[i]);					
+					additionalPanels.push(pans[i]);
 				}else{
 					toPortal.push(pans[i]);
 				}
 			}
-			
+
             var portalPanels = portalPanels.concat(toPortal);
         }
-		
+
 		this.bottom_toolbar = new Ext.Toolbar({
             disabled: true,
             id: 'panelbbar',
 			enableOverflow: true
         });
-		
+
         this.portalItems = [{
             region: "center",
-            layout: "border",  
+            layout: "border",
 			bbar: this.bottom_toolbar,
             items: portalPanels
         }];
-        
-        GeoExplorer.superclass.initPortal.apply(this, arguments);  
+
+        GeoExplorer.superclass.initPortal.apply(this, arguments);
 		for(var i = 0; i< additionalPanels.length; i++){
 			var target = Ext.getCmp(additionalPanels[i].target);
 			target.add(additionalPanels[i]);
 			target.doLayout();
 		}
     },
-    
+
     /** private: method[createTools]
-     * Create the toolbar configuration for the main panel.  This method can be 
+     * Create the toolbar configuration for the main panel.  This method can be
      * overridden in derived explorer classes such as :class:`GeoExplorer.Composer`
      * or :class:`GeoExplorer.Viewer` to provide specialized controls.
      */
@@ -726,65 +726,65 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
         ];
         return tools;
     },
-	
+
 	/** private: method[viewMetadata]
      */
     viewMetadata: function(url, uuid, title){
 		var portalContainer = Ext.getCmp(this.renderToTab);
-		
+
 		var metaURL = url.indexOf("uuid") != -1 ? url : url + 'metadata.show?uuid=' + uuid;
-		
+
 		var metaPanelOptions = {
 			title: title,
-			items: [ 
-				new Ext.ux.IFrameComponent({ 
-					url: metaURL 
-				}) 
+			items: [
+				new Ext.ux.IFrameComponent({
+					url: metaURL
+				})
 			]
 		};
-				
+
 		if(portalContainer instanceof Ext.TabPanel){
 			var tabPanel = portalContainer;
-			
+
 			var tabs = tabPanel.find('title', title);
 			if(tabs && tabs.length > 0){
-				tabPanel.setActiveTab(tabs[0]); 
-			}else{				
-			
+				tabPanel.setActiveTab(tabs[0]);
+			}else{
+
 				metaPanelOptions = Ext.applyIf(metaPanelOptions, {
-					layout:'fit', 
+					layout:'fit',
 					tabTip: title,
 					closable: true
 				});
-				
+
 				var meta = new Ext.Panel(metaPanelOptions);
-				
+
 				tabPanel.add(meta);
 				meta.items.first().on('render', function() {
 					this.addLoadingMask(meta.items.first());
-				},this);						
+				},this);
 			}
-		}else{		
-		
+		}else{
+
 			metaPanelOptions = Ext.applyIf(metaPanelOptions, {
-			    layout:'fit', 
+			    layout:'fit',
 				height: 600
 			});
-			
+
 			var meta = new Ext.Panel(metaPanelOptions);
-			
-			var metaWin = new Ext.Window({									
+
+			var metaWin = new Ext.Window({
 				title: "MetaData",
 				closable: true,
 				width: 800,
 				height: 630,
-				resizable: true,				
+				resizable: true,
 				draggable: true,
 				items: [
 					meta
-				]									
+				]
 			});
-			
+
 			metaWin.show();
 		}
     },
@@ -792,7 +792,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
     /** private: method[saveAndExport]
      *
      * Saves the map config and displays the URL in a window.
-     */ 
+     */
     saveAndExport: function(callback, scope) {
         var configStr = Ext.util.JSON.encode(this.getState());
         var method, url;
@@ -818,13 +818,13 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
             scope: this
         });
     },
-        
+
     /** private: method[handleSaveAndExport]
      *  :arg: ``XMLHttpRequest``
      */
     handleSaveAndExport: function(request) {
         if (request.status == 200) {
-            var config = Ext.util.JSON.decode(request.responseText);            
+            var config = Ext.util.JSON.decode(request.responseText);
             var mapId = config.id;
             if (mapId) {
                 this.id = mapId;
@@ -834,7 +834,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
             throw this.saveErrorText + request.responseText;
         }
     },
-    
+
     /** api: method[getBookmark]
      *  :return: ``String``
      *
@@ -845,12 +845,12 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
             OpenLayers.Util.getParameters(),
             {q: Ext.util.JSON.encode(this.getState())}
         );
-        
+
         // disregard any hash in the url, but maintain all other components
-        var url = 
+        var url =
             document.location.href.split("?").shift() +
             "?" + Ext.urlEncode(params);
-        
+
         return url;
     },
 
@@ -878,26 +878,26 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
         });
         win.show();
     },
-    
+
     /** api: method[setMarkersStyle]
      *  :return: ``Object``
      *
      *  Dynamically sets the style of markers
      */
     setMarkersStyle: function() {
-        
+
         var defaultMarker = this.externalGraphicMarkers;
         var highlightsMarker = this.externalGraphicMarkersHighlights;
-		
+
 		var defaultClusterMarker = this.externalGraphicClusterMarkers;
 		var highlightsClusterMarker = this.externalGraphicClusterHighlights
-		
+
 		var defaultSelection = this.markerSelectionIcon;
 		var clusterSelection = this.markerSelectionClusterIcon;
-		
+
 		var defaultShadow = this.markerShadow;
 		var clusterShadow = this.markerClusterShadow;
-		
+
         var context = {
             getMarkerIcon : function (ft){
                 if(ft.attributes.highlights) {
@@ -907,20 +907,20 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                         if(ft.attributes.icons){
                             return ft.attributes.icons.img.markerHighlights;
                         }else{
-                            return highlightsMarker;                      
-                        }           
+                            return highlightsMarker;
+                        }
                     }
                 }else{
 					if(ft.attributes.cluster){
-						return defaultClusterMarker; 
-					}else{ 
+						return defaultClusterMarker;
+					}else{
                         if(ft.attributes.icons){
                             return ft.attributes.icons.img.markerDefault;
                         }else{
-                            return defaultMarker;                             
+                            return defaultMarker;
                         }
                     }
-				}   
+				}
             },
             getMarkerWidth : function (ft){
                 if(ft.attributes.icons.markersDimensions){
@@ -936,43 +936,43 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                 if(ft.attributes.icons.markersDimensions){
                     return parseInt(ft.attributes.icons.markersDimensions.height);
                 }
-            },       
+            },
             getBackgroundMarkerHeight : function (ft){
                 if(ft.attributes.icons.shadowDimensions){
                     return parseInt(ft.attributes.icons.shadowDimensions.height);
                 }
-            },            
+            },
 			getMarkerSelectionIcon : function (ft){
 				if(ft.attributes.cluster)
 					return clusterSelection;
-				else	
+				else
                     if(ft.attributes.icons){
                         return ft.attributes.icons.img.markerSelected;
                     }else{
-                        return defaultSelection;                               
-                    }                   
+                        return defaultSelection;
+                    }
             },
-			
+
 			getMarkerLabel : function(ft){
 			    var label = ft.attributes.label;
-			    if(label) 
-                    return label; 
-                else 
-                    return null; 
+			    if(label)
+                    return label;
+                else
+                    return null;
 			},
-			
+
 			getRadius : function(ft){
 			    var label;
 				var radius;
-				
+
 				try{
 					label = parseInt(ft.attributes.label);
 				}catch(e){
 					radius = 12;
-				} 
-		
+				}
+
 				var cluster = ft.attributes.cluster;
-									
+
 				radius = radius ? radius : 12;
 				if(label && cluster){
 					if(label > 0 && label <= 200){
@@ -995,14 +995,14 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 						radius = 32;
 					}
 				}
-                
+
                 return radius;
 			},
 
-            getBackgroundXOffset : function(ft){        
+            getBackgroundXOffset : function(ft){
                 if(ft.attributes.icons && !ft.attributes.cluster){
                     return -0.9*context.getBackgroundMarkerWidth(ft)/4;
-                }else{            
+                }else{
                     return  -0.7*context.getRadius(ft)/2;
                 }
             },
@@ -1011,7 +1011,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                     return -1.85*context.getBackgroundMarkerHeight(ft)/2;
                 }else{
                     return -1.5* context.getRadius(ft);
-                }               
+                }
             },
             getGraphicYOffset : function(ft){
                 if(ft.attributes.icons && !ft.attributes.cluster){
@@ -1023,11 +1023,11 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
             getLabelYOffset : function(ft){
                 if(ft.attributes.icons && !ft.attributes.cluster){
                     return context.getMarkerHeight(ft)/2;
-                }else{                
-                    return  context.getRadius(ft);                
-                }    
+                }else{
+                    return  context.getRadius(ft);
+                }
             },
-            
+
 			getMarkerShadowIcon: function (ft){
 				if(ft.attributes.cluster)
 					return clusterShadow;
@@ -1043,28 +1043,28 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                     }
             }
         };
-        
+
 		this.markerTemplateDefault.externalGraphic = "${getMarkerIcon}";
 		this.markerTemplateDefault.pointRadius = "${getRadius}";
 		this.markerTemplateDefault.backgroundXOffset = "${getBackgroundXOffset}";
-		this.markerTemplateDefault.backgroundYOffset = "${getBackgroundYOffset}";  
+		this.markerTemplateDefault.backgroundYOffset = "${getBackgroundYOffset}";
         this.markerTemplateDefault.graphicYOffset="${getGraphicYOffset}";
-        this.markerTemplateDefault.labelYOffset ="${getLabelYOffset}"; 
-		this.markerTemplateDefault.backgroundGraphic = "${getMarkerShadowIcon}";        
-        
+        this.markerTemplateDefault.labelYOffset ="${getLabelYOffset}";
+		this.markerTemplateDefault.backgroundGraphic = "${getMarkerShadowIcon}";
+
 		this.markerTemplateSelected.externalGraphic = "${getMarkerSelectionIcon}";
-		this.markerTemplateSelected.pointRadius = "${getRadius}";		
-		this.markerTemplateSelected.backgroundXOffset = "${getBackgroundXOffset}";	
+		this.markerTemplateSelected.pointRadius = "${getRadius}";
+		this.markerTemplateSelected.backgroundXOffset = "${getBackgroundXOffset}";
 		this.markerTemplateSelected.backgroundYOffset = "${getBackgroundYOffset}";
         this.markerTemplateSelected.graphicYOffset="${getGraphicYOffset}";
-        this.markerTemplateSelected.labelYOffset ="${getLabelYOffset}";         
+        this.markerTemplateSelected.labelYOffset ="${getLabelYOffset}";
 		this.markerTemplateSelected.backgroundGraphic = "${getMarkerShadowIcon}";
-		
-        var styleMap = new OpenLayers.StyleMap({ 
+
+        var styleMap = new OpenLayers.StyleMap({
             "default" : new OpenLayers.Style(this.markerTemplateDefault, {context:context}),
             "select" : new OpenLayers.Style(this.markerTemplateSelected, {context:context})
-        }); 
-        
+        });
+
         var rules = [
             new OpenLayers.Rule({
                 filter: new OpenLayers.Filter.Logical({
@@ -1087,7 +1087,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                     graphicHeight: "${getMarkerHeight}",
                     backgroundWidth: "${getBackgroundMarkerWidth}",
                     backgroundHeight: "${getBackgroundMarkerHeight}"
-                }                
+                }
             }),
             new OpenLayers.Rule({
                 elseFilter: true
@@ -1095,39 +1095,39 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
         ];
 
         styleMap.styles['default'].addRules(rules);
-        styleMap.styles['select'].addRules(rules);        
-        
-        return(styleMap); 
-    }, 
-    
+        styleMap.styles['select'].addRules(rules);
+
+        return(styleMap);
+    },
+
     /** api: method[showMarkerGeoJSON]
      *  :return: ``String``
      *
      *  Add Markers and Tracks to map.
      */
     showMarkerGeoJSON: function(markerName, geoJson, zoomToExtent, clusterName, trackName, showLine) {
-        
+
         var clusterName = clusterName ||  markerName;
-        
+
         // allow testing of specific renderers via "?renderer=Canvas", etc
         var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
         renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
-            
+
         // check if the marker layer exists
         if(markerName){
             var markerLyr = this.mapPanel.map.getLayersByName(markerName);
         }
         // check if the cluster layer exists
-        if(clusterName){        
+        if(clusterName){
             var clusterLyr = this.mapPanel.map.getLayersByName(clusterName);
-        }    
-        
+        }
+
         if ((markerLyr && markerLyr.length) || (clusterLyr && clusterLyr.length)) {
 			for(var i = 0;i<markerLyr.length;i++){
 				this.mapPanel.map.removeLayer(markerLyr[i]);
 			}
-            
-			      
+
+
             var prev= this.mapPanel.map.getControlsByClass("OpenLayers.Control.SelectFeature");
 			for (var i = 0; i<prev.length;i++){
 				if(prev[i].id=="injMarkerSelectControl"){
@@ -1137,33 +1137,33 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 				}
 			}
         };
-            
+
 		// Create a new parser for GeoJSON
 		var geojson_format = new OpenLayers.Format.GeoJSON({
 			internalProjection: this.mapPanel.map.getProjectionObject(),
 			externalProjection: new OpenLayers.Projection("EPSG:4326")
 		});
-		
-		var clusters = new Array();            
+
+		var clusters = new Array();
 		var markers = new Array();
 		var markersLayers = new Array();
-		
+
 		var features = geojson_format.read(geoJson);
 		if(!features) return;
 
 		//unique array
 		function unique(arrayName){
 			var newArray=new Array();
-			label:for(var a=0; a<arrayName.length;a++ ){  
+			label:for(var a=0; a<arrayName.length;a++ ){
 				for(var j=0; j<newArray.length;j++ ){
-					if(newArray[j]==arrayName[a]) 
+					if(newArray[j]==arrayName[a])
 					continue label;
 				}
 				newArray[newArray.length] = arrayName[a];
 			}
 			return newArray;
-		} 
-		
+		}
+
 		for(var i=0;i<features.length;i++){
 			if(!features[i].attributes.cluster){
 				if(features[i].attributes.layer){
@@ -1176,13 +1176,13 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 
 		var uniqueMarkersLayers = [];
 		uniqueMarkersLayers = unique(markersLayers);
-		
+
 		for(var i=0;i<features.length;i++){
 			if(features[i].attributes.cluster){
 				clusters.push(features[i]);
 			}
 		}
-		
+
 		for (var m=0;m<uniqueMarkersLayers.length;m++){
 			markers[m] = new Array();
 			var count = 0;
@@ -1195,7 +1195,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 				}
 			}
 		}
-		
+
 		// Sets the style for the markers
 		var styleCluster = this.setMarkersStyle(false);
 
@@ -1221,7 +1221,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 				}
 			}
 		}
-		
+
 		if (clusters.length>0){
 			// Create new vector layer for clusters
 			var cluster_layer = new OpenLayers.Layer.Vector(clusterName, {
@@ -1231,12 +1231,12 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 				renderers: renderer
 			});
 		}
-		
+
 		// workaround to make the text features rendered in the same container having the vector features
 		if (clusters.length>0){
 			cluster_layer.renderer.textRoot = cluster_layer.renderer.vectorRoot;
 		}
-		
+
 		if (markers.length>0){
 			for (var i = 0; i<uniqueMarkersLayers.length; i++){
 				if(uniqueMarkersLayers[i] == undefined){
@@ -1246,19 +1246,19 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 				}
 			}
 		}
-		
+
 		// Create the popups for markers
 		var popupTitle = this.markerPopupTitle;
 		var singlePopup = this.singlePopup;
-		
+
 		var self = this;
-		
+
 		function onFeatureSelect(feature) {
 			if (feature.attributes.html){
 				if(this.popup && singlePopup){
 					this.popup.close();
 					this.popup.destroy();
-					
+
 				}
 				this.popup = new GeoExt.Popup({
 					title: feature.attributes.title || popupTitle,
@@ -1268,7 +1268,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 					map: self.mapPanel,
 					destroyOnClose:true,
 					location: feature.geometry.getBounds().getCenterLonLat(),
-					items: [{   
+					items: [{
 						title: feature.fid,
 						layout: "fit",
 						bodyStyle: 'padding:10px;background-color:#F5F5DC',
@@ -1277,7 +1277,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 						autoWidth: true,
 						collapsible: false
 					}],
-					listeners: { 
+					listeners: {
 					  close : function() {
 							try{
 								//
@@ -1308,14 +1308,14 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 				}
 			}
 		}
-		
+
 		if(clusters.length>0){
 			this.mapPanel.map.addLayer(cluster_layer);
 			cluster_layer.addFeatures(clusters);
 		}
-		
+
 		var vectorSelect = [];
-		
+
 		if(clusters.length>0 && markers.length>0){
 			vectorSelect = [cluster_layer];
 			for (var i = 0; i<uniqueMarkersLayers.length; i++){
@@ -1324,7 +1324,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 				}else{
 					vectorSelect.push(uniqueMarkersLayers[i]);
 				}
-			}                
+			}
 		}else if(clusters.length==0 && markers.length>0){
 			for (var i = 0; i<uniqueMarkersLayers.length; i++){
 				if(uniqueMarkersLayers[i] == undefined){
@@ -1332,7 +1332,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 				}else{
 					vectorSelect.push(uniqueMarkersLayers[i]);
 				}
-			}    
+			}
 		}else{
 			vectorSelect = cluster_layer;
 		}
@@ -1343,7 +1343,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 				clickout: false,
 				multiple: !singlePopup,
 				autoActivate: true
-			});        
+			});
 			var prev= this.mapPanel.map.getControlsByClass(selectControl.CLASS_NAME);
 			for (var i = 0; i<prev.length;i++){
 				if(prev[i].id=="injMarkerSelectControl"){
@@ -1355,12 +1355,12 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 			this.mapPanel.map.addControl(selectControl);
 			selectControl.activate();
 		}
-        
+
 		if(trackName){
 		    // Checks if the track layer exists
 			var trackLayer = this.mapPanel.map.getLayersByName(trackName)[0];
-			
-			if (trackLayer){ 
+
+			if (trackLayer){
 				trackLayer.removeFeatures(trackLayer.features);
 			}else{
 			    // Sets the style for the tracks
@@ -1369,20 +1369,20 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 					strokeWidth: this.trackStyle.strokeWidthTracks,
 					strokeOpacity: this.trackStyle.strokeOpacityTracks
 				});
-				
+
 			    // Creates new vector layer for tracks
                 trackLayer = new OpenLayers.Layer.Vector(trackName, {
 					styleMap: styleTracks,
 					displayInLayerSwitcher: true
 				});
-				
+
 				this.mapPanel.map.addLayer(trackLayer);
 			}
-			
+
 			if(showLine){
                 var pointCoord = new Array;
                 var geoJsonoObj = Ext.util.JSON.decode(geoJson);
-                
+
                 // Cycling the file GeoJSON to capture the coordinates of the markers
                 for (i=0; i<geoJsonoObj.features.length; i++) {
                     pointCoord.push(
@@ -1390,7 +1390,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                             geoJsonoObj.features[i].geometry.coordinates[0],
                             geoJsonoObj.features[i].geometry.coordinates[1]
                         )
-                    );  
+                    );
                 }
 
                 trackLayer.addFeatures([
@@ -1403,7 +1403,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                 ]);
             }
 		}
-		
+
 		// ///////////////////////////////////////////
 		// Automatically zoom to the markers extent
 		// ///////////////////////////////////////////
@@ -1411,7 +1411,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 			var geometryArray = features;
 			var x = geometryArray[0] ? geometryArray[0].geometry.x : null;
 			var y = geometryArray[0] ? geometryArray[0].geometry.y : null;
-			
+
 			if(x && y){
 				var minx = x, maxx = x, miny = y, maxy = y;
 				for(var i=1; i<geometryArray.length; i++){
@@ -1425,17 +1425,17 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 						//else
 						if(geometry.y > maxy)	maxy = geometry.y;
 					}
-				}	
+				}
 
 				this.mapPanel.map.zoomToExtent(new OpenLayers.Bounds(minx, miny, maxx, maxy));
 			}
 		}
     },
-    
+
     /** private: method[setAuthHeader]
      *
      * Set Authorization Headers in gxp_saveMapPlugin.
-     */ 
+     */
     setAuthHeaders: function(auth) {
         for(var tool in this.tools){
             if(this.tools[tool].ptype == "gxp_saveMapPlugin"){
@@ -1443,7 +1443,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
             }
         }
     },
-    
+
     /** private: method[getState]
      *  :returns: ``Object`` the state of the viewer
      */
@@ -1462,12 +1462,12 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
             var state = GeoExplorer.superclass.getState.apply(this, arguments);
 
             // ///////////////////////////////////////////
-            // Don't persist unnecessary components. 
+            // Don't persist unnecessary components.
             // Only the map details are mandatory, other
-            // elements are merged from the default 
+            // elements are merged from the default
             // configuration.
             // ///////////////////////////////////////////
-            
+
             delete state.tools;
             delete state.customTools;
             delete state.viewerTools;
@@ -1475,7 +1475,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
             delete state.customPanels;
             delete state.portalConfig;
             delete state.disableLayerChooser;
-            
+
             delete state.modified;
             delete state.proxy;
             delete state.geoStoreBaseURL;
@@ -1488,10 +1488,10 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 
             Ext.apply(currentState, state);
         }
-		
+
         return currentState;
     },
-        
+
     /**
      * Retrieves auth from (in this order)
      * * the session storage (if enabled userDetails, see ManagerViewPort.js class of mapmanager)
@@ -1500,7 +1500,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
      */
     getAuth: function(existingUserDetails, returnToken){
         var auth;
-        
+
         //get from the session storage
         var existingUserDetails = existingUserDetails || sessionStorage["userDetails"];
         if(existingUserDetails){
@@ -1511,10 +1511,10 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
           auth = window.parent.window.manager.auth;
           return auth;
         }
-        
+
         return auth;
     },
-	
+
 	zoomToCodInt: function(codint){
 
 		var getWFSStoreProxy = function(featureName, filter, sortBy, target){
@@ -1525,24 +1525,28 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 			if(filter) {
 				filterProtocol.filters.push(filter);
 			}
-			var proxy= new GeoExt.data.ProtocolProxy({ 
-				protocol: new OpenLayers.Protocol.WFS({ 
+			var proxy= new GeoExt.data.ProtocolProxy({
+				protocol: new OpenLayers.Protocol.WFS({
 					url: "http://159.213.57.81/geoserver/wfs",
-					featureType: featureName, 
+					featureType: featureName,
 					readFormat: new OpenLayers.Format.GeoJSON(),
-					featureNS: "db_segnalazioni", 
-					filter: filterProtocol, 
+					featureNS: "db_segnalazioni",
+					filter: filterProtocol,
 					outputFormat: "application/json",
 					version: "1.1.0"
-				}) 
+				})
 			});
-			return proxy;						
-		}		
-		
-		var sigla = codint.slice(6,8);
-		
+			return proxy;
+		}
+
+    if (codint.length === 12){
+		    var sigla = codint.slice(6,8);
+    }else{
+      var sigla = codint.slice(5,7);
+    }
+
 		var featureName;
-		
+
 		switch (sigla){
 			case "AR":
 				featureName = "genio_civile_arezzo_view"
@@ -1573,13 +1577,16 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 				break;
 			case "SI":
 				featureName = "genio_civile_siena_view"
-				break;							
+				break;
+      case "LA":
+				featureName = "lamma_prova_view"
+				break;
 			default:
 				featureName = false
-				break;								
-			
+				break;
+
 		}
-		
+
 		if(!featureName){
 			Ext.MessageBox.show({
 				title: 'Attenzione',
@@ -1594,35 +1601,35 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 			/////////////////////
 			if(this.mapPanel.map.restrictedExtent && this.mapPanel.map.fractionalZoom){
 				this.mapPanel.map.zoomToExtent(this.mapPanel.map.restrictedExtent);
-			}	
-				
-			Ext.MessageBox.getDialog().getEl().setStyle("zIndex", 100000);                    
-			return; 						
+			}
+
+			Ext.MessageBox.getDialog().getEl().setStyle("zIndex", 100000);
+			return;
 		}
-		
+
 		var myFilter = new OpenLayers.Filter.Comparison({
 				type: OpenLayers.Filter.Comparison.EQUAL_TO,
 				property: "codint",
 				value: codint
-			});					
-			
-		var elaborazioneStore = new GeoExt.data.FeatureStore({ 
+			});
+
+		var elaborazioneStore = new GeoExt.data.FeatureStore({
 			 id: "genio_civile_Store",
 			 fields: [{
-						"name": "codint",              
+						"name": "codint",
 						"mapping": "codint"
 			  }],
 			 proxy: getWFSStoreProxy(featureName,myFilter)
 		});
-		elaborazioneStore.load(); 					
-		
+		elaborazioneStore.load();
+
 		elaborazioneStore.on('load', function(store, records) {
 			if(records.length > 0){
 				var geographic = new OpenLayers.Projection("EPSG:4326");
-				var mercator = new OpenLayers.Projection("EPSG:3003");					
+				var mercator = new OpenLayers.Projection("EPSG:3003");
 				var bounds = records[0].data.feature.geometry.getBounds().clone().transform(geographic,mercator);
 				this.mapPanel.map.zoomToExtent(bounds);
-				this.mapPanel.map.zoomTo(9);						
+				this.mapPanel.map.zoomTo(9);
 			}else{
 				Ext.MessageBox.show({
 					title: 'Attenzione',
@@ -1631,18 +1638,17 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 					animEl: 'elId',
 					icon: Ext.MessageBox.INFO
 				});
-				
+
 				/////////////////////
 				// Fractional Zoom //
 				/////////////////////
 				if(this.mapPanel.map.restrictedExtent && this.mapPanel.map.fractionalZoom){
 					this.mapPanel.map.zoomToExtent(this.mapPanel.map.restrictedExtent);
-				}	
-				
-				Ext.MessageBox.getDialog().getEl().setStyle("zIndex", 100000);                    
-				return;  								
+				}
+
+				Ext.MessageBox.getDialog().getEl().setStyle("zIndex", 100000);
+				return;
 			}
-		}, this);					
+		}, this);
 	}
 });
-
