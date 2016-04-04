@@ -249,6 +249,13 @@
 		return this;
 	};
 	
+    ContentProvider.prototype.getHeaders = function(headers) {
+        if(this.authorization_) {
+            headers["Authorization"] = this.authorization_;
+        }
+        return headers;
+    };
+    
 	/** 
 	 * Function: findByPk
 	 * find an element by its primary key in async mode
@@ -280,11 +287,10 @@
 		var Request = Ext.Ajax.request({
 	       url: uri.toString(), 
 	       method: 'GET',
-	       headers:{
-	          'Content-Type' : 'application/json',
-	          'Accept' : this.acceptTypes_,
-	          'Authorization' : this.authorization_
-	       },
+           headers: this.getHeaders({
+				  'Content-Type' : 'text/xml',
+                  'Accept' : this.acceptTypes_
+		   }),
 	       scope: this,
 	       success: function(response, opts){
 				var data = self.afterFind( Ext.util.JSON.decode(response.responseText) ); 
@@ -315,11 +321,10 @@
 		var Request = Ext.Ajax.request({
 	       url: uri.toString(),
 	       method: 'GET',
-	       headers:{
+           headers: this.getHeaders({
 	          'Content-Type' : 'application/json',
-	          'Accept' : this.acceptTypes_,
-	          'Authorization' : this.authorization_
-	       },
+	          'Accept' : this.acceptTypes_
+	       }),
 	       scope: this,
 	       success: function(response, opts){
 				var data = self.afterFind( Ext.util.JSON.decode(response.responseText) );
@@ -356,11 +361,10 @@
 		var Request = Ext.Ajax.request({
 	       url: url,
 	       method: 'PUT',
-	       headers: {
+           headers: this.getHeaders({
 	          'Content-Type' : 'text/xml',
-	          'Accept' : this.acceptTypes_,
-	          'Authorization' : this.authorization_
-	       },
+	          'Accept' : this.acceptTypes_
+	       }),
 	       scope: this,
 		   params: data,
 	       success: function(response, opts){
@@ -399,11 +403,10 @@
 		var Request = Ext.Ajax.request({
 	       url: url,
 	       method: 'DELETE',
-	       headers:{
+           headers: this.getHeaders({
 	          'Content-Type' : 'application/json',
-	          'Accept' : this.acceptTypes_,
-	          'Authorization' : this.authorization_
-	       },
+	          'Accept' : this.acceptTypes_
+	       }),
 	       scope: this,
 	       success: function(response, opts){
 				var json = Ext.util.JSON.decode(response.responseText);
@@ -442,11 +445,10 @@
 		var Request = Ext.Ajax.request({
 	       url: url,
 	       method: 'POST',
-	       headers:{
+           headers: this.getHeaders({
 	          'Content-Type' : 'text/xml',
-	          'Accept' : this.acceptTypes_,
-	          'Authorization' : this.authorization_
-	       },
+	          'Accept' : this.acceptTypes_
+	       }),
 	       params: data,
 	       scope: this,
 	       success: function(response, opts){
@@ -550,10 +552,9 @@
 			Ext.Ajax.request({
 			   url: uri,
 			   method: 'DELETE',
-			   headers:{
-				  'Content-Type' : 'text/xml',
-				  'Authorization' : this.authorization_
-			   },
+			   headers: this.getHeaders({
+				  'Content-Type' : 'text/xml'
+               }),
 			   params: data,
 			   scope: this,
 			   success: function(response, opts){
@@ -682,10 +683,9 @@
 			Ext.Ajax.request({
 			   url: uri,
 			   method: 'DELETE',
-			   headers:{
-				  'Content-Type' : 'text/xml',
-				  'Authorization' : this.authorization_
-			   },
+			   headers: this.getHeaders({
+				  'Content-Type' : 'text/xml'
+               }),
 			   params: data,
 			   scope: this,
 			   success: function(response, opts){
@@ -786,6 +786,61 @@
 			} else {
 				this.onFailure_('cannot parse response');
 			}
+		},
+		create: function(item, callback, failureCallback, scope) {
+			// /////////////////////////////////////////////////////
+			// when a resource with the same name exists,
+			// geostore will return an error response (409 status)
+			// containing a valid name suggestion: client shall
+			// rename the resource and try again, up to MAX_RETRIES 
+			// times.
+			// /////////////////////////////////////////////////////
+			var MAX_RETRIES = 3,
+				retriesCounter = 0,
+				geostore = this;
+			var retryingFailureCallback = function(response) {
+				retriesCounter++;
+				if (response.status == 409 && retriesCounter < MAX_RETRIES) {
+					item.name = response.responseText;
+					geostore.create(item, callback, retryingFailureCallback);
+				} else {
+					// ////////////////////////////////////////////////// //
+					// TODO: Refactor this code externalize the           // 
+				    //	     Msg definition for the i18n                  //
+				    // ////////////////////////////////////////////////// //
+					Ext.Msg.show({
+						msg: response.statusText + "(status " + response.status + "):  " + response.responseText,
+						buttons: Ext.Msg.OK,
+						icon: Ext.MessageBox.ERROR
+					});
+				}
+			};
+			
+			// allow caller to override default error handling behavior
+			failureCallback = failureCallback || retryingFailureCallback;
+			
+			ContentProvider.prototype.create.call(this, item, callback, failureCallback, scope);
+		},
+		update: function(pk, item, callback, failureCallback) {
+			var defaultFailureCallback = function(response) {
+				var defaultErrMsg = response.statusText + "(status " + response.status + "):  " + response.responseText;
+				var conflictErrMsg = "A map with the same name already exists";
+				
+				// ////////////////////////////////////////////////// //
+				// TODO: Refactor this code externalize the           // 
+			    //	     Msg definition for the i18n                  //
+			    // ////////////////////////////////////////////////// //
+				Ext.Msg.show({
+					msg: (response.status === 409) ? conflictErrMsg : defaultErrMsg,
+					buttons: Ext.Msg.OK,
+					icon: Ext.MessageBox.ERROR
+				});
+			}
+			
+			// allow caller to override default error handling behavior
+			failureCallback = failureCallback || defaultFailureCallback;
+			
+			ContentProvider.prototype.update.call(this, pk, item, callback, failureCallback);
 		}
     });
 
@@ -1089,10 +1144,9 @@
 			Ext.Ajax.request({
 			   url: uri,
 			   method: 'DELETE',
-			   headers:{
-				  'Content-Type' : 'text/xml',
-				  'Authorization' : this.authorization_
-			   },
+			   headers: this.getHeaders({
+				  'Content-Type' : 'text/xml'
+               }),
 			   params: data,
 			   scope: this,
 			   success: function(response, opts){
@@ -1168,10 +1222,9 @@
 			Ext.Ajax.request({
 			   url: uri,
 			   method: 'DELETE',
-			   headers:{
-				  'Content-Type' : 'text/xml',
-				  'Authorization' : this.authorization_
-			   },
+			   headers: this.getHeaders({
+				  'Content-Type' : 'text/xml'
+			   }),
 			   scope: this,
 			   success: function(response, opts){
 					callback(response);
@@ -1218,11 +1271,10 @@
 			var Request = Ext.Ajax.request({
 		       url: uri.toString(),
 		       method: 'GET',
-		       headers:{
+               headers: this.getHeaders({
 		          'Content-Type' : 'application/json',
-		          'Accept' : this.acceptTypes_,
-		          'Authorization' : this.authorization_
-		       },
+		          'Accept' : this.acceptTypes_
+			   }),
 		       scope: this,
 		       success: function(response, opts){
 					var data = self.afterFind( Ext.util.JSON.decode(response.responseText) );

@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2007 - 2014 GeoSolutions S.A.S.
+ *  Copyright (C) 2007 - 2016 GeoSolutions S.A.S.
  *  http://www.geo-solutions.it
  *
  *  GPLv3 + Classpath exception
@@ -39,34 +39,71 @@ mxp.plugins.Updater = Ext.extend(mxp.plugins.Tool, {
     ptype: "mxp_updater",
 
     buttonText: "Updater",
-	uploadFilesText:'Upload Files',
+    uploadFilesText:'Upload Files',
 
     loginManager: null,    
     setActiveOnOutput: true,
+    
     /**
-	 * Property: flowId
-	 * {string} the GeoBatch flow name to manage
-	 */	
+     * Set whether the tab can be closed or not
+     */
+    closable: true,
+    
+    /**
+     * Set whether the action button should be displayed or not
+     */
+    showActionButton: true,
+    
+    /**
+     * Property: flowId
+     * {string} the GeoBatch flow name to manage
+     */
     flowId: 'ds2ds_zip2pg',
+    
+    /**
+     * Property: autoRefreshState
+     * {boolean} should the GeoBatch state be automatically refreshed?
+     */
+    autoRefreshState: false,
+    
+    /**
+     * Property: restrictToGroups
+     * Array of groups enabled to see this tool, or false for "everyone"
+     */
+    restrictToGroups: false,  
+
+    filters: [],
+    
+    /**
+     * Property: canArchive
+     * {boolean} can the runs be archived? Default true.
+     */
+    canArchive: true,
     
     /** api: method[addActions]
      */
     addActions: function() {
         
-        var thisButton = new Ext.Button({
-            iconCls:'update_manager_ic', 
-            text: this.buttonText,
-            tooltip: this.tooltipText,
-            handler: function() { 
-                this.addOutput(); 
+        var actions = [];
+        if(this.restrictToGroups){
+            if(this.hasGroup(this.target.user, this.restrictToGroups)){
+                if(this.showActionButton){
+                
+                    var thisButton = new Ext.Button({
+                        iconCls:'update_manager_ic', 
+                        text: this.buttonText,
+                        tooltip: this.tooltipText,
+                        handler: function() { 
+                            this.addOutput(); 
+                        },
+                        scope: this
+                    });
 
-               
-            },
-            scope: this
-        });
-
-        var actions = [thisButton];
-
+                    actions = [thisButton];
+                }
+             }
+        }
+       
         return mxp.plugins.Updater.superclass.addActions.apply(this, [actions]);
     },
     
@@ -82,10 +119,18 @@ mxp.plugins.Updater = Ext.extend(mxp.plugins.Tool, {
      */
     addOutput: function(config) {
 
+        // Check for Group restrictions to apply
+        if(this.restrictToGroups){
+            if(!this.hasGroup(this.target.user, this.restrictToGroups)){
+                // do not display output
+                return {};
+            }
+        }
+    
         var login = this.target.login ? this.target.login: 
                 this.loginManager && this.target.currentTools[this.loginManager] 
                 ? this.target.currentTools[this.loginManager] : null;
-        this.auth = this.target.auth;
+        this.auth = this.target.authHeader;
         
         this.outputConfig = this.outputConfig || {};
 
@@ -97,8 +142,8 @@ mxp.plugins.Updater = Ext.extend(mxp.plugins.Tool, {
         var pluploadPanel = {
             xtype:'pluploadpanel',
             region:'west',
-			iconCls:'inbox-upload_ic',
-			title:this.uploadFilesText,
+            iconCls:'inbox-upload_ic',
+            title:this.uploadFilesText,
             autoScroll:true,
             width:400,
             ref:'uploader',
@@ -106,7 +151,8 @@ mxp.plugins.Updater = Ext.extend(mxp.plugins.Tool, {
             url: uploadUrl,
             multipart: true,
             auth: this.auth,
-			mediaContent: this.target.initialConfig.mediaContent,
+            mediaContent: this.target.initialConfig.mediaContent,
+            filters: this.filters,
             listeners:{
                 beforestart:function() {
                     var multipart_params =  pluploadPanel.multipart_params || {};
@@ -123,11 +169,44 @@ mxp.plugins.Updater = Ext.extend(mxp.plugins.Tool, {
                 }
             }
         }
-        Ext.apply(this.outputConfig,{   
+        
+        var gridTabContent = {
+                    xtype:'mxp_geobatch_consumer_grid',
+                    geoBatchRestURL: this.geoBatchRestURL,
+                    geoStoreRestURL: this.geoStoreRestURL,
+                    GWCRestURL: this.GWCRestURL,
+                    canArchive: this.canArchive,
+                    title: this.canArchive ? 'Active' : null,
+                    layout:'fit',
+                    autoScroll:true,
+                    flowId: this.flowId,
+                    auth: this.auth,
+                    autoWidth:true,
+                    region:'center',
+                    ref:'../grid',
+                    autoRefreshState : this.autoRefreshState
+                };
+                
+        var archiveTabContent = {
+                xtype:'mxp_geobatch_consumer_grid',
+                geoStoreRestURL: this.geoStoreRestURL,
+                title: 'Archived',
+                layout:'fit',
+                autoScroll:true,
+                flowId: this.flowId,
+                auth: this.auth,
+                autoWidth:true,
+                mode: 'archived',
+                hideMode:'offsets',
+                disabled: false,
+                ref:'../archived'
+            };
+        
+        var updaterConfiguration = {   
             layout: 'border',
-			itemId:'Updater',
+            itemId:'Updater',
             xtype:'panel',
-            closable: true,
+            closable: this.closable,
             closeAction: 'close',
             iconCls: "update_manager_ic",  
             header: false,
@@ -138,21 +217,27 @@ mxp.plugins.Updater = Ext.extend(mxp.plugins.Tool, {
             title: this.buttonText,
             items:[
                 {
-                    xtype:'mxp_geobatch_consumer_grid',
-                    geoBatchRestURL: this.geoBatchRestURL,
-                    GWCRestURL: this.GWCRestURL,
-                    layout:'fit',
-                    autoScroll:true,
-                    flowId: this.flowId,
-                    auth: this.auth,
-                    autoWidth:true,
+                    xtype: this.canArchive ? 'tabpanel' : 'panel',
                     region:'center',
-                    ref:'grid'
-                },  
+                    ref:'tabs',
+                    activeItem:0,
+                    items:this.canArchive ? [
+                        gridTabContent,
+                        archiveTabContent
+                    ] : gridTabContent
+                }
+                ,  
                 pluploadPanel
-            ]
-        });
-		// In user information the output is generated in the component and we can't check the item.initialConfig.
+            ],
+            listeners:{
+                activate:function(){
+                    this.grid.fireEvent('activate');
+                }
+            }
+        };
+        
+        Ext.apply(this.outputConfig, updaterConfiguration);
+        // In user information the output is generated in the component and we can't check the item.initialConfig.
         if(this.output.length > 0
             && this.outputTarget){
             for(var i = 0; i < this.output.length; i++){
@@ -175,6 +260,25 @@ mxp.plugins.Updater = Ext.extend(mxp.plugins.Tool, {
             }
         }
         return mxp.plugins.Updater.superclass.addOutput.apply(this, arguments);
+    },
+
+    /**
+     * Check if the given user has one of the give groups
+     */
+    hasGroup : function(user, targetGroups){
+        if(user && user.groups && targetGroups){
+            var groupfound = false;
+            for (var key in user.groups.group) {
+                if (user.groups.group.hasOwnProperty(key)) {
+                    var g = user.groups.group[key];
+                    if(g.groupName && targetGroups.indexOf(g.groupName) > -1 ){
+                        groupfound = true;
+                    }
+                }
+            }
+            return groupfound;
+        }
+        return false;
     }
 });
 

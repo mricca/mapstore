@@ -484,6 +484,44 @@ MSMGridPanel = Ext.extend(Ext.grid.GridPanel, {
      */ 
     extraAttributes: "templateId",
 
+    /** Keys of the availableMapButtons array */
+    editMapInfoKey : "editinfo",
+    deleteMapKey : "deletemap",
+    editMapKey : "editmap",
+    viewMapKey : "viewmap",
+    embedMapKey : "embedmap",
+    cloneMapKey : "clonemap",
+    
+    /**
+     * Property: availableMapButtons
+     * {Array<String>} List of all the available buttons in the map list rows
+     * This defines only the available buttons, not their visibility: if a button 
+     * is not available to an user, the grid will hide it
+     * For example, the "Edit Map" button is hidden for unauthorized users, but "editmap" should be
+     * present in this array to enable authorized users to see it.
+     * NOTE: If no config is found, the default will be built using the MapKeys values.
+     * 
+     * This configuration is the default one:
+     *
+     * "availableMapButtons":[
+     *   "editinfo",
+     *   "deletemap",
+     *   "editmap",
+     *   "viewmap",
+     *   "embedmap",
+     *   "clonemap"
+     * ]
+     * 
+     */
+    availableMapButtons:[
+        "editinfo",
+        "deletemap",
+        "editmap",
+        "viewmap",
+        "embedmap",
+        "clonemap"
+    ],
+    
     /**
     * Constructor: initComponent 
     * Initializes the component
@@ -499,6 +537,9 @@ MSMGridPanel = Ext.extend(Ext.grid.GridPanel, {
                     return null;
                 },
                 getToken: function(){
+                    return null;
+                },
+                getAuthHeader: function(){
                     return null;
                 },
                 getCurrentUser: function(){
@@ -527,6 +568,21 @@ MSMGridPanel = Ext.extend(Ext.grid.GridPanel, {
         this.geoSearchUsersUrl = geoStoreBase + 'extjs/search/users';
         this.geoSearchCategoriesUrl = geoStoreBase + 'extjs/search/category';
 		
+        // Setup the available buttons in the map row
+        if(config.hasOwnProperty("availableMapButtons")){
+            this.availableMapButtons = config.availableMapButtons;            
+        }else{
+            // Build the default array
+            this.availableMapButtons = [
+                this.editMapInfoKey,
+                this.deleteMapKey,
+                this.editMapKey,
+                this.viewMapKey,
+                this.embedMapKey,
+                this.cloneMapKey
+            ];
+        }
+        
 		// //////////////////////////////////////////////////////////
         // An object that contains the string to search the resource
 		// //////////////////////////////////////////////////////////
@@ -555,19 +611,22 @@ MSMGridPanel = Ext.extend(Ext.grid.GridPanel, {
         });
         // //////////////
         // QR CODE MENU 
+        // Example of QRCode Menu configuration
+        //
+        //  "embedLink": {
+        //      "embeddedTemplateName": "viewer",
+        //      "showDirectURL": true,
+        //      "showQRCode":true,
+        //      "qrCodeSize":128,
+        //      "showMapStoreMobileSource":true,
+        //      "appDownloadUrl":"http://demo.geo-solutions.it/share/mapstoremobile/MapStoreMobile.apk"
+        //  }
         // //////////////
         var showQR = (this.config.embedLink.showQRCode ==true && !Ext.isIE7 && !Ext.isIE8 && !Ext.isIE6);
         var size = config.embedLink.qrCodeSize;
         
-        this.QRCodeMenu=Ext.apply({config:config}, {
-        text: this.mobileText,
-        disabled: !showQR,
-        iconCls: 'ic_mobile',
-        menu: {
-            xtype: 'menu',
-            plain: true,
-            
-                items: [{
+        var qrcodeMenuItems = [
+                {
                     text: this.installApplicationText,
                     iconCls: 'ic_qrcode',
                     scope:this,
@@ -611,7 +670,14 @@ MSMGridPanel = Ext.extend(Ext.grid.GridPanel, {
                         });
                         win.show();
                     }
-                },{
+                }
+        ];
+        
+        // Shows the "Add this source to MapStoreMobile" menu, default true
+        if(!config.embedLink.hasOwnProperty("showMapStoreMobileSource")
+            || config.embedLink.showMapStoreMobileSource == true){
+            
+            qrcodeMenuItems.push({
                     iconCls: 'ic_qrcode',
                     text: this.loadThisSourceText,
                     tooltip: 'Share This Source',
@@ -655,7 +721,17 @@ MSMGridPanel = Ext.extend(Ext.grid.GridPanel, {
                         });
                         win.show();
                     }
-                }]
+                });
+        }
+        
+        this.QRCodeMenu=Ext.apply({config:config}, {
+        text: this.mobileText,
+        disabled: !showQR,
+        iconCls: 'ic_mobile',
+        menu: {
+            xtype: 'menu',
+            plain: true,
+            items: qrcodeMenuItems
             }
         });
         // //////////////
@@ -861,7 +937,7 @@ MSMGridPanel = Ext.extend(Ext.grid.GridPanel, {
 									// /////////////////////////////////////
 									// Get info about logged user if any
 									// /////////////////////////////////////
-									var auth = grid.login.getToken();
+									var auth = grid.login.getAuthHeader();
 									
 									// /////////////////////////
 									// Fetch base url
@@ -964,7 +1040,7 @@ MSMGridPanel = Ext.extend(Ext.grid.GridPanel, {
 			    // /////////////////////////////////////
 			  	// Get info about logged user if any
 				// /////////////////////////////////////
-			    var auth = grid.login.getToken();
+			    var auth = grid.login.getAuthHeader();
 				
 				// ///////////////////
 				// fetch base url
@@ -1016,7 +1092,7 @@ MSMGridPanel = Ext.extend(Ext.grid.GridPanel, {
 						}
 					}else{
 						copy.owner = grid.login.getCurrentUser();
-					}					
+					}
 					
 					geostore.create(copy, function(data) {
 						reload();
@@ -1043,7 +1119,7 @@ MSMGridPanel = Ext.extend(Ext.grid.GridPanel, {
 					   items: new UserManagerView({
 					   			login: grid.login,
                                 ASSET: grid.config.ASSET,
-								auth: grid.login.getToken(),
+								auth: grid.login.getAuthHeader(),
 								url: grid.geoBaseUsersUrl,
                                 searchUrl: grid.geoSearchUsersUrl,
 								mapUrl: grid.geoBaseMapsUrl,
@@ -1059,7 +1135,7 @@ MSMGridPanel = Ext.extend(Ext.grid.GridPanel, {
                 } else {
                     new UserManagerView({
                         login: grid.login,
-                        auth: grid.login.getToken(),
+                        auth: grid.login.getAuthHeader(),
                         url: grid.geoBaseUsersUrl,
                         mapUrl: grid.geoBaseMapsUrl,
                         gridPanelBbar: grid.getBottomToolbar(),
@@ -1094,7 +1170,7 @@ MSMGridPanel = Ext.extend(Ext.grid.GridPanel, {
 			    });
 		   
 			    var urlField = new Ext.form.TextField({
-					fieldLabel: grid.embedUrlLabel,
+					fieldLabel: "VIEW",
 					labelStyle: 'font-weight:bold;',
 					width: 350,
 					value: embedMap.getAbsoluteUrl(url),
@@ -1119,12 +1195,16 @@ MSMGridPanel = Ext.extend(Ext.grid.GridPanel, {
 			    });
 				
 				var composerUrl = url;
+				var embeddedUrl = url;
+				
 			    if(templateId){
-					composerUrl += "&configId=" + templateId;
-					if(composerUrl.indexOf("viewer") != -1){
-						composerUrl = composerUrl.replace(/viewer/, "composer");
-					}					
+					composerUrl += "&configId=" + templateId;	
+					embeddedUrl += "&configId=" + templateId;					
 				}
+				
+				if(composerUrl.indexOf("viewer") != -1){
+					composerUrl = composerUrl.replace(/viewer/, "composer");
+				}	
 				
 				var urlComposerField = new Ext.form.TextField({
 					fieldLabel: grid.composerUrlLabel,
@@ -1150,13 +1230,43 @@ MSMGridPanel = Ext.extend(Ext.grid.GridPanel, {
 						}
 					]
 			    });
+				
+				if(embeddedUrl.indexOf("viewer") != -1){
+					embeddedUrl = embeddedUrl.replace(/viewer/, "embedded");
+				}	
+				
+				var urlEmbeddedField = new Ext.form.TextField({
+					fieldLabel: grid.embedUrlLabel,
+					labelStyle: 'font-weight:bold;',
+					width: 350,
+					value: embedMap.getAbsoluteUrl(embeddedUrl),
+					selectOnFocus: true,
+					readOnly: true
+			    }); 
+				
+				var urlEmbeddedComposite = new Ext.form.CompositeField({
+					items:[
+						urlEmbeddedField,
+						{
+							xtype: 'button',
+							tooltip: grid.showMapTooltip,
+							iconCls: "gx-map-go",
+							width: 20,
+							handler: function(){
+								var u = urlEmbeddedField.getValue();
+								window.open(u);
+							}
+						}
+					]
+			    });
 		   
 			    var directURL = new Ext.form.FieldSet({
 					title: grid.embedURL,
 					labelWidth: 50,
 					items:[
 						urlCompositeField,
-						urlComposerComposite
+						urlComposerComposite,
+						urlEmbeddedComposite
 					],
 					bodyStyle: 'padding: 15px'
 			    });
@@ -1661,7 +1771,7 @@ MSMGridPanel = Ext.extend(Ext.grid.GridPanel, {
 									// //////////////////////////////////
 									// Get info about logged user if any
 									// //////////////////////////////////
-									var auth = grid.login.getToken();
+									var auth = grid.login.getAuthHeader();
 									
 									// ////////////////////
 									// Fetch base url
@@ -1812,8 +1922,8 @@ MSMGridPanel = Ext.extend(Ext.grid.GridPanel, {
                 timeout: this.msmTimeout,
                 listeners:{
                     beforeload: function(proxy,params){
-                        if(grid.login){
-                            proxy.conn.headers['Authorization'] = grid.login.getToken();
+                        if(grid.login && grid.login.getAuthHeader()){
+                            proxy.conn.headers['Authorization'] = grid.login.getAuthHeader();
                         }else if(proxy.conn.headers && proxy.conn.headers['Authorization']){
                             delete proxy.conn.headers['Authorization'];
                         }
@@ -1991,6 +2101,7 @@ MSMGridPanel = Ext.extend(Ext.grid.GridPanel, {
 		// In IE7 we need to set button property "padding" and 
 		// table width otherwise buttons are stretched			
 		// /////////////////////////////////////////////////////
+        if(this.availableMapButtons && this.availableMapButtons.indexOf(this.editMapInfoKey) > -1 ){
         tpl +=  '<td >'+
                         '<tpl if="canEdit==true">'+
                             '<table class="x-btn x-btn-text-icon" style="width:30px" cellspacing="0"  >' +
@@ -2028,8 +2139,10 @@ MSMGridPanel = Ext.extend(Ext.grid.GridPanel, {
                             '</tbody>' +
                             '</table>' +
                         '</tpl>'+
-                    '</td>'+
-                    '<td >'+
+                    '</td>';
+        }
+		if(this.availableMapButtons && this.availableMapButtons.indexOf(this.deleteMapKey) > -1 ){
+            tpl +=  '<td >'+
                         '<tpl if="canDelete==true">'+
                             '<table class="x-btn x-btn-text-icon"  style="width:30px" cellspacing="0"  >' +
                             '<tbody class="x-btn-small x-btn-icon-small-left" id=\'{[this.getButtonDMId(values,\'_deleteBtn\')]}\'>' +
@@ -2066,8 +2179,10 @@ MSMGridPanel = Ext.extend(Ext.grid.GridPanel, {
                             '</tbody>' +
                             '</table>' +
                         '</tpl>'+
-                    '</td>'+
-                    '<td >'+
+                    '</td>';
+		}
+		if(this.availableMapButtons && this.availableMapButtons.indexOf(this.editMapKey) > -1 ){
+            tpl +=  '<td >'+
                         '<tpl if="canEdit==true">'+
                             '<table class="x-btn x-btn-text-icon" style="width:30px" cellspacing="0"  >' +
                             '<tbody class="x-btn-small x-btn-icon-small-left" id=\'{[this.getButtonVMId(values,\'_editBtn\',\'&auth=true\')]}\'>' +
@@ -2104,8 +2219,10 @@ MSMGridPanel = Ext.extend(Ext.grid.GridPanel, {
                             '</tbody>' +
                             '</table>' +
                         '</tpl>'+
-                    '</td>'+
-                    '<td >'+
+                    '</td>';
+		}
+		if(this.availableMapButtons && this.availableMapButtons.indexOf(this.viewMapKey) > -1 ){
+            tpl +=  '<td >'+
                         '<table class="x-btn x-btn-text-icon" style="width:30px" cellspacing="0" >'+
                         '<tbody class="x-btn-small x-btn-icon-small-left" id=\'{[this.getButtonVMId(values,\'_viewBtn\',\'&auth=false\')]}\'>'+
                         '<tr >'+
@@ -2141,9 +2258,10 @@ MSMGridPanel = Ext.extend(Ext.grid.GridPanel, {
                         '</tr>' +
                         '</tbody>' +
                         '</table>' +
-                    '</td>'
-					+
-                    '<td >'+
+                    '</td>';
+		}
+		if(this.availableMapButtons && this.availableMapButtons.indexOf(this.embedMapKey) > -1 ){
+            tpl +=  '<td >'+
                         '<table class="x-btn x-btn-text-icon" style="width:30px" cellspacing="0" >'+
                         '<tbody class="x-btn-small x-btn-icon-small-left" id=\'{[this.getButtonEMId(values,\'_embedBtn\')]}\'>'+
                         '<tr >'+
@@ -2180,7 +2298,8 @@ MSMGridPanel = Ext.extend(Ext.grid.GridPanel, {
                         '</tbody>' +
                         '</table>' +
                     '</td>';
-
+        }
+		if(this.availableMapButtons && this.availableMapButtons.indexOf(this.cloneMapKey) > -1 ){
 				tpl += '<td >'+
 						 '<tpl if="this.isNotGuest()">'+
 	                        '<table class="x-btn x-btn-text-icon" style="width:30px" cellspacing="0" >'+
@@ -2220,7 +2339,7 @@ MSMGridPanel = Ext.extend(Ext.grid.GridPanel, {
 	                        '</table>' +
 						  '</tpl>'+
 	                    '</td>';
-	                    
+        }
               tpl +=  '</tr>'+
             '</table>'+
         '</div>';

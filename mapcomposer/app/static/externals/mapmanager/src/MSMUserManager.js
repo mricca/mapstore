@@ -491,6 +491,27 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
                            
                         },
                         {
+                            header   : userManager.textGroups, 
+                            sortable : false, 
+                            dataIndex: 'groups',
+                            renderer: function(value, metaData, record, rowIndex, colIndex, store) {                            	
+                            	var groupsArray =  [], groupNames = [];
+                            	if (Ext.isArray(value['group'])) {
+                            		groupsArray =  value['group'];
+                            	} else if (value['group']) {
+                            		groupsArray.push(value['group']); 
+                            	}
+                            	
+                            	Ext.each(groupsArray, function(group) {
+                            		groupNames.push(group.groupName);
+                            	});
+                            	
+                            	groupNames.sort();
+                            	
+                            	return groupNames.join(', ');
+                            }
+                        },
+                        {
                             xtype: 'actioncolumn',
                             hideable:false,
                             width: 50,
@@ -598,7 +619,7 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
                         successProperty: 'ExtUserList',
                         idProperty: 'id',
                         remoteSort: false,
-                        fields: ['id', 'name', 'password', 'role','enabled'],
+                        fields: ['id', 'name', 'password', 'role', 'groups', 'enabled'],
                         sortInfo: { field: "name", direction: "ASC" },
                         proxy: new Ext.data.HttpProxy({
                             url: this.getSearchUrl(),
@@ -616,21 +637,20 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
                             },
                             headers: {'Accept': 'application/json', 'Authorization' : userManager.auth}
                         })
-                        
-					});
+                    });
                     
-					var paging = new Ext.PagingToolbar({
+                    var paging = new Ext.PagingToolbar({
                         pageSize: this.pageSize,
-										store: this.store,
-										grid: this,
+                        store: this.store,
+                        grid: this,
                         displayInfo: true,
-						displayMsg: this.displayMsg,
-						beforePageText: this.beforePageText,
-						afterPageText: this.afterPageText
-                    });	         
-				
-                    this.bbar = paging;					
-								
+                        displayMsg: this.displayMsg,
+                        beforePageText: this.beforePageText,
+                        afterPageText: this.afterPageText
+                    });
+                    
+                    this.bbar = paging;
+                    
                     userManager.reload = function() {
                         userManager.store.reload();
                     };
@@ -642,7 +662,6 @@ UserManagerView = Ext.extend(Ext.grid.GridPanel, {
                             }
                         });                        
 
-				
 				} else { //not Admin
 
 					var userdata = {id: this.login.userid, name: this.login.username, role: this.login.role };

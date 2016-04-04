@@ -47,8 +47,16 @@ body {
     background-image: url(img/silk/door_in.png);
 }
 
+.login {
+    background-image: url(img/silk/user_green.png);
+}
+
 .x-btn .logout {
     background-image: url(img/silk/door_out.png);
+}
+
+.logout {
+    background-image: url(img/silk/user_red.png);
 }
 
 .x-btn .icon-geoexplorer {
@@ -205,6 +213,11 @@ body {
 .gx-map-edit{
     background-image: url(img/silk/map_edit.png);
 }
+
+.gx-map-link {
+    background-image: url(img/silk/link.png);
+}
+
 .gx-map-add{
     background-image: url(img/silk/map_add.png);
 }
@@ -264,10 +277,10 @@ table.featureInfo th {
     background: #eee;
 }
 table.featureInfo td{
-    background: #fff;
+    background: #fff;  
 }
 table.featureInfo tr.odd td{
-    background: #eee;
+    background: #eee;  
 }
 table.featureInfo caption{
     text-align: left;

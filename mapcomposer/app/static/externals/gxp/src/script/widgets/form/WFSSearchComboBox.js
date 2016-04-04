@@ -154,6 +154,15 @@ gxp.form.WFSSearchComboBox = Ext.extend(Ext.form.ComboBox, {
 	outputFormat: 'application/json',
 	
     clearOnFocus:true,
+    filter: null,
+
+    zoomTo: null,
+
+    highlightLayer: null,
+
+    highlightLayerStyle: {},
+
+    versionWFS: '1.1.0',
     /** private: method[initComponent]
      *  Override
      */
@@ -175,7 +184,7 @@ gxp.form.WFSSearchComboBox = Ext.extend(Ext.form.ComboBox, {
 			},
 			baseParams:{
 				service:'WFS',
-				version:'1.1.0',
+				version: this.versionWFS,
 				request:'GetFeature',
 				typeName:this.typeName ,
 				outputFormat: this.outputFormat,
@@ -261,19 +270,53 @@ gxp.form.WFSSearchComboBox = Ext.extend(Ext.form.ComboBox, {
 			if(this.clearOnFocus) this.clearValue();
 		},
 		beforequery:function(queryEvent){
-			var queryString = queryEvent.query;
-			queryEvent.query = "";
-			for( var i = 0 ; i < this.queriableAttributes.length ; i++){
-				queryEvent.query +=  "(" + this.queriableAttributes[i] + " "+this.predicate+" '%" + queryString + "%')";
-				if ( i < this.queriableAttributes.length -1) {
-					queryEvent.query += " OR ";
-				}
-			}
-			//add cql filter in and with the other condictions
-			if(this.vendorParams && this.vendorParams.cql_filter) {
-				queryEvent.query = "(" + queryEvent.query + ")AND(" +this.vendorParams.cql_filter +")";
-			}
-		
+            var mapPanel = (this.mapPanel ? this.mapPanel : this.combo.target.mapPanel);
+            var queryString = queryEvent.query;
+            queryEvent.query = "";
+
+            var OGCXmlFilter;
+
+            if (this.queryParam === 'Filter') {
+                var filter = new OpenLayers.Filter.Logical({
+                    type: OpenLayers.Filter.Logical.OR,
+                    filters: [
+                        new OpenLayers.Filter.Comparison({
+                            type: OpenLayers.Filter.Comparison.LIKE,
+                            property: this.queriableAttributes[0],
+                            value: "%" + queryString.toUpperCase() + "%"
+                        })
+                    ]
+                });
+
+                if (filter) {
+                    var node = new OpenLayers.Format.Filter({
+                        version: "1.1.0",
+                        srsName: mapPanel.map.getProjection(),
+                        geometryName: "geom"
+                    }).write(filter);
+
+                    OGCXmlFilter = new OpenLayers.Format.XML().write(node);
+                } else {
+                    OGCXmlFilter = false;
+                }
+
+                queryEvent.query = OGCXmlFilter;
+
+            } else {
+
+                for (var i = 0; i < this.queriableAttributes.length; i++) {
+                    queryEvent.query += "(" + this.queriableAttributes[i] + " " + this.predicate + " '%" + queryString.toUpperCase() + "%')";
+                    if (i < this.queriableAttributes.length - 1) {
+                        queryEvent.query += " OR ";
+                    }
+                }
+
+                //add cql filter in and with the other condictions
+                if (this.vendorParams && this.vendorParams.cql_filter) {
+                    queryEvent.query = "(" + queryEvent.query + ")AND(" + this.vendorParams.cql_filter + ")";
+                }
+
+            }
 		},
 		select : function(combo, record) {
 			if (record && record.data.custom) {
@@ -298,8 +341,53 @@ gxp.form.WFSSearchComboBox = Ext.extend(Ext.form.ComboBox, {
 			} else {
 				this.geometry = null;
 			}
-		}
+            if (this.zoomTo && this.geometry) {
+                if (app.tools.geobasidataToolId)
+                    app.tools.geobasidataToolId.clearSelection();            
 
+                var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
+                renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
+				this.recordData = record.data;
+                this.geoJSON = new OpenLayers.Format.WKT();
+                this.geoJSONgeometry = this.geoJSON.read(this.geometry);
+                this.mapPanel.map.zoomToExtent(this.geoJSONgeometry.geometry.getBounds());
+
+                if (!this.newLayer) {
+
+                    var layerStyle = this.highlightLayerStyle || {
+                        strokeColor: "#FF00FF",
+                        strokeWidth: 2,
+                        fillColor: "#FF00FF",
+                        fillOpacity: 0.8
+                    };
+
+                    this.newLayer = new OpenLayers.Layer.Vector(this.highlightLayer, {
+                        displayInLayerSwitcher: true,
+                        styleMap : new OpenLayers.StyleMap({
+                            "default" : this.defaultStyle,
+                            "select" : this.selectStyle,
+                            "temporary" : this.temporaryStyle
+                        }),
+                        //style: layerStyle,
+                        visibility: true,
+                        renderers: renderer
+                    });
+
+                    this.newLayer.addFeatures([this.geoJSONgeometry]);
+                    this.newLayer.restrictedExtent = this.geoJSONgeometry.geometry.getBounds();
+                    this.mapPanel.map.addLayers([this.newLayer]);
+
+                } else {
+
+                    this.newLayer.removeAllFeatures();
+                    this.newLayer.addFeatures([this.geoJSONgeometry]);
+                    this.newLayer.restrictedExtent = this.geoJSONgeometry.geometry.getBounds();
+                    this.newLayer.setVisibility(true);
+
+                }
+
+            }
+        }
 	},
 	
 	getCustom : function() {

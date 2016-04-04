@@ -478,6 +478,7 @@ gxp.widgets.form.spatialselector.GeocoderSpatialSelectorMethod = Ext.extend(gxp.
 		    outputConfig:{
 		    	mapPanel:this.target.mapPanel,
 			 	url:this.wfsBaseURL,
+                queryParam: this.queryParam,
 			 	emptyText:this.geocodingFieldEmptyText,
 			 	typeName:this.geocoderTypeName,
 			 	recordModel:this.geocoderTypeRecordModel,

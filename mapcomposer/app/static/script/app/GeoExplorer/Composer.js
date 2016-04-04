@@ -45,7 +45,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 		                id: "layertree"
 		            },
 		            outputTarget: "tree"
-		        }, {
+		        },{
 		            ptype: "gxp_legend",
                     id: "legend_plugin",
 		            outputTarget: 'legend',
@@ -178,7 +178,11 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 					}
 				
 					if(!toolIsDefined){
-                        config.tools.push(config.customTools[c])
+                        if(config.customTools[c]['unshift']){
+                            config.tools.unshift(config.customTools[c])
+                        }else{
+                            config.tools.push(config.customTools[c])
+                        }
                     }
 				}
 			}
@@ -204,7 +208,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 		// ////////////////////////////////////////////////////////////
 		var savePlugin = false;
 		for(i=0; i<config.tools.length; i++){
-			if(config.tools[i]["ptype"] == "gxp_saveDefaultContext"){
+			if(config.tools[i]["ptype"] == "gxp_saveMapPlugin"){
 				var savePlugin = true;
 				break;
 			}
@@ -212,7 +216,7 @@ GeoExplorer.Composer = Ext.extend(GeoExplorer, {
 		
 		if(!savePlugin){
 			config.tools.push({
-				ptype: "gxp_saveDefaultContext",
+				ptype: "gxp_saveMapPlugin",
                 id: "saveDefaultContext_plugin",
 				actionTarget: {target: "paneltbar", index: 21},
 				needsAuthorization: true

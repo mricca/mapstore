@@ -168,7 +168,13 @@ GeoExt.Lang.add("es", {
         infoActionTip: "Obtener Feature Info",
         popupTitle: "Feature Info",
 		noDataMsg: "El servidor no devolvió datos",
-		maskMessage: "Recuperando el Feature Info..."
+		maskMessage: "Recuperando el Feature Info...",
+		firstFtTip: "Primera Feature",
+        previousPageTip: "Feature Anterior",
+        nextPageTip: "Siguiente Feature",
+        lastPageTip: "Ultima Feature",
+        ftLabel: "Feature",
+        ftOfLabel: "de"
     },
 	
 	"gxp.plugins.WMSGetFeatureInfoMenu.prototype": {
@@ -176,7 +182,13 @@ GeoExt.Lang.add("es", {
         popupTitle: "Feature Info",
 		noDataMsg: "El servidor no devolvió datos",
 		maskMessage: "Recuperando Feature Info...",
-		activeActionTip:"Activar información de la capa seleccionada"
+		activeActionTip:"Activar información de la capa seleccionada",
+		firstFtTip: "Primera Feature",
+        previousPageTip: "Feature Anterior",
+        nextPageTip: "Siguiente Feature",
+        lastPageTip: "Ultima Feature",
+        ftLabel: "Feature",
+        ftOfLabel: "de", 
     },
 
     "gxp.plugins.Zoom.prototype": {
@@ -275,7 +287,7 @@ GeoExt.Lang.add("es", {
 	    removeGroupConfirmationText: "¿Está seguro de que quiere borrar el grupo seleccionado? Todas las capas contenidas en el mismo se borrarán del mapa."
     },
     
-    "gxp.plugins.SaveDefaultContext.prototype": { 
+    "gxp.plugins.SaveMapPlugin.prototype": { 
 	    saveDefaultContextMenuText: "Guardar contexto por defecto",
 	    saveDefaultContextActionTip: "Guardar contexto del mapa",
 	    contextSaveSuccessString: "Contexto salvado correctamente",
@@ -286,21 +298,35 @@ GeoExt.Lang.add("es", {
 		loginLabel: "Login",	
 		mapMetadataTitle: "Insertar Metadatos del Mapa",	
 		mapMedatataSetTitle: "Metadatos del Mapa",	
-		mapNombreLabel: "Nombre",	
-		mapDescripciónLabel: "Descripción",
-		addResourceButtonText: "Añadir Mapa"
+		mapNameLabel: "Nombre",	
+		mapDescriptionLabel: "Descripción",
+		addResourceButtonText: "Añadir Mapa",
+		conflictErrMsg: "Un mapa con el mismo nombre ya existe",
+        selectionErrorTitle:"Error",
+        groupSelectionError:"Seleccione al menos un grupo",
+        permissionsLabel:"Permisos",
+        groupsLabel:"Grupos"
     },
+	
     "gxp.plugins.GeoReferences.prototype": {
         initialText: "Seleccionar un área",
         menuText: "GeoReferencias",
         tooltip: "GeoReferencias"
     },
+	
     "gxp.plugins.ZoomBox.prototype":{
         zoomInMenuText: "Zoom Box Siguiente",
         zoomOutMenuText: "Zoom Box Anterior",
         zoomInTooltip: "Zoom Box Siguiente",
         zoomOutTooltip: "Zoom Box Anterior"
     },
+	
+	"gxp.plugins.WMSSource.prototype": {
+		noCompatibleProjectionError: "Capa no está disponible en la proyección cartográfica",
+		wfsDescribeFeatureTypeError: "Error al obtener los atributos de tipo de entidad",
+		errorTitle: "Error"
+	},
+	
     "GeoExt.ux.PrintPreview.prototype":{
         paperSizeText: "Tamaño del folio:",
         resolutionText: "Resolución:",
@@ -356,7 +382,7 @@ GeoExt.Lang.add("es", {
         ContraseñaFieldText: "Contraseña"
     },
     "gxp.plugins.FeatureGrid.prototype": {
-        displayFeatureText: "Ver en el mapa",
+        displayFeatureText: "Ver",
         firstPageTip: "Primera página",
         previousPageTip: "Siguiente página",
         zoomPageExtentTip: "Zoom a la extensión de la página",
@@ -366,7 +392,7 @@ GeoExt.Lang.add("es", {
         totalMsg: "Total: {0} entidades",
         displayExportCSVText: "Exportar a CSV",
         exportCSVSingleText: "Página actual",
-        exportCSVMultipleText: "Toda la página",
+        exportCSVMultipleText: "Todas las páginas",
         failedExportCSV: "Error al encontrar una respuesta para la exportación a CSV",
         invalidParameterValueErrorText: "Valor de los parámetros inválido",
 		zoomToFeature: "Zoom a Entidad",
@@ -539,9 +565,8 @@ GeoExt.Lang.add("es", {
         menuText: "GeoReferencias",
         tooltip: "GeoReferencias",
         addMarkerTooltip: "Reinicia Marcador",
-        emptyText: "Geocoder...",
         buttonText: "Dirección",
-        emptyText: "Dirección...",
+        geoCoderEmptyText: "Dirección...",
 		errorMsg: "No se encontró la dirección",
 		waitMsg: "Por favor, espere...",
 		addressTitle: "Direcciñon encontrada",
@@ -797,7 +822,11 @@ GeoExt.Lang.add("es", {
         noFilterSelectedMsgTitle: "No hay filtros seleccionados",    
         noFilterSelectedMsgText: "Debe seleccionar al menos un filtro",    
         invalidRegexFieldMsgTitle: "Dominios no válidoss",    
-        invalidRegexFieldMsgText: "Uno o más dominios están rellenados correctamente!"
+        invalidRegexFieldMsgText: "Uno o más dominios están rellenados correctamente!",
+        unknownErrorMsgTitle: 'Error',
+        unknownErrorMsgText: 'Error desconocido',
+        errorCode: 'Código de error',
+        errorText: 'Texto de error'
     },
 	
 	"gxp.plugins.FeatureManager.prototype":{
@@ -832,5 +861,12 @@ GeoExt.Lang.add("es", {
 	
 	"gxp.plugins.StaticPage.prototype": {
         tabTitle: "Página estática"
-    }  
+    }, 
+    "cookieChoices": {
+        "cookieText": "Las cookies nos ayudan a ofrecer nuestros servicios. Al utilizarlos, usted acepta el uso de cookies.",
+        "dismissText": "Entendido",
+        "linkText":"Más información",
+        "linkHref":"cookies-policy-en.html"
+
+  }  
 });

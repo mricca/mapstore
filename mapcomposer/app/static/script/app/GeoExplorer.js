@@ -71,6 +71,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
     viewTabTitle : "View",	
 	markerPopupTitle: "Details",
 	mainLoadingMask: "Please wait, loading...",
+	urlMarkersTitle: "Load Markers from URL",
     // End i18n.
     
     //properties for style markers
@@ -136,7 +137,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
      *   If this property is null, old method is used (blackList) to get the state.
      *   Default is `["sources", "map", "CSWCatalogues"]`.
      */
-    stateWhiteList: ["sources", "map", "CSWCatalogues"], 
+    stateWhiteList: ["sources", "map", "CSWCatalogues", "markers"], 
     
     toggleGroup: "toolGroup",
     
@@ -179,9 +180,8 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 		//     be ported on a new plugin.
 		// ////////////////////////////////////////////////////////////////////////
         //if used in an iframe from mapmanager, get auth from the parent
-        
         //see Tool.js
-		this.authToken= this.getAuth();
+		this.authHeader= this.getAuth();
 			
         // Save template key
         if(templateId){
@@ -393,7 +393,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                scope: this,
                headers:{
                   'Accept': "application/json",
-                  'Authorization': this.authToken
+                  'Authorization': this.authHeader
                },
                success: function(response, opts){  
                     var addConfig;
@@ -438,15 +438,25 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
         }
           
         var layerTree = Ext.getCmp('tree');
-        layerTree.destroy();
+        if(layerTree)layerTree.destroy();
         
+		var isViewer = false;
+		if(app instanceof GeoExplorer.Viewer){
+			isViewer = true;
+		}
+					
         app.destroy();
         
-        var config = Ext.util.JSON.decode(json);        
+        var config = Ext.util.JSON.decode(json);    
         if(config && config.map){
             config.isLoadedFromConfigFile = true;
 			config = Ext.applyIf(config, this.initialConfig);
-            app = new GeoExplorer.Composer(config, this.mapId, this.auth, this.fScreen);
+			
+			if(isViewer){
+				app = new GeoExplorer.Viewer(config, this.mapId, this.auth, this.fScreen);
+			}else{
+				app = new GeoExplorer.Composer(config, this.mapId, this.auth, this.fScreen);
+			}
         }else{
             Ext.Msg.show({
                 title: this.userConfigLoadTitle,
@@ -476,7 +486,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
             activeTab:0,
             id: 'west',
             region: "west",
-            width: 300,
+            width: 370,
             split: true,
             collapsible: true,
             collapseMode: "mini",
@@ -532,6 +542,45 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
             disabled.each(function(item) {
                 item.disable();
             });		
+			
+			// //////////////////////////////////////////////////////////////////
+			// Automatically inject markers if present in loaded configuration
+			// //////////////////////////////////////////////////////////////////
+			if(this.markers){
+				this.showMarkerGeoJSON("Markers", this.markers);
+			}else if(this.markersURL){
+				var pattern = /(.+:\/\/)?([^\/]+)(\/.*)*/i;
+				var mHost = pattern.exec(this.markersURL);
+
+				var mUrl = this.markersURL;
+
+				Ext.Ajax.request({
+				   url: mHost[2] == location.host ? mUrl : proxy + mUrl,
+				   method: 'GET',
+				   scope: this,
+				   headers:{
+					  'Accept': "application/json"
+				   },
+				   success: function(response, opts){  						
+						var markersConfig = response.responseText;
+						
+						if(markersConfig){
+							this.markers = markersConfig;
+							this.showMarkerGeoJSON("Markers", this.markers, true);
+							
+							this.fireEvent("markersloadend", this.markers);
+						}
+				   },
+				   failure: function(response, opts){
+					  Ext.Msg.show({
+							 title: this.urlMarkersTitle,
+							 msg: response.responseText,
+							 width: 300,
+							 icon: Ext.MessageBox.ERROR
+					  });
+				   }
+				}); 
+			}
 			
 			this.appMask.hide();
 		});
@@ -1056,7 +1105,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
      *
      *  Add Markers and Tracks to map.
      */
-    showMarkerGeoJSON: function(markerName, geoJson, clusterName, trackName, showLine) {
+    showMarkerGeoJSON: function(markerName, geoJson, zoomToExtent, clusterName, trackName, showLine) {
         
         var clusterName = clusterName ||  markerName;
         
@@ -1088,226 +1137,224 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 				}
 			}
         };
-		{
             
-            // Create a new parser for GeoJSON
-            var geojson_format = new OpenLayers.Format.GeoJSON({
-				internalProjection: this.mapPanel.map.getProjectionObject(),
-				externalProjection: new OpenLayers.Projection("EPSG:4326")
-			});
-            
-            var clusters = new Array();            
-            var markers = new Array();
-            var markersLayers = new Array();
-            
-            var features = geojson_format.read(geoJson);
-			if(!features) return;
+		// Create a new parser for GeoJSON
+		var geojson_format = new OpenLayers.Format.GeoJSON({
+			internalProjection: this.mapPanel.map.getProjectionObject(),
+			externalProjection: new OpenLayers.Projection("EPSG:4326")
+		});
+		
+		var clusters = new Array();            
+		var markers = new Array();
+		var markersLayers = new Array();
+		
+		var features = geojson_format.read(geoJson);
+		if(!features) return;
 
-            //unique array
-            function unique(arrayName){
-                var newArray=new Array();
-                label:for(var a=0; a<arrayName.length;a++ ){  
-                    for(var j=0; j<newArray.length;j++ ){
-                        if(newArray[j]==arrayName[a]) 
-                        continue label;
-                    }
-                    newArray[newArray.length] = arrayName[a];
-                }
-                return newArray;
-            } 
-            
-            for(var i=0;i<features.length;i++){
-                if(!features[i].attributes.cluster){
-                    if(features[i].attributes.layer){
-                        markersLayers.push(features[i].attributes.layer);
-                    }else{
-                        markersLayers.push(features[i].attributes.layer);
-                    }
-                }
-            }
+		//unique array
+		function unique(arrayName){
+			var newArray=new Array();
+			label:for(var a=0; a<arrayName.length;a++ ){  
+				for(var j=0; j<newArray.length;j++ ){
+					if(newArray[j]==arrayName[a]) 
+					continue label;
+				}
+				newArray[newArray.length] = arrayName[a];
+			}
+			return newArray;
+		} 
+		
+		for(var i=0;i<features.length;i++){
+			if(!features[i].attributes.cluster){
+				if(features[i].attributes.layer){
+					markersLayers.push(features[i].attributes.layer);
+				}else{
+					markersLayers.push(features[i].attributes.layer);
+				}
+			}
+		}
 
-            var uniqueMarkersLayers = [];
-            uniqueMarkersLayers = unique(markersLayers);
-            
-            for(var i=0;i<features.length;i++){
-                if(features[i].attributes.cluster){
-                    clusters.push(features[i]);
-                }
-            }
-            
-            for (var m=0;m<uniqueMarkersLayers.length;m++){
-                markers[m] = new Array();
-                var count = 0;
-                for(var mi=0;mi<features.length;mi++){
-                    if(!features[mi].attributes.cluster){
-                        if(features[mi].attributes.layer == uniqueMarkersLayers[m]){
-                            markers[m][count] = features[mi];
-                            count++;
-                        }
-                    }
-                }
-            }
-            
-            // Sets the style for the markers
-            var styleCluster = this.setMarkersStyle(false);
-
-
-            if (markers.length>0){
-                for (var i = 0; i<uniqueMarkersLayers.length; i++){
-                    if(uniqueMarkersLayers[i] == undefined){
-                        // Create new vector layer for default markers
-                       var marker_layer = new OpenLayers.Layer.Vector(markerName, {
-                            styleMap: styleCluster,
-                            displayInLayerSwitcher: true,
-                            //rendererOptions: {yOrdering: true},
-                            renderers: renderer
-                        });
-                    }else{
-                        // Create new vector layer for named markers
-                        uniqueMarkersLayers[i] = new OpenLayers.Layer.Vector(uniqueMarkersLayers[i], {
-                            styleMap: styleCluster,
-                            displayInLayerSwitcher: true,
-                            //rendererOptions: {yOrdering: true},
-                            renderers: renderer
-                        });
-                    }
-                }
-            }
-            
-            if (clusters.length>0){
-                // Create new vector layer for clusters
-                var cluster_layer = new OpenLayers.Layer.Vector(clusterName, {
-                    styleMap: styleCluster,
-                    displayInLayerSwitcher: true,
-                    //rendererOptions: {yOrdering: true},
-                    renderers: renderer
-                });
-            }
-            
-            // workaround to make the text features rendered in the same container having the vector features
-            if (clusters.length>0){
-                cluster_layer.renderer.textRoot = cluster_layer.renderer.vectorRoot;
-            }
-            
-            if (markers.length>0){
-                for (var i = 0; i<uniqueMarkersLayers.length; i++){
-                    if(uniqueMarkersLayers[i] == undefined){
-                        marker_layer.renderer.textRoot = marker_layer.renderer.vectorRoot;
-                    }else{
-                        uniqueMarkersLayers[i].renderer.textRoot = uniqueMarkersLayers[i].renderer.vectorRoot;
-                    }
-                }
-            }
-            
-            // Create the popups for markers
-			var popupTitle = this.markerPopupTitle;
-            var singlePopup = this.singlePopup;
-			
-			var self = this;
-			
-            function onFeatureSelect(feature) {
-                if (feature.attributes.html){
-                    if(this.popup && singlePopup){
-                        this.popup.close();
-                        this.popup.destroy();
-                        
-                    }
-                    this.popup = new GeoExt.Popup({
-                        title: feature.attributes.title || popupTitle,
-                        width: 300,
-                        height: 200,
-                        layout: "fit",
-                        map: self.mapPanel,
-                        destroyOnClose:true,
-                        location: feature.geometry.getBounds().getCenterLonLat(),
-                        items: [{   
-                            title: feature.fid,
-                            layout: "fit",
-                            bodyStyle: 'padding:10px;background-color:#F5F5DC',
-                            html: feature.attributes.html,
-                            autoScroll: true,
-                            autoWidth: true,
-                            collapsible: false
-                        }],
-                        listeners: { 
-                          close : function() {
-								try{
-									//
-									// To avoid control removal problems
-									//
-									selectControl.unselect(feature);
-								}catch(e){};
-							}
-                        }
-                    });
-                    this.popup.show();
-                } else {
-                    // Use unselect to not highlight the marker. I could not delete the selection. This happens when I close the popup
-                    selectControl.unselect(feature);
-                }
-            }
-
-            if(markers.length>0){
-                for (var i = 0; i<uniqueMarkersLayers.length; i++){
-                    for (var c=0; c<markers[i].length;c++){
-                        if(uniqueMarkersLayers[i] == undefined){
-                            this.mapPanel.map.addLayer(marker_layer);
-                            marker_layer.addFeatures(markers[i][c]);
-                        }else{
-                            this.mapPanel.map.addLayer(uniqueMarkersLayers[i]);
-                            uniqueMarkersLayers[i].addFeatures(markers[i][c]);
-                        }
-                    }
-                }
-            }
-            
-            if(clusters.length>0){
-                this.mapPanel.map.addLayer(cluster_layer);
-                cluster_layer.addFeatures(clusters);
-            }
-            
-            var vectorSelect = [];
-            
-            if(clusters.length>0 && markers.length>0){
-                vectorSelect = [cluster_layer];
-                for (var i = 0; i<uniqueMarkersLayers.length; i++){
-                    if(uniqueMarkersLayers[i] == undefined){
-                        vectorSelect.push(marker_layer);
-                    }else{
-                        vectorSelect.push(uniqueMarkersLayers[i]);
-                    }
-                }                
-            }else if(clusters.length==0 && markers.length>0){
-                for (var i = 0; i<uniqueMarkersLayers.length; i++){
-                    if(uniqueMarkersLayers[i] == undefined){
-                        vectorSelect.push(marker_layer);
-                    }else{
-                        vectorSelect.push(uniqueMarkersLayers[i]);
-                    }
-                }    
-            }else{
-                vectorSelect = cluster_layer;
-            }
-            if(vectorSelect && vectorSelect.length >0){
-				var selectControl = new OpenLayers.Control.SelectFeature(vectorSelect ,{
-					id:'injMarkerSelectControl',
-					onSelect: onFeatureSelect,
-					clickout: false,
-					multiple: !singlePopup,
-					autoActivate: true
-				});        
-				var prev= this.mapPanel.map.getControlsByClass(selectControl.CLASS_NAME);
-				for (var i = 0; i<prev.length;i++){
-					if(prev[i].id=="injMarkerSelectControl"){
-						prev[i].deactivate();
-						this.mapPanel.map.removeControl(prev[i]);
-						prev[i].destroy();
+		var uniqueMarkersLayers = [];
+		uniqueMarkersLayers = unique(markersLayers);
+		
+		for(var i=0;i<features.length;i++){
+			if(features[i].attributes.cluster){
+				clusters.push(features[i]);
+			}
+		}
+		
+		for (var m=0;m<uniqueMarkersLayers.length;m++){
+			markers[m] = new Array();
+			var count = 0;
+			for(var mi=0;mi<features.length;mi++){
+				if(!features[mi].attributes.cluster){
+					if(features[mi].attributes.layer == uniqueMarkersLayers[m]){
+						markers[m][count] = features[mi];
+						count++;
 					}
 				}
-				this.mapPanel.map.addControl(selectControl);
-				selectControl.activate();
-            }
-        }
+			}
+		}
+		
+		// Sets the style for the markers
+		var styleCluster = this.setMarkersStyle(false);
+
+
+		if (markers.length>0){
+			for (var i = 0; i<uniqueMarkersLayers.length; i++){
+				if(uniqueMarkersLayers[i] == undefined){
+					// Create new vector layer for default markers
+				   var marker_layer = new OpenLayers.Layer.Vector(markerName, {
+						styleMap: styleCluster,
+						displayInLayerSwitcher: true,
+						//rendererOptions: {yOrdering: true},
+						renderers: renderer
+					});
+				}else{
+					// Create new vector layer for named markers
+					uniqueMarkersLayers[i] = new OpenLayers.Layer.Vector(uniqueMarkersLayers[i], {
+						styleMap: styleCluster,
+						displayInLayerSwitcher: true,
+						//rendererOptions: {yOrdering: true},
+						renderers: renderer
+					});
+				}
+			}
+		}
+		
+		if (clusters.length>0){
+			// Create new vector layer for clusters
+			var cluster_layer = new OpenLayers.Layer.Vector(clusterName, {
+				styleMap: styleCluster,
+				displayInLayerSwitcher: true,
+				//rendererOptions: {yOrdering: true},
+				renderers: renderer
+			});
+		}
+		
+		// workaround to make the text features rendered in the same container having the vector features
+		if (clusters.length>0){
+			cluster_layer.renderer.textRoot = cluster_layer.renderer.vectorRoot;
+		}
+		
+		if (markers.length>0){
+			for (var i = 0; i<uniqueMarkersLayers.length; i++){
+				if(uniqueMarkersLayers[i] == undefined){
+					marker_layer.renderer.textRoot = marker_layer.renderer.vectorRoot;
+				}else{
+					uniqueMarkersLayers[i].renderer.textRoot = uniqueMarkersLayers[i].renderer.vectorRoot;
+				}
+			}
+		}
+		
+		// Create the popups for markers
+		var popupTitle = this.markerPopupTitle;
+		var singlePopup = this.singlePopup;
+		
+		var self = this;
+		
+		function onFeatureSelect(feature) {
+			if (feature.attributes.html){
+				if(this.popup && singlePopup){
+					this.popup.close();
+					this.popup.destroy();
+					
+				}
+				this.popup = new GeoExt.Popup({
+					title: feature.attributes.title || popupTitle,
+					width: 300,
+					height: 200,
+					layout: "fit",
+					map: self.mapPanel,
+					destroyOnClose:true,
+					location: feature.geometry.getBounds().getCenterLonLat(),
+					items: [{   
+						title: feature.fid,
+						layout: "fit",
+						bodyStyle: 'padding:10px;background-color:#F5F5DC',
+						html: feature.attributes.html,
+						autoScroll: true,
+						autoWidth: true,
+						collapsible: false
+					}],
+					listeners: { 
+					  close : function() {
+							try{
+								//
+								// To avoid control removal problems
+								//
+								selectControl.unselect(feature);
+							}catch(e){};
+						}
+					}
+				});
+				this.popup.show();
+			} else {
+				// Use unselect to not highlight the marker. I could not delete the selection. This happens when I close the popup
+				selectControl.unselect(feature);
+			}
+		}
+
+		if(markers.length>0){
+			for (var i = 0; i<uniqueMarkersLayers.length; i++){
+				for (var c=0; c<markers[i].length;c++){
+					if(uniqueMarkersLayers[i] == undefined){
+						this.mapPanel.map.addLayer(marker_layer);
+						marker_layer.addFeatures(markers[i][c]);
+					}else{
+						this.mapPanel.map.addLayer(uniqueMarkersLayers[i]);
+						uniqueMarkersLayers[i].addFeatures(markers[i][c]);
+					}
+				}
+			}
+		}
+		
+		if(clusters.length>0){
+			this.mapPanel.map.addLayer(cluster_layer);
+			cluster_layer.addFeatures(clusters);
+		}
+		
+		var vectorSelect = [];
+		
+		if(clusters.length>0 && markers.length>0){
+			vectorSelect = [cluster_layer];
+			for (var i = 0; i<uniqueMarkersLayers.length; i++){
+				if(uniqueMarkersLayers[i] == undefined){
+					vectorSelect.push(marker_layer);
+				}else{
+					vectorSelect.push(uniqueMarkersLayers[i]);
+				}
+			}                
+		}else if(clusters.length==0 && markers.length>0){
+			for (var i = 0; i<uniqueMarkersLayers.length; i++){
+				if(uniqueMarkersLayers[i] == undefined){
+					vectorSelect.push(marker_layer);
+				}else{
+					vectorSelect.push(uniqueMarkersLayers[i]);
+				}
+			}    
+		}else{
+			vectorSelect = cluster_layer;
+		}
+		if(vectorSelect && vectorSelect.length >0){
+			var selectControl = new OpenLayers.Control.SelectFeature(vectorSelect ,{
+				id:'injMarkerSelectControl',
+				onSelect: onFeatureSelect,
+				clickout: false,
+				multiple: !singlePopup,
+				autoActivate: true
+			});        
+			var prev= this.mapPanel.map.getControlsByClass(selectControl.CLASS_NAME);
+			for (var i = 0; i<prev.length;i++){
+				if(prev[i].id=="injMarkerSelectControl"){
+					prev[i].deactivate();
+					this.mapPanel.map.removeControl(prev[i]);
+					prev[i].destroy();
+				}
+			}
+			this.mapPanel.map.addControl(selectControl);
+			selectControl.activate();
+		}
         
 		if(trackName){
 		    // Checks if the track layer exists
@@ -1356,16 +1403,43 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                 ]);
             }
 		}
+		
+		// ///////////////////////////////////////////
+		// Automatically zoom to the markers extent
+		// ///////////////////////////////////////////
+		if(zoomToExtent){
+			var geometryArray = features;
+			var x = geometryArray[0] ? geometryArray[0].geometry.x : null;
+			var y = geometryArray[0] ? geometryArray[0].geometry.y : null;
+			
+			if(x && y){
+				var minx = x, maxx = x, miny = y, maxy = y;
+				for(var i=1; i<geometryArray.length; i++){
+					if(geometryArray[i]){
+						var geometry = geometryArray[i].geometry;
+						if(geometry.x < minx)	minx = geometry.x;
+						//else
+						if(geometry.x > maxx)	maxx = geometry.x;
+						//else
+						if(geometry.y < miny)	miny = geometry.y;
+						//else
+						if(geometry.y > maxy)	maxy = geometry.y;
+					}
+				}	
+
+				this.mapPanel.map.zoomToExtent(new OpenLayers.Bounds(minx, miny, maxx, maxy));
+			}
+		}
     },
     
     /** private: method[setAuthHeader]
      *
-     * Set Authorization Headers in gxp_saveDefaultContext.
+     * Set Authorization Headers in gxp_saveMapPlugin.
      */ 
     setAuthHeaders: function(auth) {
         for(var tool in this.tools){
-            if(this.tools[tool].ptype == "gxp_saveDefaultContext"){
-                this.tools[tool].auth = auth;
+            if(this.tools[tool].ptype == "gxp_saveMapPlugin"){
+                this.tools[tool].authHeader = auth;
             }
         }
     },
@@ -1417,20 +1491,21 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
 		
         return currentState;
     },
+        
     /**
      * Retrieves auth from (in this order)
      * * the session storage (if enabled userDetails, see ManagerViewPort.js class of mapmanager)
      * * the parent window (For usage in manager)
      * We should imagine to get the auth from other contexts.
      */
-    getAuth: function(){
+    getAuth: function(existingUserDetails, returnToken){
         var auth;
         
         //get from the session storage
-        var existingUserDetails = sessionStorage["userDetails"];
+        var existingUserDetails = existingUserDetails || sessionStorage["userDetails"];
         if(existingUserDetails){
-            this.userDetails = Ext.util.JSON.decode(sessionStorage["userDetails"]);
-            auth = this.userDetails.token;
+            this.userDetails = Ext.util.JSON.decode(existingUserDetails);
+            auth = returnToken ? this.userDetails.token : this.userDetails.authHeader;
         } else if(window.parent && window.parent.window && window.parent.window.manager && window.parent.window.manager.auth){
           //get from the parent
           auth = window.parent.window.manager.auth;
@@ -1438,6 +1513,136 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
         }
         
         return auth;
-    }
+    },
+	
+	zoomToCodInt: function(codint){
+
+		var getWFSStoreProxy = function(featureName, filter, sortBy, target){
+			var filterProtocol=new OpenLayers.Filter.Logical({
+				type: OpenLayers.Filter.Logical.AND,
+				filters: new Array()
+			});
+			if(filter) {
+				filterProtocol.filters.push(filter);
+			}
+			var proxy= new GeoExt.data.ProtocolProxy({ 
+				protocol: new OpenLayers.Protocol.WFS({ 
+					url: "http://159.213.57.81/geoserver/wfs",
+					featureType: featureName, 
+					readFormat: new OpenLayers.Format.GeoJSON(),
+					featureNS: "db_segnalazioni", 
+					filter: filterProtocol, 
+					outputFormat: "application/json",
+					version: "1.1.0"
+				}) 
+			});
+			return proxy;						
+		}		
+		
+		var sigla = codint.slice(6,8);
+		
+		var featureName;
+		
+		switch (sigla){
+			case "AR":
+				featureName = "genio_civile_arezzo_view"
+				break;
+			case "FI":
+				featureName = "genio_civile_firenze_view"
+				break;
+			case "GR":
+				featureName = "genio_civile_grosseto_view"
+				break;
+			case "LI":
+				featureName = "genio_civile_livorno_view"
+				break;
+			case "LU":
+				featureName = "genio_civile_lucca_view"
+				break;
+			case "MS":
+				featureName = "genio_civile_massa_carrara_view"
+				break;
+			case "PI":
+				featureName = "genio_civile_pisa_view"
+				break;
+			case "PO":
+				featureName = "genio_civile_prato_view"
+				break;
+			case "PT":
+				featureName = "genio_civile_pistoia_view"
+				break;
+			case "SI":
+				featureName = "genio_civile_siena_view"
+				break;							
+			default:
+				featureName = false
+				break;								
+			
+		}
+		
+		if(!featureName){
+			Ext.MessageBox.show({
+				title: 'Attenzione',
+				msg: 'Codice Intervento errato!',
+				buttons: Ext.Msg.OK,
+				animEl: 'elId',
+				icon: Ext.MessageBox.INFO
+			});
+
+			/////////////////////
+			// Fractional Zoom //
+			/////////////////////
+			if(this.mapPanel.map.restrictedExtent && this.mapPanel.map.fractionalZoom){
+				this.mapPanel.map.zoomToExtent(this.mapPanel.map.restrictedExtent);
+			}	
+				
+			Ext.MessageBox.getDialog().getEl().setStyle("zIndex", 100000);                    
+			return; 						
+		}
+		
+		var myFilter = new OpenLayers.Filter.Comparison({
+				type: OpenLayers.Filter.Comparison.EQUAL_TO,
+				property: "codint",
+				value: codint
+			});					
+			
+		var elaborazioneStore = new GeoExt.data.FeatureStore({ 
+			 id: "genio_civile_Store",
+			 fields: [{
+						"name": "codint",              
+						"mapping": "codint"
+			  }],
+			 proxy: getWFSStoreProxy(featureName,myFilter)
+		});
+		elaborazioneStore.load(); 					
+		
+		elaborazioneStore.on('load', function(store, records) {
+			if(records.length > 0){
+				var geographic = new OpenLayers.Projection("EPSG:4326");
+				var mercator = new OpenLayers.Projection("EPSG:3003");					
+				var bounds = records[0].data.feature.geometry.getBounds().clone().transform(geographic,mercator);
+				this.mapPanel.map.zoomToExtent(bounds);
+				this.mapPanel.map.zoomTo(9);						
+			}else{
+				Ext.MessageBox.show({
+					title: 'Attenzione',
+					msg: 'Codice Intervento non trovato!',
+					buttons: Ext.Msg.OK,
+					animEl: 'elId',
+					icon: Ext.MessageBox.INFO
+				});
+				
+				/////////////////////
+				// Fractional Zoom //
+				/////////////////////
+				if(this.mapPanel.map.restrictedExtent && this.mapPanel.map.fractionalZoom){
+					this.mapPanel.map.zoomToExtent(this.mapPanel.map.restrictedExtent);
+				}	
+				
+				Ext.MessageBox.getDialog().getEl().setStyle("zIndex", 100000);                    
+				return;  								
+			}
+		}, this);					
+	}
 });
 

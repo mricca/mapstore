@@ -5,38 +5,39 @@
 		<title>Highstock Example</title>
 
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<style type="text/css">
+${demo.css}
+		</style>
 		<script type="text/javascript">
-$(function() {
-	$.getJSON('http://www.highcharts.com/samples/data/jsonp.php?filename=aapl-c.json&callback=?', function(data) {
+$(function () {
+    $.getJSON('http://www.highcharts.com/samples/data/jsonp.php?filename=aapl-c.json&callback=?', function (data) {
 
-		// Create the chart
-		window.chart = new Highcharts.StockChart({
-			chart : {
-				renderTo : 'container'
-			},
+        // Create the chart
+        $('#container').highcharts('StockChart', {
 
-			rangeSelector : {
-				selected : 2
-			},
 
-			title : {
-				text : 'AAPL Stock Price'
-			},
+            rangeSelector : {
+                selected : 2
+            },
 
-			series : [{
-				name : 'AAPL Stock Price',
-				data : data,
-				lineWidth : 0,
-				marker : {
-					enabled : true,
-					radius : 2
-				},
-				tooltip: {
-					valueDecimals: 2
-				}
-			}]
-		});
-	});
+            title : {
+                text : 'AAPL Stock Price'
+            },
+
+            series : [{
+                name : 'AAPL Stock Price',
+                data : data,
+                lineWidth : 0,
+                marker : {
+                    enabled : true,
+                    radius : 2
+                },
+                tooltip: {
+                    valueDecimals: 2
+                }
+            }]
+        });
+    });
 });
 
 		</script>
@@ -45,6 +46,7 @@ $(function() {
 <script src="../../js/highstock.js"></script>
 <script src="../../js/modules/exporting.js"></script>
 
-<div id="container" style="height: 500px; min-width: 500px"></div>
+
+<div id="container" style="height: 400px; min-width: 310px"></div>
 	</body>
 </html>
