@@ -415,7 +415,7 @@
                 "queryPanel": false
 			},{
 				"source": "db_segnalazioni",
-				"group": "Proposta per DADS 2015",
+				"group": "Proposta per DODS LR 80/2015",
 				"title": "Genio Civile Arezzo",
 				"name": "genio_civile_arezzo_view",
                 "vendorParams":{
@@ -431,7 +431,7 @@
                 "queryable": false
 			},{
 				"source": "db_segnalazioni",
-				"group": "Proposta per DADS 2015",
+				"group": "Proposta per DODS LR 80/2015",
 				"title": "Genio Civile Arezzo - info",
 				"name": "genio_civile_arezzo_view",
                 "vendorParams":{
@@ -448,7 +448,7 @@
                 "queryable": true
 			},{
 				"source": "db_segnalazioni",
-				"group": "Proposta per DADS 2015",
+				"group": "Proposta per DODS LR 80/2015",
 				"title": "Genio Civile Firenze",
 				"name": "genio_civile_firenze_view",
                 "vendorParams":{
@@ -464,7 +464,7 @@
                 "queryable": false
 			},{
 				"source": "db_segnalazioni",
-				"group": "Proposta per DADS 2015",
+				"group": "Proposta per DODS LR 80/2015",
 				"title": "Genio Civile Firenze - info",
 				"name": "genio_civile_firenze_view",
                 "vendorParams":{
@@ -481,7 +481,7 @@
                 "queryable": true
 			},{
 				"source": "db_segnalazioni",
-				"group": "Proposta per DADS 2015",
+				"group": "Proposta per DODS LR 80/2015",
 				"title": "Genio Civile Grosseto",
 				"name": "genio_civile_grosseto_view",
                 "vendorParams":{
@@ -497,7 +497,7 @@
                 "queryable": false
 			},{
 				"source": "db_segnalazioni",
-				"group": "Proposta per DADS 2015",
+				"group": "Proposta per DODS LR 80/2015",
 				"title": "Genio Civile Grosseto - info",
 				"name": "genio_civile_grosseto_view",
                 "vendorParams":{
@@ -514,7 +514,7 @@
                 "queryable": true
 			},{
 				"source": "db_segnalazioni",
-				"group": "Proposta per DADS 2015",
+				"group": "Proposta per DODS LR 80/2015",
 				"title": "Genio Civile Livorno",
 				"name": "genio_civile_livorno_view",
                 "vendorParams":{
@@ -530,7 +530,7 @@
                 "queryable": false
 			},{
 				"source": "db_segnalazioni",
-				"group": "Proposta per DADS 2015",
+				"group": "Proposta per DODS LR 80/2015",
 				"title": "Genio Civile Livorno - info",
 				"name": "genio_civile_livorno_view",
                 "vendorParams":{
@@ -547,7 +547,7 @@
                 "queryable": true
 			},{
 				"source": "db_segnalazioni",
-				"group": "Proposta per DADS 2015",
+				"group": "Proposta per DODS LR 80/2015",
 				"title": "Genio Civile Lucca",
 				"name": "genio_civile_lucca_view",
                 "vendorParams":{
@@ -563,7 +563,7 @@
                 "queryable": false
 			},{
 				"source": "db_segnalazioni",
-				"group": "Proposta per DADS 2015",
+				"group": "Proposta per DODS LR 80/2015",
 				"title": "Genio Civile Lucca - info",
 				"name": "genio_civile_lucca_view",
                 "vendorParams":{
@@ -580,7 +580,7 @@
                 "queryable": true
 			},{
 				"source": "db_segnalazioni",
-				"group": "Proposta per DADS 2015",
+				"group": "Proposta per DODS LR 80/2015",
 				"title": "Genio Civile Massa-Carrara",
 				"name": "genio_civile_massa_carrara_view",
                 "vendorParams":{
@@ -596,7 +596,7 @@
                 "queryable": false
 			},{
 				"source": "db_segnalazioni",
-				"group": "Proposta per DADS 2015",
+				"group": "Proposta per DODS LR 80/2015",
 				"title": "Genio Civile Massa Carrara - info",
 				"name": "genio_civile_massa_carrara_view",
                 "vendorParams":{
@@ -613,7 +613,7 @@
                 "queryable": true
 			},{
 				"source": "db_segnalazioni",
-				"group": "Proposta per DADS 2015",
+				"group": "Proposta per DODS LR 80/2015",
 				"title": "Genio Civile Pisa",
 				"name": "genio_civile_pisa_view",
                 "vendorParams":{
@@ -629,7 +629,7 @@
                 "queryable": false
 			},{
 				"source": "db_segnalazioni",
-				"group": "Proposta per DADS 2015",
+				"group": "Proposta per DODS LR 80/2015",
 				"title": "Genio Civile Pisa - info",
 				"name": "genio_civile_pisa_view",
                 "vendorParams":{
@@ -646,7 +646,7 @@
                 "queryable": true
 			},{
 				"source": "db_segnalazioni",
-				"group": "Proposta per DADS 2015",
+				"group": "Proposta per DODS LR 80/2015",
 				"title": "Genio Civile Pistoia",
 				"name": "genio_civile_pistoia_view",
                 "vendorParams":{
@@ -662,7 +662,7 @@
                 "queryable": false
 			},{
 				"source": "db_segnalazioni",
-				"group": "Proposta per DADS 2015",
+				"group": "Proposta per DODS LR 80/2015",
 				"title": "Genio Civile Pistoia - info",
 				"name": "genio_civile_pistoia_view",
                 "vendorParams":{
@@ -679,7 +679,7 @@
                 "queryable": true
 			},{
 				"source": "db_segnalazioni",
-				"group": "Proposta per DADS 2015",
+				"group": "Proposta per DODS LR 80/2015",
 				"title": "Genio Civile Prato",
 				"name": "genio_civile_prato_view",
                 "vendorParams":{
@@ -695,7 +695,7 @@
                 "queryable": false
 			},{
 				"source": "db_segnalazioni",
-				"group": "Proposta per DADS 2015",
+				"group": "Proposta per DODS LR 80/2015",
 				"title": "Genio Civile Prato - info",
 				"name": "genio_civile_prato_view",
                 "vendorParams":{
@@ -712,7 +712,7 @@
                 "queryable": true
 			},{
 				"source": "db_segnalazioni",
-				"group": "Proposta per DADS 2015",
+				"group": "Proposta per DODS LR 80/2015",
 				"title": "Genio Civile Siena",
 				"name": "genio_civile_siena_view",
                 "vendorParams":{
@@ -728,7 +728,7 @@
                 "queryable": false
 			},{
 				"source": "db_segnalazioni",
-				"group": "Proposta per DADS 2015",
+				"group": "Proposta per DODS LR 80/2015",
 				"title": "Genio Civile Siena - info",
 				"name": "genio_civile_siena_view",
                 "vendorParams":{
