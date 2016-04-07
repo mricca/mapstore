@@ -185,80 +185,8 @@
                 "displayInLayerSwitcher": true,
                 "visibility": false,
                 "tiled": false,
-                "expanded": false,
+                "expanded": true,
                 "checked": false,
-                "attribution": false
-            },
-            {
-                "source": "geoscopio_ortofoto",
-                "group": "Ortofotocarte 1:10.000",
-                "title": "Anno 2010 col - AGEA",
-                "name": "rt_ofc.10k10",
-                "displayInLayerSwitcher": true,
-                "visibility": false,
-                "tiled": false,
-                "expanded": false,
-                "checked": false,            
-                "attribution": false
-            },
-            {
-                "source": "geoscopio_ortofoto",
-                "group": "Ortofotocarte 1:10.000",
-                "title": "Anno 2007 col - CGR",
-                "name": "rt_ofc.10k07",
-                "displayInLayerSwitcher": true,
-                "visibility": false,
-                "tiled": false,
-                "expanded": false,
-                "checked": false,            
-                "attribution": false
-            },
-            {
-                "source": "geoscopio_ortofoto",
-                "group": "Ortofotocarte 1:10.000",
-                "title": "Anno 1996 bn - AIMA",
-                "name": "rt_ofc.10k96",
-                "displayInLayerSwitcher": true,
-                "visibility": false,
-                "tiled": false,
-                "expanded": false,
-                "checked": false,            
-                "attribution": false
-            },
-            {
-                "source": "geoscopio_ortofoto",
-                "group": "Ortofotocarte 1:10.000",
-                "title": "Anno 1988 bn - RT",
-                "name": "rt_ofc.10k88",
-                "displayInLayerSwitcher": true,
-                "visibility": false,
-                "tiled": false,
-                "expanded": false,
-                "checked": false,            
-                "attribution": false
-            },
-            {
-                "source": "geoscopio_ortofoto",
-                "group": "Ortofotocarte 1:10.000",
-                "title": "Anno 1978 bn - RT",
-                "name": "rt_ofc.10k78",
-                "displayInLayerSwitcher": true,
-                "visibility": false,
-                "tiled": false,
-                "expanded": false,
-                "checked": false,            
-                "attribution": false
-            },
-            {
-                "source": "geoscopio_ortofoto",
-                "group": "Ortofotocarte 1:10.000",
-                "title": "Anno 1954 bn - RT-IGM",
-                "name": "rt_ofc.10k54",
-                "displayInLayerSwitcher": true,
-                "visibility": false,
-                "tiled": false,
-                "expanded": false,
-                "checked": false,            
                 "attribution": false
             },
             {
@@ -279,7 +207,7 @@
                 "name": "rt_ctr.10k",
                 "minscale": 15000,             
                 "displayInLayerSwitcher": true,
-                "visibility": true,
+                "visibility": false,
                 "tiled": false,
                 "attribution": false
             },
@@ -391,7 +319,8 @@
 				"name": "rt_idrogr.corsi.rt.line",
 				"displayInLayerSwitcher": true,
 				"visibility": true,
-				"tiled": false
+				"tiled": false,
+				"attribution": false
 			},{
 				"source": "geoserver_ret",
 				"group": "Reticolo Gestione RT",
@@ -399,7 +328,7 @@
 				"name": "RETICOLO_GESTIONE:proposta_comprensori_lr79_2012",
 				"displayInLayerSwitcher": true,
 				"visibility": false,
-				"tiled": true
+				"tiled": false
 			},{
 				"source": "geoserver_ret",
 				"group": "Reticolo Gestione RT",
@@ -422,8 +351,9 @@
 				"title": "Province",
 				"name": "rt_ambamm.idprovince.rt.poly",
 				"displayInLayerSwitcher": true,
-				"visibility": true,
-				"tiled": false
+				"visibility": false,
+				"tiled": false,
+				"attribution": false
 			},{
 				"source": "geoscopio_amb_ammin",
 				"group": "Ambiti amministrativi",
@@ -431,7 +361,8 @@
 				"name": "rt_ambamm.idcomuni.rt.poly",
 				"displayInLayerSwitcher": true,
 				"visibility": false,
-				"tiled": false
+				"tiled": false,
+				"attribution": false
 			},{
 				"source": "geoserver_ret",
 				"group": "Ambiti amministrativi",
