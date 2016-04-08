@@ -622,7 +622,7 @@
 		serverConfig.geoStoreBaseURL = serverConfig.geoStoreBase || ('http://' + window.location.host + '/geostore/rest/');
         serverConfig.adminUrl = serverConfig.adminUrl || ('http://' + window.location.host + '/admin/');
 
-		var configuration = customConfigName ? customConfigName : "difSuolo_segnalazioniConfig";
+		var configuration = customConfigName ? customConfigName : "mapStoreConfigGeoScopio";
 		
 		// use GeoExplorerLoader to load configuration files
 		var loader = new GeoExplorerLoader(serverConfig, configuration, mapStoreDebug, mapIdentifier, 

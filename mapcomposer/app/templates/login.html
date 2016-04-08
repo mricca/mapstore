@@ -32,7 +32,9 @@
 	
     <!-- canvg-1.2 resources -->
 	<script type="text/javascript" src="script/canvg-1.2.js"></script> 
-	
+
+    <script type="text/javascript" src="script/ux.js"></script>
+    	
     <!-- gxp resources -->
     <link rel="stylesheet" type="text/css" href="externals/gxp/src/theme/all.css">
 
@@ -53,7 +55,6 @@
     <!--[if IE]><link rel="stylesheet" type="text/css" href="theme/app/ie.css"/><![endif]-->        
 
     <script type="text/javascript" src="script/GeoExplorer.js"></script>
-    <script type="text/javascript" src="script/ux.js"></script>
    
     <!-- csw resources -->
     <link rel="stylesheet" type="text/css" href="externals/csw/css/csw.css">
@@ -95,7 +96,7 @@
 	
     <script>
 		var app;        
-        var modified = false; var mapIdentifier = -1; var authorization = false; var fullScreen = false; var bbox; var useCookies; var templateId;
+        var modified = false; var mapIdentifier = -1; var authorization = false; var fullScreen = false; var bbox; var useCookies; var templateId; var codint = false;
 		
 		// /////////////////////////////////////////////////////
 		// Extra parameters to add layers at startup
@@ -169,6 +170,9 @@
 									}catch(e){
 										templateId = -1;
 									} 
+									break;
+					case "codint":
+									codint = param[1];
 									break;
 					default :       
 									//mapIdentifier = -1;
@@ -415,7 +419,21 @@
                     }, 
                     'ready' : function(){
                         app.modified = false;
-                        
+
+                        ///////////////////////////////////////
+    					// Perform Zoom To Codice Intervento //
+    					///////////////////////////////////////					
+    					if(codint){
+    						app.zoomToCodInt(codint);
+    					}else{
+    						/////////////////////
+    						// Fractional Zoom //
+    						/////////////////////
+    						if(app.mapPanel.map.restrictedExtent && app.mapPanel.map.fractionalZoom){
+    							app.mapPanel.map.zoomToExtent(app.mapPanel.map.restrictedExtent);
+    						}					
+    					}
+
                         // ///////////////////////////////////////////////////
                         // Visualizing metadata tab and layers at startup 
                         // ///////////////////////////////////////////////////

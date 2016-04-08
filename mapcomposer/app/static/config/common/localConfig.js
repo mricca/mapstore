@@ -3,10 +3,10 @@
  * be overridden by the serverConfig objects in templates.
  */
 var localConfig = {
-   geoStoreBase: "",
+   geoStoreBase: "http://localhost:8080/geostore/rest/",
    proxy:"/http_proxy/proxy/?url=",
    defaultLanguage: "it",
-   skipCustomConfigs: true,
+   skipCustomConfigs: false,
    apikeys:{
        "Bing" : "insert-your-Bing-API-key"
    }

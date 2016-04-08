@@ -432,13 +432,6 @@
 			"ptype": "gxp_geolocationmenu",
 			"actionTarget": {"target": "paneltbar", "index": 23},
 			"toggleGroup": "toolGroup"
-		}, {
-            "ptype": "gxp_about",
-            "poweredbyURL": "http://www.geo-solutions.it/about/contacts/",
-            "actionTarget": {
-                "target": "panelbbar",
-                "index": 1
-            }
-        }
+		}
 	]
 }
