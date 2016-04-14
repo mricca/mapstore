@@ -3,11 +3,12 @@
  * be overridden by the serverConfig objects in templates.
  */
 var localConfig = {
-   geoStoreBase: "http://localhost:8080/geostore/rest/",
+   geoStoreBase: "http://geoportale.lamma.rete.toscana.it/geostore_ds/rest/",
    proxy:"/http_proxy/proxy/?url=",
    defaultLanguage: "it",
    skipCustomConfigs: false,
    apikeys:{
        "Bing" : "insert-your-Bing-API-key"
-   }
+   },
+   customConfigName: "difSuolo_presidiConfig"
 };
