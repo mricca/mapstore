@@ -22,13 +22,13 @@ gxp.plugins.NestedLayerTree = Ext.extend(gxp.plugins.LayerTree, {
                         node.select();
                     }
                 });
-                                
+
                 if (record === target.selectedLayer) {
                     node.on("rendernode", function() {
                         node.select();
 
                         // ///////////////////////////////////////////////////////////////////////
-                        // to check the group at startup (if the layer node should be checked) 
+                        // to check the group at startup (if the layer node should be checked)
                         // or when a layer is added.
                         // ///////////////////////////////////////////////////////////////////////
                         if(node.isLeaf() && node.getUI().isChecked()){
@@ -38,7 +38,7 @@ gxp.plugins.NestedLayerTree = Ext.extend(gxp.plugins.LayerTree, {
                 }else{
                     node.on("rendernode", function() {
                         // ///////////////////////////////////////////////////////////////////////
-                        // to check the group at startup (if the layer node should be checked) 
+                        // to check the group at startup (if the layer node should be checked)
                         // or when a layer is added.
                         // ///////////////////////////////////////////////////////////////////////
                         if(node.isLeaf() && node.getUI().isChecked()){
@@ -47,9 +47,9 @@ gxp.plugins.NestedLayerTree = Ext.extend(gxp.plugins.LayerTree, {
                     });
                 }
             }
-        };    
+        };
         var LayerNodeUI = Ext.extend(gxp.tree.LayerNodeUI,
-            new GeoExt.tree.TreeNodeUIEventMixin());    
+            new GeoExt.tree.TreeNodeUIEventMixin());
         return {
             text: text,
             expanded: expanded,
@@ -58,7 +58,7 @@ gxp.plugins.NestedLayerTree = Ext.extend(gxp.plugins.LayerTree, {
             group: groupCode,
             checked: checked,
             singleClickExpand: true,
-            allowDrag: true,            
+            allowDrag: true,
             loader: new GeoExt.tree.LayerLoader({
                 store: this.target.mapPanel.layers,
                 filter: function(record) {
@@ -83,15 +83,15 @@ gxp.plugins.NestedLayerTree = Ext.extend(gxp.plugins.LayerTree, {
                     }
                     var node = GeoExt.tree.LayerLoader.prototype.createNode.apply(this, arguments);
                     addListeners(node, record);
-                    
+
                     return node;
-                }                
+                }
             }),
             listeners: {
                 append: function(tree, node) {
                     node.expand();
                 }
-            }            
+            }
         };
     },
 
@@ -103,26 +103,55 @@ gxp.plugins.NestedLayerTree = Ext.extend(gxp.plugins.LayerTree, {
         var baseLayers = root.childNodes[1];
         var count = 2;
         //root.removeChild(overlays);
+        var locIndex= this.localIndexs[GeoExt.Lang.locale];
+
+        var newGroupConfig, newGroupFolderConfig, newGroupChildrenConfig;
+        var groupNames, groupFolderName, groupChildrenName;
+
         for (var i=0, ii=this.groupConfig.length; i<ii; ++i) {
             var group = this.groupConfig[i];
+            if (typeof group.title === "string") {
+                groupNames=group.title.split(this.localLabelSep);
+                newGroupConfig=new Object();
+            }
+
+            if(groupNames.length > 0){
+                newGroupConfig.title= groupNames[locIndex] ? groupNames[locIndex] : groupNames[0];
+            }
+
             var node = new Ext.tree.TreeNode({
-                text: group.title,
+                //text: group.title,
+                text: newGroupConfig.title,
                 expanded: true,
                 //checked: false,
                 singleClickExpand: false,
-                allowDrag: true                
+                allowDrag: true
             });
             if (group.folder){
                 for (var j=0, jj=group.folder.length; j<jj; ++j) {
-                    root.appendChild(this.createGroup(group.folder[j].title, group.folder[j].name, group.expanded, group.checked));
+                    if (typeof group.folder[j].title === "string") {
+                        groupFolderName=group.folder[j].title.split(this.localLabelSep);
+                        newGroupFolderConfig=new Object();
+                    }
+                    if(groupFolderName.length > 0){
+                        newGroupFolderConfig.title= groupFolderName[locIndex] ? groupFolderName[locIndex] : groupFolderName[0];
+                    }
+                    root.appendChild(this.createGroup(newGroupFolderConfig.title, group.folder[j].name, group.expanded, group.checked));
                 }
                 var node2 = root.childNodes[count];
                 root.insertBefore(node2, baseLayers);
             }else if(group.children){
                 for (var j=0, jj=group.children.length; j<jj; ++j) {
-                    node.appendChild(this.createGroup(group.children[j].title, group.children[j].name, group.expanded, group.checked));
+                    if (typeof group.children[j].title === "string") {
+                        groupChildrenName=group.children[j].title.split(this.localLabelSep);
+                        newGroupChildrenConfig=new Object();
+                    }
+                    if(groupChildrenName.length > 0){
+                        newGroupChildrenConfig.title= groupChildrenName[locIndex] ? groupChildrenName[locIndex] : groupChildrenName[0];
+                    }
+                    node.appendChild(this.createGroup(newGroupChildrenConfig.title, group.children[j].name, group.expanded, group.checked));
                 }
-                root.insertBefore(node, baseLayers);            
+                root.insertBefore(node, baseLayers);
             }else{
                 root.removeChild(root.childNodes[count])
             }

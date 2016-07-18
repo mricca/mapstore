@@ -29,59 +29,60 @@ Ext.namespace('gxp.widgets.button');
  *
  */
 gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
+    
+    /** api: ptype = gxp_geobasidata */
     xtype: 'gxp_geobasiDataBoxPlotButton',
-    form: null,
-    url: null,
-    filter: null,
-    layer: "geobasi:geobasi_boxplot_view",
-    addedLayer: null,
-    chartID: null,
-    pagePosition: null,
+    
+    /**
+    * i18n Start
+    */        
     mainLoadingMask: "Attendere prego, creazione grafico in corso...",
+    msgAlertRequiredFieldsTitle: "Campi obbligatori",
+    msgAlertRequiredFieldsMatrixElementText: "Devi selezionare una Matrice e un Elemento!",
+    msgAlertRequiredFieldsElementText: "Devi selezionare un Elemento!",
+    msgAlertNoDataTitle: 'Nessun dato',
+    msgAlertNoDataText: 'Dati non disponibili per questo criterio di ricerca',
+    
+    boxPlotObservationsName: 'Osservazioni',
+    boxPlotOutliersName: 'Valori Anomali',
+    boxPlotPointsTooltip: 'Osservazione',
+    boxPlotNewDatasetTitle: 'Box Plot Nuovo Dataset',
+    boxPlotDefaultTitle: 'Box Plot Geobasi',
+    
+    chartYAxisTitle: 'Elemento',
+    chartYAxisPlotLinesText: 'Mediana totale:',
+    
+    boxPlotPanelTitle: 'Box Plot',
+    
+    chartSelectionAreaLabel: "Selezione",
+    chartNullDataYes: 'SI',
+    chartNullDataNo: 'NO',
+    chartTotValueSubtitle: 'Totale valori',
+    chartMatrixType: 'Tipo Matrice',
+    chartFromData: 'Periodo dal',
+    chartToData: 'al',
+    chartNoDataValue: 'Valori senza data',
+    chartLogarithmicScale: "( scala logaritmica )",
+    chartActualValues: "( valori reali )",
+    chartAnalyticalMethod: 'Metodo Analitico',
+    /**
+    * i18n Start
+    */        
+    
+    url: null,
     handler: function() {
+        
         var me = this;
-        var myFilter;
-        if (this.filter.filterPolygon && this.filter.filterPolygon.value) {
-            myFilter = this.filter.filterPolygon;
-        } else if (this.filter.filterCircle && this.filter.filterCircle.value) {
-            myFilter = this.filter.filterCircle;
-        } else if (this.filter.searchWFSComboAlluvioni && this.filter.searchWFSComboAlluvioni.geometry) {
-            var geoJSON = new OpenLayers.Format.WKT();
-            var geoJSONgeometry = geoJSON.read(this.filter.searchWFSComboAlluvioni.geometry);
-            myFilter = new OpenLayers.Filter.Spatial({
-                type: OpenLayers.Filter.Spatial.INTERSECTS,
-                property: "geom",
-                value: geoJSONgeometry.geometry
-            });
-            this.vectorSelectionArea = this.filter.searchWFSComboAlluvioni.lastSelectionText;
-        } else if (this.filter.searchWFSComboRoccia && this.filter.searchWFSComboRoccia.geometry) {
-            var geoJSON = new OpenLayers.Format.WKT();
-            var geoJSONgeometry = geoJSON.read(this.filter.searchWFSComboRoccia.geometry);
-            myFilter = new OpenLayers.Filter.Spatial({
-                type: OpenLayers.Filter.Spatial.INTERSECTS,
-                property: "geom",
-                value: geoJSONgeometry.geometry
-            });
-            this.vectorSelectionArea = this.filter.searchWFSComboRoccia.lastSelectionText;
-        } else if (this.filter.searchWFSComboComuniRT && this.filter.searchWFSComboComuniRT.geometry) {
-            var geoJSON = new OpenLayers.Format.WKT();
-            var geoJSONgeometry = geoJSON.read(this.filter.searchWFSComboComuniRT.geometry);
-            myFilter = new OpenLayers.Filter.Spatial({
-                type: OpenLayers.Filter.Spatial.INTERSECTS,
-                property: "geom",
-                value: geoJSONgeometry.geometry
-            });
-            this.vectorSelectionArea = this.filter.searchWFSComboComuniRT.lastSelectionText;
-        } else {
-            myFilter = false;
-            this.vectorSelectionArea = false;
-        }
+        
+        var myFilter = geobasi.getdata.getFilter(this);
+        
         var data = this.form.output.getForm().getValues();
         var data2 = this.form.output.getForm().getFieldValues();
+        
         if (!data2.tipo_matrice) {
             Ext.MessageBox.show({
-                title: 'Campi obbligatori',
-                msg: 'Devi selezionare una Matrice e un Elemento!',
+                title: this.msgAlertRequiredFieldsTitle,
+                msg: this.msgAlertRequiredFieldsMatrixElementText,
                 buttons: Ext.Msg.OK,
                 animEl: 'elId',
                 icon: Ext.MessageBox.INFO
@@ -91,8 +92,8 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
         }
         if (!data2.elemento) {
             Ext.MessageBox.show({
-                title: 'Campi obbligatori',
-                msg: 'Devi selezionare un Elemento!',
+                title: this.msgAlertRequiredFieldsTitle,
+                msg: this.msgAlertRequiredFieldsElementText,
                 buttons: Ext.Msg.OK,
                 animEl: 'elId',
                 icon: Ext.MessageBox.INFO
@@ -100,6 +101,7 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
             Ext.MessageBox.getDialog().getEl().setStyle("zIndex", 100000);
             return;
         }
+        
         var monitoraggioValue;
         if (data2.tipomonitoraggio === "01") {
             monitoraggioValue = ' IS NOT NULL';
@@ -108,179 +110,27 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
         } else {
             monitoraggioValue = ' = false';
         }
-        var viewparams2 = "monitoraggio:" + monitoraggioValue + ";" + "tygeomat:" + data2.tipo_matrice + ";" + "sigla_el:" + data2.elemento;
+        
+       var elementType = this.target.checkElementType(this.target.output.selElementType,data2.tipo_matrice);
+        
+        var viewparams2 = "monitoraggio:" + monitoraggioValue + ";" +
+                            "tygeomat:" + data2.tipo_matrice + ";" +
+                            "sigla:" + data2.elemento + ";" +
+                            "type:" + elementType.replace(/,/g, '\\,');
+        
         this.appMask = new Ext.LoadMask(Ext.getBody(), {
             msg: this.mainLoadingMask
         });
         this.appMask.show();
+        
         var allowBaciniIntersect = data2.baciniintersect && !this.filter.baciniintersect.disabled;
-        this.buildFilter(myFilter, data.startYear, data.endYear, data2.allownull, data2.baciniintersect, function(dateFilter) {
+        
+        geobasi.bacinifilter.buildFilter(myFilter, data.startYear, data.endYear, data2.allownull, data2.baciniintersect, function(dateFilter) {
+            
             me.makeChart(dateFilter, data, data2, viewparams2);
+            
         }, this);
-    },
-    getData: function(json, metodoElaborazione, json1) {
-        var arrLength = json.features.length;
-        var dataPoints = [];
-        var medianaBoxPlot;
-        switch (metodoElaborazione) {
-            case "1":
-                medianaBoxPlot = (arrLength % 2 == 0) ? (Math.log(json.features[((arrLength) / 2) - 1].properties.value) + Math.log(json.features[((arrLength + 2) / 2) - 1].properties.value)) / 2 : Math.log(json.features[((arrLength + 1) / 2) - 1].properties.value);
-                break;
-            case "2":
-                medianaBoxPlot = (arrLength % 2 == 0) ? (json.features[((arrLength) / 2) - 1].properties.value + json.features[((arrLength + 2) / 2) - 1].properties.value) / 2 : json.features[((arrLength + 1) / 2) - 1].properties.value;
-                break;
-        }
-        if (!Array.prototype.forEach) {
-            Array.prototype.forEach = function(fun) {
-                "use strict";
-                if (this === void 0 || this === null)
-                    throw new TypeError();
-                var t = Object(this);
-                var len = t.length >>> 0;
-                if (typeof fun !== "function")
-                    throw new TypeError();
-                var thisArg = arguments.length >= 2 ? arguments[1] : void 0;
-                for (var i = 0; i < len; i++) {
-                    if (i in t)
-                        fun.call(thisArg, t[i], i, t);
-                }
-            };
-        }
-
-        function uniqueBy(arr, fn) {
-            var unique = {};
-            var distinct = [];
-            arr.forEach(function(x) {
-                var key = fn(x);
-                if (!unique[key]) {
-                    distinct.push(key);
-                    unique[key] = true;
-                }
-            });
-            return distinct;
-        }
-        var uniqueTipometa = uniqueBy(json.features, function(x) {
-            return x.properties.method;
-        });
-        for (var i = 0; i < uniqueTipometa.length; i++) {
-            var minimo;
-            var massimo;
-            var myValues = [];
-            var metodoAnalitico = uniqueTipometa[i] === null ? '-999' : uniqueTipometa[i];
-            var b = 0;
-            var firstPercentile;
-            var thirdPercentile;
-            for (var c = 0; c < arrLength; c++) {
-                json.features[c].properties.method = json.features[c].properties.method === null ? '-999' : json.features[c].properties.method;
-                if (metodoAnalitico === json.features[c].properties.method) {
-                    myValues[b] = {
-                        metodo: json.features[c].properties.method,
-                        valore: metodoElaborazione == '1' ? Math.log(json.features[c].properties.value) : json.features[c].properties.value,
-                        bbox: json.features[c].properties.bbox
-                    };
-                    b++;
-                }
-            }
-            var conteggio = myValues.length;
-            var firstPercentileVal = (conteggio + 1) / 4;
-            var secondPercentile = (conteggio % 2 == 0) ? (myValues[((conteggio) / 2) - 1].valore + myValues[((conteggio + 2) / 2) - 1].valore) / 2 : myValues[((conteggio + 1) / 2) - 1]['valore'];
-            var thirdPercentileVal = (conteggio + 1) * 3 / 4;
-            var is_int = function(value) {
-                if ((parseFloat(value) == parseInt(value)) && !isNaN(value)) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-            var intval = function(mixed_var, base) {
-                var tmp;
-                var type = typeof mixed_var;
-                if (type === 'boolean') {
-                    return +mixed_var;
-                } else if (type === 'string') {
-                    tmp = parseInt(mixed_var, base || 10);
-                    return (isNaN(tmp) || !isFinite(tmp)) ? 0 : tmp;
-                } else if (type === 'number' && isFinite(mixed_var)) {
-                    return mixed_var | 0;
-                } else {
-                    return 0;
-                }
-            }
-            if (is_int(firstPercentileVal)) {
-                if (conteggio >= 4) {
-                    firstPercentile = myValues[firstPercentileVal - 1].valore;
-                } else {
-                    firstPercentile = null;
-                }
-            } else {
-                if (conteggio >= 4) {
-                    var first = myValues[intval(firstPercentileVal) - 1].valore;
-                    var second = myValues[(intval(firstPercentileVal) - 1) + 1].valore;
-                    var third = myValues[intval(firstPercentileVal) - 1].valore;
-                    var forth = intval(firstPercentileVal);
-                    firstPercentile = first + ((second) - third) * (firstPercentileVal - (forth));
-                } else {
-                    firstPercentile = null;
-                }
-            }
-            if (is_int(thirdPercentileVal)) {
-                if (conteggio >= 4) {
-                    thirdPercentile = myValues[thirdPercentileVal - 1].valore;
-                } else {
-                    thirdPercentile = null;
-                }
-            } else {
-                if (conteggio >= 4) {
-                    var primo = myValues[intval(thirdPercentileVal) - 1].valore;
-                    var secondo = myValues[(intval(thirdPercentileVal) - 1) + 1].valore;
-                    var terzo = myValues[intval(thirdPercentileVal) - 1].valore;
-                    var quarto = intval(thirdPercentileVal);
-                    thirdPercentile = primo + ((secondo) - terzo) * (thirdPercentileVal - (quarto));
-                } else {
-                    thirdPercentile = null;
-                }
-            }
-            var minimo = myValues[0].valore;
-            var massimo = myValues[conteggio - 1].valore;
-            var firstPercRecalc = firstPercentile - 1.5 * (thirdPercentile - firstPercentile);
-            var thirdPercRecalc = thirdPercentile + 1.5 * (thirdPercentile - firstPercentile);
-            var newMin = minimo > firstPercRecalc ? minimo : firstPercRecalc;
-            var newMax = massimo < thirdPercRecalc ? massimo : thirdPercRecalc;
-            var outlier = [];
-            var outlierBbox = [];
-            var h = 0
-            for (var c = 0; c < conteggio; c++) {
-                if (metodoAnalitico == myValues[c].metodo) {
-                    if (myValues[c].valore < newMin || myValues[c].valore > newMax) {
-                        outlier[h] = [i, Math.round10(myValues[c].valore, -5)];
-                        outlierBbox[h] = [i, myValues[c].bbox];
-                        h++;
-                    }
-                }
-            }
-            var obj = null;
-            dataPoints[i] = {
-                experiment: metodoAnalitico === '-999' ? 'Metodo Analitico non specificato' : metodoAnalitico,
-                min: Math.round10(newMin, -5),
-                q1: Math.round10(firstPercentile, -5),
-                med: Math.round10(secondPercentile, -5),
-                q2: Math.round10(thirdPercentile, -5),
-                max: Math.round10(newMax, -5),
-                outlier: outlier,
-                median: Math.round10(medianaBoxPlot, -5),
-                sigla: json.features[0].properties.element,
-                totaleRiprova: arrLength,
-                matrice: json.features[0].properties.matrix_cod,
-                dmgeomattipo_descr: this.form.output.getForm().getValues().tipo_matrice,
-                startYear: this.form.output.getForm().getValues().startYear,
-                endYear: this.form.output.getForm().getValues().endYear,
-                nullDate: this.form.output.getForm().getFieldValues().allownull,
-                vectorSelectionArea: this.vectorSelectionArea,
-                log: metodoElaborazione,
-                bbox: outlierBbox
-            };
-        }
-        return dataPoints;
+        
     },
     makeChart: function(dateFilter, data, data2, viewparams2) {
         this.layer;
@@ -347,7 +197,7 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
                 geometryName: "geom",
                 request: "GetFeature",
                 filter: this.xml,
-                typeName: this.layer,
+                typeName: this.typeNameBoxPlot,
                 outputFormat: "json",
                 propertyName: "source,site_id,year,month,day,monitoring,matrix,matrix_cod,toponym,municipal_id,element,value,method,geom",
                 sortBy: "value"
@@ -357,7 +207,7 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
                 geometryName: "geom",
                 request: "GetFeature",
                 filter: this.xml,
-                typeName: this.layer,
+                typeName: this.typeNameBoxPlot,
                 outputFormat: "json",
                 propertyName: "source,site_id,year,month,day,monitoring,matrix,matrix_cod,toponym,municipal_id,element,value,method,geom",
                 sortBy: "value",
@@ -381,8 +231,8 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
                 if (jsonData2.features.length <= 0) {
                     this.appMask.hide();
                     Ext.MessageBox.show({
-                        title: 'Nessun dato',
-                        msg: 'Dati non disponibili per questo criterio di ricerca',
+                        title: this.msgAlertNoDataTitle,
+                        msg: this.msgAlertNoDataText,
                         buttons: Ext.Msg.OK,
                         animEl: 'elId',
                         icon: Ext.MessageBox.INFO
@@ -390,15 +240,22 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
                     Ext.MessageBox.getDialog().getEl().setStyle("zIndex", 100000);
                     return;
                 }
+                
                 var data = this.form.output.getForm().getValues();
+                
                 var metodoElaborazione = data.elabmethodtype;
-                var dataCharts = this.getData(jsonData2, metodoElaborazione);
+                
+                //var dataCharts = this.getData(jsonData2, metodoElaborazione);
+                var dataCharts = geobasi.getdata.getBoxPlotData(jsonData2, metodoElaborazione, this);
+                
                 var mainChart = Ext4.getCmp('geobasi_boxplot' + "_" + this.chartID);
+                
                 var gridStore = Ext4.data.StoreManager.lookup("BoxPlotChartStore");
+                
                 if (!mainChart) {
                     var hcConfig = {
                         series: [{
-                            name: 'Osservazioni',
+                            name: this.boxPlotObservationsName,
                             type: 'boxplot',
                             minDataIndex: 'min',
                             lowQtrDataIndex: 'q1',
@@ -407,7 +264,7 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
                             maxDataIndex: 'max',
                             xField: 'experiment'
                         }, {
-                            name: 'Valori Anomali',
+                            name: this.boxPlotOutliersName,
                             type: 'scatter',
                             dataField: 'outlier',
                             dataIndex: 'outlier',
@@ -418,7 +275,7 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
                                 lineColor: Highcharts.getOptions().colors[3]
                             },
                             tooltip: {
-                                pointFormat: 'Osservazione: {point.y}'
+                                pointFormat: this.boxPlotPointsTooltip + ': {point.y}'
                             },
                             visible: true,
                             listeners: {
@@ -460,7 +317,7 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
                                 inverted: true
                             },
                             title: {
-                                text: "Box Plot",
+                                text: 'Box Plot',
                                 x: -20
                             },
                             subtitle: {
@@ -480,7 +337,7 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
                             },
                             yAxis: {
                                 title: {
-                                    text: 'Elemento'
+                                    text: this.chartYAxisTitle,
                                 },
                                 plotLines: [{
                                     value: 0,
@@ -488,7 +345,7 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
                                     width: 2,
                                     zIndex: 4,
                                     label: {
-                                        text: 'Mediana totale:',
+                                        text: this.chartYAxisPlotLinesText,
                                         rotation: 0,
                                         align: 'center',
                                         x: 70,
@@ -517,7 +374,7 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
                     hcConfig.id = 'geobasi_boxplot' + "_" + this.chartID;
                     mainChart = Ext4.widget('highchart', hcConfig);
                     var myTabPanel = new Ext4.window.Window({
-                        title: 'Box Plot',
+                        title: this.boxPlotPanelTitle,
                         id: this.chartID,
                         itemId: 'boxplot_tab',
                         border: true,
@@ -540,7 +397,9 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
                     Ext4.getCmp(this.chartID).setPagePosition(this.pagePosition);
                 }
                 Ext4.getCmp(this.chartID).expand(true);
-                var newTitle = this.chartID == "added_boxPlot" ? 'Box Plot Nuovo Dataset' : 'Box Plot Geobasi';
+                
+                var newTitle = this.chartID == "added_boxPlot" ? this.boxPlotNewDatasetTitle : this.boxPlotDefaultTitle;
+                
                 Ext4.getCmp(this.chartID).setTitle(newTitle);
                 var dataCharts2 = Ext.util.JSON.encode(dataCharts);
                 var proxy = new Ext4.data.proxy.Memory({
@@ -551,20 +410,28 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
                 });
                 gridStore && mainChart.bindStore(gridStore);
                 gridStore.loadData(dataCharts);
+                
                 var records = gridStore.first();
-                var selectionArea = records.get('vectorSelectionArea') != "false" ? " - Selezione: " + records.get('vectorSelectionArea') : "";
+                var selectionArea = records.get('vectorSelectionArea') != "false" ? " - " + this.chartSelectionAreaLabel + ": " + records.get('vectorSelectionArea') : "";
+                var nullDateString = records.get('nullDate') ? this.chartNullDataYes : this.chartNullDataNo;
                 mainChart.chartConfig.chart.backgroundColor = this.chartID == "added_boxPlot" ? '#F1F9C3' : '#FFFFFF';
-                mainChart.chartConfig.title.text = this.chartID == "added_boxPlot" ? 'Box Plot Nuovo Dataset' : 'Box Plot Geobasi';
+                mainChart.chartConfig.title.text = this.chartID == "added_boxPlot" ? this.boxPlotNewDatasetTitle : this.boxPlotDefaultTitle;
                 mainChart.chartConfig.initAnimAfterLoad = false;
                 mainChart.chartConfig.yAxis.plotLines[0].value = records.get('median');
-                mainChart.chartConfig.yAxis.plotLines[0].label.text = 'Mediana totale: ' + records.get('median');
+                mainChart.chartConfig.yAxis.plotLines[0].label.text = this.chartYAxisPlotLinesText + ': ' + records.get('median');
                 mainChart.chartConfig.series[1].visible = false;
-                var nullDateString = records.get('nullDate') ? 'SI' : 'NO';
-                mainChart.chartConfig.subtitle.text = 'Totale valori: ' + records.get('totaleRiprova') + ' - Tipo Matrice: ' + records.get('dmgeomattipo_descr').toUpperCase() + " - Periodo dal " + records.get('startYear') + " al " + records.get('endYear') + " - Valori senza data: " + nullDateString + selectionArea;
+                
+                mainChart.chartConfig.subtitle.text = this.chartTotValueSubtitle + ': ' + records.get('totaleRiprova') + ' - ' + 
+                                                        this.chartMatrixType + ': ' + records.get('dmgeomattipo_descr').toUpperCase() + ' - ' +
+                                                        this.chartFromData + " " + records.get('startYear') + ' ' +
+                                                        this.chartToData + " " + records.get('endYear') + ' - ' + 
+                                                        this.chartNoDataValue + ": " + nullDateString +
+                                                        selectionArea;
+                                                        
                 var unitaMisura = records.get('matrice').substr(0, 2) === "01" ? "(mg/L)" : "(ppm)"
-                mainChart.chartConfig.yAxis.title.text = 'Elemento: ' + records.get('sigla') + " " + unitaMisura;
-                var logText = records.get('log') === "1" ? "( scala logaritmica )" : "( valori reali )";
-                mainChart.chartConfig.xAxis.title.text = 'Metodo Analitico - ' + logText;
+                mainChart.chartConfig.yAxis.title.text = this.chartYAxisTitle + ': ' + records.get('sigla') + " " + unitaMisura;
+                var logText = records.get('log') === "1" ? this.chartLogarithmicScale : this.chartActualValues;
+                mainChart.chartConfig.xAxis.title.text = this.chartAnalyticalMethod + ': - ' + logText;
                 mainChart.draw();
                 this.appMask.hide();
             },
@@ -580,189 +447,7 @@ gxp.widgets.button.GeobasiDataBoxPlotButton = Ext.extend(Ext.Button, {
                 Ext.MessageBox.getDialog().getEl().setStyle("zIndex", 100000);
             }
         });
-    },
-    buildFilter: function(filter, startDate, endDate, checked, baciniFilter, callback, me) {
-        if (baciniFilter) {
-            var app = window.app;
-            var map = app.mapPanel.map;
-            var baciniWfsLayer = app.mapPanel.map.getLayersByName("Intersect Bacini")[0];
-            if (baciniWfsLayer) {
-                app.mapPanel.map.removeLayer(baciniWfsLayer);
-            }
-            var layerBacini = new OpenLayers.Layer.Vector("Intersect Bacini");
-            var getFeatureFromWFS = function(response) {
-                var parametri = [];
-                var ci_sibapoParams = "";
-                if (response.features.length > 0) {
-                    for (var i = 0; i < response.features.length; i++) {
-                        parametri.push(response.features[i].attributes.ci_sibapo);
-                        if (i == response.features.length - 1) {
-                            ci_sibapoParams += "'" + response.features[i].attributes.ci_sibapo + "'";
-                        } else {
-                            ci_sibapoParams += "'" + response.features[i].attributes.ci_sibapo.concat("'\\,");
-                        }
-                    }
-                } else {
-                    Ext.MessageBox.show({
-                        title: 'Intersect Bacini',
-                        msg: 'Nessun sottobacino presente nell\'area prescelta!',
-                        buttons: Ext.Msg.OK,
-                        animEl: 'elId',
-                        icon: Ext.MessageBox.INFO
-                    });
-                    Ext.MessageBox.getDialog().getEl().setStyle("zIndex", 100000);
-                    me.appMask.hide();
-                    return;
-                }
-                Ext.Ajax.request({
-                    scope: me,
-                    url: 'http://www506.regione.toscana.it/geoserver/wfs',
-                    method: 'POST',
-                    params: {
-                        service: "WFS",
-                        version: "1.1.0",
-                        geometryName: "geom",
-                        request: "GetFeature",
-                        typeName: 'geobasi:bacini_decod',
-                        outputFormat: "json",
-                        viewparams: "compostoda:" + ci_sibapoParams
-                    },
-                    success: function(result, request) {
-                        var jsonData2 = Ext.util.JSON.decode(result.responseText);
-                        var geoJSON = new OpenLayers.Format.GeoJSON();
-                        if (jsonData2.features.length > 0) {
-                            for (var i = 0; i < jsonData2.features.length; i++) {
-                                var geoJSONgeometry = geoJSON.read(jsonData2.features[i].geometry);
-                                geoJSONgeometry[0].attributes = jsonData2.features[i].properties;
-                                layerBacini.addFeatures(geoJSONgeometry);
-                            }
-                        }
-                        var app = window.app;
-                        var map = app.mapPanel.map;
-                        map.addLayers([layerBacini]);
-                        if (jsonData2.features.length > 110) {
-                            Ext.MessageBox.show({
-                                title: 'Intersect Bacini',
-                                msg: 'Numero sottobacini selezionato al momento troppo elevato, riprova con un\'altra selezione',
-                                buttons: Ext.Msg.OK,
-                                animEl: 'elId',
-                                icon: Ext.MessageBox.INFO
-                            });
-                            Ext.MessageBox.getDialog().getEl().setStyle("zIndex", 100000);
-                            me.appMask.hide();
-                            return;
-                        }
-                        var allowNullFilter = new OpenLayers.Filter.Comparison({
-                            type: OpenLayers.Filter.Comparison.IS_NULL,
-                            property: "year",
-                            value: null
-                        });
-                        var aaa = new OpenLayers.Filter.Logical({
-                            type: OpenLayers.Filter.Logical.OR,
-                            filters: []
-                        });
-                        for (var i = 0; i < layerBacini.features.length; i++) {
-                            var baciniFeatures = new OpenLayers.Filter.Spatial({
-                                type: OpenLayers.Filter.Spatial.INTERSECTS,
-                                property: "geom",
-                                value: layerBacini.features[i].geometry
-                            });
-                            aaa.filters.push(baciniFeatures);
-                        }
-                        var dateFilter = new OpenLayers.Filter.Logical({
-                            type: OpenLayers.Filter.Logical.OR,
-                            filters: [new OpenLayers.Filter.Comparison({
-                                type: OpenLayers.Filter.Comparison.BETWEEN,
-                                property: "year",
-                                lowerBoundary: startDate,
-                                upperBoundary: endDate
-                            })]
-                        });
-                        var newFilter = new OpenLayers.Filter.Logical({
-                            type: OpenLayers.Filter.Logical.AND,
-                            filters: []
-                        });
-                        if (checked) {
-                            dateFilter.filters.push(allowNullFilter)
-                        }
-                        baciniFilter ? newFilter.filters.push(aaa) : newFilter.filters.push(filter);
-                        newFilter.filters.push(dateFilter);
-                        var totFilter = filter ? newFilter : dateFilter;
-                        callback(totFilter);
-                    },
-                    failure: function(result, request) {}
-                });
-            };
-            var protocol = new OpenLayers.Protocol.WFS({
-                url: "http://www506.regione.toscana.it/geoserver/wfs",
-                version: "1.1.0",
-                featureType: "ci_rwtw_bacini",
-                featureNS: "http://geobasi",
-                srsName: "EPSG:3003",
-                extractAttribute: true
-            });
-            var protRead = protocol.read({
-                filter: filter,
-                callback: getFeatureFromWFS
-            });
-        } else {
-            var allowNullFilter = new OpenLayers.Filter.Comparison({
-                type: OpenLayers.Filter.Comparison.IS_NULL,
-                property: "year"
-            });
-            var dateFilter = new OpenLayers.Filter.Logical({
-                type: OpenLayers.Filter.Logical.OR,
-                filters: [new OpenLayers.Filter.Comparison({
-                    type: OpenLayers.Filter.Comparison.BETWEEN,
-                    property: "year",
-                    lowerBoundary: startDate,
-                    upperBoundary: endDate
-                })]
-            });
-            var newFilter = new OpenLayers.Filter.Logical({
-                type: OpenLayers.Filter.Logical.AND,
-                filters: []
-            });
-            if (checked) {
-                dateFilter.filters.push(allowNullFilter);
-            }
-            newFilter.filters.push(filter);
-            newFilter.filters.push(dateFilter);
-            var totFilter = filter ? newFilter : dateFilter;
-            callback(totFilter);
-        }
     }
 });
-(function() {
-    function decimalAdjust(type, value, exp) {
-        if (typeof exp === 'undefined' || +exp === 0) {
-            return Math[type](value);
-        }
-        value = +value;
-        exp = +exp;
-        if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0)) {
-            return NaN;
-        }
-        value = value.toString().split('e');
-        value = Math[type](+(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp)));
-        value = value.toString().split('e');
-        return +(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp));
-    }
-    if (!Math.round10) {
-        Math.round10 = function(value, exp) {
-            return decimalAdjust('round', value, exp);
-        };
-    }
-    if (!Math.floor10) {
-        Math.floor10 = function(value, exp) {
-            return decimalAdjust('floor', value, exp);
-        };
-    }
-    if (!Math.ceil10) {
-        Math.ceil10 = function(value, exp) {
-            return decimalAdjust('ceil', value, exp);
-        };
-    }
-})();
 
 Ext.reg(gxp.widgets.button.GeobasiDataBoxPlotButton.prototype.xtype, gxp.widgets.button.GeobasiDataBoxPlotButton);

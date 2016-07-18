@@ -276,7 +276,7 @@
             }
             
             var url = Ext.urlDecode(query);        
-            var code = url.locale || serverConfig.defaultLanguage || "en";			
+            var code = url.locale || serverConfig.defaultLanguage || "en";
 
 			// ////////////////////////////////////////////////////
 			// Setting the language code for the GeoExt tools
@@ -497,7 +497,7 @@
 					/////////////////////
 					// Periodic Table //
 					/////////////////////                    
-					var periodicTablePanel = Ext.getCmp(app.renderToTab);
+					/*var periodicTablePanel = Ext.getCmp(app.renderToTab);
 					
 					var linkTab = new Ext.Panel({
 						title: 'Tavola Periodica degli Elementi',
@@ -512,7 +512,7 @@
 						]
 					});
 					
-					periodicTablePanel.add(linkTab); 
+					periodicTablePanel.add(linkTab); */
 					
                 }, 
                 'ready' : function(){
@@ -623,7 +623,7 @@
 		serverConfig.geoStoreBaseURL = serverConfig.geoStoreBase || ('http://' + window.location.host + '/geostore/rest/');
         serverConfig.adminUrl = serverConfig.adminUrl || ('http://' + window.location.host + '/admin/');
 
-		var configuration = customConfigName ? customConfigName : "geobasiConfig";
+		var configuration = customConfigName ? customConfigName : "geobasiConfig_test";
 		
 		// use GeoExplorerLoader to load configuration files
 		var loader = new GeoExplorerLoader(serverConfig, configuration, mapStoreDebug, mapIdentifier, 

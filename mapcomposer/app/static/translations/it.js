@@ -29,7 +29,9 @@ GeoExt.Lang.add("it", {
         /*viewTabTitle : "GEOBASI - DataBase Geochimico Regionale",*/
         viewTabTitle : "Mappa",
 		markerPopupTitle: "Dettagli",
-		mainLoadingMask: "Attendere prego ..."
+		mainLoadingMask: "Attendere prego ...",
+        geobasiLayerPanelTitleText: "VISUALIZZAZIONE DATI GEOGRAFICI",
+        geobasiDataPanelTitleText : "SELEZIONE DATI GEOCHIMICI"
     },
     
     "GeoExplorer.Composer.prototype": {
@@ -925,7 +927,7 @@ GeoExt.Lang.add("it", {
     },
 	
 	"gxp.plugins.StaticPage.prototype": {
-        tabTitle: "Pagina Statica"
+        tabTitle: "Tavola Periodica degli Elementi"
 	},
 	
     "gxp.plugins.DownloadPanel.prototype":{
@@ -1031,5 +1033,196 @@ GeoExt.Lang.add("it", {
 		showExecutionIdText: "Mostra ID",
 		processIdentifierText: "Identificatore",
 		downloadIdTitle: "ID Download"
-    }
+    },
+    
+    "gxp.plugins.geobasi.GeobasiData.prototype": {
+        selElabMethodLabel: 'Seleziona tipologia valori',
+        mainLoadingMask: "Caricamento date in corso...",
+        dataTabText: 'Dati',
+        updateCountFieldsetTitle: 'Riepilogo selezione',
+        updateCountTotAnalisiText: 'Totale Analisi selezionate:',
+        updateCountTipoMatriceText: 'Tipo Matrice:',
+        updateCountElementoText: 'Elemento:',
+        updateCountMetAnaliticoText: 'Metodo Analitico:',
+        updateCountAreaGeoText: 'Area Geografica:',
+        updateCountIntTempText: 'Intervallo temporale:',
+        updateCountMonitoraggioText: 'Presenza monitoraggio:',
+        rangeYearFieldsetTitle: 'Selezione intervallo temporale',
+        selAreaDamageFieldsetTitle: 'Selezione area geografica',
+        rangeYearNullValueLabel: 'Includi valori nulli',
+        monitoraggioFieldsetTitle: 'Selezione presenza monitoraggio',
+        monitoraggioLabel: 'Monitoraggio',
+        monitoringTypeDropDownLabelAll: 'Tutte le tipologie',
+        monitoringTypeDropDownLabelYes: 'Monitoraggio SI',
+        monitoringTypeDropDownLabelNo: 'Monitoraggio NO',
+        matrixElemMethodFieldsetTitle: 'Selezione Matrice - Elemento - Metodo Analitico',
+        matrixTypeSelectionLabel: 'Tipo Matrice',
+        selectionMatrixEmptyText: '-- Seleziona Tipo Matrice --',
+        selectionMatrixValueNotFoundText: '-- Seleziona Tipo Matrice --',
+        genericText: '(generico)',
+        elementSelectionTypeLabel: "Tipologia Elemento",
+        elementTypeCheckLabel: 'Elementi',
+        oxideTypeCheckLabel: 'Ossidi',
+        redoxTypeCheckLabel: 'Redox',
+        isotopeTypeCheckLabel: 'Isotopi',          
+        elementSelectionLabel: 'Elemento',
+        selectionElementEmptyText: "-- Seleziona Elemento --",
+        selectionElementValueNotFoundText: "-- Seleziona Elemento --",
+        analyticalMethodSelectionLabel: 'Metodo Analitico',
+        selectionMethodEmptyText: "-- Seleziona Metodo Analitico --",
+        selectionMethodNotFoundText: "-- Seleziona Metodo Analitico --",
+        transformationMethodsFieldsetTitle: 'Metodi trasformazione dati',
+        elabMethodTypeRealValueLabel: 'Valori reali',
+        elabMethodTypeLogarithmicScaleLabel: 'Scala logaritmica',    
+        downloadPanelTitle: "DOWNLOAD SELEZIONE",
+        downloadPanelDownloadSelectionText: 'Scarica Selezione (CSV)',
+        downloadPanelViewSelectionText: 'Visualizza Selezione',
+        downloadPanelViewSelectionTooltip: 'Visualizza Selezione',
+        downloadPanelDownloadSelectionTooltip: 'Scarica Selezione (CSV)',
+        statisticalAnalysisPanelTitle: "ANALISI STATISTICA GRAFICO NUMERICA",
+        statisticalAnalysisButtonBoxPlotText: 'Box Plot',
+        statisticalAnalysisButtonHistogramText: 'Istogramma',
+        statisticalAnalysisButtonCumulativeCurveText: 'Curva Cumul.',
+        viewChartTooltip: 'Visualizza Grafico',
+        waterMatrix: 'Acqua',
+        soilMatrix: 'Terreno',
+        errorNoDataResponseTitle: "Nessun dato",
+        errorNoDataResponseText: "Dati non disponibili per questo criterio di ricerca",
+        tuscanyRegionText: 'Regione Toscana',
+        msgInfoAlertTitle: 'Informazione',
+        msgAlertNoImplementedFunctionality: 'Funzionalità in fase di implementazione!',
+        msgAlertSelectionInfoTitle: 'Info Selezione',
+        msgAlertSelectionInfoText: 'La selezione impostata ha restituito 0 analisi!'
+	},
+    
+    "gxp.widgets.button.GeobasiDataBoxPlotButton.prototype": {
+        mainLoadingMask: "Attendere prego, creazione grafico in corso...",
+        msgAlertRequiredFieldsTitle: "Campi obbligatori",
+        msgAlertRequiredFieldsMatrixElementText: "Devi selezionare una Matrice e un Elemento!",
+        msgAlertRequiredFieldsElementText: "Devi selezionare un Elemento!",
+        msgAlertNoDataTitle: 'Nessun dato',
+        msgAlertNoDataText: 'Dati non disponibili per questo criterio di ricerca',        
+        boxPlotObservationsName: 'Osservazioni',
+        boxPlotOutliersName: 'Valori Anomali',
+        boxPlotPointsTooltip: 'Osservazione',
+        boxPlotNewDatasetTitle: 'Box Plot Nuovo Dataset',
+        boxPlotDefaultTitle: 'Box Plot Geobasi',        
+        chartYAxisTitle: 'Elemento',
+        chartYAxisPlotLinesText: 'Mediana totale:',        
+        boxPlotPanelTitle: 'Box Plot',        
+        chartSelectionAreaLabel: "Selezione",
+        chartNullDataYes: 'SI',
+        chartNullDataNo: 'NO',
+        chartTotValueSubtitle: 'Totale valori',
+        chartMatrixType: 'Tipo Matrice',
+        chartFromData: 'Periodo dal',
+        chartToData: 'al',
+        chartNoDataValue: 'Valori senza data',
+        chartLogarithmicScale: "( scala logaritmica )",
+        chartActualValues: "( valori reali )",
+        chartAnalyticalMethod: 'Metodo Analitico'
+	},
+
+    "gxp.widgets.button.GeobasiDataBarChartButton.prototype": {
+        mainLoadingMask: "Attendere prego, creazione grafico in corso...",
+        msgAlertRequiredFieldsTitle: "Campi obbligatori",
+        msgAlertRequiredFieldsMatrixElementText: "Devi selezionare una Matrice e un Elemento!",
+        msgAlertRequiredFieldsElementText: "Devi selezionare un Elemento!",
+        msgAlertRequiredFieldsAnalyticalMethodText: 'Devi selezionare un Metodo Analitico!!!',
+        msgAlertNoDataTitle: 'Nessun dato',
+        msgAlertNoDataText: 'Dati non disponibili per questo criterio di ricerca',        
+        histogramColumnSeriesName: 'Istogramma',
+        histogramSplineSeriesName: 'Spline',
+        histogramClasseVectorLayer: 'Classe',
+        histogramElementVectorLayer: "Elemento",
+        histogramNumerosityVectorLayer: "Numerosità",
+        histogramamplitudeVectorLayer: "Ampiezza",
+        histogramStatisticNumerousness: 'Numerosità Classe',
+        histogramNewDatasetTitle: 'Istogramma Nuovo Dataset',
+        histogramDefaultTitle: 'Istogramma Geobasi',        
+        chartYAxisTitle: 'Elemento',        
+        chartSelectionAreaLabel: "Selezione",
+        chartNullDataYes: 'SI',
+        chartNullDataNo: 'NO',
+        chartTotValueSubtitle: 'Totale valori',
+        chartMatrixType: 'Tipo Matrice',
+        chartFromData: 'Periodo dal',
+        chartToData: 'al',
+        chartNoDataValue: 'Valori senza data',
+        chartLogarithmicScale: "( scala logaritmica )",
+        chartActualValues: "( valori reali )",
+        chartAnalyticalMethod: 'Metodo Analitico',
+        histogramYAxisText: 'Frequenza'
+	},
+
+    "gxp.widgets.button.GeobasiDataCurvaCumButton.prototype": {
+        mainLoadingMask: "Attendere prego, creazione grafico in corso...",
+        msgAlertRequiredFieldsTitle: "Campi obbligatori",
+        msgAlertRequiredFieldsMatrixElementText: "Devi selezionare una Matrice e un Elemento!",
+        msgAlertRequiredFieldsElementText: "Devi selezionare un Elemento!",
+        msgAlertRequiredFieldsAnalyticalMethodText: 'Devi selezionare un Metodo Analitico!!!',
+        msgAlertNoDataTitle: 'Nessun dato',
+        msgAlertNoDataText: 'Dati non disponibili per questo criterio di ricerca',        
+        curvaCumNewDatasetTitle: 'Cumulata Nuovo Dataset',
+        curvaCumDefaultTitle: 'Cumulata Geobasi',        
+        chartSelectionAreaLabel: "Selezione",
+        chartNullDataYes: 'SI',
+        chartNullDataNo: 'NO',
+        chartTotValueSubtitle: 'Totale valori',
+        chartMatrixType: 'Tipo Matrice',
+        chartFromData: 'Periodo dal',
+        chartToData: 'al',
+        chartNoDataValue: 'Valori senza data',
+        chartLogarithmicScale: "( scala logaritmica )",
+        chartActualValues: "( valori reali )",
+        chartAnalyticalMethod: 'Metodo Analitico'
+	},
+
+    "gxp.widgets.button.GeobasiDataDownloadButton.prototype": {
+        mainLoadingMask: "Attendere prego, creazione grafico in corso...",
+        msgAlertRequiredFieldsTitle: "Campi obbligatori",
+        msgAlertRequiredFieldsMatrixElementText: "Devi selezionare una Matrice e un Elemento!",
+        msgAlertRequiredFieldsElementText: "Devi selezionare un Elemento!",
+        msgAlertRequiredFieldsAnalyticalMethodText: 'Devi selezionare un Metodo Analitico!!!',
+        msgAlertNoDataTitle: 'Nessun dato',
+        msgAlertNoDataText: 'Dati non disponibili per questo criterio di ricerca'
+	},
+    
+    "gxp.geobasi.spatialFilterGeobasi.prototype": {
+        geobasiSpatialFilterLabel: "Metodo selezione",
+        geobasiSpatialFilteEmptyText: "--- Scegli tipologia ---",
+        comboPolygonSelection: 'Poligono',
+        comboCircleSelection: 'Cerchio',
+        comboBufferSelection: "Buffer",
+        comboComuniSelection : "Comuni",
+        comboAlluvioniSelection: 'CIS - Poroso',
+        comboRocciaSelection: 'CIS - Roccia',
+        highlightAlluvioni : "Highlight Alluvioni",
+        highlightRoccia : "Highlight Roccia",        
+        highlightComuni : "Highlight Comuni",
+        intersectBaciniCheckLabel: 'Interseca con Bacini',        
+        clearSpatialFilterText: 'Rimuovi filtro',        
+        setTipologyAreaSelection: 'Scegli tipologia selezione area'
+    },
+    
+    "geobasi.getdata": {
+        boxPlotUndefinedAnalyticalMethod: 'Metodo analitico non specificato',
+        barChartUndefinedAnalyticalMethod: 'non specificato'
+    },
+    
+    "geobasi.bacinifilter": {
+        catchmentAreaLayerName: 'Bacini selezionati',
+        msgAlertCatchmentAreaTitle: 'Bacini selezionati',
+        msgAlertNOCatchmentAreaText: 'Nessun sottobacino presente nell\'area prescelta!',
+        msgAlertTooManyCatchmentAreaText: 'Numero sottobacini selezionato al momento troppo elevato, riprova con un\'altra selezione'
+    },
+    
+    "geobasi.periodictable": {
+        msgAlertElementsFormTitleText: 'Schede Elementi',
+        msgAlertElementsFormMsgText: 'Schede non ancora presenti per l\'elemento selezionato!<BR/>Gli elementi corredati di schede presentano il bordo rosso!',
+        elementsFormTabTitleText: "Scheda - Elemento",
+        formTabTip: "Scheda",
+        foregsFormTabTitleText: "Scheda - Foregs",
+        foregsTabTip: "Foregs"
+    }    
 });

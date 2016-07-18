@@ -93,9 +93,9 @@ var elementsData = {
             "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_sb_edit.pdf"
         ],[
             "Attinio",
-            "Ac-Lr",
+            "Ac",
             "http://www506.regione.toscana.it/schede_elementi/Attinio.pdf",
-            "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_ac-lr_edit.pdf"
+            "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_ac_edit.pdf"
         ],[
             "Osmio",
             "Os",
@@ -111,6 +111,61 @@ var elementsData = {
             "Ra",
             "http://www506.regione.toscana.it/schede_elementi/Radio.pdf",
             "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_ra_edit.pdf"
+        ],[
+            "Ferro",
+            "Fe",
+            "http://www506.regione.toscana.it/schede_elementi/Ferro.pdf",
+            "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_fe_edit.pdf"
+        ],[
+            "Fosforo",
+            "P",
+            "http://www506.regione.toscana.it/schede_elementi/Fosforo.pdf",
+            "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_p_edit.pdf"
+        ],[
+            "Manganese",
+            "Mn",
+            "http://www506.regione.toscana.it/schede_elementi/Manganese.pdf",
+            "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_mn_edit.pdf"
+        ],[
+            "Nettunio",
+            "Np",
+            "http://www506.regione.toscana.it/schede_elementi/Nettunio.pdf",
+            "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_np_edit.pdf"
+        ],[
+            "Plutonio",
+            "Pu",
+            "http://www506.regione.toscana.it/schede_elementi/Plutonio.pdf",
+            "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_pu_edit.pdf"
+        ],[
+            "Protoattinio",
+            "Pa",
+            "http://www506.regione.toscana.it/schede_elementi/Protoattinio.pdf",
+            "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_pa_edit.pdf"
+        ],[
+            "Titanio",
+            "Ti",
+            "http://www506.regione.toscana.it/schede_elementi/Titanio.pdf",
+            "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_ti_edit.pdf"
+        ],[
+            "Torio",
+            "Th",
+            "http://www506.regione.toscana.it/schede_elementi/Torio.pdf",
+            "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_th_edit.pdf"
+        ],[
+            "Uranio",
+            "U",
+            "http://www506.regione.toscana.it/schede_elementi/Uranio.pdf",
+            "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_u_edit.pdf"
+        ],[
+            "Vanadio",
+            "V",
+            "http://www506.regione.toscana.it/schede_elementi/Vanadio.pdf",
+            "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_v_edit.pdf"
+        ],[
+            "Zinco",
+            "Zn",
+            "http://www506.regione.toscana.it/schede_elementi/Zinco.pdf",
+            "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_zn_edit.pdf"
         ]
     ]
 };

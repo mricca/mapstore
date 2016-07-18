@@ -255,7 +255,7 @@ gxp.plugins.WMSGetFeatureInfo = Ext.extend(gxp.plugins.Tool, {
                             // This function assume that teh body is empty in order 
                             // to return noDataMsg (no features)
                             // ////////////////////////////////////////////////////
-                            var match = evt.text.match(/<body[^>]*>([\s\S]*)<\/body>/);
+                            var match = evt.text.match(/<body[^>]*>([\s\S]*)<\/body>/i);
                             if (match && !match[1].match(/^\s*$/)) {
                                 atLeastOneResponse = true;
                                 
