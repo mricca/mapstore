@@ -10,5 +10,5 @@ var localConfig = {
    apikeys:{
        "Bing" : "insert-your-Bing-API-key"
    },
-   customConfigName: "difSuolo_presidiConfig"
+   customConfigName: "difSuolo_trattiManutenzione"
 };

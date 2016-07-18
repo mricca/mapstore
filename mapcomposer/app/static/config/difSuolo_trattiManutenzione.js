@@ -1,24 +1,40 @@
 {
    "scaleOverlayMode": "advanced",
    "actionToolScale": "medium",
-   "tab": true,
+   "tab": false,
    "gsSources":{
-   		"geoserver_ds": {
-			"ptype": "gxp_wmssource",
-			"url": "http://geoportale.lamma.rete.toscana.it/geoserver_ds/RETICOLO/ows?",
-			"title": "Difesa Suolo Reticolo",
-			"SRS": "EPSG:3003",
-			"version":"1.1.1",
-            "loadingProgress": true,
-			"layersCachedExtent": [
-				1547065, 4677785,
-				1803065, 4933785
-			],
-			"layerBaseParams":{
-				"FORMAT":"image/png",
-				"TILED":false
-			}
-		},
+       "geoserver_ds": {
+           "ptype": "gxp_wmssource",
+           "url": "http://geoportale.lamma.rete.toscana.it/geoserver_ds/RETICOLO/ows?",
+           "title": "Difesa Suolo Reticolo",
+           "SRS": "EPSG:3003",
+           "version":"1.1.1",
+           "loadingProgress": true,
+           "layersCachedExtent": [
+               1547065, 4677785,
+               1803065, 4933785
+           ],
+           "layerBaseParams":{
+               "FORMAT":"image/png",
+               "TILED":false
+           }
+       },
+       "geoserver_presidi": {
+           "ptype": "gxp_wmssource",
+           "url": "http://geoportale.lamma.rete.toscana.it/geoserver_ds/PRESIDI/ows?",
+           "title": "Geoscopio Reticolo",
+           "SRS": "EPSG:3003",
+           "version":"1.1.1",
+           "loadingProgress": true,
+           "layersCachedExtent": [
+               1547065, 4677785,
+               1803065, 4933785
+           ],
+           "layerBaseParams":{
+               "FORMAT":"image/png",
+               "TILED":true
+           }
+       },
    		"geoscopio": {
 			"ptype": "gxp_wmssource",
 			"url": "http://www502.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmssfondo&map_resolution=91&language=ita",
@@ -132,13 +148,19 @@
 			}
 		}
 	},
+	"loadingPanel": {
+		"width": 100,
+		"height": 100,
+		"center": true
+	},
 	"map": {
 		"projection": "EPSG:3003",
 		"displayProjection": "EPSG:3003",
 		"units": "m",
 		"fractionalZoom": true,
-		"center": [1671579.00, 4803992.00],
-		"scales": [50, 1000, 2000, 5000, 8000, 10000, 15000, 25000.1, 50000.1, 100000.1, 250000, 500000, 1000000, 1500000.1, 2000000],
+		"center": [1671579.00,
+		4803992.00],
+		"scales": [50, 1000, 2000, 5000, 8000, 10000, 15000, 25000, 50000, 100000, 250000, 500000, 1000000, 1500000, 2000000],
 		"maxExtent": [1328298.3134386, 4554791.501599, 2014859.6865614, 5053192.498401],
 		"restrictedExtent": [1550750, 4674330, 1775720, 4929790],
 		"layers": [{
@@ -169,7 +191,7 @@
                 "displayInLayerSwitcher": true,
                 "visibility": false,
                 "tiled": false,
-                "expanded": true,
+                "expanded": false,
                 "checked": false,
                 "attribution": false
             },
@@ -181,7 +203,7 @@
                 "displayInLayerSwitcher": true,
                 "visibility": false,
                 "tiled": false,
-                "expanded": true,
+                "expanded": false,
                 "checked": false,
                 "attribution": false
             },
@@ -193,7 +215,7 @@
                 "displayInLayerSwitcher": true,
                 "visibility": false,
                 "tiled": false,
-                "expanded": true,
+                "expanded": false,
                 "checked": false,
                 "attribution": false
             },
@@ -205,7 +227,7 @@
                 "displayInLayerSwitcher": true,
                 "visibility": false,
                 "tiled": false,
-                "expanded": true,
+                "expanded": false,
                 "checked": false,
                 "attribution": false
             },
@@ -217,7 +239,7 @@
                 "displayInLayerSwitcher": true,
                 "visibility": false,
                 "tiled": false,
-                "expanded": true,
+                "expanded": false,
                 "checked": false,
                 "attribution": false
             },
@@ -229,7 +251,7 @@
                 "displayInLayerSwitcher": true,
                 "visibility": false,
                 "tiled": false,
-                "expanded": true,
+                "expanded": false,
                 "checked": false,
                 "attribution": false
             },
@@ -241,7 +263,7 @@
                 "displayInLayerSwitcher": true,
                 "visibility": false,
                 "tiled": false,
-                "expanded": true,
+                "expanded": false,
                 "checked": false,
                 "attribution": false
             },
@@ -249,7 +271,7 @@
                 "source": "geoscopio_topogr",
                 "group": "Basi cartografiche",
                 "title": "Carta Topografica 50k",
-                "maxscale": 15000,
+                "maxScale": 25000.1,
                 "name": "rt_topogr.topografica50k.grey.rt",
                 "displayInLayerSwitcher": true,
                 "visibility": true,
@@ -261,7 +283,7 @@
                 "group": "Basi cartografiche",
                 "title": "CTR 1:10.000 Raster BW",
                 "name": "rt_ctr.10k",
-                "minscale": 15000,
+                "minScale": 25000.1,
                 "displayInLayerSwitcher": true,
                 "visibility": true,
                 "tiled": false,
@@ -271,8 +293,18 @@
                 "source": "geoscopio_ctr",
                 "group": "Basi cartografiche",
                 "title": "CTR 1:10.000 Raster GL",
-                "minscale": 15000,
+                "minScale": 25000.1,
                 "name": "rt_ctr.ctr10kgreylight",
+                "displayInLayerSwitcher": true,
+                "visibility": false,
+                "tiled": false,
+                "attribution": false
+            },
+            {
+                "source": "geoscopio_ambcens",
+                "group": "Toponimi",
+                "title": "Toponimi - Centri e nuclei 2011",
+                "name": "rt_amb_cens.centri_nuclei_2011",
                 "displayInLayerSwitcher": true,
                 "visibility": false,
                 "tiled": false,
@@ -281,91 +313,105 @@
 				"source": "geoserver_ds",
 				"group": "Comprensori",
                 "expanded": true,
-                "checked": true,
-				"title": "Comprensori ai sensi della L.R.79/2012",
-				"name": "proposta_comprensori_lr79_2012",
+                "checked": false,
+				"title": "Comprensori di bonifica",
+				"name": "comprensori_bonifica_20_01_2016",
+                "opacity": 0.4,
 				"displayInLayerSwitcher": true,
 				"visibility": false,
 				"tiled": false,
-                "queryPanel": true
+                "queryPanel": false
 			},{
-                "source": "geoscopio_ambcens",
-                "group": "Toponimi",
-                "title": "Toponimi - Centri e nuclei 2011",
-                "name": "rt_amb_cens.centri_nuclei_2011",
-                "displayInLayerSwitcher": true,
-                "visibility": true,
-                "tiled": false,
-                "attribution": false
-            },{
-				"source": "geoscopio_idrografia",
-				"group": "Idrografia",
-				"title": "Corsi d'acqua",
-				"name": "rt_idrogr.corsi.rt.line",
+				"source": "geoserver_presidi",
+				"group": "Delimitazione Geni Civili",
+				"title": "Toscana Nord",
+				"name": "gc_toscana_nord",
+                "opacity": 0.4,
 				"displayInLayerSwitcher": true,
-				"visibility": true,
+				"visibility": false,
+				"tiled": false
+			},{
+				"source": "geoserver_presidi",
+				"group": "Delimitazione Geni Civili",
+				"title": "Toscana Sud",
+				"name": "gc_toscana_sud",
+                "opacity": 0.4,
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": false
+			},{
+				"source": "geoserver_presidi",
+				"group": "Delimitazione Geni Civili",
+				"title": "Valdarno Centrale",
+				"name": "gc_valdarno_centrale",
+                "opacity": 0.4,
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": false
+			},{
+				"source": "geoserver_presidi",
+				"group": "Delimitazione Geni Civili",
+				"title": "Valdarno Inf. Costa",
+				"name": "gc_valdarno_inf_costa",
+                "opacity": 0.4,
+				"displayInLayerSwitcher": true,
+				"visibility": false,
+				"tiled": false
+			},{
+				"source": "geoserver_presidi",
+				"group": "Delimitazione Geni Civili",
+				"title": "Valdarno Superiore",
+				"name": "gc_valdarno_superiore",
+                "opacity": 0.4,
+				"displayInLayerSwitcher": true,
+				"visibility": false,
 				"tiled": false
 			},{
 				"source": "geoserver_ds",
-				"group": "Idrografia",
-                "expanded": true,
-                "checked": false,
-				"title": "Specchi d'acqua",
-				"name": "area_bagnata",
-				"displayInLayerSwitcher": true,
-				"visibility": false,
-				"tiled": false,
-                "queryPanel": true
-			},{
-				"source": "geoserver_ds",
-				"group": "Reticolo Idrografico RT",
-                "expanded": true,
-                "checked": false,
-				"title": "Reticolo idrografico LR 79/2012 approvato con DCRT 57/2013",
-				"name": "reticolo_idrografico",
-                "styles": ["reticolo_idrografico_dcrt57_2013"],
-                "style": ["reticolo_idrografico_dcrt57_2013"],
-				"displayInLayerSwitcher": true,
-				"visibility": false,
-				"tiled": false,
-                "queryPanel": true
-			},{
-				"source": "geoserver_ds",
-				"group": "Reticolo Idrografico RT",
-                "expanded": true,
-                "checked": false,
-				"title": "Reticolo idrografico LR 79/2012 aggiornato con DCRT 9/2015",
-				"name": "reticolo_lr79_2012",
-                "styles": ["reticolo_idrografico_dcrt9_2015"],
-                "style": ["reticolo_idrografico_dcrt9_2015"],
-				"displayInLayerSwitcher": true,
-				"visibility": false,
-				"tiled": false,
-                "queryPanel": true
-			},{
-				"source": "geoserver_ds",
-				"group": "Reticolo di Gestione RT",
-                "expanded": true,
-                "checked": false,
-				"title": "Reticolo di gestione LR 79/2012 approvato con DCRT 57/2013",
-				"name": "retgest_79_2012",
-                "styles": ["reticolo_gestione_dcrt57_2013"],
-                "style": ["reticolo_gestione_dcrt57_2013"],
-				"displayInLayerSwitcher": true,
-				"visibility": false,
-				"tiled": false,
-                "queryPanel": true
-			},{
-				"source": "geoserver_ds",
-				"group": "Reticolo di Gestione RT",
+				"group": "MANUTENZIONE ORDINARIA",
                 "expanded": true,
                 "checked": false,
 				"title": "Reticolo di gestione LR 79/2012 aggiornato con DCRT 9/2015",
 				"name": "reticolo_lr79_2012",
-                "styles": ["reticolo_gestione_dcrt9_2015"],
-                "style": ["reticolo_gestione_dcrt9_2015"],
+                "styles": ["reticolo_gestione_dcrt9_2015_gest_si"],
+                "style": ["reticolo_gestione_dcrt9_2015_gest_si"],
+                "vendorParams":{
+                    "cql_filter": "retgeslr79 = 'SI'"
+                },
 				"displayInLayerSwitcher": true,
 				"visibility": false,
+				"tiled": false,
+                "queryPanel": true
+			},{
+				"source": "geoserver_ds",
+				"group": "MANUTENZIONE ORDINARIA",
+                "expanded": true,
+                "checked": false,
+				"title": "Tratti classificati in terza categoria idraulica",
+                "styles": ["terza_categoria_manutenzione"],
+                "style": "terza_categoria_manutenzione",
+				"name": "manutenzione_ordinaria_2e3",
+                "vendorParams":{
+                    "cql_filter": "legenda = '3'"
+                },
+				"displayInLayerSwitcher": true,
+				"visibility": true,
+				"tiled": false,
+                "queryPanel": true
+			},{
+				"source": "geoserver_ds",
+				"group": "MANUTENZIONE ORDINARIA",
+                "expanded": true,
+                "checked": false,
+				"title": "Tratti classificati in seconda categoria idraulica",
+                "styles": ["seconda_categoria_manutenzione"],
+                "style": "seconda_categoria_manutenzione",
+				"name": "manutenzione_ordinaria_2e3",
+                "vendorParams":{
+                    "cql_filter": "legenda = '2'"
+                },
+				"displayInLayerSwitcher": true,
+				"visibility": true,
 				"tiled": false,
                 "queryPanel": true
 			},{
@@ -375,7 +421,8 @@
 				"name": "rt_ambamm.idprovince.rt.poly",
 				"displayInLayerSwitcher": true,
 				"visibility": false,
-				"tiled": false
+				"tiled": false,
+                "attribution": false
 			},{
 				"source": "geoscopio_amb_ammin",
 				"group": "Ambiti amministrativi",
@@ -383,7 +430,8 @@
 				"name": "rt_ambamm.idcomuni.rt.poly",
 				"displayInLayerSwitcher": true,
 				"visibility": false,
-				"tiled": false
+				"tiled": false,
+                "attribution": false
 			}
 		]
 	},
@@ -437,13 +485,6 @@
 			"ptype": "gxp_geolocationmenu",
 			"actionTarget": {"target": "paneltbar", "index": 23},
 			"toggleGroup": "toolGroup"
-		}, {
-            "ptype": "gxp_about",
-            "poweredbyURL": "http://www.geo-solutions.it/about/contacts/",
-            "actionTarget": {
-                "target": "panelbbar",
-                "index": 1
-            }
-        }
+		}
 	]
 }
