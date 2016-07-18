@@ -289,21 +289,25 @@ GeoExt.Lang.add("en", {
 	    removeGroupConfirmationText: "Are you sure you want to remove the selected group ? The all layers inside this group will be removed from the map."
     },
     
-    "gxp.plugins.SaveDefaultContext.prototype": { 
-	    saveDefaultContextMenuText: "Save default context",
-	    saveDefaultContextActionTip: "Save Map context",
-	    contextSaveSuccessString: "Context saved succesfully",
-	    contextSaveFailString: "Context not saved succesfully",
-	    contextMsg: "Loading...",
-		userLabel: "User",	
-		passwordLabel: "Password", 	
-		loginLabel: "Login",	
-		mapMetadataTitle: "Insert Map Metadata",	
-		mapMedatataSetTitle: "Map Metadata",	
-		mapNameLabel: "Name",	
-		mapDescriptionLabel: "Description",
-		addResourceButtonText: "Add Map",
-		conflictErrMsg: "A map with the same name already exists"
+    "gxp.plugins.SaveMapPlugin.prototype": { 
+        saveDefaultContextMenuText: "Save default context",
+        saveDefaultContextActionTip: "Save Map context",
+        contextSaveSuccessString: "Context saved succesfully",
+        contextSaveFailString: "Context not saved succesfully",
+        contextMsg: "Loading...",
+        userLabel: "User",  
+        passwordLabel: "Password",  
+        loginLabel: "Login",    
+        mapMetadataTitle: "Insert Map Metadata",    
+        mapMedatataSetTitle: "Map Metadata",    
+        mapNameLabel: "Name",   
+        mapDescriptionLabel: "Description",
+        addResourceButtonText: "Add Map",
+        conflictErrMsg: "A map with the same name already exists",
+        selectionErrorTitle:"Error",
+        groupSelectionError:"Select at least one group",
+        permissionsLabel:"Permissions",
+        groupsLabel:"User groups"
     },
     "gxp.plugins.GeoReferences.prototype": {
         initialText: "Select an area",
@@ -571,9 +575,8 @@ GeoExt.Lang.add("en", {
         menuText: "GeoReferences",
         tooltip: "GeoReferences",
         addMarkerTooltip: "Reset Marker",
-        emptyText: "Geocoder...",
         buttonText: "Address",
-        emptyText: "Address...",
+        geoCoderEmptyText: "Address...",
 		errorMsg: "No address found",
 		waitMsg: "Wait please...",
 		addressTitle: "Address found",
@@ -1209,5 +1212,13 @@ GeoExt.Lang.add("en", {
         formTabTip: "Form",
         foregsFormTabTitleText: "Form - Foregs",
         foregsTabTip: "Foregs"
-    }
+    }, 
+    
+    "cookieChoices": {
+        "cookieText": "Cookies help us deliver our services. By using our services, you agree to our use of cookies.",
+        "dismissText": "I Agree",
+        "linkText":"Learn more",
+        "linkHref":"cookies-policy-en.html"
+
+  }
 });

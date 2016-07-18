@@ -259,7 +259,7 @@ gxp.widgets.button.GeobasiDataDownloadButton = Ext.extend(Ext.Button, {
         var propertyName = "&propertyName=source,site_id,year,month,day,monitoring,matrix,matrix_cod,toponym,municipal_id,element,value,method,x_coord,y_coord";
         var sortBy = "&sortBy=value";
         this.viewParams = "&viewparams=" + viewparams2;
-        this.stringURLTot = url + service + version + geometryName + request + typeName + outputFormat + propertyName + sortBy + exception + encodeURIComponent(this.viewParams);
+        this.stringURLTot = url + service + version + geometryName + request + typeName + outputFormat + propertyName + sortBy + exception + encodeURI(this.viewParams);
         
         Ext.Ajax.request({
             scope: this,

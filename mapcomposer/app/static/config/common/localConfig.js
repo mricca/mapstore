@@ -22,5 +22,5 @@ var localConfig = {
         }
     },
     "footer": {},
-   skipCustomConfigs: true
+    skipCustomConfigs: true
 };

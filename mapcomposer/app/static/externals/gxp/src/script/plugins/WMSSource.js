@@ -153,6 +153,8 @@ gxp.plugins.WMSSource = Ext.extend(gxp.plugins.LayerSource, {
 
 	errorTitle: "Error",
 
+    showGetSchemaError: true,
+    wfsBase: null,
     /** api: method[createStore]
      *
      *  Creates a store of layer records.  Fires "ready" when store is loaded.
@@ -483,7 +485,7 @@ gxp.plugins.WMSSource = Ext.extend(gxp.plugins.LayerSource, {
             cumulative: config.cumulative,
             queryable: config.queryable,
             tabCode: config.tabCode,
-            queryPanel: "queryPanel" in config ? config.queryPanel : false,
+            queryPanel: "queryPanel" in config ? config.queryPanel : false
         }, original.data);
 
         // add additional fields
@@ -758,7 +760,7 @@ gxp.plugins.WMSSource = Ext.extend(gxp.plugins.LayerSource, {
                     }
                 } else {
                     schema = new GeoExt.data.AttributeStore({
-                        url: r.get("owsURL"),
+                        url: this.wfsBase || r.get("owsURL"),
                         baseParams: {
                             SERVICE: "WFS",
                             //TODO should get version from WFS GetCapabilities
@@ -772,13 +774,18 @@ gxp.plugins.WMSSource = Ext.extend(gxp.plugins.LayerSource, {
                                 callback.call(scope, schema);
                             },
                             "exception": function(data) {
-                            	Ext.MessageBox.show({
-                            		title: this.errorTitle,
-                            		msg: this.wfsDescribeFeatureTypeError + " " + typeName,
-                            		buttons: Ext.Msg.OK,
-                            		animEl: 'elId',
-                            		icon: Ext.MessageBox.ERROR
-                            	});
+                                this.schemaCache[typeName] = undefined;
+                                if (this.showGetSchemaError) {
+                                	Ext.MessageBox.show({
+                                		title: this.errorTitle,
+                                		msg: this.wfsDescribeFeatureTypeError + " " + typeName,
+                                		buttons: Ext.Msg.OK,
+                                		animEl: 'elId',
+                                		icon: Ext.MessageBox.ERROR
+                                	});
+                                } else {
+                                    callback.call(scope, false, false, this.wfsDescribeFeatureTypeError + " " + typeName);
+                                }
                             },
                             scope: this
                         }
@@ -953,9 +960,9 @@ gxp.plugins.WMSSource = Ext.extend(gxp.plugins.LayerSource, {
         		}
         	}
         }
-        var props=new Object();
+
         if(keywords.length>0 || !this.isEmptyObject(identifiers)){
-            
+            var props=new Object();
 
             for(var k=0; k<keywords.length; k++){
                 var keyword = keywords[k].value || keywords[k];
@@ -981,23 +988,12 @@ gxp.plugins.WMSSource = Ext.extend(gxp.plugins.LayerSource, {
                     props.title = identifiers[identifierKey];
                 }
             }
-            
-            if(this.external){
-                return this.checkExternalServer(defaultProps,props);
-            }else{
-                return Ext.applyIf(props, defaultProps);
-            }
-            
+
+            return Ext.applyIf(props, defaultProps);
+
         } else {
-        
-            if(this.external){
-                return this.checkExternalServer(defaultProps,props);
-            }else{
-                return {};
-            }
-            
+            return {};
 		}
-        
     },
 
     isEmptyObject: function(obj) {
@@ -1007,22 +1003,6 @@ gxp.plugins.WMSSource = Ext.extend(gxp.plugins.LayerSource, {
             }
         }
         return true;
-    },
-    
-    checkExternalServer: function(defaultProps,props){
-        var localLabelSep = "_";
-        var localIndexs = {
-                "en": 0,
-                "it": 1,
-                "fr": 2,
-                "de": 3
-        };
-        var layerNames = defaultProps.title.split(localLabelSep);
-        if (layerNames.length>0) {
-            var locIndex= localIndexs[GeoExt.Lang.locale];
-            props.title=layerNames[locIndex];
-        }
-        return Ext.applyIf(props, defaultProps);
     }
 });
 

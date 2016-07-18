@@ -190,135 +190,133 @@ gxp.plugins.WMSGetFeatureInfoMenu = Ext.extend(gxp.plugins.Tool, {
      */
      maxFeatures: 10,	 
      
-       /** api: config[infoAction]
+    /** api: config[infoAction]
      *  ``string``
-     *  Optional info action to configure: Opts : All, click,hover 
+     *  Optional info actions : "All", "click", "hover", "hover;click"
      */
      infoAction: 'All',
-     
-     
+
     /** api: method[addActions]
      */
     addActions: function() {
         this.popupCache = {};
         this.activeIndex = 0;
-   
-   
-if(this.infoAction=='click'){ 
-    this.button = new Ext.Button({
-            tooltip: this.infoActionTip,
-            iconCls: "gxp-icon-getfeatureinfo",
-            toggleGroup: this.toggleGroup,
-            group: this.toggleGroup,
-            enableToggle: true,
-            allowDepress: true,
-            toggleHandler: function(button, pressed) {
-                this.activeIndex = 0;
-                this.button.toggle(pressed);
-                for (var i = 0, len = info.controls.length; i < len; i++){
-                    if (pressed) {
-                        info.controls[i].activate();
-                    } else {
-                        info.controls[i].deactivate();
+
+        if(this.infoAction=='click'){ 
+            this.button = new Ext.Button({
+                tooltip: this.infoActionTip,
+                iconCls: "gxp-icon-getfeatureinfo",
+                toggleGroup: this.toggleGroup,
+                enableToggle: true,
+                allowDepress: true,
+                toggleHandler: function(button, pressed) {
+                    this.button.toggle(pressed);
+                    for (var i = 0, len = info.controls.length; i < len; i++){
+                        if (pressed) {
+                            info.controls[i].activate();
+                        } else {
+                            info.controls[i].deactivate();
+                        }
                     }
-                }
-             }, scope: this
-        });
+                 }, scope: this
+            });
         }
         else if(this.infoAction=='hover'){ 
-            this.activeIndex = 1;
             this.button = new Ext.Button({
-            tooltip:  this.activeActionTip,
-            iconCls: (this.outputConfig)? this.outputConfig.hoverIconCls || "gxp-icon-getfeatureinfo":"gxp-icon-getfeatureinfo",
-            toggleGroup: this.toggleGroup,
-            group: this.toggleGroup,
-            enableToggle: true,
-            allowDepress: true,
-            toggleHandler: function(button, pressed) {
-                this.activeIndex = 1;
-                this.button.toggle(pressed);
-                this.toggleActiveControl(pressed);
+                tooltip:  this.activeActionTip,
+                iconCls: (this.outputConfig)? this.outputConfig.hoverIconCls || "gxp-icon-getfeatureinfo":"gxp-icon-getfeatureinfo",
+                toggleGroup: this.toggleGroup,
+                enableToggle: true,
+                allowDepress: true,
+                toggleHandler: function(button, pressed) {
+                    this.button.toggle(pressed);
+                    this.toggleActiveControl(pressed);
                 },
                 scope: this
+            });
+        }
+        else{
+            var items = [
+                new Ext.menu.CheckItem({
+                    tooltip: this.infoActionTip,
+                    text: this.infoActionTip,
+                    iconCls: "gxp-icon-getfeatureinfo",
+                    group: this.toggleGroup,
+                    listeners: {
+                        checkchange: function(item, checked) {
+                            this.activeIndex = this.button.menu.items.indexOf(item);
+                            this.button.toggle(checked);
+                            if (checked) {
+                                this.button.setIconClass(item.iconCls);
+                            }
+                            for (var i = 0, len = info.controls.length; i < len; i++){
+                                if (checked) {
+                                    info.controls[i].activate();
+                                } else {
+                                    info.controls[i].deactivate();
+                                }
+                            }
+                        },
+                        scope: this
+                    }
+                }),
+                new Ext.menu.CheckItem({
+                    tooltip: this.activeActionTip,
+                    text: this.activeActionTip,
+                    iconCls: "gxp-icon-mouse-map",
+                    group: this.toggleGroup,
+                    allowDepress:false,
+                    listeners:{
+                        checkchange: function(item, checked) {
+                            this.activeIndex = this.button.menu.items.indexOf(item);
+                            this.button.toggle(checked);
+                            if (checked) {
+                                this.button.setIconClass(item.iconCls);
+                            }
+                            this.toggleActiveControl(checked);
+                        },
+                        scope: this
+                    }
+                })
+            ];
             
-        });
-        }   
-       else{
-           this.infoAction='All';
-           var items = [new Ext.menu.CheckItem({
-            tooltip: this.infoActionTip,
-            text: this.infoActionTip,
-            iconCls: "gxp-icon-getfeatureinfo",
-            toggleGroup: this.toggleGroup,
-            group: this.toggleGroup,
-            listeners: {
-            checkchange: function(item, checked) {
-                this.activeIndex = 0;
-                this.button.toggle(checked);
-                if (checked) {
-                    this.button.setIconClass(item.iconCls);
-                }
-                for (var i = 0, len = info.controls.length; i < len; i++){
-                    if (checked) {
-                        info.controls[i].activate();
-                    } else {
-                        info.controls[i].deactivate();
-                    }
-                }
-           },
-           scope: this
-    }
-    }),new Ext.menu.CheckItem({
-            tooltip: this.activeActionTip,
-            text: this.activeActionTip,
-            iconCls: "gxp-icon-mouse-map",
-			
-            toggleGroup: this.toggleGroup,
-            group: this.toggleGroup,
-            allowDepress:false,
-            listeners:{
-                checkchange: function(item, checked) {
-                    this.activeIndex = 1;
-                    this.button.toggle(checked);
-                    if (checked) {
-                        this.button.setIconClass(item.iconCls);
-                    }
-                    this.toggleActiveControl(checked);
-                },
-                scope: this
-           }
-    })];
-
-        this.button = new Ext.SplitButton({
-            iconCls: "gxp-icon-getfeatureinfo",
-            tooltip: this.measureTooltip,
-            toggleGroup: this.toggleGroup,
-            allowDepress: true,
-            handler: function(button, event) {
-                if(button.pressed) {
-                    button.menu.items.itemAt(this.activeIndex).setChecked(true);
-                }
-            },
-            scope: this,
-            listeners: {
-                toggle: function(button, pressed) {
-                    // toggleGroup should handle this
-                    if(!pressed) {
-                        button.menu.items.each(function(i) {
-                            i.setChecked(false);
-                        });
+            if(this.infoAction == "hover;click"){
+                items = items.reverse();
+            }else{
+                this.infoAction='All';
+            }
+            
+            this.button = new Ext.SplitButton({
+                // Set icon and tooltip from the first element
+                iconCls: items[0].iconCls,
+                tooltip: items[0].tooltip,
+                toggleGroup: this.toggleGroup,
+                allowDepress: true,
+                handler: function(button, event) {
+                    if(button.pressed) {
+                        button.menu.items.itemAt(this.activeIndex).setChecked(true);
                     }
                 },
-                render: function(button) {
-                    // toggleGroup should handle this
-                    Ext.ButtonToggleMgr.register(button);
-                }
-            },
-            menu: new Ext.menu.Menu({
-                items: items
-            })
-        });
-    }
+                scope: this,
+                listeners: {
+                    toggle: function(button, pressed) {
+                        // toggleGroup should handle this
+                        if(!pressed) {
+                            button.menu.items.each(function(i) {
+                                i.setChecked(false);
+                            });
+                        }
+                    },
+                    render: function(button) {
+                        // toggleGroup should handle this
+                        Ext.ButtonToggleMgr.register(button);
+                    }
+                },
+                menu: new Ext.menu.Menu({
+                    items: items
+                })
+            });
+        }
 
         var actions = gxp.plugins.WMSGetFeatureInfoMenu.superclass.addActions.call(this, [this.button]);
         var infoButton = (items)? items[0]: this.button;
@@ -327,7 +325,9 @@ if(this.infoAction=='click'){
         var layersToQuery = 0;
 
         var updateInfo = function() {
-            if(this.infoAction=='hover')return;
+            if(this.infoAction=='hover'){
+                return;
+            }
             var queryableLayers = this.target.mapPanel.layers.queryBy(function(x){
                 return x.get("queryable");
             });
@@ -391,8 +391,9 @@ if(this.infoAction=='click'){
 								this.unmask();
 								started=false;
                                 
-                                if(this.disableAfterClick)
-                                    this.button.toggle();                                
+                                if(this.disableAfterClick){
+                                    this.button.toggle(); 
+                                }                                    
 								
                                 // pan to bring popup into view (issue #422)
                                 if (startLatLon) {
@@ -400,7 +401,9 @@ if(this.infoAction=='click'){
                                     if (popup) {
                                     	// not too pretty, I'm calling a private method... any better idea?
                                     	popup.panIntoView();
-                                    }else panIn=true; //issue #623
+                                    }else{
+                                        panIn=true; //issue #623
+                                    }
                                 }                                
 							}
 
@@ -482,15 +485,17 @@ if(this.infoAction=='click'){
             click: this.closePopups,
             scope:this
         });
-       if(this.infoAction=='All'){ 
-       Ext.each(this.button.menu.items.keys, function(key){
-            var item = this.button.menu.items.get(key);
-            item.on({
-                click: this.closePopups,
-                scope:this
-            });
-        }, this);
-       } 
+        
+        if(this.infoAction=='All' || this.infoAction=="hover;click"){ 
+           Ext.each(this.button.menu.items.keys, function(key){
+                var item = this.button.menu.items.get(key);
+                item.on({
+                    click: this.closePopups,
+                    scope:this
+                });
+            }, this);
+        }
+        
         return actions;
     },
 
@@ -629,7 +634,13 @@ if(this.infoAction=='click'){
      * :arg popupKey: ``String`` Key to save the popup on popup cache.
      * :arg onClose: ``Function`` Callback to be called on popup close.
      */
-    cachePopup: function(latLon, items, popupKey, onClose,panIn){
+    cachePopup: function(latLon, items, popupKey, onClose, panIn){
+        
+        if(panIn === undefined){
+            // This is the default value in the "Popup" class
+            panIn = true;
+        }
+        
         var popup = this.addOutput({
             xtype: "gx_popup",
             title: this.popupTitle,
@@ -842,8 +853,9 @@ if(this.infoAction=='click'){
                         var button = this.button;
                         
                         setTimeout(function(){
-                            if(disableAfterClick)
+                            if(disableAfterClick){
                                 button.toggle();
+                            }
                         }, 300);
 
                         // Issue #91

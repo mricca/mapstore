@@ -7,6 +7,7 @@
 */
 
 GeoExt.Lang.add("it", {
+
     "GeoExplorer.prototype": {
         zoomSliderText: "<div>Livello di Zoom: {zoom}</div><div>Scala: 1:{scale}</div>",
         loadConfigErrorText: "Impossibile leggere la configurazione salvata : <br />",
@@ -313,21 +314,25 @@ GeoExt.Lang.add("it", {
 	    removeGroupConfirmationText: "Sei sicuro di voler rimuovere il gruppo selezionato ? Tutti i livelli in esso presenti saranno rimossi dalla mappa."
     },
     
-    "gxp.plugins.SaveDefaultContext.prototype": { 
-	    saveDefaultContextMenuText: "Salva il contesto",
-	    saveDefaultContextActionTip: "Salva il contesto della Mappa",
-	    contextSaveSuccessString: "Contesto salvato con successo",
-	    contextSaveFailString: "Contesto non salvato con successo",
-	    contextMsg: "Caricamento...",
-		userLabel: "Utente",	
-		passwordLabel: "Password", 	
-		loginLabel: "Accesso",	
-		mapMetadataTitle: "Inserimento dei metadati",	
-		mapMedatataSetTitle: "Metadati della Mappa",	
-		mapNameLabel: "Nome",	
-		mapDescriptionLabel: "Descrizione",
-		addResourceButtonText: "Salva Mappa",
-		conflictErrMsg: "Una mappa con lo stesso nome esiste già"
+    "gxp.plugins.SaveMapPlugin.prototype": { 
+        saveDefaultContextMenuText: "Salva il contesto",
+        saveDefaultContextActionTip: "Salva il contesto della Mappa",
+        contextSaveSuccessString: "Contesto salvato con successo",
+        contextSaveFailString: "Contesto non salvato con successo",
+        contextMsg: "Caricamento...",
+        userLabel: "Utente",    
+        passwordLabel: "Password",  
+        loginLabel: "Accesso",  
+        mapMetadataTitle: "Inserimento dei metadati",   
+        mapMedatataSetTitle: "Metadati della Mappa",    
+        mapNameLabel: "Nome",   
+        mapDescriptionLabel: "Descrizione",
+        addResourceButtonText: "Salva Mappa",
+        conflictErrMsg: "Una mappa con lo stesso nome esiste già",
+        selectionErrorTitle:"Errore",
+        groupSelectionError:"Selezionare almeno un gruppo",
+        permissionsLabel:"Permessi",
+        groupsLabel:"Gruppi"
     },
 	
     "gxp.plugins.GeoReferences.prototype": {
@@ -598,9 +603,8 @@ GeoExt.Lang.add("it", {
         menuText: "Geo Riferimenti",
         tooltip: "Geo Riferimenti",
         addMarkerTooltip: "Resetta Marker",
-        emptyText: "Geocoder...",
         buttonText: "Indirizzo",
-        emptyText: "Indirizzo...",
+        geoCoderEmptyText: "Inserisci un indirizzo",
 		errorMsg: "Nessun indirizzo trovato",
 		waitMsg: "Attendere prego...",
 		addressTitle: "Indirizzo trovato",
@@ -1224,5 +1228,14 @@ GeoExt.Lang.add("it", {
         formTabTip: "Scheda",
         foregsFormTabTitleText: "Scheda - Foregs",
         foregsTabTip: "Foregs"
-    }    
+    },
+        
+    "cookieChoices": {
+        "cookieText": "I cookie ci aiutano ad erogare servizi di qualità. Utilizzando i nostri servizi, l'utente accetta le nostre modalità d'uso dei cookie.",
+        "dismissText": "Accetto",
+        "linkText":"Dettagli",
+        "linkHref":"cookies-policy-it.html"
+
+  }
+
 });

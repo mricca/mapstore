@@ -1,16 +1,5 @@
-﻿<!DOCTYPE html>
-<html>
-    <head>
-        <!--meta http-equiv="X-UA-Compatible" content="IE=8" /-->
-        <title>Map Viewer</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="shortcut icon" href="theme/app/img/favicon.ico">
-		
-        <!-- Ext resources -->
-        <link rel="stylesheet" type="text/css" href="externals/ext/resources/css/ext-all.css">
-        <link rel="stylesheet" type="text/css" href="externals/ext/resources/css/xtheme-gray.css">
-        <script type="text/javascript" src="externals/ext/adapter/ext/ext-base.js"></script>
-        <script type="text/javascript" src="externals/ext/ext-all.js"></script>
+<% extends ./base.html %>
+<% subskin extrahead %>
         
 		<!-- OpenLayers resources -->
         <link rel="stylesheet" type="text/css" href="externals/openlayers/theme/default/style.css">
@@ -30,9 +19,10 @@
         <link rel="stylesheet" type="text/css" href="externals/GeoExt/resources/css/gxtheme-gray.css">
         <script type="text/javascript" src="script/GeoExt.js"></script> 
 
-		<!-- canvg-1.2 resources -->
-		<script type="text/javascript" src="script/canvg-1.2.js"></script> 
-		
+        <!-- canvg-1.2 resources -->
+        <script type="text/javascript" src="script/canvg-1.2.js"></script>
+
+        <script type="text/javascript" src="script/ux.js"></script>
         <!-- gxp resources -->
         <link rel="stylesheet" type="text/css" href="externals/gxp/src/theme/all.css">
         <script type="text/javascript" src="script/gxp.js"></script> 
@@ -43,7 +33,7 @@
         <!--[if IE]><link rel="stylesheet" type="text/css" href="theme/app/ie.css"/><![endif]-->        
 
         <script type="text/javascript" src="script/GeoExplorer.js"></script>
-        <script type="text/javascript" src="script/ux.js"></script>
+
         
         <!-- geocoding data  -->
         <script type="text/javascript" src="data/georeferences.js"></script>
@@ -97,7 +87,7 @@
 			// /////////////////////////////////////////////////////
 			// Extra parameters to add layers at startup
 			// /////////////////////////////////////////////////////
-			var layName; var layTitle; var wmsurl; var gsturl;
+			var layName; var layTitle; var wmsurl; var gsturl; var urlformat;
 		
 			// ///////////////////////////////////////////////////////////////
             // Custom variables from the mapStoreConfig user configuration file 
@@ -151,6 +141,9 @@
 									break;
                         case "config":
 									customConfigName = param[1];
+									break;
+						case "format":
+									urlformat = param[1];
 									break;
 						default : 
 									//mapIdentifier = -1;
@@ -250,6 +243,27 @@
 				if(gsturl){
 					serverConfig.geoStoreBase = gsturl;
 				}
+				
+				// //////////////////////////////////////////////////
+				// Check if content data has been provided via POST
+				// //////////////////////////////////////////////////
+				if(content.data){
+					var dataConfig = unescape(content.data);
+					try{
+						dataConfig = Ext.util.JSON.decode(dataConfig);
+						var customConfig = dataConfig.map_config;
+						if(customConfig){
+							// ////////////////////////////////////////////////////////////
+							// Properties of the internal configuration will be replaced 
+							// by those specified for the custom configuration
+							// ////////////////////////////////////////////////////////////
+							serverConfig = Ext.apply(serverConfig, customConfig);
+							sources = serverConfig.sources || serverConfig.gsSources;
+						}					
+					}catch(e){
+						console.log(e);
+					}
+				}
                 
                 app = new GeoExplorer.Viewer({
 					markers: serverConfig.markers,
@@ -273,16 +287,17 @@
                         'abstract': "Custom Map",
                         contact: "<a href='#'>#</a>."
                     },
-                    sources: serverConfig.gsSources || {
+                    sources: serverConfig.sources || serverConfig.gsSources || {
                         google: {
                             ptype: "gxp_googlesource"
                         }
                     },
                     georeferences: georeferences_data,
                     map: serverConfig.map,
-					customTools: serverConfig.customTools
+                    customTools: serverConfig.customTools,
+                    apikeys: serverConfig.apikeys
                 }, mapIdentifier, false, fullScreen);   
-                
+			
                 app.on({
                     'portalready' : function(){                    	
                         if(fullScreen){
@@ -299,7 +314,7 @@
 						// ///////////////////////////////////////////////////
 						var addLayer = app.tools["addlayer"];
 						
-						if(addLayer){
+						if(addLayer){							
 							if(useCookies || content.data){
 								var layersList;
 								
@@ -320,7 +335,7 @@
 									
 								if(layersList){
 									var layers = layersList.split("#");
-									var resources = [];
+									var resources = [];								
 									
 									for(var i=0; i<layers.length; i++){
 										var keys = layers[i];
@@ -328,36 +343,44 @@
 										keys = unescape(keys);
 										keys = Ext.util.JSON.decode(keys);
 										
-										var lname = keys.layer;
-										var lwms = decodeURIComponent(keys.wms);
-										var pname = keys.pname;
+										var format = keys.format;
 										
-										resources.push({
-											msLayerTitle: lname,
-											msLayerName: lname,
-											msGroupName: pname,
-											wmsURL: lwms
-										});
+										if(format == "wms" || format == "wmts"){
+											var lname = keys.layer;
+											var lwms = decodeURIComponent(keys.wms);
+											var pname = keys.pname;
+											
+											resources.push({
+												msLayerTitle: lname,
+												msLayerName: lname,
+												msGroupName: pname,
+												wmsURL: lwms,
+												format: format
+											});
+										}
 									}
 									
-									addMSLayer(resources);
+									if(resources.length > 0){
+										addMSLayer(resources);
+									}
 								}
 							}else if(layName && wmsurl){
 								var title = layTitle ? layTitle : layName;
-								
+
 								addMSLayer([{
 									msLayerTitle: unescape(title),
 									msLayerName: unescape(layName),
 									msGroupName: undefined, // TODO: not supported yet
-									wmsURL: wmsurl
+									wmsURL: wmsurl,
+									format: urlformat
 								}]);
 							}
 						}else{
 							Ext.Msg.show({
-								title: "Add Layer",
-								msg: "AddLayer plugin missing in configuration!",
-								width: 300,
-								icon: Ext.MessageBox.ALERT
+								 title: "Add Layer",
+								 msg: "AddLayer plugin missing in configuration!",
+								 width: 300,
+								 icon: Ext.MessageBox.ALERT
 							});  
 						}
 					
@@ -379,6 +402,11 @@
 						resources
 					);
 				};
+            /*Consent cookie text and link from transaltion files, google cookieChoices.js lib must be added to page's body*/
+            if(serverConfig.cookieConsent && cookieChoices.cookieText){
+            cookieChoices.showCookieConsentBar(cookieChoices.cookieText,
+            cookieChoices.dismissText, cookieChoices.linkText, cookieChoices.linkHref);
+            };
             };			
                 
 			Ext.Ajax.request({
@@ -419,9 +447,3 @@
 			});
         
     </script>
-    </head>
-    <body>
-        <% render content %>
-		<div style="position:absolute; top:-10000px; left:-10000px; visibility:hidden"><canvas id="printcanvas" /></div>
-    </body>
-</html>

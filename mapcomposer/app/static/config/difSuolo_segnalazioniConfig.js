@@ -1,7 +1,7 @@
 {
    "scaleOverlayMode": "advanced",
    "actionToolScale": "medium",   
-   "tab": false,
+   "tab": true,
    "gsSources":{
    		"db_segnalazioni": {
 			"ptype": "gxp_wmssource",
@@ -15,7 +15,7 @@
 				1803065, 4933785
 			],			            
 			"layerBaseParams":{
-				"FORMAT":"image/png",
+				"FORMAT":"image/png8",
 				"TILED":true
 			}
 		},     
@@ -421,11 +421,31 @@
                 "vendorParams":{
                     "cql_filter": "istruttoria = 'true'"            
                 },             
+                "styles": ["PointStacker"],
+                "style": ["PointStacker"],                
 				"displayInLayerSwitcher": true,
-				"visibility": false,
+				"visibility": true,
 				"tiled": false,
 				"attribution": false,
-                "queryPanel": true
+                "queryPanel": true,
+                "queryable": false
+			},{
+				"source": "db_segnalazioni",
+				"group": "Proposta per DADS 2015",
+				"title": "Genio Civile Arezzo - info",
+				"name": "db_segnalazioni:genio_civile_arezzo_view",
+                "vendorParams":{
+                    "cql_filter": "istruttoria = 'true'"            
+                },                    
+				"displayInLayerSwitcher": false,
+                "format":"image/gif",   
+				"visibility": true,
+                "ratio": 4,
+                "opacity": 0.0,
+				"tiled": false,
+				"attribution": false,
+                "queryPanel": false,
+                "queryable": true
 			},{
 				"source": "db_segnalazioni",
 				"group": "Proposta per DADS 2015",
@@ -434,11 +454,31 @@
                 "vendorParams":{
                     "cql_filter": "istruttoria = 'true'"            
                 },               
+                "styles": ["PointStacker"],
+                "style": ["PointStacker"],                
 				"displayInLayerSwitcher": true,
-				"visibility": false,
+				"visibility": true,
 				"tiled": false,
 				"attribution": false,
-                "queryPanel": true
+                "queryPanel": true,
+                "queryable": false
+			},{
+				"source": "db_segnalazioni",
+				"group": "Proposta per DADS 2015",
+				"title": "Genio Civile Firenze - info",
+				"name": "db_segnalazioni:genio_civile_firenze_view",
+                "vendorParams":{
+                    "cql_filter": "istruttoria = 'true'"            
+                },                    
+				"displayInLayerSwitcher": false,
+                "format":"image/gif",   
+				"visibility": true,
+                "ratio": 4,
+                "opacity": 0.0,
+				"tiled": false,
+				"attribution": false,
+                "queryPanel": false,
+                "queryable": true
 			},{
 				"source": "db_segnalazioni",
 				"group": "Proposta per DADS 2015",
@@ -447,11 +487,31 @@
                 "vendorParams":{
                     "cql_filter": "istruttoria = 'true'"            
                 },                   
+                "styles": ["PointStacker"],
+                "style": ["PointStacker"],                
 				"displayInLayerSwitcher": true,
-				"visibility": false,
+				"visibility": true,
 				"tiled": false,
 				"attribution": false,
-                "queryPanel": true
+                "queryPanel": true,
+                "queryable": false
+			},{
+				"source": "db_segnalazioni",
+				"group": "Proposta per DADS 2015",
+				"title": "Genio Civile Grosseto - info",
+				"name": "db_segnalazioni:genio_civile_grosseto_view",
+                "vendorParams":{
+                    "cql_filter": "istruttoria = 'true'"            
+                },                    
+				"displayInLayerSwitcher": false,
+                "format":"image/gif",   
+				"visibility": true,
+                "ratio": 4,
+                "opacity": 0.0,
+				"tiled": false,
+				"attribution": false,
+                "queryPanel": false,
+                "queryable": true
 			},{
 				"source": "db_segnalazioni",
 				"group": "Proposta per DADS 2015",
@@ -460,11 +520,31 @@
                 "vendorParams":{
                     "cql_filter": "istruttoria = 'true'"            
                 },                    
+                "styles": ["PointStacker"],
+                "style": ["PointStacker"],                
 				"displayInLayerSwitcher": true,
-				"visibility": false,
+				"visibility": true,
 				"tiled": false,
 				"attribution": false,
-                "queryPanel": true
+                "queryPanel": true,
+                "queryable": false
+			},{
+				"source": "db_segnalazioni",
+				"group": "Proposta per DADS 2015",
+				"title": "Genio Civile Livorno - info",
+				"name": "db_segnalazioni:genio_civile_livorno_view",
+                "vendorParams":{
+                    "cql_filter": "istruttoria = 'true'"            
+                },                    
+				"displayInLayerSwitcher": false,
+                "format":"image/gif",   
+				"visibility": true,
+                "ratio": 4,
+                "opacity": 0.0,
+				"tiled": false,
+				"attribution": false,
+                "queryPanel": false,
+                "queryable": true
 			},{
 				"source": "db_segnalazioni",
 				"group": "Proposta per DADS 2015",
@@ -473,11 +553,31 @@
                 "vendorParams":{
                     "cql_filter": "istruttoria = 'true'"            
                 },                    
+                "styles": ["PointStacker"],
+                "style": ["PointStacker"],                
 				"displayInLayerSwitcher": true,
-				"visibility": false,
+				"visibility": true,
 				"tiled": false,
 				"attribution": false,
-                "queryPanel": true
+                "queryPanel": true,
+                "queryable": false
+			},{
+				"source": "db_segnalazioni",
+				"group": "Proposta per DADS 2015",
+				"title": "Genio Civile Lucca - info",
+				"name": "db_segnalazioni:genio_civile_lucca_view",
+                "vendorParams":{
+                    "cql_filter": "istruttoria = 'true'"            
+                },                    
+				"displayInLayerSwitcher": false,
+                "format":"image/gif",   
+				"visibility": true,
+                "ratio": 4,
+                "opacity": 0.0,
+				"tiled": false,
+				"attribution": false,
+                "queryPanel": false,
+                "queryable": true
 			},{
 				"source": "db_segnalazioni",
 				"group": "Proposta per DADS 2015",
@@ -486,11 +586,31 @@
                 "vendorParams":{
                     "cql_filter": "istruttoria = 'true'"            
                 },                    
+                "styles": ["PointStacker"],
+                "style": ["PointStacker"],                
 				"displayInLayerSwitcher": true,
-				"visibility": false,
+				"visibility": true,
 				"tiled": false,
 				"attribution": false,
-                "queryPanel": true
+                "queryPanel": true,
+                "queryable": false
+			},{
+				"source": "db_segnalazioni",
+				"group": "Proposta per DADS 2015",
+				"title": "Genio Civile Massa Carrara - info",
+				"name": "db_segnalazioni:genio_civile_massa_carrara_view",
+                "vendorParams":{
+                    "cql_filter": "istruttoria = 'true'"            
+                },                    
+				"displayInLayerSwitcher": false,
+                "format":"image/gif",   
+				"visibility": true,
+                "ratio": 4,
+                "opacity": 0.0,
+				"tiled": false,
+				"attribution": false,
+                "queryPanel": false,
+                "queryable": true
 			},{
 				"source": "db_segnalazioni",
 				"group": "Proposta per DADS 2015",
@@ -499,11 +619,31 @@
                 "vendorParams":{
                     "cql_filter": "istruttoria = 'true'"            
                 },                    
+                "styles": ["PointStacker"],
+                "style": ["PointStacker"],                
 				"displayInLayerSwitcher": true,
-				"visibility": false,
+				"visibility": true,
 				"tiled": false,
 				"attribution": false,
-                "queryPanel": true
+                "queryPanel": true,
+                "queryable": false
+			},{
+				"source": "db_segnalazioni",
+				"group": "Proposta per DADS 2015",
+				"title": "Genio Civile Pisa - info",
+				"name": "db_segnalazioni:genio_civile_pisa_view",
+                "vendorParams":{
+                    "cql_filter": "istruttoria = 'true'"            
+                },                    
+				"displayInLayerSwitcher": false,
+                "format":"image/gif",   
+				"visibility": true,
+                "ratio": 4,
+                "opacity": 0.0,
+				"tiled": false,
+				"attribution": false,
+                "queryPanel": false,
+                "queryable": true
 			},{
 				"source": "db_segnalazioni",
 				"group": "Proposta per DADS 2015",
@@ -512,11 +652,31 @@
                 "vendorParams":{
                     "cql_filter": "istruttoria = 'true'"            
                 },                    
+                "styles": ["PointStacker"],
+                "style": ["PointStacker"],                
 				"displayInLayerSwitcher": true,
-				"visibility": false,
+				"visibility": true,
 				"tiled": false,
 				"attribution": false,
-                "queryPanel": true
+                "queryPanel": true,
+                "queryable": false
+			},{
+				"source": "db_segnalazioni",
+				"group": "Proposta per DADS 2015",
+				"title": "Genio Civile Pistoia - info",
+				"name": "db_segnalazioni:genio_civile_pistoia_view",
+                "vendorParams":{
+                    "cql_filter": "istruttoria = 'true'"            
+                },                    
+				"displayInLayerSwitcher": false,
+                "format":"image/gif",   
+				"visibility": true,
+                "ratio": 4,
+                "opacity": 0.0,
+				"tiled": false,
+				"attribution": false,
+                "queryPanel": false,
+                "queryable": true
 			},{
 				"source": "db_segnalazioni",
 				"group": "Proposta per DADS 2015",
@@ -525,11 +685,31 @@
                 "vendorParams":{
                     "cql_filter": "istruttoria = 'true'"            
                 },                  
+                "styles": ["PointStacker"],
+                "style": ["PointStacker"],                  
 				"displayInLayerSwitcher": true,
-				"visibility": false,
+				"visibility": true,
 				"tiled": false,
 				"attribution": false,
-                "queryPanel": true
+                "queryPanel": true,
+                "queryable": false
+			},{
+				"source": "db_segnalazioni",
+				"group": "Proposta per DADS 2015",
+				"title": "Genio Civile Prato - info",
+				"name": "db_segnalazioni:genio_civile_prato_view",
+                "vendorParams":{
+                    "cql_filter": "istruttoria = 'true'"            
+                },                                  
+				"displayInLayerSwitcher": false,
+                "format":"image/gif",   
+				"visibility": true,
+                "ratio": 4,
+                "opacity": 0.0,
+				"tiled": false,
+				"attribution": false,
+                "queryPanel": false,
+                "queryable": true
 			},{
 				"source": "db_segnalazioni",
 				"group": "Proposta per DADS 2015",
@@ -538,11 +718,31 @@
                 "vendorParams":{
                     "cql_filter": "istruttoria = 'true'"            
                 },                    
+                "styles": ["PointStacker"],
+                "style": ["PointStacker"],                
 				"displayInLayerSwitcher": true,
-				"visibility": false,
+				"visibility": true,
 				"tiled": false,
 				"attribution": false,
-                "queryPanel": true
+                "queryPanel": true,
+                "queryable": false
+			},{
+				"source": "db_segnalazioni",
+				"group": "Proposta per DADS 2015",
+				"title": "Genio Civile Siena - info",
+				"name": "db_segnalazioni:genio_civile_siena_view",
+                "vendorParams":{
+                    "cql_filter": "istruttoria = 'true'"            
+                },                    
+				"displayInLayerSwitcher": false,
+                "format":"image/gif",   
+				"visibility": true,
+                "ratio": 4,
+                "opacity": 0.0,
+				"tiled": false,
+				"attribution": false,
+                "queryPanel": false,
+                "queryable": true
 			},{
 				"source": "db_segnalazioni",
 				"group": "DADS 2014 finanziati con DGRT 1194 2013",
@@ -550,7 +750,7 @@
 				"name": "db_segnalazioni:dads_2014_finanziati_dgrt_1194_2013",
 				"displayInLayerSwitcher": true,
 				"visibility": false,
-				"tiled": false,
+				"tiled": true,
 				"attribution": false,
                 "queryPanel": true
 			}
@@ -699,6 +899,12 @@
 		            "xtype": "gxp_spatial_bbox_selector"
 		        }
 	      }
-    	}
+    	}, {
+			"ptype": "gxp_staticpage",
+			"id": "staticId",
+			"url": "http://159.213.57.81/dbsegnalazioni",
+			"tabPosition": 0,
+			"tabTitle": "Inserimento Segnalazione"
+		}
 	]
 }

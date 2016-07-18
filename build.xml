@@ -21,7 +21,7 @@
     <property name="app.proxy.geoserver" value=""/>
 	<property name="app.debug.proxy" value="true"/>
     <property name="app.port" value="8081"/>
-    
+
     <path id="maven-ant-tasks.classpath" path="lib/maven-ant-tasks-2.1.3.jar" />
     <typedef resource="org/apache/maven/artifact/ant/antlib.xml"
            uri="antlib:org.apache.maven.artifact.ant"
@@ -32,14 +32,14 @@
         <available file="${ringojs.dir}" type="dir"/>
       </condition>
     </target>
-           
+
     <target name="init" depends="checkringo" unless="ringo">
         <echo message="downloading RingoJS jars"/>
         <artifact:remoteRepository id="remote.repository" url="http://maven.geo-solutions.it" />
         <artifact:dependencies filesetId="dependency.fileset" useScope="test">
           <remoteRepository refid="remote.repository" />
-          <dependency groupId="org.ringojs" artifactId="ringojs" version="0.7.0-geosolutions"/>          
-          <dependency groupId="org.ringojs" artifactId="ringojs-run" version="0.7.0-geosolutions"/>          
+          <dependency groupId="org.ringojs" artifactId="ringojs" version="0.7.0-geosolutions"/>
+          <dependency groupId="org.ringojs" artifactId="ringojs-run" version="0.7.0-geosolutions"/>
         </artifact:dependencies>
         <copy todir="${ringojs.dir}/lib">
           <fileset refid="dependency.fileset" />
@@ -47,79 +47,79 @@
           <mapper type="flatten" />
         </copy>
     </target>
-    
+
     <target name="buildjs" depends="buildjsdefault,buildjsapp">
     </target>
-	
-	<target name="buildjsapp" depends="init" if="application">	
+
+	<target name="buildjsapp" depends="init" if="application">
 	    <!-- mapcomposer -->
         <mkdir dir="${composerbuild}/${ant.project.name}/WEB-INF/app/static/script"/>
         <java jar="${ringojs.run}" fork="true" failonerror="true">
             <sysproperty key="ringo.home" path="${ringojs.dir}"/>
             <arg path="externals/buildkit/lib/buildkit/build.js"/>
             <arg line="-o ${composerbuild}/${ant.project.name}/WEB-INF/app/static/script mapcomposer/app/applications/${application}/buildjs.cfg"/>
-        </java>	
+        </java>
     </target>
-	
+
 	<target name="buildjsdefault" depends="init">
 		<delete dir="${composerbuild}"/>
-		
+
 	    <!-- mapcomposer -->
         <mkdir dir="${composerbuild}/${ant.project.name}/WEB-INF/app/static/script"/>
         <java jar="${ringojs.run}" fork="true" failonerror="true">
             <sysproperty key="ringo.home" path="${ringojs.dir}"/>
             <arg path="externals/buildkit/lib/buildkit/build.js"/>
             <arg line="-o ${composerbuild}/${ant.project.name}/WEB-INF/app/static/script mapcomposer/buildjs.cfg"/>
-        </java>	
+        </java>
     </target>
-    
+
     <target name="dist" depends="test, buildjs, redist, redistapp"/>
-	
-	<!--  SITE START  -->	
+
+	<!--  SITE START  -->
 	<target name="site" depends="dist">
 		<move file="${composerbuild}/${ant.project.name}" tofile="${composerbuild}/mapcomposer"/>
 		<mkdir dir="${composerbuild}/${ant.project.name}"/>
-		
+
 		<!-- site -->
         <mkdir dir="${composerbuild}/${ant.project.name}/src"/>
         <java jar="${ringojs.run}" fork="true" failonerror="true">
             <sysproperty key="ringo.home" path="${ringojs.dir}"/>
             <arg path="externals/buildkit/lib/buildkit/build.js"/>
             <arg line="-o ${composerbuild}/mapstore/src mapcomposer/app/static/externals/mapmanager/buildjs.cfg"/>
-        </java>	
-		
+        </java>
+
 		<!-- MAP MANAGER -->
-		
+
 		<!-- copy Ext resources -->
-        <copy todir="${composerbuild}/${ant.project.name}/lib/ext">		
+        <copy todir="${composerbuild}/${ant.project.name}/lib/ext">
 		    <fileset dir="mapcomposer/app/static/externals/ext">
 				<exclude name="**/ux/**"/>
             </fileset>
         </copy>
-		
+
 		<!-- copy Lib resources -->
         <copy todir="${composerbuild}/${ant.project.name}/lib">
             <fileset dir="mapcomposer/app/static/externals/mapmanager/lib"/>
         </copy>
-		
+
 		<!-- copy theme resources -->
         <copy todir="${composerbuild}/${ant.project.name}/theme">
             <fileset dir="mapcomposer/app/static/externals/mapmanager/theme"/>
         </copy>
-		
+
 		<!-- copy i18n resources -->
         <copy todir="${composerbuild}/${ant.project.name}/translations">
             <fileset dir="mapcomposer/app/static/externals/mapmanager/translations"/>
         </copy>
-		
+
 		<!-- copy html resources -->
 		<copy file="mapcomposer/app/static/externals/mapmanager/index.html" tofile="${composerbuild}/${ant.project.name}/index.html"/>
 		<copy file="mapcomposer/app/static/externals/mapmanager/mapstore.html" tofile="${composerbuild}/${ant.project.name}/mapstore.html"/>
-		
+
 		<!-- copy config resources -->
 		<copy file="mapcomposer/app/static/externals/mapmanager/src/config.js" tofile="${composerbuild}/${ant.project.name}/src/config.js"/>
 		<copy file="mapcomposer/app/static/externals/mapmanager/src/init.js" tofile="${composerbuild}/${ant.project.name}/src/init.js"/>
-		
+
 		<!-- Build the final WARs files-->
 		<war destfile="${composerbuild}/mapcomposer.war">
             <fileset dir="${composerbuild}/mapcomposer"/>
@@ -129,19 +129,19 @@
         </war>
     </target>
     <!-- SITE END -->
-	
+
 	<target name="redistapp" if="application">
 		<copy todir="${composerbuild}/${ant.project.name}/WEB-INF/app/applications/${application}">
             <fileset dir="mapcomposer/app/applications/${application}">
             </fileset>
-			
+
         </copy>
 	</target>
-	
+
     <target name="redist">
 
         <mkdir dir="${composerbuild}/${ant.project.name}"/>
-        
+
         <copy todir="${composerbuild}/${ant.project.name}">
             <fileset dir="mapcomposer/src/main/webapp/">
             </fileset>
@@ -156,9 +156,9 @@
 				<exclude name="**/applications/**"/>
             </fileset>
         </copy>
-		
+
 		<!-- MAP COMPOSER -->
-		
+
         <!-- copy Ext resources -->
         <copy todir="${composerbuild}/${ant.project.name}/WEB-INF/app/static/externals/ext">
             <fileset dir="mapcomposer/app/static/externals/ext">
@@ -230,10 +230,15 @@
         <copy todir="${composerbuild}/${ant.project.name}/WEB-INF/app/static/externals/ext/ux/images">
             <fileset dir="mapcomposer/app/static/externals/ext/ux/images"/>
         </copy>
+        <copy file="mapcomposer/app/static/externals/ext/ux/ux-all.js" tofile="${composerbuild}/${ant.project.name}/WEB-INF/app/static/externals/ext/ux/ux-all.js"/>
         <!-- copy i18n resources -->
         <copy todir="${composerbuild}/${ant.project.name}/WEB-INF/app/static/externals/mapmanager/translations">
             <fileset dir="mapcomposer/app/static/externals/mapmanager/translations"/>
-        </copy>		
+        </copy>
+        <!-- copy CookieNotice resources -->
+        <copy todir="${composerbuild}/${ant.project.name}/WEB-INF/app/static/externals/cookiechoices">
+            <fileset dir="mapcomposer/app/static/externals/cookiechoices"/>
+        </copy>
     </target>
 
     <target name="war" depends="dist">
@@ -244,12 +249,12 @@
 
     <target name="debug" depends="debugdefault,debugapp">
     </target>
-	
+
 	<target name="debugdefault" depends="init" unless="application">
         <java jar="${ringojs.run}" fork="true" classpath="${ringojs.dir}/lib">
             <sysproperty key="app.proxy.geoserver" value="${app.proxy.geoserver}"/>
 			<sysproperty key="app.debug.proxy" value="${app.debug.proxy}"/>
-            <sysproperty key="ringo.home" path="${ringojs.dir}"/>                              
+            <sysproperty key="ringo.home" path="${ringojs.dir}"/>
             <!-- <jvmarg value="-XX:+HeapDumpOnOutOfMemoryError"/> -->
             <arg path="mapcomposer/app/main.js"/>
 			<arg line="-p ${app.port}"/>
@@ -260,17 +265,17 @@
         <java jar="${ringojs.run}" fork="true" classpath="${ringojs.dir}/lib">
             <sysproperty key="app.proxy.geoserver" value="${app.proxy.geoserver}"/>
 			<sysproperty key="app.debug.proxy" value="${app.debug.proxy}"/>
-            <sysproperty key="ringo.home" path="${ringojs.dir}"/>                              
+            <sysproperty key="ringo.home" path="${ringojs.dir}"/>
             <!-- <jvmarg value="-XX:+HeapDumpOnOutOfMemoryError"/> -->
             <arg path="mapcomposer/app/main.js"/>
             <arg line="-a ${application}"/>
 			<arg line="-p ${app.port}"/>
         </java>
     </target>
-	
+
     <target name="debugall" depends="debugalldefault,debugallapp">
     </target>
-	
+
 	<target name="debugalldefault" depends="init" unless="application">
         <java jar="${ringojs.run}" fork="true">
             <sysproperty key="app.proxy.geoserver" value="${app.proxy.geoserver}"/>
@@ -281,7 +286,7 @@
             <arg line="-p ${app.port}"/>
         </java>
     </target>
-	
+
 	<target name="debugallapp" depends="init" if="application">
         <java jar="${ringojs.run}" fork="true">
             <sysproperty key="app.proxy.geoserver" value="${app.proxy.geoserver}"/>
@@ -306,66 +311,66 @@
         <delete dir="${composerbuild}"/>
 		<delete dir="${release.dir}"/>
     </target>
-    
+
     <target name="release" depends="war">
         <delete dir="${release.dir}"/>
         <mkdir dir="${release.dir}"/>
         <mkdir dir="${release.dir}/mapstore"/>
         <copy todir="${release.dir}/mapstore">
-            <fileset dir="release">                
+            <fileset dir="release">
             </fileset>
         </copy>
         <copy todir="${release.dir}/mapstore/webapps">
             <fileset file="${composerbuild}/${ant.project.name}.war">
             </fileset>
         </copy>
-		
+
 		<!-- Replace the default context jetty file -->
 		<delete file="${release.dir}/mapstore/contexts/context.xml"/>
 		<copy file="mapcomposer/release/manager/context.xml" tofile="${release.dir}/mapstore/contexts/context.xml"/>
-        
+
         <copy todir="${release.dir}/mapstore">
             <fileset file="license.txt">
             </fileset>
-        </copy>        
-        <get src="http://maven.geo-solutions.it/it/geosolutions/servicebox/${servicebox.version}/servicebox-${servicebox.version}.war" dest="${release.dir}/mapstore/webapps/servicebox.war"/>        
-        <get src="http://maven.geo-solutions.it/it/geosolutions/geostore/geostore-webapp/${geostore.version}/geostore-webapp-${geostore.version}.war" dest="${release.dir}/mapstore/webapps/geostore.war"/>        
+        </copy>
+        <get src="http://maven.geo-solutions.it/it/geosolutions/servicebox/${servicebox.version}/servicebox-${servicebox.version}.war" dest="${release.dir}/mapstore/webapps/servicebox.war"/>
+        <get src="http://maven.geo-solutions.it/it/geosolutions/geostore/geostore-webapp/${geostore.version}/geostore-webapp-${geostore.version}.war" dest="${release.dir}/mapstore/webapps/geostore.war"/>
         <get src="http://maven.geo-solutions.it/proxy/http_proxy/${httpproxy.version}/http_proxy-${httpproxy.version}.war" dest="${release.dir}/mapstore/webapps/http_proxy.war"/>
         <get src="http://maven.geo-solutions.it/it/geosolutions/opensdi2/opensdi2-web/${opensdi2.version}/opensdi2-web-${opensdi2.version}.war" dest="${release.dir}/mapstore/webapps/opensdi2-manager.war"/>
-		
+
         <!-- remove datasource configuration file from geostore.war -->
-        <zip destfile="${release.dir}/mapstore/webapps/tmp.war"> 
-                <zipfileset src="${release.dir}/mapstore/webapps/geostore.war"> 
-                        <exclude name="**/geostore-datasource-ovr.properties" /> 
-                </zipfileset> 
-        </zip> 
-        <move file="${release.dir}/mapstore/webapps/tmp.war" tofile="${release.dir}/mapstore/webapps/geostore.war" /> 
-        
+        <zip destfile="${release.dir}/mapstore/webapps/tmp.war">
+                <zipfileset src="${release.dir}/mapstore/webapps/geostore.war">
+                        <exclude name="**/geostore-datasource-ovr.properties" />
+                </zipfileset>
+        </zip>
+        <move file="${release.dir}/mapstore/webapps/tmp.war" tofile="${release.dir}/mapstore/webapps/geostore.war" />
+
         <!-- remove proxy configuration file from http_proxy.war -->
-        <zip destfile="${release.dir}/mapstore/webapps/tmp.war"> 
-                <zipfileset src="${release.dir}/mapstore/webapps/http_proxy.war"> 
-                        <exclude name="**/proxy.properties" /> 
-                </zipfileset> 
-        </zip> 
-        <move file="${release.dir}/mapstore/webapps/tmp.war" tofile="${release.dir}/mapstore/webapps/http_proxy.war" /> 
-		
+        <zip destfile="${release.dir}/mapstore/webapps/tmp.war">
+                <zipfileset src="${release.dir}/mapstore/webapps/http_proxy.war">
+                        <exclude name="**/proxy.properties" />
+                </zipfileset>
+        </zip>
+        <move file="${release.dir}/mapstore/webapps/tmp.war" tofile="${release.dir}/mapstore/webapps/http_proxy.war" />
+
 		<!-- remove servicebox configuration file from servicebox.war -->
-        <zip destfile="${release.dir}/mapstore/webapps/tmp.war"> 
-                <zipfileset src="${release.dir}/mapstore/webapps/servicebox.war"> 
-                        <exclude name="**/servicebox.properties" /> 
-						<exclude name="**/servicebox-ovr.properties" /> 
-                </zipfileset> 
-        </zip> 
-        <move file="${release.dir}/mapstore/webapps/tmp.war" tofile="${release.dir}/mapstore/webapps/servicebox.war" /> 
-		
+        <zip destfile="${release.dir}/mapstore/webapps/tmp.war">
+                <zipfileset src="${release.dir}/mapstore/webapps/servicebox.war">
+                        <exclude name="**/servicebox.properties" />
+						<exclude name="**/servicebox-ovr.properties" />
+                </zipfileset>
+        </zip>
+        <move file="${release.dir}/mapstore/webapps/tmp.war" tofile="${release.dir}/mapstore/webapps/servicebox.war" />
+
 	    <!-- remove opensdi2-manager configuration file from opensdi2-manager.war -->
-        <zip destfile="${release.dir}/mapstore/webapps/tmp.war"> 
-                <zipfileset src="${release.dir}/mapstore/webapps/opensdi2-manager.war"> 
-                        <exclude name="**/opensdi-config-ovr.properties" /> 
-                </zipfileset> 
-        </zip> 
-        <move file="${release.dir}/mapstore/webapps/tmp.war" tofile="${release.dir}/mapstore/webapps/opensdi2-manager.war" /> 
-        
+        <zip destfile="${release.dir}/mapstore/webapps/tmp.war">
+                <zipfileset src="${release.dir}/mapstore/webapps/opensdi2-manager.war">
+                        <exclude name="**/opensdi-config-ovr.properties" />
+                </zipfileset>
+        </zip>
+        <move file="${release.dir}/mapstore/webapps/tmp.war" tofile="${release.dir}/mapstore/webapps/opensdi2-manager.war" />
+
         <echo file="${release.dir}/mapstore/VERSION.txt">
 			MapStore Version: ${mapstore.version}
 			GeoStore Version: ${geostore.version}
@@ -374,34 +379,34 @@
 			opensdi2-manager Version: ${opensdi2.version}
 		</echo>
     </target>
-	
-	<target name="gnrelease" depends="release">      
-	
+
+	<target name="gnrelease" depends="release">
+
 		<!-- Get GeoNetwork war -->
         <get src="http://demo.geo-solutions.it/share/github/mapstore/downloads/war/geonetwork/${geonetwork.version}/geonetwork-${geonetwork.version}.war" dest="${release.dir}/mapstore/webapps/geonetwork.war"/>
-        
+
 		<!-- Remove mapcomposer ringo configuration file from mapstore.war to enable geonetwork node -->
-        <zip destfile="${release.dir}/mapstore/webapps/tmp.war"> 
-                <zipfileset src="${release.dir}/mapstore/webapps/mapstore.war"> 
-                        <exclude name="**/WEB-INF/app/config.js" /> 
-                </zipfileset> 
+        <zip destfile="${release.dir}/mapstore/webapps/tmp.war">
+                <zipfileset src="${release.dir}/mapstore/webapps/mapstore.war">
+                        <exclude name="**/WEB-INF/app/config.js" />
+                </zipfileset>
 				<zipfileset dir="mapcomposer/release/geonetwork/" includes="config.js" prefix="WEB-INF/app"/>
-        </zip> 
-        <move file="${release.dir}/mapstore/webapps/tmp.war" tofile="${release.dir}/mapstore/webapps/mapstore.war" /> 
-		
+        </zip>
+        <move file="${release.dir}/mapstore/webapps/tmp.war" tofile="${release.dir}/mapstore/webapps/mapstore.war" />
+
 		<!-- Replace the default context jetty file -->
 		<delete file="${release.dir}/mapstore/contexts/context.xml"/>
 		<copy file="mapcomposer/release/geonetwork/context.xml" tofile="${release.dir}/mapstore/contexts/context.xml"/>
-		
+
 	    <!-- Replace the logo GIF in GeoNetwork using the Geosolutions logo -->
-        <zip destfile="${release.dir}/mapstore/webapps/tmp.war"> 
-                <zipfileset src="${release.dir}/mapstore/webapps/geonetwork.war"> 
-                        <exclude name="**/images/logos/dummy.gif" /> 
-                </zipfileset> 
+        <zip destfile="${release.dir}/mapstore/webapps/tmp.war">
+                <zipfileset src="${release.dir}/mapstore/webapps/geonetwork.war">
+                        <exclude name="**/images/logos/dummy.gif" />
+                </zipfileset>
 				<zipfileset dir="mapcomposer/release/geonetwork/logos" includes="dummy.gif" prefix="images/logos"/>
-        </zip> 
-        <move file="${release.dir}/mapstore/webapps/tmp.war" tofile="${release.dir}/mapstore/webapps/geonetwork.war" /> 
-		
+        </zip>
+        <move file="${release.dir}/mapstore/webapps/tmp.war" tofile="${release.dir}/mapstore/webapps/geonetwork.war" />
+
         <echo file="${release.dir}/mapstore/VERSION.txt">
 			GeoNetwork Version: ${geonetwork.version}
 		</echo>
