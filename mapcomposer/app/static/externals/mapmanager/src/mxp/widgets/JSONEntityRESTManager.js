@@ -223,6 +223,13 @@ mxp.widgets.JSONEntityRESTManager = Ext.extend(Ext.Panel, {
                 hidden: !entity.canSearch
             }) ;
 
+            var plugins = [] ;
+            // If the column is set to be "filterable" it will display a filter box
+            if(Ext.ux.grid.GridFilters)
+            {
+                plugins.push(new Ext.ux.grid.GridFilters({local: true}));
+            }
+                        
             editors.push({
                 id: entity.id,
                 border:false,
@@ -235,7 +242,7 @@ mxp.widgets.JSONEntityRESTManager = Ext.extend(Ext.Panel, {
                         region:'center',
                         xtype:'grid',// xtype:'editorgrid',
                         border:false,
-                        //plugins:[editor],
+                        plugins: plugins,
                         ref:'grid',
                         entity: entity, // add the entity the configuration available everywhere
                         loadMask:true,
@@ -308,19 +315,29 @@ mxp.widgets.JSONEntityRESTManager = Ext.extend(Ext.Panel, {
                                 grid.store.load();
                             }
                         },
-                        bbar: new Ext.PagingToolbar({
-                            pageSize: entity.pageSize || me.defaultPageSize,
-                            store: store,
-                            displayInfo: true,
-                            displayMsg: 'Displaying data {0} - {1} of {2}',
-                            emptyMsg: "No data to display"
-                        })
-                        
+                        bbar: this.getEditorBBar(entity, me.defaultPageSize, store, plugins)
                 }]
             });  
         }
         return editors;
     },
+    
+    /**
+     * private method[getEditorBBar] 
+     * create bbar for an entity
+     */
+    getEditorBBar(entity, defaultPageSize, store, plugins){
+        return [
+            new Ext.PagingToolbar({
+                pageSize: entity.pageSize || defaultPageSize,
+                store: store,
+                displayInfo: true,
+                displayMsg: 'Displaying data {0} - {1} of {2}',
+                emptyMsg: "No data to display",
+                plugins: plugins
+            })];
+    },
+    
     /**
      * private method[createColumns] 
      * create columns for an entity
