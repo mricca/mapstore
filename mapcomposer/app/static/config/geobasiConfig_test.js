@@ -273,7 +273,7 @@
                 "minScale" : 50000.1,
                 "name" : "rt_dbg.el_geol.unita_geologica_areale_10k",
                 "displayInLayerSwitcher" : true,
-                "visibility" : true,
+                "visibility" : false,
                 "tiled" : false,
                 "attribution" : false
             }, {
@@ -303,7 +303,7 @@
                 "minScale" : 50000.1,
                 "name" : "rt_dbg.el_geol.etichetta_unita_geologica_areale",
                 "displayInLayerSwitcher" : true,
-                "visibility" : true,
+                "visibility" : false,
                 "tiled" : false,
                 "queyable" : false,
                 "attribution" : false
@@ -561,13 +561,6 @@
             },
             "outputTarget" : "westTab"
         }, {
-            "ptype" : "gxp_wfsrtsearch",
-            "id" : "wfsrtsearch",
-            "outputConfig" : {
-                "itemId" : "wfsrtsearchID"
-            },
-            "outputTarget" : "eastTabPanel"
-        }, {
             "actions" : ["->"],
             "actionTarget" : "paneltbar"
         }, {
@@ -635,6 +628,15 @@
                     "folder" : [{
                             "name" : "Basi cartografiche",
                             "title" : "Base maps_Basi cartografiche"
+                        }
+                    ],
+                    "expanded" : true,
+                    "checked" : false
+                }, {
+                    "title" : "Uso e Copertura del Suolo_Uso e Copertura del Suolo",
+                    "folder" : [{
+                            "name" : "Uso e Copertura del Suolo",
+                            "title" : "Uso e Copertura del Suolo_Uso e Copertura del Suolo"
                         }
                     ],
                     "expanded" : true,

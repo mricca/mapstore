@@ -960,9 +960,9 @@ gxp.plugins.WMSSource = Ext.extend(gxp.plugins.LayerSource, {
         		}
         	}
         }
-
+        var props=new Object();
         if(keywords.length>0 || !this.isEmptyObject(identifiers)){
-            var props=new Object();
+            
 
             for(var k=0; k<keywords.length; k++){
                 var keyword = keywords[k].value || keywords[k];
@@ -989,10 +989,19 @@ gxp.plugins.WMSSource = Ext.extend(gxp.plugins.LayerSource, {
                 }
             }
 
-            return Ext.applyIf(props, defaultProps);
+            if(this.external){
+                return this.checkExternalServer(defaultProps,props);
+            }else{
+                return Ext.applyIf(props, defaultProps);
+            }
+            // return Ext.applyIf(props, defaultProps);
 
         } else {
-            return {};
+            if(this.external){
+                return this.checkExternalServer(defaultProps,props);
+            }else{
+                return {};
+            }
 		}
     },
 
@@ -1003,6 +1012,22 @@ gxp.plugins.WMSSource = Ext.extend(gxp.plugins.LayerSource, {
             }
         }
         return true;
+    },
+    
+    checkExternalServer: function(defaultProps,props){
+        var localLabelSep = "_";
+        var localIndexs = {
+                "en": 0,
+                "it": 1,
+                "fr": 2,
+                "de": 3
+        };
+        var layerNames = defaultProps.title.split(localLabelSep);
+        if (layerNames.length>0) {
+            var locIndex= localIndexs[GeoExt.Lang.locale];
+            props.title=layerNames[locIndex];
+        }
+        return Ext.applyIf(props, defaultProps);
     }
 });
 
