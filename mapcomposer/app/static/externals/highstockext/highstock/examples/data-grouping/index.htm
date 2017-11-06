@@ -4,14 +4,14 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<title>Highstock Example</title>
 
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 		<style type="text/css">
 ${demo.css}
 		</style>
 		<script type="text/javascript">
 $(function () {
 
-    $.getJSON('http://www.highcharts.com/samples/data/jsonp.php?filename=large-dataset.json&callback=?', function (data) {
+    $.getJSON('https://www.highcharts.com/samples/data/jsonp.php?filename=large-dataset.json&callback=?', function (data) {
 
         // Create a timer
         var start = +new Date();
@@ -21,18 +21,17 @@ $(function () {
             chart: {
                 events: {
                     load: function () {
-                        if (!window.isComparing) {
-                            this.setTitle(null, {
-                                text: 'Built chart in ' + (new Date() - start) + 'ms'
-                            });
-                        }
+                        console.log('@load')
+                        this.setTitle(null, {
+                            text: 'Built chart in ' + (new Date() - start) + 'ms'
+                        });
                     }
                 },
                 zoomType: 'x'
             },
 
             rangeSelector: {
-                
+
                 buttons: [{
                     type: 'day',
                     count: 3,
@@ -67,7 +66,7 @@ $(function () {
             },
 
             title: {
-                text: 'Hourly temperatures in Vik i Sogn, Norway, 2004-2010'
+                text: 'Hourly temperatures in Vik i Sogn, Norway, 2009-2015'
             },
 
             subtitle: {
@@ -76,9 +75,9 @@ $(function () {
 
             series: [{
                 name: 'Temperature',
-                data: data,
-                pointStart: Date.UTC(2004, 3, 1),
-                pointInterval: 3600 * 1000,
+                data: data.data,
+                pointStart: data.pointStart,
+                pointInterval: data.pointInterval,
                 tooltip: {
                     valueDecimals: 1,
                     valueSuffix: '°C'
@@ -91,8 +90,8 @@ $(function () {
 		</script>
 	</head>
 	<body>
-<script src="../../js/highstock.js"></script>
-<script src="../../js/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/stock/highstock.js"></script>
+<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
 
 <div id="container" style="height: 400px; min-width: 310px"></div>
 	</body>

@@ -4,7 +4,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<title>Highstock Example</title>
 
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 		<style type="text/css">
 ${demo.css}
 		</style>
@@ -18,31 +18,31 @@ $(function () {
         var chart = $('#container').highcharts();
 
         chart.showLoading('Loading data from server...');
-        $.getJSON('http://www.highcharts.com/samples/data/from-sql.php?start=' + Math.round(e.min) +
+        $.getJSON('https://www.highcharts.com/samples/data/from-sql.php?start=' + Math.round(e.min) +
                 '&end=' + Math.round(e.max) + '&callback=?', function (data) {
 
-                chart.series[0].setData(data);
-                chart.hideLoading();
-            });
+            chart.series[0].setData(data);
+            chart.hideLoading();
+        });
     }
 
-    // See source code from the JSONP handler at https://github.com/highslide-software/highcharts.com/blob/master/samples/data/from-sql.php
-    $.getJSON('http://www.highcharts.com/samples/data/from-sql.php?callback=?', function (data) {
+    // See source code from the JSONP handler at https://github.com/highcharts/highcharts/blob/master/samples/data/from-sql.php
+    $.getJSON('https://www.highcharts.com/samples/data/from-sql.php?callback=?', function (data) {
 
         // Add a null value for the end date
         data = [].concat(data, [[Date.UTC(2011, 9, 14, 19, 59), null, null, null, null]]);
 
         // create the chart
         $('#container').highcharts('StockChart', {
-            chart : {
+            chart: {
                 type: 'candlestick',
                 zoomType: 'x'
             },
 
-            navigator : {
+            navigator: {
                 adaptToUpdatedData: false,
-                series : {
-                    data : data
+                series: {
+                    data: data
                 }
             },
 
@@ -58,7 +58,7 @@ $(function () {
                 text: 'Displaying 1.7 million data points in Highcharts Stock by async server loading'
             },
 
-            rangeSelector : {
+            rangeSelector: {
                 buttons: [{
                     type: 'hour',
                     count: 1,
@@ -80,12 +80,12 @@ $(function () {
                     text: 'All'
                 }],
                 inputEnabled: false, // it supports only days
-                selected : 4 // all
+                selected: 4 // all
             },
 
-            xAxis : {
-                events : {
-                    afterSetExtremes : afterSetExtremes
+            xAxis: {
+                events: {
+                    afterSetExtremes: afterSetExtremes
                 },
                 minRange: 3600 * 1000 // one hour
             },
@@ -94,8 +94,8 @@ $(function () {
                 floor: 0
             },
 
-            series : [{
-                data : data,
+            series: [{
+                data: data,
                 dataGrouping: {
                     enabled: false
                 }
@@ -107,8 +107,8 @@ $(function () {
 		</script>
 	</head>
 	<body>
-<script src="../../js/highstock.js"></script>
-<script src="../../js/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/stock/highstock.js"></script>
+<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
 
 <div id="container" style="height: 400px; min-width: 310px"></div>
 
