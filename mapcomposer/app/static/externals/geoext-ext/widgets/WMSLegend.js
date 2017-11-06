@@ -228,7 +228,12 @@ GeoExt.WMSLegend = Ext.extend(GeoExt.LayerLegend, {
 			}			
 		} 
         
-        return url;
+        if (rec.get("legendUrl")){
+            return rec.get("legendUrl");
+        }else{
+            return url;
+        }
+        
     },
 
     /** private: method[update]

@@ -113,7 +113,8 @@ GeoExt.ux.LegendStylePanel = Ext.extend(Ext.Panel, {
         fontFamily: "Verdana",
         forceLabels: true,
 		fontAntiAliasing: true,
-        dpi: "96"
+        dpi: "96",
+        SLD_VERSION: "1.1.0"
     },
 
     /** api: config[formParameters]
@@ -298,7 +299,9 @@ GeoExt.ux.LegendStylePanel = Ext.extend(Ext.Panel, {
             for(var i = 0; i < this.fieldSet.fieldSet.items.keys.length; i++){
                 var key = this.fieldSet.fieldSet.items.keys[i];
                 var formParam = this.fieldSet.items.get(key);
-                if(formParam.name.indexOf(this.ignoreLegendParametersKey) < 0){
+                if(formParam.name &&
+                    formParam.name !== 'enableLegendPanelObj' &&
+                        formParam.name.indexOf(this.ignoreLegendParametersKey) < 0){
                     spec[formParam.name] = formParam.getValue();
                 }
             };
