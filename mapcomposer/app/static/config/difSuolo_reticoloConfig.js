@@ -1,24 +1,24 @@
 {
    "scaleOverlayMode": "advanced",
-   "actionToolScale": "medium",
+   "actionToolScale": "medium",      
    "tab": true,
    "gsSources":{
    		"geoserver_ds": {
 			"ptype": "gxp_wmssource",
 			"url": "http://geoportale.lamma.rete.toscana.it/geoserver_ds/RETICOLO/ows?",
-			"title": "Difesa Suolo Reticolo",
+			"title": "Geoscopio Reticolo",
 			"SRS": "EPSG:3003",
 			"version":"1.1.1",
             "loadingProgress": true,
 			"layersCachedExtent": [
 				1547065, 4677785,
 				1803065, 4933785
-			],
+			],			            
 			"layerBaseParams":{
 				"FORMAT":"image/png",
 				"TILED":false
 			}
-		},
+		},    
    		"geoscopio": {
 			"ptype": "gxp_wmssource",
 			"url": "http://www502.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmssfondo&map_resolution=91&language=ita",
@@ -29,7 +29,7 @@
 			"layersCachedExtent": [
 				1547065, 4677785,
 				1803065, 4933785
-			],
+			],			
 			"layerBaseParams":{
 				"FORMAT":"image/png",
 				"TILED":false
@@ -66,7 +66,7 @@
 				"FORMAT": "image/png",
 				"TILED": false
 			}
-		},
+		},         
    		"geoscopio_ortofoto": {
 			"ptype": "gxp_wmssource",
 			"url": "http://web.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmsofc",
@@ -77,7 +77,7 @@
 			"layersCachedExtent": [
 				1547065, 4677785,
 				1803065, 4933785
-			],
+			],			
 			"layerBaseParams":{
 				"FORMAT":"image/png",
 				"TILED":false
@@ -93,7 +93,7 @@
 			"layersCachedExtent": [
 				1547065, 4677785,
 				1803065, 4933785
-			],
+			],			
 			"layerBaseParams":{
 				"FORMAT":"image/png",
 				"TILED":false
@@ -109,7 +109,7 @@
 			"layersCachedExtent": [
 				1547065, 4677785,
 				1803065, 4933785
-			],
+			],			
 			"layerBaseParams":{
 				"FORMAT":"image/png",
 				"TILED":false
@@ -125,7 +125,7 @@
 			"layersCachedExtent": [
 				1547065, 4677785,
 				1803065, 4933785
-			],
+			],			
 			"layerBaseParams":{
 				"FORMAT":"image/png",
 				"TILED":false
@@ -140,7 +140,7 @@
 		"center": [1671579.00, 4803992.00],
 		"scales": [50, 1000, 2000, 5000, 8000, 10000, 15000, 25000.1, 50000.1, 100000.1, 250000, 500000, 1000000, 1500000.1, 2000000],
 		"maxExtent": [1328298.3134386, 4554791.501599, 2014859.6865614, 5053192.498401],
-		"restrictedExtent": [1550750, 4674330, 1775720, 4929790],
+		"restrictedExtent": [1550750, 4674330, 1775720, 4929790],         
 		"layers": [{
                 "source": "geoscopio",
                 "group": "background",
@@ -182,7 +182,7 @@
                 "visibility": false,
                 "tiled": false,
                 "expanded": true,
-                "checked": false,
+                "checked": false,            
                 "attribution": false
             },
             {
@@ -194,7 +194,7 @@
                 "visibility": false,
                 "tiled": false,
                 "expanded": true,
-                "checked": false,
+                "checked": false,            
                 "attribution": false
             },
             {
@@ -206,7 +206,7 @@
                 "visibility": false,
                 "tiled": false,
                 "expanded": true,
-                "checked": false,
+                "checked": false,            
                 "attribution": false
             },
             {
@@ -218,7 +218,7 @@
                 "visibility": false,
                 "tiled": false,
                 "expanded": true,
-                "checked": false,
+                "checked": false,            
                 "attribution": false
             },
             {
@@ -230,7 +230,7 @@
                 "visibility": false,
                 "tiled": false,
                 "expanded": true,
-                "checked": false,
+                "checked": false,            
                 "attribution": false
             },
             {
@@ -242,14 +242,14 @@
                 "visibility": false,
                 "tiled": false,
                 "expanded": true,
-                "checked": false,
+                "checked": false,            
                 "attribution": false
             },
             {
                 "source": "geoscopio_topogr",
                 "group": "Basi cartografiche",
                 "title": "Carta Topografica 50k",
-                "maxscale": 15000,
+                "maxscale": 15000, 
                 "name": "rt_topogr.topografica50k.grey.rt",
                 "displayInLayerSwitcher": true,
                 "visibility": true,
@@ -261,7 +261,7 @@
                 "group": "Basi cartografiche",
                 "title": "CTR 1:10.000 Raster BW",
                 "name": "rt_ctr.10k",
-                "minscale": 15000,
+                "minscale": 15000,             
                 "displayInLayerSwitcher": true,
                 "visibility": true,
                 "tiled": false,
@@ -271,7 +271,7 @@
                 "source": "geoscopio_ctr",
                 "group": "Basi cartografiche",
                 "title": "CTR 1:10.000 Raster GL",
-                "minscale": 15000,
+                "minscale": 15000,            
                 "name": "rt_ctr.ctr10kgreylight",
                 "displayInLayerSwitcher": true,
                 "visibility": false,
@@ -311,7 +311,7 @@
                 "expanded": true,
                 "checked": false,
 				"title": "Specchi d'acqua",
-				"name": "area_bagnata",
+				"name": "area_bagnata",                
 				"displayInLayerSwitcher": true,
 				"visibility": false,
 				"tiled": false,
@@ -324,7 +324,7 @@
 				"title": "Reticolo idrografico LR 79/2012 approvato con DCRT 57/2013",
 				"name": "reticolo_idrografico",
                 "styles": ["reticolo_idrografico_dcrt57_2013"],
-                "style": ["reticolo_idrografico_dcrt57_2013"],
+                "style": ["reticolo_idrografico_dcrt57_2013"],                
 				"displayInLayerSwitcher": true,
 				"visibility": false,
 				"tiled": false,
@@ -337,7 +337,7 @@
 				"title": "Reticolo idrografico LR 79/2012 aggiornato con DCRT 9/2015",
 				"name": "reticolo_lr79_2012",
                 "styles": ["reticolo_idrografico_dcrt9_2015"],
-                "style": ["reticolo_idrografico_dcrt9_2015"],
+                "style": ["reticolo_idrografico_dcrt9_2015"],                
 				"displayInLayerSwitcher": true,
 				"visibility": false,
 				"tiled": false,
@@ -350,7 +350,7 @@
 				"title": "Reticolo di gestione LR 79/2012 approvato con DCRT 57/2013",
 				"name": "retgest_79_2012",
                 "styles": ["reticolo_gestione_dcrt57_2013"],
-                "style": ["reticolo_gestione_dcrt57_2013"],
+                "style": ["reticolo_gestione_dcrt57_2013"],                  
 				"displayInLayerSwitcher": true,
 				"visibility": false,
 				"tiled": false,
@@ -363,7 +363,7 @@
 				"title": "Reticolo di gestione LR 79/2012 aggiornato con DCRT 9/2015",
 				"name": "reticolo_lr79_2012",
                 "styles": ["reticolo_gestione_dcrt9_2015"],
-                "style": ["reticolo_gestione_dcrt9_2015"],
+                "style": ["reticolo_gestione_dcrt9_2015"],                  
 				"displayInLayerSwitcher": true,
 				"visibility": false,
 				"tiled": false,
@@ -388,17 +388,17 @@
 		]
 	},
 	"scaleOverlayUnits":{
-        "bottomOutUnits":"nmi",
-        "bottomInUnits":"nmi",
-        "topInUnits":"m",
+        "bottomOutUnits":"nmi",    
+        "bottomInUnits":"nmi",    
+        "topInUnits":"m",    
         "topOutUnits":"km"
-    },
+    },	
     "removeTools": [
         "wmsgetfeatureinfo_menu_plugin"
-    ],
+    ], 	    
 	"proj4jsDefs": {
 		"EPSG:3003": "+proj=tmerc +lat_0=0 +lon_0=9 +k=0.9996 +x_0=1500000 +y_0=0 +ellps=intl +units=m +no_defs +towgs84 = -104.1,-49.1,-9.9,0.971,-2.917,0.714,-11.68"
-	},
+	},	     
 	"customTools": [
 		{
 			"ptype": "gxp_embedmapdialog",
@@ -431,7 +431,7 @@
 			"directAddLayer": false,
 			"id": "addlayer"
 		}, {
-			"actions": ["-"],
+			"actions": ["-"], 
 			"actionTarget": "paneltbar"
 		}, {
 			"ptype": "gxp_geolocationmenu",

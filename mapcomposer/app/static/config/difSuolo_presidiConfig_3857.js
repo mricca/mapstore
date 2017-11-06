@@ -8,6 +8,18 @@
         "center": true
     },
    "gsSources":{
+           "osm": { 
+               "ptype": "gxp_osmsource"
+           },
+           "google": {
+               "ptype": "gxp_googlesource" 
+           },
+           "bing": {
+               "ptype": "gxp_bingsource" 
+           }, 
+           "ol": { 
+               "ptype": "gxp_olsource" 
+           },
            "geoserver_presidi": {
             "ptype": "gxp_wmssource",
             "url": "http://geoportale.lamma.rete.toscana.it/geoserver_ds/PRESIDI/ows?",
@@ -203,21 +215,63 @@
     },
     "cookieConsent":true,
     "map": {
-        "projection": "EPSG:3003",
-        "displayProjection": "EPSG:3003",
-        "units": "m",
-        "fractionalZoom": true,
-        "center": [1671579.00, 4803992.00],
-        "scales": [50, 1000, 2000, 5000, 8000, 10000, 15000, 25000.1, 50000.1, 100000.1, 250000, 500000, 1000000, 1500000.1, 2000000],
-        "maxExtent": [1328298.3134386, 4554791.501599, 2014859.6865614, 5053192.498401],
-        "restrictedExtent": [1550750, 4674330, 1775720, 4929790],
+        "projection": "EPSG:3857",
+		"units": "m",
+		"center": [1250000.000000, 5370000.000000],
+		"zoom":8,
+		"maxExtent": [
+			-20037508.34, -20037508.34,
+			20037508.34, 20037508.34
+		],
+        "restrictedExtent": [
+			697079.00,4989607.00,1730654.00,5717614.00
+		],
         "layers": [{
+				"source": "osm",
+				"title": "Open Street Map",
+				"name": "mapnik",
+				"group": "background"
+			},{
+				"source": "bing",
+				"title": "Bing Aerial",
+				"name": "Aerial",
+				"group": "background"
+			},{
+				"source": "bing",
+				"title": "Bing Aerial With Labels",
+				"name": "AerialWithLabels",
+				"group": "background"
+			},{
+				"source": "google",
+				"title": "Google Roadmap",
+				"name": "ROADMAP",
+				"group": "background"
+			},{
+				"source": "google",
+				"title": "Google Terrain",
+				"name": "TERRAIN",
+				"group": "background"
+			},{
+				"source": "google",
+				"title": "Google Hybrid",
+				"name": "HYBRID",
+				"group": "background"
+			},{
+				"source": "ol",
+				"group": "background",
+				"fixed": true,
+				"type": "OpenLayers.Layer",
+				"visibility": false,
+				"args": [
+					"None", {"visibility": false}
+				]
+			},{
                 "source": "geoscopio",
                 "group": "background",
                 "title": "Basi di sfondo",
                 "name": "rt_sfondo.batimetriche",
                 "displayInLayerSwitcher": true,
-                "visibility": true,
+                "visibility": false,
                 "tiled": false,
                 "attribution": false
             },
@@ -227,7 +281,7 @@
                 "title": "Basi di sfondo",
                 "name": "rt_sfondo.intorno_toscana",
                 "displayInLayerSwitcher": false,
-                "visibility": true,
+                "visibility": false,
                 "tiled": false,
                 "attribution": false
             },
@@ -250,7 +304,7 @@
                 "maxScale": 15000,
                 "name": "rt_topogr.topografica50k.grey.rt",
                 "displayInLayerSwitcher": true,
-                "visibility": true,
+                "visibility": false,
                 "tiled": false,
                 "attribution": false
             },
@@ -301,7 +355,7 @@
                 "name": "gc_toscana_nord",
                 "opacity": 0.4,
                 "displayInLayerSwitcher": true,
-                "visibility": false,
+                "visibility": true,
                 "tiled": false
             },{
                 "source": "geoserver_presidi",
@@ -310,7 +364,7 @@
                 "name": "gc_toscana_sud",
                 "opacity": 0.4,
                 "displayInLayerSwitcher": true,
-                "visibility": false,
+                "visibility": true,
                 "tiled": false
             },{
                 "source": "geoserver_presidi",
@@ -319,7 +373,7 @@
                 "name": "gc_valdarno_centrale",
                 "opacity": 0.4,
                 "displayInLayerSwitcher": true,
-                "visibility": false,
+                "visibility": true,
                 "tiled": false
             },{
                 "source": "geoserver_presidi",
@@ -328,7 +382,7 @@
                 "name": "gc_valdarno_inf_costa",
                 "opacity": 0.4,
                 "displayInLayerSwitcher": true,
-                "visibility": false,
+                "visibility": true,
                 "tiled": false
             },{
                 "source": "geoserver_presidi",
@@ -337,7 +391,7 @@
                 "name": "gc_valdarno_superiore",
                 "opacity": 0.4,
                 "displayInLayerSwitcher": true,
-                "visibility": false,
+                "visibility": true,
                 "tiled": false
             },{
                 "source": "geoscopio_rischio_idrogeo",
@@ -1313,18 +1367,20 @@
                 "source": "geoserver_presidi",
                 "group": "Rete di monitoraggio CFR",
                 "title": "Idrometri",
-                "name": "cfr_monitoraggio072014",
+                "name": "idrometri",
                 "displayInLayerSwitcher": true,
                 "visibility": false,
-                "tiled": false
+                "tiled": false,
+                "queryPanel": true
             },{
                 "source": "geoserver_presidi",
                 "group": "Rete di monitoraggio CFR",
                 "title": "Pluviometri",
-                "name": "stazioni_pluviometriche",
+                "name": "pluviometri",
                 "displayInLayerSwitcher": true,
                 "visibility": false,
-                "tiled": false
+                "tiled": false,
+                "queryPanel": true
             },{
                 "source": "geoserver_presidi",
                 "group": "Schede opere e censimento",
@@ -1385,7 +1441,7 @@
                 "title": "Distretti Idrografici (forniti AdB Arno)",
                 "name": "distretti_gb",
                 "displayInLayerSwitcher": true,
-                "visibility": false,
+                "visibility": true,
                 "tiled": false
             },{
                 "source": "geoserver_presidi",
@@ -1408,8 +1464,9 @@
         "wmsgetfeatureinfo_menu_plugin","layertree_plugin"
     ],
     "proj4jsDefs": {
-        "EPSG:3003": "+proj=tmerc +lat_0=0 +lon_0=9 +k=0.9996 +x_0=1500000 +y_0=0 +ellps=intl +units=m +no_defs +towgs84 = -104.1,-49.1,-9.9,0.971,-2.917,0.714,-11.68"
-    },
+        "EPSG:3003": "+proj=tmerc +lat_0=0 +lon_0=9 +k=0.9996 +x_0=1500000 +y_0=0 +ellps=intl +units=m +no_defs +towgs84 = -104.1,-49.1,-9.9,0.971,-2.917,0.714,-11.68",
+		"EPSG:3857": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs"
+	},
     "customPanels":[
 	      {
 	          "xtype": "panel",
@@ -1477,8 +1534,40 @@
             "actionTarget": "paneltbar"
         }, {
             "ptype": "gxp_geolocationmenu",
-            "actionTarget": {"target": "paneltbar", "index": 23},
+            "actionTarget": {"target": "paneltbar", "index": 20},
             "toggleGroup": "toolGroup"
+        }, {
+            "actions": ["-"],
+            "actionTarget": "paneltbar"
+        },{
+          "ptype":"gxp_print",
+          "customParams":{
+             "outputFilename":"presidi",
+             "forwardHeaders":[],
+             "outputFormat":"pdf",
+             "geodetic": true,
+             "mergeableParams": {
+                 "cql_filter": {
+                     "defaultValue": "INCLUDE",
+                     "separator": ";",
+                     "context": "http://geoportale.lamma.rete.toscana.it/geoserver_ds/CENS_OP_IDRO_V1/wms?"
+                 }
+             }
+          },
+          "includeLegend": false,
+          "legendOnSeparatePage":false,
+          "appendLegendOptions": false,
+          "addLandscapeControl": true,
+          "addFormParameters": true,
+          "printService":"http://geoportale.lamma.rete.toscana.it/geoserver_ds/pdf",
+          "legendPanelId":"legendPanel",
+          "defaultResolutionIndex":0,
+          "defaultLayoutIndex":1,
+          "ignoreLayers":["WFSSearch","Marker","WFSsearchMarker","GeoRefMarker","GeoLocation","Marker","GeoRefMarker"],
+          "actionTarget":{
+             "target":"paneltbar",
+             "index":23
+          }
         }, {
 		  "ptype": "gxp_featuremanager",
 		  "id": "featuremanager",
@@ -1499,27 +1588,7 @@
 		  },
 		  "outputTarget": "south",
 		  "showNumberOfRecords": true
-	    },{
-          "ptype":"gxp_print",
-          "customParams":{
-             "outputFilename":"presidi",
-             "forwardHeaders":[],
-             "outputFormat":"pdf",
-             "geodetic": true
-          },
-          "includeLegend": false,
-          "legendOnSeparatePage":false,
-          "appendLegendOptions": true,
-          "printService":"http://geoportale.lamma.rete.toscana.it/geoserver_ds/pdf",
-          "legendPanelId":"legendPanel",
-          "defaultResolutionIndex":1,
-          "defaultLayoutIndex":1,
-          "ignoreLayers":["WFSSearch","Marker","WFSsearchMarker","GeoRefMarker","GeoLocation","Google Hybrid","Bing Aerial","Google Terrain","Google Roadmap","Marker","GeoRefMarker"],
-          "actionTarget":{
-             "target":"paneltbar",
-             "index":14
-          }
-        }, {
+	    }, {
 		  "ptype": "gxp_spatialqueryform",
 		  "featureManager": "featuremanager",
 		  "featureGridContainer": "south",
