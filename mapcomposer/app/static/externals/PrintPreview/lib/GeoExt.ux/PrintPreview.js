@@ -324,6 +324,26 @@ GeoExt.ux.PrintPreview = Ext.extend(Ext.Container, {
                 Ext.form.ComboBox.prototype.setValue.apply(this, arguments);
             }
         }, "&nbsp;");
+        
+        // if(this.addLandscapeControl){
+        //     var landscapeCheckbox = new Ext.form.Checkbox({
+        //         name: "landscape",
+        //         checked: this.landscape,
+        //         boxLabel: this.landscapeText,
+        //         hideLabel: true,
+        //         // disabled: !this.legendOnSeparatePage,
+        //         ctCls: "gx-item-nowrap",
+        //         handler: function(cb, checked) {
+        //             this.landscape = checked;
+        //             this.updateLayout();
+        //         },
+        //         cls : "gx-item-margin-left",
+        //         scope: this
+        //     });    
+        //     this.landscapeCheckbox = landscapeCheckbox;
+        //     items.push(landscapeCheckbox);
+        // }
+        
         items.push("->", {
             text: this.printText,
             iconCls: "icon-print",
@@ -338,6 +358,7 @@ GeoExt.ux.PrintPreview = Ext.extend(Ext.Container, {
             },
             scope: this
         });
+
         return {
             xtype: "toolbar",
             items: items
@@ -373,9 +394,9 @@ GeoExt.ux.PrintPreview = Ext.extend(Ext.Container, {
                 ctCls: "gx-item-nowrap",
                 handler: function(cb, checked) {
                     this.legendOnSeparatePage = checked;
-                    if(this.addLandscapeControl){
-                        this.landscapeCheckbox.setDisabled(!checked);
-                    }
+                    // if(this.addLandscapeControl){
+                    //     this.landscapeCheckbox.setDisabled(!checked);
+                    // }
                     this.updateLayout();
                 },
                 cls : "gx-item-margin-left",                
@@ -416,34 +437,36 @@ GeoExt.ux.PrintPreview = Ext.extend(Ext.Container, {
                         legendOnSeparatePageCheckbox,
                         compactLegendCheckbox
                     ];
-            
-            if(this.addLandscapeControl){
-                var landscapeCheckbox = new Ext.form.Checkbox({
-                    name: "landscape",
-                    checked: this.landscape,
-                    boxLabel: this.landscapeText,
-                    hideLabel: true,
-                    disabled: !this.legendOnSeparatePage,
-                    ctCls: "gx-item-nowrap",
-                    handler: function(cb, checked) {
-                        this.landscape = checked;
-                        this.updateLayout();
-                    },
-                    cls : "gx-item-margin-left",
-                    scope: this
-                });    
-                this.landscapeCheckbox = landscapeCheckbox;
-                checkItems.push(landscapeCheckbox);
-            }
 
-            panelElements.push({
+            var legendItems = {
                 //xtype: "container",
                 layout: "form",
+                name: 'enableLegendPanelObj',
                 cls: "x-form-item",
                 style:"text-align:left;padding:0px;",
                 bodyStyle: 'padding:4px',
                 items: checkItems
-            });
+            };
+            
+        }
+
+        if(this.addLandscapeControl){
+            var landscapeCheckbox = new Ext.form.Checkbox({
+                name: "landscape",
+                checked: this.landscape,
+                boxLabel: this.landscapeText,
+                hideLabel: true,
+                // disabled: !this.legendOnSeparatePage,
+                ctCls: "gx-item-nowrap",
+                handler: function(cb, checked) {
+                    this.landscape = checked;
+                    this.updateLayout();
+                },
+                cls : "gx-item-margin-left",
+                scope: this
+            });    
+            this.landscapeCheckbox = landscapeCheckbox;
+            // items.push(landscapeCheckbox);
         }
         
         panelElements.push({
@@ -455,15 +478,18 @@ GeoExt.ux.PrintPreview = Ext.extend(Ext.Container, {
             plugins: new GeoExt.plugins.PrintProviderField({
                 printProvider: this.printProvider
             })
-        });
+        },this.addLandscapeControl ? landscapeCheckbox : {});
 
         // Tab it's active if we need to add style or graticule panel
         if(this.addFormParameters || this.addGraticuleControl){
             return new Ext.TabPanel({
                 activeTab: 0,
-                items: this.getTabItems(panelElements)
+                items: this.getTabItems(panelElements,legendItems)
             });
         }else{
+        
+            //panelElements.push(legendItems);
+                        
             return new Ext.form.FormPanel({
                 autoHeight: true,
                 border: false,
@@ -479,7 +505,7 @@ GeoExt.ux.PrintPreview = Ext.extend(Ext.Container, {
      *  :`panelElements`: `Object` with elements for the default tab
      *  :return: ``Array`` with tab items for the print preview 
      */
-    getTabItems: function(panelElements){
+    getTabItems: function(panelElements,legendItems){
 
         var tabItems = [];
         // Default tab
@@ -498,6 +524,10 @@ GeoExt.ux.PrintPreview = Ext.extend(Ext.Container, {
             this.legendStylePanel = new GeoExt.ux.LegendStylePanel({
                 printMapPanel: this.printMapPanel
             });
+            
+            this.legendStylePanel.insert(0,legendItems);
+            this.legendStylePanel.doLayout();
+            
             tabItems.push(new Ext.form.FormPanel({
                 title: this.legendTabText,
                 autoHeight: true,
@@ -553,6 +583,10 @@ GeoExt.ux.PrintPreview = Ext.extend(Ext.Container, {
             
         */ 
         if(this.includeLegend){
+        
+            if (this.legendStylePanel)
+                this.disableLegendItems(false);
+            
             newLayoutName = currentLayout;
             
             if(this.compactLegend && this.legendOnSeparatePage){
@@ -564,6 +598,10 @@ GeoExt.ux.PrintPreview = Ext.extend(Ext.Container, {
             }           
             
         } else {
+        
+            if(this.legendStylePanel)
+                this.disableLegendItems(true);
+            
             newLayoutName = currentLayout + '_no_legend';
         }
 
@@ -571,7 +609,8 @@ GeoExt.ux.PrintPreview = Ext.extend(Ext.Container, {
          *   * _2_pages_compact_legend_landscape
          *   * _2_pages_landscape
         */
-        if(this.legendOnSeparatePage && this.landscape){
+        // if(this.legendOnSeparatePage && this.landscape){
+        if(this.landscape){
             newLayoutName += "_landscape";
         }
         
@@ -680,6 +719,32 @@ GeoExt.ux.PrintPreview = Ext.extend(Ext.Container, {
         }
         this.printMapPanel.un("resize", this.updateSize, this);
         GeoExt.ux.PrintPreview.superclass.beforeDestroy.apply(this, arguments);
+    },
+    
+    /** private: method[disableLegendItems]
+     */    
+    disableLegendItems: function(disable){
+        for(var i = 0; i < this.legendStylePanel.items.keys.length; i++){
+            var key =this.legendStylePanel.items.keys[i];
+            var formParam = this.legendStylePanel.items.get(key);
+            if(formParam.name){
+                if(formParam.name === "enableLegendPanelObj"){
+                    formParam.items.each(function(e){
+                        if(e.name !== "legendSeparatePage"){
+                            e.setDisabled(disable);
+                        }
+                    });                
+                }else{
+                    formParam.setDisabled(disable);
+                    if(formParam.innerCt){
+                        formParam.innerCt.items.each(function(e){
+                            e.setDisabled(disable);
+                        });
+                    }
+                }
+            }
+            
+        }    
     }
     
 });
