@@ -486,6 +486,7 @@ gxp.plugins.WMSSource = Ext.extend(gxp.plugins.LayerSource, {
             queryable: config.queryable,
             tabCode: config.tabCode,
             queryPanel: "queryPanel" in config ? config.queryPanel : false,
+            legendUrl: config.legendUrl
         }, original.data);
 
         // add additional fields
@@ -512,7 +513,8 @@ gxp.plugins.WMSSource = Ext.extend(gxp.plugins.LayerSource, {
             {name: "graphAttribute", type: "string"},
             {name: "cumulative", type: "boolean"},
             {name: "queryable", type: "boolean"},
-            {name: "tabCode", type: "string"}
+            {name: "tabCode", type: "string"},
+            {name: "legendUrl", type: "string"}
         ];
 
 		original.fields.each(function(field) {
