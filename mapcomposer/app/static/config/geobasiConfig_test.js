@@ -425,6 +425,14 @@
                 "tiled" : false
             }, {
                 "source" : "geobasi",
+                "group" : "soil_terreno",
+                "title" : "Suoli",
+                "name" : "geobasi_sedimenti_soil",
+                "displayInLayerSwitcher" : true,
+                "visibility" : false,
+                "tiled" : false
+            }, {
+                "source" : "geobasi",
                 "group" : "water_acqua",
                 "title" : "Pozzo Termale",
                 "name" : "geobasi_acque_pozzo_termale",
