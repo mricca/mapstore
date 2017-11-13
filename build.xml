@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="geobasi_demo" default="dist" basedir="." xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+<project name="geobasi" default="dist" basedir="." xmlns:artifact="antlib:org.apache.maven.artifact.ant">
 
     <description>
         MapStore Build File
@@ -170,7 +170,7 @@
             <fileset dir="mapcomposer/app/static/externals/ext4">
 				<exclude name="**/ux/**"/>
 			</fileset>
-        </copy>		
+        </copy>
         <!-- copy OpenLayers resources -->
         <copy todir="${composerbuild}/${ant.project.name}/WEB-INF/app/static/externals/openlayers/theme">
             <fileset dir="mapcomposer/app/static/externals/openlayers/theme"/>

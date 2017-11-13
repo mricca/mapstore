@@ -30,10 +30,10 @@ Ext.namespace('gxp.widgets.button');
  */
 gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
     xtype: 'gxp_geobasiDataCurvaCumButton',
-    
+
     /**
     * i18n Start
-    */        
+    */
     mainLoadingMask: "Attendere prego, creazione grafico in corso...",
     msgAlertRequiredFieldsTitle: "Campi obbligatori",
     msgAlertRequiredFieldsMatrixElementText: "Devi selezionare una Matrice e un Elemento!",
@@ -41,10 +41,12 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
     msgAlertRequiredFieldsAnalyticalMethodText: 'Devi selezionare un Metodo Analitico!!!',
     msgAlertNoDataTitle: 'Nessun dato',
     msgAlertNoDataText: 'Dati non disponibili per questo criterio di ricerca',
-    
+
     curvaCumNewDatasetTitle: 'Cumulata Nuovo Dataset',
     curvaCumDefaultTitle: 'Cumulata Geobasi',
-    
+
+    chartYAxisTitle: 'Elemento',
+
     chartSelectionAreaLabel: "Selezione",
     chartNullDataYes: 'SI',
     chartNullDataNo: 'NO',
@@ -59,7 +61,7 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
     /**
     * i18n Start
     */
-    
+
     form: null,
     url: null,
     filter: null,
@@ -68,11 +70,11 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
     chartID: null,
     pagePosition: null,
     handler: function() {
-        
+
         var me = this;
-        
+
         var myFilter = geobasi.getdata.getFilter(this);
-        
+
         var data = this.form.output.getForm().getValues();
         var data2 = this.form.output.getForm().getFieldValues();
         if (!data2.tipo_matrice) {
@@ -105,25 +107,25 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
         } else {
             monitoraggioValue = ' = false';
         }
-        
+
         var elementType = this.target.checkElementType(this.target.output.selElementType,data2.tipo_matrice);
-               
+
         var viewparams2 = "monitoraggio:" + monitoraggioValue + ";" +
                             "tygeomat:" + data2.tipo_matrice + ";" +
                             "sigla:" + data2.elemento + ";" +
                             "type:" + elementType.replace(/,/g, '\\,');
-                            
+
         this.appMask = new Ext.LoadMask(Ext.getBody(), {
             msg: this.mainLoadingMask
         });
         this.appMask.show();
-        
+
         geobasi.bacinifilter.buildFilter(myFilter, data.startYear, data.endYear, data2.allownull, data2.baciniintersect, function(dateFilter) {
-            
+
             me.makeChart(dateFilter, data, data2, viewparams2);
-            
+
         }, this);
-        
+
     },
     makeChart: function(dateFilter, data, data2, viewparams2) {
         this.layer;
@@ -233,17 +235,17 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
                     Ext.MessageBox.getDialog().getEl().setStyle("zIndex", 100000);
                     return;
                 }
-                
+
                 var data = this.form.output.getForm().getValues();
-                
+
                 var metodoElaborazione = data.elabmethodtype;
-                
+
                 var dataCharts = geobasi.getdata.getCurvCumulData(jsonData2, metodoElaborazione, this);
-                
+
                 var mainChart = Ext4.getCmp('geobasi_curvacum' + "_" + this.chartID);
-                
+
                 var gridStore = Ext4.data.StoreManager.lookup("MatrixStore");
-                
+
                 if (!mainChart) {
                     var hcConfig = {
                         series: [{
@@ -292,7 +294,7 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
                             }],
                             yAxis: {
                                 title: {
-                                    text: 'Elemento: '
+                                    text: this.chartYAxisTitle + ': ',
                                 },
                                 plotLines: [{
                                     value: 0.95,
@@ -344,9 +346,9 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
                     Ext4.getCmp(this.chartID).setPagePosition(this.pagePosition);
                 }
                 Ext4.getCmp(this.chartID).expand(true);
-                
+
                 var newTitle = this.chartID == "added_curvaCum" ? this.curvaCumNewDatasetTitle : this.curvaCumDefaultTitle;
-                
+
                 Ext4.getCmp(this.chartID).setTitle(newTitle);
                 var proxy = new Ext4.data.proxy.Memory({
                     reader: {
@@ -356,7 +358,7 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
                 });
                 gridStore && mainChart.bindStore(gridStore);
                 gridStore.loadData(dataCharts);
-                
+
                 var records = gridStore.first();
                 var selectionArea = records.get('vectorSelectionArea') != "false" ? " - " + this.chartSelectionAreaLabel + ": " + records.get('vectorSelectionArea') : "";
                 mainChart.chartConfig.chart.backgroundColor = this.chartID == "added_curvaCum" ? '#F1F9C3' : '#FFFFFF';
@@ -364,15 +366,29 @@ gxp.widgets.button.GeobasiDataCurvaCumButton = Ext.extend(Ext.Button, {
                 mainChart.chartConfig.yAxis.plotLines[0].value = 0.95;
                 mainChart.chartConfig.yAxis.plotLines[0].label.text = '95° percentile';
                 var nullDateString = records.get('nullDate') ? this.chartNullDataYes : this.chartNullDataNo;
-                
-                mainChart.chartConfig.subtitle.text = this.chartTotValueSubtitle + ': ' + records.get('totaleRiprova') + ' - ' + 
+
+                mainChart.chartConfig.subtitle.text = this.chartTotValueSubtitle + ': ' + records.get('totaleRiprova') + ' - ' +
                                                         this.chartMatrixType + ': ' + records.get('dmgeomattipo_descr').toUpperCase() + ' - ' +
                                                         this.chartFromData + " " + records.get('startYear') + ' ' +
-                                                        this.chartToData + " " + records.get('endYear') + ' - ' + 
+                                                        this.chartToData + " " + records.get('endYear') + ' - ' +
                                                         this.chartNoDataValue + ": " + nullDateString +
                                                         selectionArea;
-                                                        
-                var unitaMisura = records.get('matrice').substr(0, 2) === "01" ? "(mg/L)" : "(ppm)"
+
+                var matrice = records.get('matrice');
+                var unitaMisura;
+
+                if (matrice.substr(0, 2) === "01") {
+                    unitaMisura = "(mg/L)";
+                } else if (matrice === "02" || matrice === "0201") {
+                    unitaMisura = "(ppm)";
+                } else if (matrice === "0202") {
+                    if (records.get('sigla') === "Ca" || records.get('sigla') === "Mg" || records.get('sigla') === "Na" || records.get('sigla') === "K" || records.get('sigla') === "H" || records.get('sigla') === "Al") {
+                        unitaMisura = "(meq/100g)";
+                    } else if (records.get('sigla') === "C" || records.get('sigla') === "N") {
+                        unitaMisura = "(dag/Kg)";
+                    }
+                };
+                // var unitaMisura = records.get('matrice').substr(0, 2) === "01" ? "(mg/L)" : "(ppm)"
                 mainChart.chartConfig.yAxis.title.text = this.chartYAxisTitle + ': ' + records.get('sigla') + " " + unitaMisura;
                 var logText = records.get('log') === "1" ? this.chartLogarithmicScale : this.chartActualValues;
                 mainChart.chartConfig.xAxis[0].title.text = logText;

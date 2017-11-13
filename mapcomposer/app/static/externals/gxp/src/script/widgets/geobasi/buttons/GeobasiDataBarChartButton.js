@@ -30,10 +30,10 @@ Ext.namespace('gxp.widgets.button');
  */
 gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
     xtype: 'gxp_geobasiDataBarChartButton',
-    
+
     /**
     * i18n Start
-    */        
+    */
     mainLoadingMask: "Attendere prego, creazione grafico in corso...",
     msgAlertRequiredFieldsTitle: "Campi obbligatori",
     msgAlertRequiredFieldsMatrixElementText: "Devi selezionare una Matrice e un Elemento!",
@@ -41,9 +41,9 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
     msgAlertRequiredFieldsAnalyticalMethodText: 'Devi selezionare un Metodo Analitico!!!',
     msgAlertNoDataTitle: 'Nessun dato',
     msgAlertNoDataText: 'Dati non disponibili per questo criterio di ricerca',
-    
+
     histogramColumnSeriesName: 'Istogramma',
-    histogramSplineSeriesName: 'Spline',    
+    histogramSplineSeriesName: 'Spline',
 
     histogramClasseVectorLayer: 'Classe',
     histogramElementVectorLayer: "Elemento",
@@ -52,9 +52,9 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
     histogramStatisticNumerousness: 'Numerosità Classe',
     histogramNewDatasetTitle: 'Istogramma Nuovo Dataset',
     histogramDefaultTitle: 'Istogramma Geobasi',
-    
+
     chartYAxisTitle: 'Elemento',
-    
+
     chartSelectionAreaLabel: "Selezione",
     chartNullDataYes: 'SI',
     chartNullDataNo: 'NO',
@@ -69,8 +69,8 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
     histogramYAxisText: 'Frequenza',
     /**
     * i18n Start
-    */        
-    
+    */
+
     form: null,
     url: null,
     filter: null,
@@ -79,14 +79,14 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
     chartID: null,
     pagePosition: null,
     colorGradient: {
-        start: '#FFFF00',    
+        start: '#FFFF00',
         end: '#FF0000'
     },
     handler: function() {
         me = this;
-        
+
         var myFilter = geobasi.getdata.getFilter(this);
-        
+
         var data = this.form.output.getForm().getValues();
         var data2 = this.form.output.getForm().getFieldValues();
         if (!data2.tipo_matrice) {
@@ -138,9 +138,9 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
         } else {
             monitoraggioValue = ' = false';
         }
-        
+
        var elementType = this.target.checkElementType(this.target.output.selElementType,data2.tipo_matrice);
-       
+
         var viewparams2 = data2.Metodo_analitico == '-999' ?
                             "monitoraggio:" + monitoraggioValue + ";" +
                             "tygeomat:" + data2.tipo_matrice + ";" +
@@ -152,18 +152,18 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
                             "sigla:" + data2.elemento + ";" +
                             "tipometa:" + tipometaStatQuery + ";" +
                             "type:" + elementType.replace(/,/g, '\\,');
-                            
+
         this.appMask = new Ext.LoadMask(Ext.getBody(), {
             msg: this.mainLoadingMask
         });
         this.appMask.show();
-        
+
         geobasi.bacinifilter.buildFilter(myFilter, data.startYear, data.endYear, data2.allownull, data2.baciniintersect, function(dateFilter) {
-            
+
             me.makeChart(dateFilter, data, data2, viewparams2);
-            
+
         }, this);
-        
+
     },
     makeChart: function(dateFilter, data, data2, viewparams2) {
         this.layer;
@@ -291,18 +291,18 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
                     monitoraggioValue = ' = false';
                 }
                 this.viewparams3 = data.Metodo_analitico == '-999' ? "monitoraggio:" + monitoraggioValue + ";" + "tygeomat:" + data2.tipo_matrice + ";" + "sigla:" + data2.elemento + ";" + "tipometa:" + tipometaStatQuery : "monitoraggio:" + monitoraggioValue + ";" + "tygeomat:" + data2.tipo_matrice + ";" + "sigla:" + data2.elemento + ";" + "tipometa:" + tipometaStatQuery;
-                
+
                 var metodoElaborazione = data.elabmethodtype;
-                
+
                 //var dataCharts = this.getData(this.jsonData2, metodoElaborazione);
                 var dataCharts = geobasi.getdata.getBarChartData(this.jsonData2, metodoElaborazione, this);
-                
+
                 this.newColors = jsgradient.generateGradient('#FFCDD6', '#FF0000', dataCharts.length);
-                
+
                 var mainChart = Ext4.getCmp('geobasi_barchart' + "_" + this.chartID);
-                
+
                 var gridStore = Ext4.data.StoreManager.lookup("BarChartStore");
-                
+
                 if (!mainChart) {
                     var hcConfig = {
                         series: [{
@@ -332,7 +332,7 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
                                         })
                                     });
                                     var vector_layer = new OpenLayers.Layer.Vector(
-                                                                me.histogramColumnSeriesName + ' - ' + 
+                                                                me.histogramColumnSeriesName + ' - ' +
                                                                 me.histogramClasseVectorLayer + ': ' + record.data.classe + " - " +
                                                                 me.histogramElementVectorLayer + ": " + record.data.sigla + " - " +
                                                                 me.histogramNumerosityVectorLayer + ": " + record.data.valore + " - " +
@@ -477,10 +477,10 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
                                                 geoJSONgeometry[0].attributes = this.series[0].data[0].data.jsonData.features[i].attributes;
                                                 vector_layer.addFeatures(geoJSONgeometry[0]);
                                             }
-                                            
+
                                             var app = window.app;
                                             var map = app.mapPanel.map;
-                                            
+
                                             map.addLayers([vector_layer]);
                                             map.zoomToExtent(new OpenLayers.Bounds(this.series[0].data[0].data.bbox[0],
                                                                                     this.series[0].data[0].data.bbox[1],
@@ -522,7 +522,7 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
                 Ext4.getCmp(this.chartID).expand(true);
 
                 var newTitle = this.chartID == "added_barChart" ? this.histogramNewDatasetTitle : this.histogramDefaultTitle;
-                
+
                 Ext4.getCmp(this.chartID).setTitle(newTitle);
                 var dataCharts2 = Ext.util.JSON.encode(dataCharts);
                 var proxy = new Ext4.data.proxy.Memory({
@@ -533,21 +533,35 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
                 });
                 gridStore && mainChart.bindStore(gridStore);
                 gridStore.loadData(dataCharts);
-    
+
                 var records = gridStore.first();
                 var selectionArea = records.get('vectorSelectionArea') != "false" ? " - " + this.chartSelectionAreaLabel + ": " + records.get('vectorSelectionArea') : "";
                 var nullDateString = records.get('nullDate') ? this.chartNullDataYes : this.chartNullDataNo;
                 mainChart.chartConfig.chart.backgroundColor = this.chartID == "added_barChart" ? '#F1F9C3' : '#FFFFFF';
 
-                mainChart.chartConfig.subtitle.text = this.chartTotValueSubtitle + ': ' + records.get('totaleRiprova') + ' - ' + 
+                mainChart.chartConfig.subtitle.text = this.chartTotValueSubtitle + ': ' + records.get('totaleRiprova') + ' - ' +
                                                         this.chartMatrixType + ': ' + records.get('dmgeomattipo_descr').toUpperCase() + ' - ' +
                                                         this.chartFromData + " " + records.get('startYear') + ' ' +
-                                                        this.chartToData + " " + records.get('endYear') + ' - ' + 
+                                                        this.chartToData + " " + records.get('endYear') + ' - ' +
                                                         this.chartNoDataValue + ": " + nullDateString +
-                                                        selectionArea;                
-                
+                                                        selectionArea;
+
                 mainChart.chartConfig.title.text = this.chartAnalyticalMethod + ': ' + records.get('tipoMeta') + ' - ' + 'Geobasi';
-                var unitaMisura = records.get('matrice').substr(0, 2) === "01" ? "(mg/L)" : "(ppm)";
+                var matrice = records.get('matrice');
+                var unitaMisura;
+
+                if (matrice.substr(0, 2) === "01") {
+                    unitaMisura = "(mg/L)";
+                } else if (matrice === "02" || matrice === "0201") {
+                    unitaMisura = "(ppm)";
+                } else if (matrice === "0202") {
+                    if (records.get('sigla') === "Ca" || records.get('sigla') === "Mg" || records.get('sigla') === "Na" || records.get('sigla') === "K" || records.get('sigla') === "H" || records.get('sigla') === "Al") {
+                        unitaMisura = "(meq/100g)";
+                    } else if (records.get('sigla') === "C" || records.get('sigla') === "N") {
+                        unitaMisura = "(dag/Kg)";
+                    }
+                };
+                // var unitaMisura = records.get('matrice').substr(0, 2) === "01" ? "(mg/L)" : "(ppm)";
                 mainChart.chartConfig.yAxis.title.text = this.histogramYAxisText;
                 var logText = records.get('log') === "1" ? this.chartLogarithmicScale : this.chartActualValues;
                 mainChart.chartConfig.xAxis[0].title.text = this.chartYAxisTitle + ': ' + records.get('sigla') + " " + unitaMisura + ' - ' + logText;
@@ -568,7 +582,7 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
             }
         });
     },
-    
+
     randomColorsRGB: function(total) {
         var i = 360 / (total - 1);
         var r = [];
@@ -581,7 +595,7 @@ gxp.widgets.button.GeobasiDataBarChartButton = Ext.extend(Ext.Button, {
         }
         return r;
     },
-    
+
     randomColorsHEX: function(total) {
         var i = 360 / (total - 1);
         var r = [];

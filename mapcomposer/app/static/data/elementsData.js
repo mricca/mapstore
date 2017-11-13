@@ -42,6 +42,11 @@ var elementsData = {
             "http://www506.regione.toscana.it/schede_elementi/Cromo.pdf",
             "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_cr_edit.pdf"
         ],[
+            "Europio",
+            "Eu",
+            "http://www506.regione.toscana.it/schede_elementi/Europio.pdf",
+            "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_eu_edit.pdf"
+        ],[
             "Fluoro",
             "F",
             "http://www506.regione.toscana.it/schede_elementi/Fluoro.pdf",
@@ -62,6 +67,11 @@ var elementsData = {
             "http://www506.regione.toscana.it/schede_elementi/Mercurio.pdf",
             "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_hg_edit.pdf"
         ],[
+            "Neodimio",
+            "Nd",
+            "http://www506.regione.toscana.it/schede_elementi/Neodimio.pdf",
+            "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_nd_edit.pdf"
+        ],[
             "Nichel",
             "Ni",
             "http://www506.regione.toscana.it/schede_elementi/Nichel.pdf",
@@ -71,6 +81,11 @@ var elementsData = {
             "Pb",
             "http://www506.regione.toscana.it/schede_elementi/Piombo.pdf",
             "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_pb_edit.pdf"
+        ],[
+            "Promezio",
+            "Pm",
+            "http://www506.regione.toscana.it/schede_elementi/Promezio.pdf",
+            "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_pm_edit.pdf"
         ],[
             "Rame",
             "Cu",
@@ -141,6 +156,11 @@ var elementsData = {
             "Pa",
             "http://www506.regione.toscana.it/schede_elementi/Protoattinio.pdf",
             "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_pa_edit.pdf"
+        ],[
+            "Samario",
+            "Sm",
+            "http://www506.regione.toscana.it/schede_elementi/Samario.pdf",
+            "http://weppi.gtk.fi/publ/foregsatlas/maps/Water/w_icpms_sm_edit.pdf"
         ],[
             "Titanio",
             "Ti",

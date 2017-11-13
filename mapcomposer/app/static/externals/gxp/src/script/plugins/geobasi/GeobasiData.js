@@ -283,7 +283,7 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
                                 '</tr>' +
                                 '<tr >' +
                                     '<th rowspan="1" style="border:0px">'+this.updateCountIntTempText+'</th>' +
-                                    '<td style="border:0px;vertical-align:bottom">1950 - 2011</td>' +
+                                    '<td style="border:0px;vertical-align:bottom">1950 - 2015</td>' +
                                 '</tr>' +
                                 '<tr >' +
                                     '<th rowspan="1" style="border:0px">'+this.updateCountMonitoraggioText+'</th>' +
@@ -1179,24 +1179,18 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
         if (radio.disabled)
             radio.enable();
 
-        // items: [{
-        //     boxLabel: this.elementTypeCheckLabel,
-        //     name: 'elementType',
-        //     inputValue: 1,
-        //     checked: true
-        // }, {
-        //     boxLabel: this.oxideTypeCheckLabel,
-        //     name: 'elementType',
-        //     inputValue: 2
-        // }, {
-        //     boxLabel: this.redoxTypeCheckLabel,
-        //     name: 'elementType',
-        //     inputValue: 3
-        // }, {
-        //     boxLabel: this.isotopeTypeCheckLabel,
-        //     name: 'elementType',
-        //     inputValue: 4
-        // }]
+        // boxLabel: this.elementTypeCheckLabel,
+        // inputValue: 1
+        //
+        // boxLabel: this.oxideTypeCheckLabel,
+        // inputValue: 2
+        //
+        // boxLabel: this.redoxTypeCheckLabel,
+        // inputValue: 3
+        //
+        // boxLabel: this.isotopeTypeCheckLabel,
+        // inputValue: 4
+
 
         if(type.substr(0,2)==='02' && type==='0201'){
             for(var i = 0;i<radio.items.items.length;i++){
@@ -1206,7 +1200,15 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
                     radio.items.items[i].enable();
                 }
             }
-        }else if(type==='0202'){
+        } else if(type==='02'){
+            for(var i = 0;i<radio.items.items.length;i++){
+                if(radio.items.items[i].inputValue === 3){
+                    radio.items.items[i].disable();
+                } else {
+                    radio.items.items[i].enable();
+                }
+            }
+        } else if(type==='0202'){
             for(var i = 0;i<radio.items.items.length;i++){
                 if(radio.items.items[i].inputValue === 1){
                     radio.items.items[i].enable();
@@ -1214,7 +1216,7 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
                     radio.items.items[i].disable();
                 }
             }
-        }else if (type.substr(0,2)==='01'){
+        } else if (type.substr(0,2)==='01'){
             for(var i = 0;i<radio.items.items.length;i++){
                 if(radio.items.items[i].inputValue === 2){
                     radio.items.items[i].disable();
@@ -1247,7 +1249,7 @@ gxp.plugins.geobasi.GeobasiData = Ext.extend(gxp.plugins.Tool, {
         }else{
             return 3+','+1;
         }*/
-        if (matrixValue === '0201'){
+        if (matrixValue === '02' || matrixValue === '0201'){
             switch (selElementType.getValue().inputValue){
                 case 1:
                     return '4';
